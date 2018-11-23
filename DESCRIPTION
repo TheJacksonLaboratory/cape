@@ -1,0 +1,36 @@
+Package: cape
+Title: Combinatorial Analysis of Epistasis and Pleiotropy for the Diversity Outbred Mice
+Version: 0.1.0
+Authors@R: c(
+    person("Anna", "Tyler", role = c("aut", "cre"), email = "anna.tyler@jax.org.com"),
+    person("Wei", "Lu", role = c("aut")),
+    person("Justin", "Hendrick", role = c("aut")),
+    person("Vivek", "Philip", role = c("aut")),
+    person("Gregory", "Carter", role = c("aut")),
+    person("Ann", "Wells", role = c("aut"), email = "ann.wells@jax.org.com"),
+    person("Jake", "Emerson", role = c("aut"), email = "jake.emerson@jax.org.com"))
+Description: 
+    This package infers predictive networks between genetic variants and between
+    genetic variants and phenotypes. It is specifically designed for use with the
+    multi-allele mouse population known as the Diversity Outbred (DO) mice. It
+    uses complementary information of pleiotropic gene variants across different
+    phenotypes to resolve models of epistatic interactions between alleles. To
+    do this, cape reparameterizes main effect and interaction coefficients from
+    a pairwise variant regressions into directed influence parameters. These
+    parameters describe how alleles each other, in terms of suppression and
+    enhancement, as well as how gene variants influence phenotypes. In this
+    framework, alleles originating from individual founders are selected for
+    pairwise regressions based on their main effects on individual phenotypes.
+    These alleles are then treated as independent genetic markers in the pairwise
+    scans. The result is different founder alleles from the same locus may
+    interact with each other in the form of intra-locus epistasis, or dominance.
+    All of the final interactions are reported in terms of founder alleles at a
+    given genomic location.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    here
+Suggests: 
+    testthat
+RoxygenNote: 6.1.1
