@@ -13,6 +13,7 @@
 #' @slot geno_names A list of character names for each genotype, e.g., c("A", "B")
 #' @slot ref_allele A character from the geno_names that represents the wild type
 #' @slot geno An array where the dimension names must be "sample", "allele", and "locus"
+#' @slot covar.table a matrix of 
 #' @slot parameters TODO mayhap we should change this?
 setClass("Cape", 
   slots = c(
