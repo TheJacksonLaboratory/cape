@@ -1,0 +1,56 @@
+#================================================
+# General Parameters 
+#================================================
+traits:
+  - LEP_24
+  - total_fat
+covariates:
+  - mom 
+scan.what:
+  - Eigentraits 
+traits.scaled:
+  - TRUE 
+traits.normalized:
+  - TRUE 
+eig.which:
+  - 1
+  - 2 
+pval.correction:
+  - fdr 
+use.kinship:
+  - TRUE
+kinship.type:
+  - overall
+pop:
+  - 2PP
+locus:
+  - char
+
+#================================================
+# Single Scan Parameters 
+#================================================
+ref.allele:
+  - A 
+singlescan.perm:
+  - 0
+
+#================================================
+# Marker Selection Parameters 
+#================================================
+marker.selection.method:
+  - top.effects 
+peak.density:
+  - 0.5 
+tolerance:
+ - 5 
+num.alleles.in.pairscan:
+ - 1000
+
+#================================================
+# Pairscan Parameters 
+#================================================
+max.pair.cor:
+ - 0.5 
+pairscan.null.size:
+ - 1000 
+

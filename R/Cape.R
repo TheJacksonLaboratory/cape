@@ -21,10 +21,10 @@ setClass("Cape",
     chromosome = "character",
     marker_num = "integer",
     marker_location = "numeric",
-    geno_names = "list",
+    geno_names = "character",
     ref_allele = "character",
-    geno = "array",
-    parameters = "array"
+    geno = "matrix",
+    parameters = "list"
   )
 )
 
@@ -73,6 +73,7 @@ setGeneric("setPheno<-", function(x, value) standardGeneric("setPheno<-"))
 #' @param value a phenotype matrix
 setMethod("setPheno<-", "Cape", function(x, value) {
     x@pheno <- value
+    validObject(x)
     x
 })
 
@@ -99,11 +100,12 @@ setGeneric("setChromosome<-", function(x, value) standardGeneric("setChromosome<
 #' @param value a chromosome character list
 setMethod("setChromosome<-", "Cape", function(x, value) {
     x@chromosome <- value
+    validObject(x)
     x
 })
 
 ###############################################################################
-#' Method get
+#' Method getMarkerNum
 #' @name Cape-class
 #' @rdname Cape-class
 #' @exportMethod getMarkerNum
@@ -125,6 +127,7 @@ setGeneric("setMarkerNum<-", function(x, value) standardGeneric("setMarkerNum<-"
 #' @param value An integer list of marker numbers along a chromosome
 setMethod("setMarkerNum<-", "Cape", function(x, value) {
     x@marker_num <- value
+    validObject(x)
     x
 })
 
@@ -140,7 +143,7 @@ setGeneric("getMarkerLocation", function(x) standardGeneric("getMarkerLocation")
 setMethod("getMarkerLocation", "Cape", function(x) x@marker_location)
 
 ###############################################################################
-#' Method setCMarkerLocation
+#' Method setMarkerLocation
 #' @name Cape-class
 #' @rdname Cape-class
 #' @exportMethod setMarkerLocation<-
@@ -151,6 +154,7 @@ setGeneric("setMarkerLocation<-", function(x, value) standardGeneric("setMarkerL
 #' @param value A numeric list of positions in centiMorgans
 setMethod("setMarkerLocation<-", "Cape", function(x, value) {
     x@marker_location <- value
+    validObject(x)
     x
 })
 
@@ -177,6 +181,7 @@ setGeneric("setGenoNames<-", function(x, value) standardGeneric("setGenoNames<-"
 #' @param value A list of character names for each genotype, e.g., c("A", "B")
 setMethod("setGenoNames<-", "Cape", function(x, value) {
     x@geno_names <- value
+    validObject(x)
     x
 })
 
@@ -203,6 +208,7 @@ setGeneric("setRefAllele<-", function(x, value) standardGeneric("setRefAllele<-"
 #' @param value A character from the geno_names that represents the wild type
 setMethod("setRefAllele<-", "Cape", function(x, value) {
     x@ref_allele <- value
+    validObject(x)
     x
 })
 
@@ -229,5 +235,6 @@ setGeneric("setGeno<-", function(x, value) standardGeneric("setGeno<-"))
 #' @param value An array where the dimension names must be "sample", "allele", and "locus"
 setMethod("setGeno<-", "Cape", function(x, value) {
     x@geno <- value
+    validObject(x)
     x
 })
