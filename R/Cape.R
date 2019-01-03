@@ -21,10 +21,13 @@ setClass("Cape",
     chromosome = "character",
     marker_num = "integer",
     marker_location = "numeric",
-    geno_names = "character",
+    geno_names = "list",
+    geno = "array",
     ref_allele = "character",
-    geno = "matrix",
-    parameters = "list"
+    parameters = "list",
+    covar_table = "array",
+    flat_geno = "array",
+    non_allelic_covar = "character"
   )
 )
 
@@ -49,6 +52,7 @@ setValidity("Cape",
         TRUE
     }
 )
+
 
 ###############################################################################
 #' Method getPheno
@@ -237,4 +241,46 @@ setMethod("setGeno<-", "Cape", function(x, value) {
     x@geno <- value
     validObject(x)
     x
+})
+
+###############################################################################
+setGeneric("setFlatGeno", function(x) standardGeneric("setFlatGeno"))
+
+setMethod("setFlatGeno", "Cape", function(x) {
+  
+  mouse.dim <- which(names(x@geno_names) == "mouse")
+  locus.dim <- which(names(x@geno_names) == "locus")
+  allele.dim <- which(names(x@geno_names) == "allele")
+  
+  #subset the genotype object to match the 
+  #individuals and markers we want to scan
+  ind.locale <-match(x@geno_names[[mouse.dim]], dimnames(x@geno)[[mouse.dim]])
+  allele.locale <- match(x@geno_names[[allele.dim]], dimnames(x@geno)[[allele.dim]])
+  locus.locale <- match(x@geno_names[[locus.dim]], dimnames(x@geno)[[locus.dim]])
+  
+  browser()
+  
+  #check for NAs, meaning the locus from the data object cannot be
+  #found in the genotyope object
+  na.locale <- which(is.na(locus.locale))
+  locus.locale <- locus.locale[which(!is.na(locus.locale))]
+  
+  gene <- x@geno[ind.locale, allele.locale, locus.locale]
+  
+  #if there is a covariate table in the data object, this is added
+  #to the genotype object
+  if(!is.null(data.obj$covar.table)){
+    covar.vals <- data.obj$covar.table
+    covar.names <- colnames(covar.vals)
+    covar.table <- array(NA, dim = c(length(x@geno_names[[mouse.dim]]), length(x@geno_names[[allele.dim]]), dim(covar.vals)[2]))
+    for(i in 1:dim(covar.vals)[2]){
+      covar.table[,1:dim(covar.table)[2],i] <- covar.vals[,i]
+    }
+    dimnames(covar.table)[[3]]  <- covar.names
+    gene <- abind(gene, covar.table, along = 3)
+  }
+  
+  names(dimnames(gene)) <- names(dimnames(x@geno))
+  
+  return(gene)	
 })

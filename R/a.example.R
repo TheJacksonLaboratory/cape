@@ -21,33 +21,50 @@
 # if (is.null(bed) | is.null(ped)) {
 #   stop("Input path is missing the BED or PED file.")
 # }
+
+library(yaml)
+library(R6)
+library(microbenchmark)
+
 test.data.path <- "/Users/emersj/projects/cape/cape/tests/testthat/testdata"
 file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param.file <- file.path(test.data.path, "cape.parameters.yml")
 
 cross <- read.population(file.name)
-
-pheno <- cross$pheno
-chromosome <- cross$chromosome
-marker_num <- cross$marker.num
-marker_location <- cross$marker.location
-geno_names <- cross$marker.names
-ref_allele <- "A"  # TODO this should come from the parameter file
-geno <- cross$geno
-parameters <- yaml.load_file(param.file)
+cross.obj <- cape2mpp(cross)
 
 cape.obj <- new(
   "Cape",
-  pheno = pheno,
-  chromosome = chromosome,
-  marker_num = marker_num,
-  marker_location = marker_location,
-  geno_names = geno_names,
-  ref_allele = ref_allele,
-  geno = geno,
-  parameters = parameters
+  pheno = cross.obj$data.obj$pheno,
+  chromosome = cross.obj$data.obj$chromosome,
+  marker_num = cross.obj$data.obj$marker.num,
+  marker_location = cross.obj$data.obj$marker.location,
+  geno_names = cross.obj$data.obj$geno.names,
+  ref_allele = "A",
+  geno = cross.obj$geno.obj$geno,
+  parameters = yaml.load_file(param.file),
+  covar_table = array(),
+  flat_geno = array(),
+  non_allelic_covar = c(NA_character_)
+  
 )
 
-run.cape(cape.obj, cape.parameter.file, p.or.q = 0.05, n.cores = n.cores,
-         run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
-         error.prop.perm = TRUE, verbose = TRUE)
+tracemem(cape.obj)
+
+c6 <- CapeR6$new(
+  pheno = cross.obj$data.obj$pheno,
+  geno = cross.obj$geno.obj$geno,
+  covar_table = array()
+)
+
+print(
+microbenchmark(
+  cpCreateCovarTable(cape.obj) <- c("LEP_24", "total_fat"),
+  c6$cteate_covar_table(c("LEP_24", "total_fat")),
+  times=5
+)
+)
+
+
+
+

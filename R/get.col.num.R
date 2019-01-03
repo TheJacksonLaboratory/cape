@@ -6,6 +6,8 @@
 #you are looking for. Setting warn to false is useful
 #when you are using this script internally and just checking
 #different matrices for column headers
+
+
 get.col.num <- function (data.mat, col.which = NULL, dim.which = 2) 
 {
   if (is.null(col.which)) {
@@ -28,8 +30,8 @@ get.col.num <- function (data.mat, col.which = NULL, dim.which = 2)
       col.num <- unlist(apply(col.mat, 1, function(x) find.col(x, dimnames(data.mat)[[dim.which]])))
       didnt.find <- which(col.num == 0)
       if(length(didnt.find) > 0) {
-        message("The following headers are not present:")
-        cat(col.which[didnt.find], sep = "\n")
+        # message("The following headers are not present:")
+        # cat(col.which[didnt.find], sep = "\n")
         col.num <- col.num[-didnt.find]
       }
     }
