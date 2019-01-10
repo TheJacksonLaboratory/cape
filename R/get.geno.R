@@ -1,20 +1,26 @@
-#This is an internal function that gets the geno 
-#object whether it is put in separately or with 
-#the data.obj it warns the user if it can't find 
-#the genotypes
-#If the data object specifies that only a subset
-#of loci, individuals, or alleles should be used
-#the genotype object is subset before being returned
-#This function essentially recreates the geno used
-#in the original cape, so modifications to the code
-#should be fairly minimal otherwise
-
-
+#' Gets the geno object whether it is put in separately or with the data.obj
+#'
+#' This is an internal function that gets the geno 
+#' object whether it is put in separately or with 
+#' the data.obj it warns the user if it can't find 
+#' the genotypes. If the data object specifies that only a subset
+#' of loci, individuals, or alleles should be used
+#' the genotype object is subset before being returned
+#' This function essentially recreates the geno used
+#' in the original cape, so modifications to the code
+#' should be fairly minimal otherwise
+#'
+#' @param cape.obj a \code{\link{Cape}} object
+#' @param geno.obj a genotype object. If this is not supplied then it is generated here.
+#'
+#' @return \code{list("cape.obj" = cape.obj, "geno.obj" = geno.obj)}
+#'
+#' @export
 get.geno <- function(data.obj, geno.obj){
   
   require(abind)
   
-  geno.names <- data.obj$geno.names
+  geno_names <- data.obj$geno_names
   
   if(is.null(geno.obj)){
     geno <- data.obj$geno
@@ -31,15 +37,15 @@ get.geno <- function(data.obj, geno.obj){
     stop("I can't find the genotype data. Please make sure it is in either data.obj or geno.obj.")
   }
   
-  mouse.dim <- which(names(geno.names) == "mouse")
-  locus.dim <- which(names(geno.names) == "locus")
-  allele.dim <- which(names(geno.names) == "allele")
+  mouse.dim <- which(names(geno_names) == "mouse")
+  locus.dim <- which(names(geno_names) == "locus")
+  allele.dim <- which(names(geno_names) == "allele")
   
   #subset the genotype object to match the 
   #individuals and markers we want to scan
-  ind.locale <- match(geno.names[[mouse.dim]], dimnames(geno)[[mouse.dim]])
-  allele.locale <- match(geno.names[[allele.dim]], dimnames(geno)[[allele.dim]])
-  locus.locale <- match(geno.names[[locus.dim]], dimnames(geno)[[locus.dim]])
+  ind.locale <- match(geno_names[[mouse.dim]], dimnames(geno)[[mouse.dim]])
+  allele.locale <- match(geno_names[[allele.dim]], dimnames(geno)[[allele.dim]])
+  locus.locale <- match(geno_names[[locus.dim]], dimnames(geno)[[locus.dim]])
   
   #check for NAs, meaning the locus from the data object cannot be
   #found in the genotyope object
@@ -53,7 +59,7 @@ get.geno <- function(data.obj, geno.obj){
   if(!is.null(data.obj$covar.table)){
     covar.vals <- data.obj$covar.table
     covar.names <- colnames(covar.vals)
-    covar.table <- array(NA, dim = c(length(geno.names[[mouse.dim]]), length(geno.names[[allele.dim]]), dim(covar.vals)[2]))
+    covar.table <- array(NA, dim = c(length(geno_names[[mouse.dim]]), length(geno_names[[allele.dim]]), dim(covar.vals)[2]))
     for(i in 1:dim(covar.vals)[2]){
       covar.table[,1:dim(covar.table)[2],i] <- covar.vals[,i]
     }

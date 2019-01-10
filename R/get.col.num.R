@@ -1,13 +1,16 @@
-#This is an internal function to find the
-#column numbers of phenotypes when names
-#are put in instead of column numbers
-#if warn is set to TRUE, the default, the script
-#prints a message if it can't find the column headers
-#you are looking for. Setting warn to false is useful
-#when you are using this script internally and just checking
-#different matrices for column headers
-
-
+#' Find the column number of a pheno type from it's name
+#'
+#' This is an internal function to find the
+#' column numbers of phenotypes when names
+#' are put in instead of column numbers
+#'
+#' @param data.mat a labeled matrix of phenotype with columns as phenotypes
+#' @param col.which a character string name of a phenotype column header
+#' @param dim.which in the absence of a column header, use an integer here to select a column
+#'
+#' @return None, output artifacts are saved to the results.dir directory
+#'
+#' @export
 get.col.num <- function (data.mat, col.which = NULL, dim.which = 2) 
 {
   if (is.null(col.which)) {

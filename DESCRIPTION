@@ -30,9 +30,8 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    R6,
-    here,
-    tools
+    R6, here, tools, yaml, evd, Matrix, fdrtool, shape, MASS, corpcor, RColorBrewer,
+    parallel, doParallel, foreach, caTools, stringr, abind, propagate, testthat, utils
 Suggests: 
     testthat
 RoxygenNote: 6.1.1

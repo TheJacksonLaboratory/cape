@@ -7,7 +7,7 @@
 #numbers or character strings. For each phenotype
 #specified with a name, the script will find its location. 
 
-
+#' @export
 read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, id.col = NULL, delim = ",", na.strings = "-", check.chr.order = TRUE) {
 
 		if(is.null(filename)){
@@ -45,8 +45,8 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 			cat("The following phenotype columns have character values:", colnames(cross.data)[char.pheno], sep = "\n")
 			cat("This error can occur if NA's are coded with multiple characters, or if na.strings is mis-specified. Make sure NA coding is consistent throughout the data set and specified correctly with na.strings.")
 			return(NULL)
-			}
-	
+		}
+		
 		chr <- as.vector(as.matrix(cross.data[1,beginGeno:dim(cross.data)[2]]))
 		
 		if(check.chr.order){
@@ -61,7 +61,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 				}
 			}
 			
-		marker.loc <- as.numeric(cross.data[2,beginGeno:dim(cross.data)[2]])
+		marker_loc <- as.numeric(cross.data[2,beginGeno:dim(cross.data)[2]])
 	
 		#take out the genotype matrix
 		#It begins in the 3rd row after chromosome numbers and marker locations
@@ -90,7 +90,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 	   	geno.columns <- get.col.num(geno, geno.col)
 	  	geno <- geno[,geno.columns] 
 	  	chr <- chr[geno.columns]
-		marker.loc <- marker.loc[geno.columns]
+		marker_loc <- marker_loc[geno.columns]
 	   
 	    #run a check to see how the genotypes are stored.
 		#genotypes can be stored as (0,1,2), ("A","H","B")
@@ -215,7 +215,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 			message("\nRemoving markers on the X chromosome")
 			geno <- geno[,-x.locale]
 			chr <- chr[-x.locale]
-			marker.loc <- marker.loc[-x.locale]
+			marker_loc <- marker_loc[-x.locale]
 			}
 			
 		y.locale <- grep("Y", chr, ignore.case = TRUE)
@@ -223,7 +223,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 			message("\nRemoving markers on the Y chromosome")
 			geno <- geno[,-y.locale]
 			chr <- chr[-y.locale]
-			marker.loc <- marker.loc[-y.locale]
+			marker_loc <- marker_loc[-y.locale]
 			}
 
 		m.locale <- grep("M", chr, ignore.case = TRUE)
@@ -231,7 +231,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 			message("\nRemoving markers on the mitochondrial chromosome")
 			geno <- geno[,-m.locale]
 			chr <- chr[-m.locale]
-			marker.loc <- marker.loc[-m.locale]
+			marker_loc <- marker_loc[-m.locale]
 			}
 
 			
@@ -242,7 +242,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 			message("\nRemoving invariant markers.\n")
 			geno <- geno[,-mono.allele]
 			chr <- chr[-mono.allele]
-			marker.loc <- marker.loc[-mono.allele]
+			marker_loc <- marker_loc[-mono.allele]
 			}
 		
 	
@@ -254,17 +254,17 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 	
 		#put in code here to distribute the genotypes between -1 and 1 so we get symmetric m12/m21 null distributions
 		#construct the data object
-		marker.names <- colnames(geno)
+		marker_names <- colnames(geno)
 		# colnames(geno) <- 1:dim(geno)[2]
 		rownames(geno) <- rownames(pheno)
 	
 		#scale the genotypes to lie between 0 and 1
 		#even if it's a backcross
 		geno <- geno/max(geno, na.rm = TRUE)
-		marker.num <- 1:dim(geno)[2]
+		marker_num <- 1:dim(geno)[2]
 	
-		final.data <- list(pheno, geno, chr, marker.names, marker.num, marker.loc)
-		names(final.data) <- c("pheno", "geno", "chromosome", "marker.names", "marker.num", "marker.location")
+		final.data <- list(pheno, geno, chr, marker_names, marker_num, marker_loc)
+		names(final.data) <- c("pheno", "geno", "chromosome", "marker_names", "marker_num", "marker_location")
 		     
 		cat("Read in the following data:\n")
 		cat("\t-", dim(pheno)[1], "individuals -\n")

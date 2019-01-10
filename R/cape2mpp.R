@@ -1,7 +1,15 @@
-#This function converts an old cape object to
-#capeDO objects. The genotype object should ideally
-#be separate from the rest of the data
-
+#' converts a \code{\link{Cape}} object to a DO-enabled object
+#'
+#' This function converts an old cape object to
+#' capeDO objects. The genotype object should ideally
+#' be separate from the rest of the data
+#'
+#' @param data.obj a \code{\link{Cape}} object
+#' @param geno.obj a genotype object. If this is not supplied then it is generated here.
+#'
+#' @return \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
+#'
+#' @export
 cape2mpp <- function(data.obj, geno.obj = NULL){
 	
 	geno.locale <- which(names(data.obj) == "geno")
@@ -21,11 +29,11 @@ cape2mpp <- function(data.obj, geno.obj = NULL){
 	geno.obj$geno <- geno.array
 	
 	data.obj$geno <- NULL
-	data.obj$marker.names <- NULL
+	data.obj$marker_names <- NULL
 
-	geno.names <- list(rownames(data.obj$pheno), c("A", "B"), colnames(geno))
-	names(geno.names) <- c("mouse", "allele", "locus")
-	data.obj$geno.names <- geno.names
+	geno_names <- list(rownames(data.obj$pheno), c("A", "B"), colnames(geno))
+	names(geno_names) <- c("mouse", "allele", "locus")
+	data.obj$geno_names <- geno_names
 
 
 	results <- list("data.obj" = data.obj, "geno.obj" = geno.obj)

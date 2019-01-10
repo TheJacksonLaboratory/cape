@@ -11,276 +11,72 @@
 #' @slot marker_num An integer list of marker numbers along a chromosome
 #' @slot marker_location A numeric list of positions in centiMorgans
 #' @slot geno_names A list of character names for each genotype, e.g., c("A", "B")
-#' @slot ref_allele A character from the geno_names that represents the wild type
 #' @slot geno An array where the dimension names must be "sample", "allele", and "locus"
-#' @slot covar.table a matrix of 
+#' @slot ref_allele A character from the geno_names that represents the wild type
 #' @slot parameters TODO mayhap we should change this?
-setClass("Cape", 
-  slots = c(
-    pheno = "matrix", 
-    chromosome = "character",
-    marker_num = "integer",
-    marker_location = "numeric",
-    geno_names = "list",
-    geno = "array",
-    ref_allele = "character",
-    parameters = "list",
-    covar_table = "array",
-    flat_geno = "array",
-    non_allelic_covar = "character"
+#' @slot covar_table a matrix of 
+#' @slot flat_geno a flattened genotype matrix
+#' @slot non_allelic_covar covariate
+#' 
+#' @export
+Cape <- R6::R6Class(
+  "Cape",
+  public = list(
+    pheno = NULL,
+    chromosome = NULL,
+    marker_num = NULL,
+    marker_location = NULL,
+    geno_names = NULL,
+    geno = NULL,
+    ref_allele = NULL,
+    parameters = NULL,
+    covar_table = NULL,
+    flat_geno = NULL,
+    non_allelic_covar = NULL,
+    
+    initialize = function(pheno = NA, chromosome = NA, marker_num = NA, marker_location = NA,
+                          geno_names = NA, geno = NA, ref_allele = NA, parameters = NA, covar_table = NA,
+                          flat_geno = NA, non_allelic_covar = NA) {
+      self$pheno <- pheno
+      self$chromosome <- chromosome
+      self$marker_num <- marker_num
+      self$marker_location <- marker_location
+      self$geno <- geno
+      self$geno_names <- geno_names
+      if (!missing(ref_allele)) {
+        stopifnot(is.character(ref_allele))
+        self$ref_allele <- ref_allele
+      }
+      self$parameters <- parameters
+      self$covar_table <- covar_table
+      self$flat_geno <- flat_geno
+      self$non_allelic_covar <- non_allelic_covar
+    },
+    set_pheno = function(val) {
+      self$pheno <- val
+    },
+    set_geno = function(val) {
+      self$geno <- val
+    },
+    create_covar_table = function(value) {
+      marker.locale <- get.col.num(self$pheno, value)
+      
+      #make a separate covariate table, then modify the dimnames
+      #in the genotype object to include the covariates
+      #do not modify the genotype object
+      
+      covar.table <- self$pheno[,marker.locale,drop=FALSE]
+      rownames(covar.table) <- rownames(self$pheno)
+      self$covar_table <- covar.table
+      
+      
+      #take the phenotypes made into markers out of the phenotype matrix
+      self$pheno <- self$pheno[,-marker.locale]
+      self$non_allelic_covar <- value
+      self$geno_names[[3]] <- c(self$geno_names[[3]], value)
+      self$chromosome <- c(self$chromosome, rep(0, length(value)))
+      self$marker_location <- c(self$marker_location, 1:length(value))
+      invisible(self)
+    }
   )
 )
-
-setValidity("Cape",
-    function(object)
-    {
-      cl <- class(object)
-      for(i in slotNames(cl)) {
-        if ( length(slot(object,i)) < 1 ) {
-          return(paste("The ", i, " slot cannot be null."))
-        }
-      }
-      
-      # TODO add a validation check on the geno object's dimension names
-      # TODO they should be "sample", "allele", and "locus"
-      
-      # TODO add a validation check on the genotype names
-      # gn <- object@geno_names$sample
-      #   gs <- dimnames(object@geno)$sample
-      #   if ( length(intersect(gs, gn)) <= 1 )
-      #       return("The sample names in @geno and @geno_names don't match.")
-        TRUE
-    }
-)
-
-
-###############################################################################
-#' Method getPheno
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod getPheno
-setGeneric("getPheno", function(x) standardGeneric("getPheno"))
-
-#' @rdname Cape-class
-#' @aliases getPheno,Cape-method
-setMethod("getPheno", "Cape", function(x) x@pheno)
-
-###############################################################################
-#' Method setPheno
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod setPheno<-
-setGeneric("setPheno<-", function(x, value) standardGeneric("setPheno<-"))
-
-#' @rdname Cape-class
-#' @aliases setPheno,Cape-method
-#' @param value a phenotype matrix
-setMethod("setPheno<-", "Cape", function(x, value) {
-    x@pheno <- value
-    validObject(x)
-    x
-})
-
-###############################################################################
-#' Method getChromosome
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod getChromosome
-setGeneric("getChromosome", function(x) standardGeneric("getChromosome"))
-
-#' @rdname Cape-class
-#' @aliases getChromosome,Cape-method
-setMethod("getChromosome", "Cape", function(x) x@chromosome)
-
-###############################################################################
-#' Method setChromosome
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod setChromosome<-
-setGeneric("setChromosome<-", function(x, value) standardGeneric("setChromosome<-"))
-
-#' @rdname Cape-class
-#' @aliases setChromosome,Cape-method
-#' @param value a chromosome character list
-setMethod("setChromosome<-", "Cape", function(x, value) {
-    x@chromosome <- value
-    validObject(x)
-    x
-})
-
-###############################################################################
-#' Method getMarkerNum
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod getMarkerNum
-setGeneric("getMarkerNum", function(x) standardGeneric("getMarkerNum"))
-
-#' @rdname Cape-class
-#' @aliases getMarkerNum,Cape-method
-setMethod("getMarkerNum", "Cape", function(x) x@marker_num)
-
-###############################################################################
-#' Method setMarkerNum
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod setMarkerNum<-
-setGeneric("setMarkerNum<-", function(x, value) standardGeneric("setMarkerNum<-"))
-
-#' @rdname Cape-class
-#' @aliases setMarkerNum,Cape-method
-#' @param value An integer list of marker numbers along a chromosome
-setMethod("setMarkerNum<-", "Cape", function(x, value) {
-    x@marker_num <- value
-    validObject(x)
-    x
-})
-
-###############################################################################
-#' Method getMarkerLocation
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod getMarkerLocation
-setGeneric("getMarkerLocation", function(x) standardGeneric("getMarkerLocation"))
-
-#' @rdname Cape-class
-#' @aliases getMarkerLocation,Cape-method
-setMethod("getMarkerLocation", "Cape", function(x) x@marker_location)
-
-###############################################################################
-#' Method setMarkerLocation
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod setMarkerLocation<-
-setGeneric("setMarkerLocation<-", function(x, value) standardGeneric("setMarkerLocation<-"))
-
-#' @rdname Cape-class
-#' @aliases setMarkerLocation,Cape-method
-#' @param value A numeric list of positions in centiMorgans
-setMethod("setMarkerLocation<-", "Cape", function(x, value) {
-    x@marker_location <- value
-    validObject(x)
-    x
-})
-
-###############################################################################
-#' Method getGenoNames
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod getGenoNames
-setGeneric("getGenoNames", function(x) standardGeneric("getGenoNames"))
-
-#' @rdname Cape-class
-#' @aliases getGenoNames,Cape-method
-setMethod("getGenoNames", "Cape", function(x) x@geno_names)
-
-###############################################################################
-#' Method setGenoNames
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod setGenoNames<-
-setGeneric("setGenoNames<-", function(x, value) standardGeneric("setGenoNames<-"))
-
-#' @rdname Cape-class
-#' @aliases setGenoNames,Cape-method
-#' @param value A list of character names for each genotype, e.g., c("A", "B")
-setMethod("setGenoNames<-", "Cape", function(x, value) {
-    x@geno_names <- value
-    validObject(x)
-    x
-})
-
-###############################################################################
-#' Method getRefAllele
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod getRefAllele
-setGeneric("getRefAllele", function(x) standardGeneric("getRefAllele"))
-
-#' @rdname Cape-class
-#' @aliases getRefAllele,Cape-method
-setMethod("getRefAllele", "Cape", function(x) x@ref_allele)
-
-###############################################################################
-#' Method setRefAllele
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod setRefAllele<-
-setGeneric("setRefAllele<-", function(x, value) standardGeneric("setRefAllele<-"))
-
-#' @rdname Cape-class
-#' @aliases set,Cape-method
-#' @param value A character from the geno_names that represents the wild type
-setMethod("setRefAllele<-", "Cape", function(x, value) {
-    x@ref_allele <- value
-    validObject(x)
-    x
-})
-
-###############################################################################
-#' Method getGeno
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod getGeno
-setGeneric("getGeno", function(x) standardGeneric("getGeno"))
-
-#' @rdname Cape-class
-#' @aliases getGeno,Cape-method
-setMethod("getGeno", "Cape", function(x) x@geno)
-
-###############################################################################
-#' Method setGeno
-#' @name Cape-class
-#' @rdname Cape-class
-#' @exportMethod setGeno<-
-setGeneric("setGeno<-", function(x, value) standardGeneric("setGeno<-"))
-
-#' @rdname Cape-class
-#' @aliases setGeno,Cape-method
-#' @param value An array where the dimension names must be "sample", "allele", and "locus"
-setMethod("setGeno<-", "Cape", function(x, value) {
-    x@geno <- value
-    validObject(x)
-    x
-})
-
-###############################################################################
-setGeneric("setFlatGeno", function(x) standardGeneric("setFlatGeno"))
-
-setMethod("setFlatGeno", "Cape", function(x) {
-  
-  mouse.dim <- which(names(x@geno_names) == "mouse")
-  locus.dim <- which(names(x@geno_names) == "locus")
-  allele.dim <- which(names(x@geno_names) == "allele")
-  
-  #subset the genotype object to match the 
-  #individuals and markers we want to scan
-  ind.locale <-match(x@geno_names[[mouse.dim]], dimnames(x@geno)[[mouse.dim]])
-  allele.locale <- match(x@geno_names[[allele.dim]], dimnames(x@geno)[[allele.dim]])
-  locus.locale <- match(x@geno_names[[locus.dim]], dimnames(x@geno)[[locus.dim]])
-  
-  browser()
-  
-  #check for NAs, meaning the locus from the data object cannot be
-  #found in the genotyope object
-  na.locale <- which(is.na(locus.locale))
-  locus.locale <- locus.locale[which(!is.na(locus.locale))]
-  
-  gene <- x@geno[ind.locale, allele.locale, locus.locale]
-  
-  #if there is a covariate table in the data object, this is added
-  #to the genotype object
-  if(!is.null(data.obj$covar.table)){
-    covar.vals <- data.obj$covar.table
-    covar.names <- colnames(covar.vals)
-    covar.table <- array(NA, dim = c(length(x@geno_names[[mouse.dim]]), length(x@geno_names[[allele.dim]]), dim(covar.vals)[2]))
-    for(i in 1:dim(covar.vals)[2]){
-      covar.table[,1:dim(covar.table)[2],i] <- covar.vals[,i]
-    }
-    dimnames(covar.table)[[3]]  <- covar.names
-    gene <- abind(gene, covar.table, along = 3)
-  }
-  
-  names(dimnames(gene)) <- names(dimnames(x@geno))
-  
-  return(gene)	
-})

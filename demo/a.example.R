@@ -22,9 +22,8 @@
 #   stop("Input path is missing the BED or PED file.")
 # }
 
-library(yaml)
-library(R6)
-library(microbenchmark)
+library(cape)
+require(cape)
 
 test.data.path <- "/Users/emersj/projects/cape/cape/tests/testthat/testdata"
 file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
@@ -32,38 +31,21 @@ param.file <- file.path(test.data.path, "cape.parameters.yml")
 
 cross <- read.population(file.name)
 cross.obj <- cape2mpp(cross)
+geno.obj <- cross.obj$geno.obj$geno
 
-cape.obj <- new(
-  "Cape",
-  pheno = cross.obj$data.obj$pheno,
-  chromosome = cross.obj$data.obj$chromosome,
-  marker_num = cross.obj$data.obj$marker.num,
-  marker_location = cross.obj$data.obj$marker.location,
-  geno_names = cross.obj$data.obj$geno.names,
-  ref_allele = "A",
-  geno = cross.obj$geno.obj$geno,
-  parameters = yaml.load_file(param.file),
-  covar_table = array(),
-  flat_geno = array(),
-  non_allelic_covar = c(NA_character_)
-  
+data.obj <- Cape$new(
+ pheno = cross.obj$data.obj$pheno,
+ geno = geno.obj,
+ covar_table = array(),
+ chromosome = cross.obj$data.obj$chromosome,
+ marker_num = cross.obj$data.obj$marker_num,
+ marker_location = cross.obj$data.obj$marker_location,
+ geno_names = dimnames(geno.obj)
 )
 
-tracemem(cape.obj)
-
-c6 <- CapeR6$new(
-  pheno = cross.obj$data.obj$pheno,
-  geno = cross.obj$geno.obj$geno,
-  covar_table = array()
-)
-
-print(
-microbenchmark(
-  cpCreateCovarTable(cape.obj) <- c("LEP_24", "total_fat"),
-  c6$cteate_covar_table(c("LEP_24", "total_fat")),
-  times=5
-)
-)
+final.cross <- run.cape(data.obj, geno.obj, parameter.file = param.file, p.or.q = 0.05, path = ".", results.file = "cross.RData",
+                        n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE, error.prop.perm = TRUE,
+                        initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE)
 
 
 

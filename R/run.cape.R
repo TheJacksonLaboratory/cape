@@ -8,16 +8,14 @@
 #of genes in a column
 #kinship.type can be either "overall" or "LTCO"
 # parameter.file = "cape.parameters.txt"; p.or.q = 0.05; results.file = "cross.RData"; n.cores = 4; run.singlescan = TRUE; run.pairscan = TRUE; error.prop.coef = TRUE; error.prop.perm = TRUE; initialize.only = FALSE; verbose = TRUE; run.parallel = TRUE
-#setwd("~/Documents/Data/Scleroderma/Results/Dominant_lung_pheno")
-
-
 #' Runs the CAPE algorithm
 #'
 #' This function assumes you already have all required libraries and functions loaded.
 #'
-#' @param cape.obj the S4 class from \code{\link{Cape}}
+#' @param data.obj the S4 class from \code{\link{Cape}}
+#' @param geno.obj the genotype object
 #' @param parameter.file a full path string to the YAML file containing configuration parameters
-#  TODO the config parameters together with the parameters for the cape.obj should be sufficient to reproduce a run of CAPE
+#  TODO the config parameters together with the parameters for the data.obj should be sufficient to reproduce a run of CAPE
 #' @param results.dir a full path string to an existing empty directory. An error is thrown if the directory is not empty.
 #' @param verbose boolean, output goes to stdout
 #' @param run.parallel boolean, if TRUE runs certain parts of the code as parallel blocks
@@ -25,30 +23,17 @@
 #' @return None, output artifacts are saved to the results.dir directory
 #'
 #' @export
-run.cape <- function(cape.obj, parameter.file = "cape.parameters.txt", p.or.q = 0.05, path = ".", results.file = "cross.RData",
+run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml", p.or.q = 0.05, path = ".", results.file = "cross.RData",
                      n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE, error.prop.perm = TRUE,
                      initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE){
-  setwd(path)
   
   data.obj <- compare.markers(data.obj, geno.obj)
   
   results.base.name <- gsub(".RData", "", results.file)
   
-  parameter.table <- readParameters(parameter.file)
+  parameter.table <- yaml::read_yaml(parameter.file)
   
-  for(i in 1:nrow(parameter.table)){
-    if(is.na(parameter.table[i,1])){
-      assign(rownames(parameter.table)[i], NULL)	
-    }else{
-      vals <- strsplit(parameter.table[i,1], " ")[[1]]
-      if(!is.na(suppressWarnings(as.numeric(vals[1])))){
-        assign(rownames(parameter.table)[i], as.numeric(vals))
-      }else{
-        assign(rownames(parameter.table)[i], vals)
-      }
-    }
-  }
-  data.obj$ref.allele <- ref.allele
+  data.obj$ref_allele <- parameter.table$ref.allele
   
   #===============================================================
   # figure out how to synchronize get.eigentraits and
@@ -57,7 +42,7 @@ run.cape <- function(cape.obj, parameter.file = "cape.parameters.txt", p.or.q = 
   # the eigentraits
   #===============================================================
   #if we want to use a kinship correction
-  if(as.logical(use.kinship)){
+  if(as.logical(parameter.table$use.kinship)){
     kin.file <- paste0(results.base.name, "_kinship.RData")
     if(file.exists(kin.file)){
       kin.obj <- readRDS(kin.file)
