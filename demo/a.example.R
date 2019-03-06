@@ -35,12 +35,13 @@ geno.obj <- cross.obj$geno.obj$geno
 
 data.obj <- Cape$new(
  pheno = cross.obj$data.obj$pheno,
- geno = geno.obj,
- covar_table = array(),
  chromosome = cross.obj$data.obj$chromosome,
  marker_num = cross.obj$data.obj$marker_num,
  marker_location = cross.obj$data.obj$marker_location,
- geno_names = dimnames(geno.obj)
+ geno_names = dimnames(geno.obj),
+ geno = geno.obj,
+ covar_table = array(),
+ ref_allele = 'A'
 )
 
 final.cross <- run.cape(data.obj, geno.obj, parameter.file = param.file, p.or.q = 0.05, path = ".", results.file = "cross.RData",

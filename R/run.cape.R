@@ -66,7 +66,7 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
           geno.obj <- readRDS(imp.geno.file)
         }
       } #end case for when there are missing values in the genotype object
-      kin.obj <- Kinship(data.obj, geno.obj, type = kinship.type, pop = pop, locus = locus)
+      kin.obj <- Kinship(data.obj, geno.obj, type = kinship.type, pop = parameter.table$pop, locus = parameter.table$locus)
       saveRDS(kin.obj, kin.file)
     }
   } else {

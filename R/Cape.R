@@ -34,8 +34,9 @@ Cape <- R6::R6Class(
     flat_geno = NULL,
     non_allelic_covar = NULL,
     
-    initialize = function(pheno = NA, chromosome = NA, marker_num = NA, marker_location = NA,
-                          geno_names = NA, geno = NA, ref_allele = NA, parameters = NA, covar_table = NA,
+    initialize = function(pheno = NA, chromosome = NA, marker_num = NA,
+                          marker_location = NA, geno = NA, geno_names = NA,
+                          parameters = NA, ref_allele = NA, covar_table = NA,
                           flat_geno = NA, non_allelic_covar = NA) {
       self$pheno <- pheno
       self$chromosome <- chromosome
