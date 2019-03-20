@@ -6,7 +6,7 @@
 #' Gets the geno object whether it is put in separately or with the data.obj
 #'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param geno.obj a genotype object. If this is not supplied then it is generated here.
+#' @param geno.obj a genotype object
 #' @param ref.allele a character, e.g., "A", that represents the reference allele in the data object
 #' @param na either NA or a character used to represent a missing data value in the output
 #' @param filename absolute or relative path to the output file's destination

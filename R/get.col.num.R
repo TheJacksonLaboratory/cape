@@ -9,8 +9,6 @@
 #' @param dim.which in the absence of a column header, use an integer here to select a column
 #'
 #' @return None, output artifacts are saved to the results.dir directory
-#'
-#' @export
 get.col.num <- function (data.mat, col.which = NULL, dim.which = 2) 
 {
   if (is.null(col.which)) {

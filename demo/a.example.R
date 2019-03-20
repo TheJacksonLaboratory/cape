@@ -36,8 +36,8 @@ geno.obj <- cross.obj$geno.obj$geno
 data.obj <- Cape$new(
  pheno = cross.obj$data.obj$pheno,
  chromosome = cross.obj$data.obj$chromosome,
- marker_num = cross.obj$data.obj$marker_num,
- marker_location = cross.obj$data.obj$marker_location,
+ marker_num = cross.obj$data.obj$marker.num,
+ marker_location = cross.obj$data.obj$marker.location,
  geno_names = dimnames(geno.obj),
  geno = geno.obj,
  covar_table = array(),

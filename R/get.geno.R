@@ -10,7 +10,7 @@
 #' in the original cape, so modifications to the code
 #' should be fairly minimal otherwise
 #'
-#' @param cape.obj a \code{\link{Cape}} object
+#' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object. If this is not supplied then it is generated here.
 #'
 #' @return \code{list("cape.obj" = cape.obj, "geno.obj" = geno.obj)}
@@ -56,8 +56,10 @@ get.geno <- function(data.obj, geno.obj){
   
   #if there is a covariate table in the data object, this is added
   #to the genotype object
-  if(!is.null(data.obj$covar.table)){
-    covar.vals <- data.obj$covar.table
+  browser()
+  
+  if(!is.null(data.obj$covar_table)){
+    covar.vals <- data.obj$covar_table
     covar.names <- colnames(covar.vals)
     covar.table <- array(NA, dim = c(length(geno_names[[mouse.dim]]), length(geno_names[[allele.dim]]), dim(covar.vals)[2]))
     for(i in 1:dim(covar.vals)[2]){

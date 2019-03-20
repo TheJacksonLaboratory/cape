@@ -1,19 +1,20 @@
+#' Calculate the kinship correction matrix
+#' 
+#' This function produces a realized relationship matrix (kinship matrix)
+#' for use in adjusting for the effect of inbred relatedness 
+#' plot.adj.mat is used to plot the covariance matrices
+#' vs. the positive definite matrices
+#'
+#' @param data.obj a \code{\link{Cape}} object
+#' @param geno.obj a genotype object
+#' @param type correction type, must be either "overall" or "ltco" (leave two chromosomes out)
+#' @param pop population type, "MPP" (multi-parental population), "2PP" (2 parents), "RIL" (recombinant inbred line)
+#' @param n.cores integer, default 4
+#'
+#' @export
 Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c("MPP","2PP","RIL")){
   #file input could be geno.obj or genoprobs
   
-  require(qtl2)
-  require(tidyr)
-  require(qtl2convert)
-  require(devtools) 
-  require(yaml)
-  require(jsonlite)
-  require(data.table)
-  require(Rcpp)
-  require(RcppEigen)
-  require(RSQLite)
-  require(qtl)
-  require(tidyverse)
-  require(here)
   
   ##############################################################
   #                                                            #
@@ -21,7 +22,7 @@ Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c
   #                                                            #
   ##############################################################
   num<-"1"
-  snp<-data.obj$geno.names$locus[[1]]
+  snp<-data.obj$geno_names$locus[[1]]
   
   if(grepl(num,snp)==TRUE)
   {locus<-"num"
@@ -65,11 +66,11 @@ Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c
     ### create map and genoprobs using geno file
     map<-data.frame(marker=dimnames(geno.obj)[[3]],chr=dimnames(geno.obj)[[3]],pos=dimnames(geno.obj)[[3]],stringsAsFactors = F)
     
-    map$marker<-as.list(data.obj$geno.names$locus)
+    map$marker<-as.list(data.obj$geno_names$locus)
     
     map$chr<-as.list(data.obj$chromosome)
     
-    map$pos<-as.list(data.obj$marker.location)
+    map$pos<-as.list(data.obj$marker_location)
     
     saveRDS(map,"map.RData")
     

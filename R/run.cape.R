@@ -31,9 +31,15 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
   
   results.base.name <- gsub(".RData", "", results.file)
   
-  parameter.table <- yaml::read_yaml(parameter.file)
+  parameter.table <- read.parameters(parameter.file)
   
-  data.obj$ref_allele <- parameter.table$ref.allele
+  # this assigns variables from the parameter file to the global namespace
+  for(i in 1:length(parameter.table)){
+    vals <- parameter.table[[i]]
+    assign(names(parameter.table)[i], vals)
+  }
+  
+  data.obj$ref.allele <- ref.allele
   
   #===============================================================
   # figure out how to synchronize get.eigentraits and
@@ -66,7 +72,7 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
           geno.obj <- readRDS(imp.geno.file)
         }
       } #end case for when there are missing values in the genotype object
-      kin.obj <- Kinship(data.obj, geno.obj, type = kinship.type, pop = parameter.table$pop, locus = parameter.table$locus)
+      kin.obj <- Kinship(data.obj, geno.obj, type = kinship.type, pop = parameter.table$pop)
       saveRDS(kin.obj, kin.file)
     }
   } else {
@@ -85,6 +91,7 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
     data.obj <- combined.data.obj$data.obj
     geno.obj <- combined.data.obj$geno.obj
     
+    browser() 
     if(!is.null(covariates)){
       data.obj <- pheno2covar(data.obj, covariates)
     }
