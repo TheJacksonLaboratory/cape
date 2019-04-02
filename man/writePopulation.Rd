@@ -10,7 +10,7 @@ writePopulation(data.obj, geno.obj, ref.allele = "A", na = NA,
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
+\item{geno.obj}{a genotype object}
 
 \item{ref.allele}{a character, e.g., "A", that represents the reference allele in the data object}
 

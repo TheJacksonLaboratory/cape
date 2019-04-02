@@ -2,18 +2,18 @@
 % Please edit documentation in R/compare.markers.R
 \name{compare.markers}
 \alias{compare.markers}
-\title{Removes markers from cape.obj that are not present in the geno.obj}
+\title{Removes markers from data.obj that are not present in the geno.obj}
 \usage{
-compare.markers(cape.obj, geno.obj)
+compare.markers(data.obj, geno.obj)
 }
 \arguments{
-\item{cape.obj}{a \code{\link{Cape}} object}
+\item{data.obj}{a \code{\link{Cape}} object}
 
 \item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
 }
 \value{
-\code{list("cape.obj" = cape.obj, "geno.obj" = geno.obj)}
+\code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
 }
 \description{
-Removes markers from cape.obj that are not present in the geno.obj
+Removes markers from data.obj that are not present in the geno.obj
 }

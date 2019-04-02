@@ -7,9 +7,9 @@
 get.geno(data.obj, geno.obj)
 }
 \arguments{
-\item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
+\item{data.obj}{a \code{\link{Cape}} object}
 
-\item{cape.obj}{a \code{\link{Cape}} object}
+\item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
 }
 \value{
 \code{list("cape.obj" = cape.obj, "geno.obj" = geno.obj)}

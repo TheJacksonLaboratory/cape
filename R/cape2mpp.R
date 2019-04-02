@@ -1,10 +1,10 @@
-#' converts a \code{\link{Cape}} object to a DO-enabled object
+#' converts a \code{\link{read.population}} object to a DO-enabled object
 #'
 #' This function converts an old cape object to
 #' capeDO objects. The genotype object should ideally
 #' be separate from the rest of the data
 #'
-#' @param data.obj a \code{\link{Cape}} object
+#' @param data.obj a \code{\link{read.population}} object
 #' @param geno.obj a genotype object. If this is not supplied then it is generated here.
 #'
 #' @return \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}

@@ -15,6 +15,8 @@ Class \code{Cape} defines a CAPE analysis object.
 \section{Slots}{
 
 \describe{
+\item{\code{parameter_file}}{string, full path to YAML file with initialization parameters}
+
 \item{\code{pheno}}{A phenotype matrix}
 
 \item{\code{chromosome}}{A chromosome character list}
@@ -29,13 +31,13 @@ Class \code{Cape} defines a CAPE analysis object.
 
 \item{\code{ref_allele}}{A character from the geno_names that represents the wild type}
 
-\item{\code{parameters}}{TODO mayhap we should change this?}
-
 \item{\code{covar_table}}{a matrix of}
 
 \item{\code{flat_geno}}{a flattened genotype matrix}
 
 \item{\code{non_allelic_covar}}{covariate}
+
+\item{\code{g_covar_table}}{}
 }}
 
 \keyword{datasets}

@@ -56,7 +56,6 @@ get.geno <- function(data.obj, geno.obj){
   
   #if there is a covariate table in the data object, this is added
   #to the genotype object
-  browser()
   
   if(!is.null(data.obj$covar_table)){
     covar.vals <- data.obj$covar_table

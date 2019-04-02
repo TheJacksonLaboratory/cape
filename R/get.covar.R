@@ -10,7 +10,6 @@
 #' 
 #' @export
 get.covar <- function(data.obj){
-				
 		
 	covar.table <- cbind(data.obj$p_covar_table, data.obj$g_covar_table)
 	
@@ -27,10 +26,8 @@ get.covar <- function(data.obj){
 		}
 	
 	covar.type <- c(rep("p", num.p.covar), rep("g", num.g.covar))
-	
 
 	covar <- as.vector(c(data.obj$p_covar, data.obj$g_covar[1,]))
-	
 	
 		covar.names <- c(data.obj$p_covar, data.obj$g_covar[1,])
 		p.covar.loc <- NULL

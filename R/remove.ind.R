@@ -26,11 +26,11 @@ remove.ind <- function(data.obj, ind.to.remove = NULL, names.to.remove = NULL){
 
 			#if covariates have already been assigned, remove individuals
 			#from these tables as well.
-			if(!is.null(data.obj$p.covar.table)){
-				data.obj$p.covar.table <- data.obj$p.covar.table[-ind.idx,,drop=FALSE]
+			if(!is.null(data.obj$p_covar_table)){
+				data.obj$p_covar_table <- data.obj$p_covar_table[-ind.idx,,drop=FALSE]
 				}
-			if(!is.null(data.obj$g.covar.table)){
-				data.obj$g.covar.table <- data.obj$g.covar.table[-ind.idx,,drop=FALSE]
+			if(!is.null(data.obj$g_covar_table)){
+				data.obj$g_covar_table <- data.obj$g_covar_table[-ind.idx,,drop=FALSE]
 				}
 			if(!is.null(data.obj$raw.pheno)){
 				data.obj$raw.pheno <- data.obj$raw.pheno[-ind.idx,,drop=FALSE]

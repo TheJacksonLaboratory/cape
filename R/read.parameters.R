@@ -18,22 +18,22 @@ read.parameters <- function(filename = "cape.parameters.yml"){
   #================================================
   # general parameters
   #================================================
-  gen.param <- c("traits", "covariates", "marker.covariates", "traits.scaled", "traits.normalized", "scan.what", "eig.which", "use.kinship", "kinship.type", "locus", "pop", "pval.correction")
+  gen.param <- c("traits", "covariates", "marker_covariates", "traits_scaled", "traits_normalized", "scan_what", "eig_which", "use_kinship", "kinship_type", "locus", "pop", "pval_correction")
   
   #================================================
   #single scan parameters
   #================================================
-  single.param <- c("ref.allele", "singlescan.perm")
+  single.param <- c("ref_allele", "singlescan_perm")
   
   #================================================
   # marker selection
   #================================================
-  marker.param <- c("marker.selection.method", "SNPfile", "peak.density", "tolerance", "window.size", "num.alleles.in.pairscan", "bp.buffer", "organism")
+  marker.param <- c("marker_selection_method", "SNPfile", "peak_density", "tolerance", "window_size", "num_alleles_in_pairscan", "bp_buffer", "organism")
   
   #================================================
   # pair scan
   #================================================
-  pair.param <- c("max.pair.cor", "min.per.geno", "pairscan.null.size")
+  pair.param <- c("max_pair_cor", "min_per_geno", "pairscan_null_size")
   
   for ( param.name in c(gen.param, single.param, marker.param, pair.param) ) {
     if ( !is.element(param.name, names(parameter.table)) ){

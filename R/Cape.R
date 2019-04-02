@@ -6,6 +6,7 @@
 #' @rdname Cape-class
 #' @exportClass Cape
 #'
+#' @slot parameter_file string, full path to YAML file with initialization parameters
 #' @slot pheno A phenotype matrix
 #' @slot chromosome A chromosome character list
 #' @slot marker_num An integer list of marker numbers along a chromosome
@@ -13,10 +14,13 @@
 #' @slot geno_names A list of character names for each genotype, e.g., c("A", "B")
 #' @slot geno An array where the dimension names must be "sample", "allele", and "locus"
 #' @slot ref_allele A character from the geno_names that represents the wild type
-#' @slot parameters TODO mayhap we should change this?
 #' @slot covar_table a matrix of 
 #' @slot flat_geno a flattened genotype matrix
 #' @slot non_allelic_covar covariate
+#' @slot p_covar
+#' @slot g_covar
+#' @slot p_covar_table
+#' @slot g_covar_table
 #' 
 #' @export
 Cape <- R6::R6Class(
@@ -25,6 +29,8 @@ Cape <- R6::R6Class(
   class = FALSE,
   cloneable = FALSE,
   public = list(
+    parameter_file = NULL,
+    results_path = NULL,
     pheno = NULL,
     chromosome = NULL,
     marker_num = NULL,
@@ -32,7 +38,6 @@ Cape <- R6::R6Class(
     geno_names = NULL,
     geno = NULL,
     ref_allele = NULL,
-    parameters = NULL,
     covar_table = NULL,
     flat_geno = NULL,
     non_allelic_covar = NULL,
@@ -40,12 +45,38 @@ Cape <- R6::R6Class(
     g_covar = NULL,
     p_covar_table = NULL,
     g_covar_table = NULL,
+    model_family = NULL,
     
-    initialize = function(pheno = NULL, chromosome = NULL, marker_num = NULL,
-                          marker_location = NULL, geno = NULL, geno_names = NULL,
-                          parameters = NULL, ref_allele = NULL, covar_table = NULL,
+    # this function assigns variables from the parameter file
+    # to attributes in the Cape object
+    assign_parameters = function() {
+      
+      parameter.table <- read.parameters(self$parameter_file)
+      for(name in names(parameter.table)){
+        val <- parameter.table[[name]]
+        self[[name]] <- val
+      }
+    },
+    initialize = function(parameter_file = NULL, results_path = Null, pheno = NULL,
+                          chromosome = NULL, marker_num = NULL, marker_location = NULL, 
+                          geno = NULL, geno_names = NULL,ref_allele = NULL, covar_table = NULL,
                           flat_geno = NULL, non_allelic_covar = NULL, p_covar = NULL,
-                          g_covar = NULL, p_covar_table = NULL, g_covar_table = NULL) {
+                          g_covar = NULL, p_covar_table = NULL, g_covar_table = NULL,
+                          model_family = NULL) {
+      self$parameter_file <- parameter_file
+      if (missing(results_path)) {
+        # if the path isn't suplied, take the parameter file's name and append
+        # the date and time to create the results directory
+        param_name <- tools::file_path_sans_ext(basename(self$parameter_file))
+        dt <- format(Sys.time(), "%Y%m%d_%H%M")
+        results_path <- paste(param_name, dt, sep = "_")
+        self$results_path <- file.path(".", results_path)
+        dir.create(self$results_path, showWarnings = FALSE)
+        
+      } else {
+        self$results_path <- results_path
+      }
+      self$results_path <- results_path
       self$pheno <- pheno
       self$chromosome <- chromosome
       self$marker_num <- marker_num
@@ -56,7 +87,6 @@ Cape <- R6::R6Class(
         stopifnot(is.character(ref_allele))
         self$ref_allele <- ref_allele
       }
-      self$parameters <- parameters
       self$covar_table <- covar_table
       self$flat_geno <- flat_geno
       self$non_allelic_covar <- non_allelic_covar
@@ -64,17 +94,29 @@ Cape <- R6::R6Class(
       self$g_covar <- g_covar
       self$p_covar_table <- p_covar_table
       self$g_covar_table <- g_covar_table
+      self$model_family <- model_family
+      # assign parameters from the parameter_file
+      self$assign_parameters()
+      check.underscore(self)
+      check.bad.markers(self)
+    },
+    plot_svd = function() {
+      
+      svd.file <- file.path(self$results_path, "svd.jpg")
+      jpeg(svd.file, res = 300, width = 7, height = 7, units = "in")
+      plotSVD(data.obj, orientation = "vertical", show.var.accounted = TRUE)
+      dev.off()
+      
     },
     set_pheno = function(val) {
       self$pheno <- val
+      invisible(self)
     },
     set_geno = function(val) {
       self$geno <- val
+      invisible(self)
     },
     create_covar_table = function(value) {
-      
-      # TODO do we need this method????????????????
-      check.underscore(data.obj)
       
       marker.locale <- get.col.num(self$pheno, value)
       

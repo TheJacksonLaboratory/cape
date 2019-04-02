@@ -13,11 +13,8 @@
 #' @export
 pheno2covar <- function(data.obj, pheno.which){
   
-  browser()
-  
   pheno <- data.obj$pheno
   if(length(rownames(pheno)) == 0){stop("The phenotype matrix must have rownames.")}
-  
   
   marker.locale <- get.col.num(pheno, pheno.which)
   
@@ -51,17 +48,16 @@ pheno2covar <- function(data.obj, pheno.which){
   #add the covariates to any existing covariates
   data.obj$p_covar_table <- cbind(data.obj$p_covar_table, scaled.table)
   
-  
   #take the phenotypes made into markers out of the phenotype matrix
   new.pheno <- pheno[,-marker.locale,drop=FALSE]
   data.obj$pheno <- new.pheno
   
-  p.covar.names.locale <- which(names(data.obj) == "p_covar")
-  if(length(p.covar.names.locale) == 0){
+  if (is.null(data.obj$p_covar)) {
     data.obj$p_covar <- pheno.which
-  }else{
-    data.obj[[p.covar.names.locale]] <- c(data.obj[[p.covar.names.locale]], pheno.which)
+  } else {
+    data.obj$p_covar <- c(data.obj$p_covar, pheno.which)
   }
+  
   return(data.obj)
   
 }

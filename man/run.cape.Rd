@@ -4,18 +4,17 @@
 \alias{run.cape}
 \title{Runs the CAPE algorithm}
 \usage{
-run.cape(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
-  p.or.q = 0.05, path = ".", results.file = "cross.RData",
-  n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE,
-  error.prop.coef = TRUE, error.prop.perm = TRUE,
-  initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE)
+run.cape(data.obj, geno.obj, p.or.q = 0.05, path = ".",
+  results.file = "cross.RData", n.cores = 4, run.singlescan = TRUE,
+  run.pairscan = TRUE, error.prop.coef = TRUE,
+  error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE,
+  run.parallel = TRUE)
 }
 \arguments{
 \item{data.obj}{the S4 class from \code{\link{Cape}}}
 
-\item{geno.obj}{the genotype object}
-
-\item{parameter.file}{a full path string to the YAML file containing configuration parameters}
+\item{geno.obj}{the genotype object
+TODO results.dir or resutls.file????}
 
 \item{verbose}{boolean, output goes to stdout}
 

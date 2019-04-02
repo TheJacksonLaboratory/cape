@@ -2,12 +2,12 @@
 % Please edit documentation in R/cape2mpp.R
 \name{cape2mpp}
 \alias{cape2mpp}
-\title{converts a \code{\link{Cape}} object to a DO-enabled object}
+\title{converts a \code{\link{read.population}} object to a DO-enabled object}
 \usage{
 cape2mpp(data.obj, geno.obj = NULL)
 }
 \arguments{
-\item{data.obj}{a \code{\link{Cape}} object}
+\item{data.obj}{a \code{\link{read.population}} object}
 
 \item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
 }

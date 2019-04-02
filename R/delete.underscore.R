@@ -4,6 +4,8 @@
 #' @param geno.obj a genotype object
 #' 
 #' @return lists containing "data.obj" and "geno.obj"
+#' 
+#' @export
 delete.underscore <- function(data.obj, geno.obj = NULL){
   
   if (is.null(geno.obj)) {

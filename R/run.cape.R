@@ -14,8 +14,7 @@
 #'
 #' @param data.obj the S4 class from \code{\link{Cape}}
 #' @param geno.obj the genotype object
-#' @param parameter.file a full path string to the YAML file containing configuration parameters
-#  TODO the config parameters together with the parameters for the data.obj should be sufficient to reproduce a run of CAPE
+#' TODO results.dir or resutls.file????
 #' @param results.dir a full path string to an existing empty directory. An error is thrown if the directory is not empty.
 #' @param verbose boolean, output goes to stdout
 #' @param run.parallel boolean, if TRUE runs certain parts of the code as parallel blocks
@@ -23,23 +22,13 @@
 #' @return None, output artifacts are saved to the results.dir directory
 #'
 #' @export
-run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml", p.or.q = 0.05, path = ".", results.file = "cross.RData",
-                     n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE, error.prop.perm = TRUE,
-                     initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE){
+run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file = "cross.RData",
+                     n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
+                     error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE){
   
   data.obj <- compare.markers(data.obj, geno.obj)
   
   results.base.name <- gsub(".RData", "", results.file)
-  
-  parameter.table <- read.parameters(parameter.file)
-  
-  # this assigns variables from the parameter file to the global namespace
-  for(i in 1:length(parameter.table)){
-    vals <- parameter.table[[i]]
-    assign(names(parameter.table)[i], vals)
-  }
-  
-  data.obj$ref.allele <- ref.allele
   
   #===============================================================
   # figure out how to synchronize get.eigentraits and
@@ -48,7 +37,7 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
   # the eigentraits
   #===============================================================
   #if we want to use a kinship correction
-  if(as.logical(parameter.table$use.kinship)){
+  if(as.logical(data.obj$use_kinship)){
     kin.file <- paste0(results.base.name, "_kinship.RData")
     if(file.exists(kin.file)){
       kin.obj <- readRDS(kin.file)
@@ -72,7 +61,9 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
           geno.obj <- readRDS(imp.geno.file)
         }
       } #end case for when there are missing values in the genotype object
-      kin.obj <- Kinship(data.obj, geno.obj, type = kinship.type, pop = parameter.table$pop)
+      # TODO does this properly handle pass-by-reference?
+      kin.obj <- Kinship(data.obj, geno.obj, type = kinship.type, pop = data.obj$pop)
+      # TODO artifacts
       saveRDS(kin.obj, kin.file)
     }
   } else {
@@ -80,38 +71,47 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
   }
   
   if(any(!run.singlescan, !run.pairscan, !error.prop.coef, !error.prop.perm)){
+    # TODO handle artifacts
     data.obj <- readRDS(results.file)
   }else{
     
-    
     if(verbose){cat("Removing unused markers...\n")}
+    # TODO does this properly handle pass-by-reference?
     data.obj <- remove.unused.markers(data.obj, geno.obj)
     combined.data.obj <- delete.underscore(data.obj, geno.obj)
     
+    # TODO does this properly handle pass-by-reference?
     data.obj <- combined.data.obj$data.obj
     geno.obj <- combined.data.obj$geno.obj
     
-    browser() 
-    if(!is.null(covariates)){
-      data.obj <- pheno2covar(data.obj, covariates)
+    if(!is.null(data.obj$covariates)){
+      # TODO does this function properly handle pass-by-reference?
+      data.obj <- pheno2covar(data.obj, data.obj$covariates)
     }
-    if(!is.null(marker.covariates)){
-      data.obj <- marker2covar(data.obj, geno.obj, markers = marker.covariates)
+    if(!is.null(data.obj$marker_covariates)){
+      # TODO does this function properly handle pass-by-reference?
+      data.obj <- marker2covar(data.obj, geno.obj, markers = data.obj$marker_covariates)
     }
     
-    data.obj <- select.pheno(data.obj, pheno.which = traits)	
+    # TODO does this function properly handle pass-by-reference?
+    data.obj <- select.pheno(data.obj, pheno.which = data.obj$traits)	
     
-    
-    if(length(grep("e", scan.what, ignore.case = TRUE)) > 0){
-      data.obj <- get.eigentraits(data.obj, scale.pheno = as.logical(traits.scaled), normalize.pheno = as.logical(traits.normalized))
+    if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
+      data.obj <- get.eigentraits(
+        data.obj, 
+        scale.pheno = as.logical(data.obj$traits_scaled), 
+        normalize.pheno = as.logical(data.obj$traits_normalized)
+      )
       
+      # TODO handle artifacts
       pdf("svd.pdf")
       plotSVD(data.obj, orientation = "vertical")
       dev.off()
       
-      data.obj <- select.eigentraits(data.obj, traits.which = eig.which)
+      # TODO update select.eigentraits
+      data.obj <- select.eigentraits(data.obj, traits.which = data.obj$eig_which)
       
-      if(use.kinship){
+      if(data.obj$use_kinship){
         #if individuals were deleted from the phenotype matrix, delete these
         #from the kinship object too
         kin.obj <- remove.kin.ind(data.obj, kin.obj)
@@ -132,7 +132,11 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
   singlescan.results.file <- paste0(results.base.name, ".singlescan.RData")
   
   if(run.singlescan){
-    singlescan.obj <- singlescan(data.obj, geno.obj, kin.obj = kin.obj, n.perm = singlescan.perm, ref.allele = ref.allele, alpha = c(0.01, 0.05), scan.what = scan.what, verbose = verbose, run.parallel = run.parallel, n.cores = n.cores, model.family = "gaussian", overwrite.alert = FALSE)
+    singlescan.obj <- singlescan(
+      data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm, ref.allele = ref.allele,
+      alpha = c(0.01, 0.05), scan.what = scan.what, verbose = verbose, run.parallel = run.parallel,
+      n.cores = n.cores, model.family = "gaussian", overwrite.alert = FALSE
+    )
     saveRDS(singlescan.obj, singlescan.results.file)
     
     
@@ -148,11 +152,9 @@ run.cape <- function(data.obj, geno.obj, parameter.file = "cape.parameters.yml",
       dev.off()
     }
     
-    
   }else{
     singlescan.obj <- readRDS(singlescan.results.file)
   }
-  
   
   #===============================================================
   # run pairscan

@@ -10,7 +10,7 @@ Kinship(data.obj, geno.obj, type = c("overall", "ltco"), n.cores = 4,
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
+\item{geno.obj}{a genotype object}
 
 \item{type}{correction type, must be either "overall" or "ltco" (leave two chromosomes out)}
 

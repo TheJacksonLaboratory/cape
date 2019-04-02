@@ -1,5 +1,3 @@
-#This function returns the marker index for marker names or numbers
-
 #' This function returns the marker index for marker names or numbers
 #'
 #' @param data.obj a \code{\link{Cape}} object
@@ -16,12 +14,12 @@ get.marker.idx <- function(data.obj, markers){
   is.char <- as.logical(is.na(suppressWarnings(as.numeric(markers[1]))))
   
   if(is.char){
-    marker.loc <- match(markers, data.obj$geno.names[[3]])
+    marker.loc <- match(markers, data.obj$geno_names[[3]])
     return(marker.loc)
   }
   
   if(!is.char){
-    marker.loc <- match(markers, data.obj$marker.num)
+    marker.loc <- match(markers, data.obj$marker_num)
     return(marker.loc)
   }
   
