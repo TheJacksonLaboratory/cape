@@ -1,38 +1,19 @@
 #' Runs a 1D scan of the phenotype data to assess which markers to use as covariates for each phenotype
 #' 
 #' TODO Can Anna update this description?
-#' This script performs a 1D scan of the data
-#' and can accept names to use as covariates.
-#' covariates must be encoded as markers (see create.covar.R)
-#' This script first calls the permutation script
-#' genome.wide.significance.R to calculate the significance
-#' threshold. It then uses this threshold to determine which
-#' markers will be used as covariates for each phenotype
-#'
-#' The script creates a table of effect sizes for each marker
-#' for each phenotype, and a table of covariate flags indicating
-#' which markers will be used as covariates for each phenotoype
-#' These are both added to the data object
+#' This script performs marker regression to associate
+#' individual markers with either traits or eigentraits.
+#' If n.perm is greater than 0, permutations are run to 
+#' determine effect size thresholds for the alpha values
+#' provided. The default alpha values are 0.05 and 0.01.
+#' Covariates are specified in the cape parameter file.
 #' 
-#' The user has the choice to scan the eigentraits (default)
-#' or the original phenotypes.
-#' 
-#' ref.allele is used in a multi-allele scan. The ref.allele is
-#' removed from the regression, and all reported effects are in
-#' referece to the ref.allele
-#' 
-#' Threshold.fun and threshold.param work together to threshold
-#' the "significant" loci. threshold.fun might be "t.stat.thresh.sd",
-#' for example, which would threshold the t statistics by standard
-#' deviation. The threshold.param that would go with this, is how
-#' many standard deviations away from the mean you'd like to set
-#' as the cutoff.
 #' model.family indicates the model family of the phenotypes
 #' This can be either "gaussian" or "binomial"
 #' if length 1, all phenotypes will be assigned to the same
 #' family. If the phenotypes are a mixture, model.family can
 #' be a vector of length Np, where Np is the number of phenotypes
-#' indicating which phenotype belongs in which family.
+#' indicating which phenotype belongs in which family of distributions.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object. If this is not supplied then it is generated here.
