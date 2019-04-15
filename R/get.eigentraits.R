@@ -1,14 +1,22 @@
-#This script takes in the data object and returns 
-#the it with eigentraits added to the data object
-#along with the singular values and the right
-#singular values.
-#if scale.pheno is TRUE, the phenotypes are mean
-#centered and standardized before the svd is run
-#The user also has the option to rank normalize 
-#the phenotypes. This argument defaults to false
-#because many users will do their own normalization.
-
-
+#' Add eigentraits, singular values, and right singular vectors to the Cape object
+#' 
+#' This script takes in the data object and returns 
+#' the it with eigentraits added to the data object
+#' along with the singular values and the right
+#' singular values.
+#' if scale.pheno is TRUE, the phenotypes are mean
+#' centered and standardized before the svd is run
+#' The user also has the option to rank normalize 
+#' the phenotypes. This argument defaults to false
+#' because many users will do their own normalization.
+#' 
+#' @param data.obj a \code{\link{Cape}} object
+#' @param scale.pheno boolean, default: TRUE
+#' @param normalize.pheno boolean, default: TRUE
+#'
+#' @return updated \code{\link{Cape}} object
+#'
+#' @export
 get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE){
   
   
@@ -27,20 +35,20 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
   
   #perform a variance check on the new covariates
   
-  if(!is.null(data.obj$p.covar.table)){
-    var.check <- apply(data.obj$p.covar.table, 2, function(x) var(x, na.rm = TRUE))
+  if(!is.null(data.obj$p_covar_table)){
+    var.check <- apply(data.obj$p_covar_table, 2, function(x) var(x, na.rm = TRUE))
     if(any(var.check == 0)){
       zero.locale <- which(var.check == 0)
       message("Some covariates now have zero variance. Removing:")
-      cat(data.obj$p.covar[zero.locale], sep = "\n")
-      data.obj$p.covar.table <- data.obj$p.covar.table[,which(var.check > 0)]
-      data.obj$p.covar <- data.obj$p.covar[which(var.check > 0)]
+      cat(data.obj$p_covar[zero.locale], sep = "\n")
+      data.obj$p_covar_table <- data.obj$p_covar_table[,which(var.check > 0)]
+      data.obj$p_covar <- data.obj$p_covar[which(var.check > 0)]
     }
     
-    
+    browser()
     #also remove the NAs and check the matrix for rank
-    not.na.locale <- which(!is.na(rowSums(data.obj$p.covar.table)))
-    no.na.cov <- data.obj$p.covar.table[not.na.locale,,drop=FALSE]
+    not.na.locale <- which(!is.na(rowSums(data.obj$p_covar_table)))
+    no.na.cov <- data.obj$p_covar_table[not.na.locale,,drop=FALSE]
     design.cov <- cbind(rep(1, dim(no.na.cov)[1]), no.na.cov)
     rank.cov <- rankMatrix(design.cov)
     if(rank.cov[[1]] < dim(design.cov)[2]){
@@ -82,10 +90,10 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
   
   data.obj$ET <- svd.pheno$u
   rownames(data.obj$ET) <- rownames(data.obj$pheno)
-  data.obj$right.singular.vectors <- svd.pheno$v
-  data.obj$singular.values <- svd.pheno$d
-  data.obj$traits.scaled <- as.logical(scale.pheno)
-  data.obj$traits.normalized <- as.logical(normalize.pheno)
+  data.obj$right_singular_vectors <- svd.pheno$v
+  data.obj$singular_values <- svd.pheno$d
+  data.obj$traits_scaled <- as.logical(scale.pheno)
+  data.obj$traits_normalized <- as.logical(normalize.pheno)
   
   
   

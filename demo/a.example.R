@@ -33,6 +33,7 @@ geno.obj <- cross.obj$geno.obj$geno
 
 data.obj <- Cape$new(
   parameter_file = param.file,
+  results_path = "/Users/emersj/projects/cape/cape/results",
   pheno = cross.obj$data.obj$pheno,
   chromosome = cross.obj$data.obj$chromosome,
   marker_num = cross.obj$data.obj$marker_num,
@@ -40,8 +41,6 @@ data.obj <- Cape$new(
   geno_names = dimnames(geno.obj),
   geno = geno.obj
 )
-
-browser()
 
 # TODO search throughout the code for data.obj[[number]]
 # TODO that call won't work because the data.obj is an environmnet not a list now

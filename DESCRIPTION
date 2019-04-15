@@ -32,7 +32,8 @@ LazyData: true
 Imports:
     R6, here, tools, yaml, evd, Matrix, fdrtool, shape, MASS, corpcor, RColorBrewer,
     parallel, doParallel, foreach, caTools, stringr, abind, propagate, testthat, utils,
-    qtl2, tidyr, qtl2convert, devtools, yaml, jsonlite, data.table, RcppEigen, RSQLite, qtl
+    qtl2, tidyr, qtl2convert, devtools, yaml, jsonlite, data.table, RcppEigen, RSQLite,
+    qtl, tools
 Suggests: 
     testthat
 RoxygenNote: 6.1.1

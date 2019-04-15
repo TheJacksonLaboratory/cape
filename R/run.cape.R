@@ -103,10 +103,7 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
         normalize.pheno = as.logical(data.obj$traits_normalized)
       )
       
-      # TODO handle artifacts
-      pdf("svd.pdf")
-      plotSVD(data.obj, orientation = "vertical")
-      dev.off()
+      data.obj$plot_svd("svd.pdf")
       
       # TODO update select.eigentraits
       data.obj <- select.eigentraits(data.obj, traits.which = data.obj$eig_which)

@@ -37,7 +37,7 @@ Class \code{Cape} defines a CAPE analysis object.
 
 \item{\code{non_allelic_covar}}{covariate}
 
-\item{\code{g_covar_table}}{}
+\item{\code{ET}}{eigentraits}
 }}
 
 \keyword{datasets}

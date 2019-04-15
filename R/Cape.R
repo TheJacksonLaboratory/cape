@@ -21,6 +21,7 @@
 #' @slot g_covar
 #' @slot p_covar_table
 #' @slot g_covar_table
+#' @slot ET eigentraits
 #' 
 #' @export
 Cape <- R6::R6Class(
@@ -46,6 +47,11 @@ Cape <- R6::R6Class(
     p_covar_table = NULL,
     g_covar_table = NULL,
     model_family = NULL,
+    ET = NULL,
+    singular_values = NULL,
+    right_singular_vectors = NULL,
+    traits_scaled = NULL,
+    traits_normalized = NULL,
     
     # this function assigns variables from the parameter file
     # to attributes in the Cape object
@@ -62,7 +68,9 @@ Cape <- R6::R6Class(
                           geno = NULL, geno_names = NULL,ref_allele = NULL, covar_table = NULL,
                           flat_geno = NULL, non_allelic_covar = NULL, p_covar = NULL,
                           g_covar = NULL, p_covar_table = NULL, g_covar_table = NULL,
-                          model_family = NULL) {
+                          model_family = NULL, ET = NULL, singular_values = NULL,
+                          right_singular_vectors = NULL, traits_scaled = NULL,
+                          traits_normalized = NULL) {
       self$parameter_file <- parameter_file
       if (missing(results_path)) {
         # if the path isn't suplied, take the parameter file's name and append
@@ -71,11 +79,11 @@ Cape <- R6::R6Class(
         dt <- format(Sys.time(), "%Y%m%d_%H%M")
         results_path <- paste(param_name, dt, sep = "_")
         self$results_path <- file.path(".", results_path)
-        dir.create(self$results_path, showWarnings = FALSE)
         
       } else {
         self$results_path <- results_path
       }
+      dir.create(self$results_path, showWarnings = FALSE)
       self$results_path <- results_path
       self$pheno <- pheno
       self$chromosome <- chromosome
@@ -95,15 +103,26 @@ Cape <- R6::R6Class(
       self$p_covar_table <- p_covar_table
       self$g_covar_table <- g_covar_table
       self$model_family <- model_family
+      self$ET <- ET
+      self$singular_values <- singular_values
+      self$right_singular_vectors <- right_singular_vectors
+      self$traits_scaled <- traits_scaled
+      self$traits_normalized <- traits_normalized
       # assign parameters from the parameter_file
       self$assign_parameters()
       check.underscore(self)
       check.bad.markers(self)
     },
-    plot_svd = function() {
+    plot_svd = function(filename) {
       
-      svd.file <- file.path(self$results_path, "svd.jpg")
-      jpeg(svd.file, res = 300, width = 7, height = 7, units = "in")
+      svd.file <- file.path(self$results_path, filename)
+      switch(
+        tolower(file_ext(filename)),
+        "pdf" = pdf(svd.file, width = 7, height = 7),
+        "png" = png(svd.file, res = 300, width = 7, height = 7, units = "in"),
+        "jpeg" = jpeg(svd.file, res = 300, width = 7, height = 7, units = "in"),
+        "jpg" = jpeg(svd.file, res = 300, width = 7, height = 7, units = "in")
+      )
       plotSVD(data.obj, orientation = "vertical", show.var.accounted = TRUE)
       dev.off()
       
