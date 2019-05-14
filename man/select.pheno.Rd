@@ -4,7 +4,7 @@
 \alias{select.pheno}
 \title{This function selects the phenotypes in a Cape object}
 \usage{
-select.pheno(data.obj, pheno.which, min.entries = 5,
+\method{select}{pheno}(data.obj, pheno.which, min.entries = 5,
   scale.pheno = FALSE, rank.norm.pheno = FALSE)
 }
 \arguments{

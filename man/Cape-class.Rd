@@ -17,6 +17,8 @@ Class \code{Cape} defines a CAPE analysis object.
 \describe{
 \item{\code{parameter_file}}{string, full path to YAML file with initialization parameters}
 
+\item{\code{results_path}}{string, full path to directory for storing results (optional, a directory will be created if one is not specified)}
+
 \item{\code{pheno}}{A phenotype matrix}
 
 \item{\code{chromosome}}{A chromosome character list}
@@ -37,7 +39,13 @@ Class \code{Cape} defines a CAPE analysis object.
 
 \item{\code{non_allelic_covar}}{covariate}
 
+\item{\code{scan_what}}{string, "eigentraits", "normalized.traits" or "raw.traits"}
+
 \item{\code{ET}}{eigentraits}
+
+\item{\code{traits_scaled}}{boolean}
+
+\item{\code{traits_normalized}}{boolean}
 }}
 
 \keyword{datasets}

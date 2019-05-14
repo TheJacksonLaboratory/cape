@@ -68,14 +68,14 @@ plotSVD <- function(data.obj, orientation = c("vertical", "horizontal"), neg.col
   
   
   #The contribution of each eigentrait to each phenotype
-  #is encoded in the right singular vectors (eigenvectors)	
-  eigen.weights <- t(data.obj$right.singular.vectors)[1:dim(data.obj$ET)[2],]
+  #is encoded in the right singular vectors (eigenvectors)
+  eigen.weights <- t(data.obj$right_singular_vectors)[1:dim(data.obj$ET)[2],]
   colnames(eigen.weights) <- colnames(data.obj$pheno)
   rownames(eigen.weights) <- colnames(data.obj$ET)
   
   #use the singular values to calculate the variance
   #captured by each mode
-  singular.vals <- data.obj$singular.values[1:dim(data.obj$ET)[2]]
+  singular.vals <- data.obj$singular_values[1:dim(data.obj$ET)[2]]
   
   if(is.null(singular.vals)){
     stop("get.eigentraits() must be run before plotSVD()")

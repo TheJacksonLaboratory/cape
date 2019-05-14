@@ -152,8 +152,6 @@ impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.t
     return(sec.geno)
   } #end impute.section
   
-  browser()
-  
   if(run.parallel){
     if(verbose){cat("Imputing missing genotypes...\n")}
     cl <- makeCluster(n.cores)

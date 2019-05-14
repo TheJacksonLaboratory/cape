@@ -33,6 +33,7 @@ Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c
   # Create probability and map file if locus is numerical for MPP #
   #                                                               #
   #################################################################
+
   
   ##check to see if genoprobs have been calculated, if not calculate genotype probablities
   if(!("calc_genoprob" %in% class(geno.obj)) & locus=="num" & pop=="MPP"){
@@ -156,7 +157,8 @@ Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c
       
     } 
     
-    
+    # TODO these calls to the class() function don't work; it just returns the object type
+    # TODO the class(file) call just returns "function"
     if ("calc_genoprob" %in% class(file)){
       
       ## Convert to allele probabilities if it isn't a 2PP 

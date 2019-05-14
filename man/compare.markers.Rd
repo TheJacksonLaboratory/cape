@@ -4,7 +4,7 @@
 \alias{compare.markers}
 \title{Removes markers from data.obj that are not present in the geno.obj}
 \usage{
-compare.markers(data.obj, geno.obj)
+\method{compare}{markers}(data.obj, geno.obj)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}

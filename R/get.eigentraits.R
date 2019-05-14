@@ -41,16 +41,17 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
       zero.locale <- which(var.check == 0)
       message("Some covariates now have zero variance. Removing:")
       cat(data.obj$p_covar[zero.locale], sep = "\n")
-      data.obj$p_covar_table <- data.obj$p_covar_table[,which(var.check > 0)]
-      data.obj$p_covar <- data.obj$p_covar[which(var.check > 0)]
+      data.obj$p_covar_table <- as.array(data.obj$p_covar_table[,which(var.check > 0)])
+      data.obj$p_covar <- as.array(data.obj$p_covar[which(var.check > 0)])
     }
     
-    browser()
+    # TODO this code is duplicated in singlescan
+    
     #also remove the NAs and check the matrix for rank
-    not.na.locale <- which(!is.na(rowSums(data.obj$p_covar_table)))
-    no.na.cov <- data.obj$p_covar_table[not.na.locale,,drop=FALSE]
-    design.cov <- cbind(rep(1, dim(no.na.cov)[1]), no.na.cov)
-    rank.cov <- rankMatrix(design.cov)
+    not.na.locale <- which(!is.na(apply(data.obj$p_covar_table,1,sum)))
+    no.na.cov <- as.array(data.obj$p_covar_table[not.na.locale,drop=FALSE])
+    design.cov <- cbind(rep(1, dim(no.na.cov)[1]), no.na.cov)  #####################
+    rank.cov <- Matrix::rankMatrix(design.cov)
     if(rank.cov[[1]] < dim(design.cov)[2]){
       stop("The covariate matrix does not appear to be linearly independent.\nIf you are using dummy variables for groups, leave one of the groups out.")
     }

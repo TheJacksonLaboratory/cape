@@ -53,18 +53,18 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
           cat("There are missing values in geno.obj. Running impute.missing.geno...\n")
           geno.imp <- impute.missing.geno(data.obj, geno.obj)
           data.obj <- geno.imp$data.obj
-          saveRDS(data.obj, imp.data.file)
+          # saveRDS(data.obj, imp.data.file)
           geno.obj <- geno.imp$geno.obj
-          saveRDS(geno.obj, imp.geno.file)
+          # saveRDS(geno.obj, imp.geno.file)
         }else{ #if the imputation has been done, read in the imputed genotypes
           data.obj <- readRDS(imp.data.file)
           geno.obj <- readRDS(imp.geno.file)
         }
       } #end case for when there are missing values in the genotype object
       # TODO does this properly handle pass-by-reference?
-      kin.obj <- Kinship(data.obj, geno.obj, type = kinship.type, pop = data.obj$pop)
+      kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, pop = data.obj$pop)
       # TODO artifacts
-      saveRDS(kin.obj, kin.file)
+      # saveRDS(kin.obj, kin.file)
     }
   } else {
     kin.obj <- NULL
@@ -111,8 +111,9 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
       if(data.obj$use_kinship){
         #if individuals were deleted from the phenotype matrix, delete these
         #from the kinship object too
+        # TODO check for NAs in the kin.obj AND check for dim inconsistencies when using covariates
         kin.obj <- remove.kin.ind(data.obj, kin.obj)
-        saveRDS(kin.obj, kin.file)
+        # saveRDS(kin.obj, kin.file)
       }
     }
     
@@ -130,8 +131,8 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
   
   if(run.singlescan){
     singlescan.obj <- singlescan(
-      data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm, ref.allele = ref.allele,
-      alpha = c(0.01, 0.05), scan.what = scan.what, verbose = verbose, run.parallel = run.parallel,
+      data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm,
+      alpha = c(0.01, 0.05), verbose = verbose, run.parallel = run.parallel,
       n.cores = n.cores, model.family = "gaussian", overwrite.alert = FALSE
     )
     saveRDS(singlescan.obj, singlescan.results.file)

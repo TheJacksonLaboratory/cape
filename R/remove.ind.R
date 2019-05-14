@@ -27,13 +27,21 @@ remove.ind <- function(data.obj, ind.to.remove = NULL, names.to.remove = NULL){
 			#if covariates have already been assigned, remove individuals
 			#from these tables as well.
 			if(!is.null(data.obj$p_covar_table)){
-				data.obj$p_covar_table <- data.obj$p_covar_table[-ind.idx,,drop=FALSE]
+  			  tryCatch(
+  			    {
+  			      data.obj$p_covar_table <- data.obj$p_covar_table[-ind.idx,,drop=FALSE]
+  			    },
+  			    error=function(cond) {
+  			      # if the table is down to one column we have to slice it differently
+  			      data.obj$p_covar_table <- data.obj$p_covar_table[-ind.idx,drop=FALSE]
+  			    }
+  			  )
 				}
 			if(!is.null(data.obj$g_covar_table)){
 				data.obj$g_covar_table <- data.obj$g_covar_table[-ind.idx,,drop=FALSE]
 				}
-			if(!is.null(data.obj$raw.pheno)){
-				data.obj$raw.pheno <- data.obj$raw.pheno[-ind.idx,,drop=FALSE]
+			if(!is.null(data.obj$raw_pheno)){
+				data.obj$raw_pheno <- data.obj$raw_pheno[-ind.idx,,drop=FALSE]
 				}
 			if(!is.null(data.obj$ET)){
 				warning("get.eigentraits needs to be re-run because individuals were removed.\n")	

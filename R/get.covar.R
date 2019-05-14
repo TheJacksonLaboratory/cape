@@ -14,7 +14,13 @@ get.covar <- function(data.obj){
 	covar.table <- cbind(data.obj$p_covar_table, data.obj$g_covar_table)
 	
 	if(!is.null(data.obj$p_covar_table)){
-		num.p.covar <- dim(data.obj$p_covar_table)[2]
+		num.p.covar <- dim(data.obj$p_covar_table)
+		if (length(num.p.covar) == 1) {
+		  # there's only one covar column
+		  num.p.covar <- 1
+		} else {
+		  num.p.covar <- num.p.covar[2]
+		}
 		}else{
 		num.p.covar <- 0	
 		}

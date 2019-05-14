@@ -1,6 +1,5 @@
 #' Runs a 1D scan of the phenotype data to assess which markers to use as covariates for each phenotype
 #' 
-#' TODO Can Anna update this description?
 #' This script performs marker regression to associate
 #' individual markers with either traits or eigentraits.
 #' If n.perm is greater than 0, permutations are run to 
@@ -33,8 +32,6 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
                        model.family = "gaussian", run.parallel = TRUE, n.cores = 4, verbose = FALSE, 
                        overwrite.alert = TRUE) {
   
-  browser()
-  
   ref.allele <- data.obj$ref_allele
   scan.what <- data.obj$scan_what
   
@@ -58,7 +55,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
   
   #===============================================================
   gene <- get.geno(data.obj, geno.obj)
-  pheno <- get.pheno(data.obj, scan.what)	
+  pheno <- get.pheno(data.obj)	
   n.phe = dim(pheno)[2]
   chr.which <- unique(data.obj$chromosome)
   
@@ -79,11 +76,13 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
       stop(paste(covar.names[zero.locale], "has zero variance."))
     }		
     
+    # TODO this code is duplicated in get.eigentraits
+    
     #also remove the NAs and check the matrix for rank
     not.na.locale <- which(!is.na(rowSums(covar.table)))
-    no.na.cov <- covar.table[not.na.locale,,drop=FALSE]
+    no.na.cov <- as.array(covar.table[not.na.locale,,drop=FALSE])
     design.cov <- cbind(rep(1, dim(no.na.cov)[1]), no.na.cov)
-    rank.cov <- rankMatrix(design.cov)
+    rank.cov <- Matrix::rankMatrix(design.cov)
     if(rank.cov[[1]] < dim(design.cov)[2]){
       stop("The covariate matrix does not appear to be linearly independent.\nIf you are using dummy variables for groups, leave one of the groups out.")
     }
@@ -115,9 +114,11 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
       cat("Mean-centering phenotypes using norm.pheno()")
       data.obj <- norm.pheno(data.obj)
     }
+    
     missing.vals <- which(is.na(gene))
     if(length(missing.vals) > 0){
-      stop("There are missing values in the genotype matrix. Please use impute.missing.geno().")
+      warning("There are missing values in the genotype matrix. Please use impute.missing.geno().")
+      data.obj <- impute.missing.geno(data.obj, geno.obj)["data.obj"]
     }
   }
   #==================================================================
@@ -225,6 +226,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
     #get corrected genotype and phenotype values for each phenotype-chromosome pair
     if(use.kinship){
       sink("regress.warnings") #create a temporary output file for the regress warnings
+      # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
       cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
       sink(NULL)
       
@@ -277,6 +279,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
       #get corrected genotype and phenotype values for the overall kinship matrix
       if(use.kinship){
         sink("regress.warnings")
+        # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
         cor.data <- kinship.on.the.fly(kin.obj, gene, phenoV = phenotype, covarV = covar.table)
         sink(NULL) #stop sinking to the file
       }else{

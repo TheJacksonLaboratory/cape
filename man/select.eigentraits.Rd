@@ -4,7 +4,7 @@
 \alias{select.eigentraits}
 \title{Assign selected eigentraits in the Cape object}
 \usage{
-select.eigentraits(data.obj, traits.which = c(1, 2))
+\method{select}{eigentraits}(data.obj, traits.which = c(1, 2))
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}

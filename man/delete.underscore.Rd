@@ -4,7 +4,7 @@
 \alias{delete.underscore}
 \title{Internal function that deletes underscores from marker names}
 \usage{
-delete.underscore(data.obj, geno.obj = NULL)
+\method{delete}{underscore}(data.obj, geno.obj = NULL)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}

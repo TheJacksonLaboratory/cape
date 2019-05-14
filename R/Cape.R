@@ -7,6 +7,7 @@
 #' @exportClass Cape
 #'
 #' @slot parameter_file string, full path to YAML file with initialization parameters
+#' @slot results_path string, full path to directory for storing results (optional, a directory will be created if one is not specified)
 #' @slot pheno A phenotype matrix
 #' @slot chromosome A chromosome character list
 #' @slot marker_num An integer list of marker numbers along a chromosome
@@ -21,7 +22,13 @@
 #' @slot g_covar
 #' @slot p_covar_table
 #' @slot g_covar_table
+#' @slot model_family
+#' @slot scan_what string, "eigentraits", "normalized.traits" or "raw.traits"
 #' @slot ET eigentraits
+#' @slot singular_values
+#' @slot right_singular_vectors
+#' @slot traits_scaled boolean
+#' @slot traits_normalized boolean
 #' 
 #' @export
 Cape <- R6::R6Class(
@@ -47,6 +54,7 @@ Cape <- R6::R6Class(
     p_covar_table = NULL,
     g_covar_table = NULL,
     model_family = NULL,
+    scan_what = NULL,
     ET = NULL,
     singular_values = NULL,
     right_singular_vectors = NULL,
@@ -63,14 +71,31 @@ Cape <- R6::R6Class(
         self[[name]] <- val
       }
     },
-    initialize = function(parameter_file = NULL, results_path = Null, pheno = NULL,
-                          chromosome = NULL, marker_num = NULL, marker_location = NULL, 
-                          geno = NULL, geno_names = NULL,ref_allele = NULL, covar_table = NULL,
-                          flat_geno = NULL, non_allelic_covar = NULL, p_covar = NULL,
-                          g_covar = NULL, p_covar_table = NULL, g_covar_table = NULL,
-                          model_family = NULL, ET = NULL, singular_values = NULL,
-                          right_singular_vectors = NULL, traits_scaled = NULL,
-                          traits_normalized = NULL) {
+    initialize = function(
+      parameter_file = NULL,
+      results_path = NULL,
+      pheno = NULL,
+      chromosome = NULL,
+      marker_num = NULL,
+      marker_location = NULL,
+      geno_names = NULL,
+      geno = NULL,
+      ref_allele = NULL,
+      covar_table = NULL,
+      flat_geno = NULL,
+      non_allelic_covar = NULL,
+      p_covar = NULL,
+      g_covar = NULL,
+      p_covar_table = NULL,
+      g_covar_table = NULL,
+      model_family = NULL,
+      scan_what = NULL,
+      ET = NULL,
+      singular_values = NULL,
+      right_singular_vectors = NULL,
+      traits_scaled = NULL,
+      traits_normalized = NULL
+    ) {
       self$parameter_file <- parameter_file
       if (missing(results_path)) {
         # if the path isn't suplied, take the parameter file's name and append
@@ -103,6 +128,7 @@ Cape <- R6::R6Class(
       self$p_covar_table <- p_covar_table
       self$g_covar_table <- g_covar_table
       self$model_family <- model_family
+      self$scan_what <- scan_what
       self$ET <- ET
       self$singular_values <- singular_values
       self$right_singular_vectors <- right_singular_vectors
@@ -117,7 +143,7 @@ Cape <- R6::R6Class(
       
       svd.file <- file.path(self$results_path, filename)
       switch(
-        tolower(file_ext(filename)),
+        tolower(tools::file_ext(filename)),
         "pdf" = pdf(svd.file, width = 7, height = 7),
         "png" = png(svd.file, res = 300, width = 7, height = 7, units = "in"),
         "jpeg" = jpeg(svd.file, res = 300, width = 7, height = 7, units = "in"),
@@ -156,5 +182,6 @@ Cape <- R6::R6Class(
       invisible(self)
     }
   ),
-  lock_objects = FALSE
+  lock_objects = FALSE,
+  lock_class = TRUE
 )
