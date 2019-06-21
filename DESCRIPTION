@@ -29,9 +29,13 @@ Description:
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Depends:
+  R6, here, tools, yaml, evd, Matrix, fdrtool, shape, MASS, corpcor, RColorBrewer,
+    parallel, doParallel, foreach, caTools, stringr, abind, propagate, testthat, utils,
+    qtl2, tidyr, qtl2convert, devtools, yaml, jsonlite, data.table, RcppEigen, RSQLite,
+    qtl, tools, regress, BiocManager, igraph
 Imports:
-    here,
-    tools
+  biomaRt
 Suggests: 
-    testthat
+  testthat
 RoxygenNote: 6.1.1

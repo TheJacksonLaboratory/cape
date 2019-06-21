@@ -30,8 +30,8 @@ run.parallel <- TRUE
 #===============================================================
 #source cape code
 #===============================================================
-all.fun <- list.files(pattern = ".R", path = cape.do.dir, full.names = TRUE)
-for(i in 1:length(all.fun)){source(all.fun[i])}
+# all.fun <- list.files(pattern = ".R", path = cape.do.dir, full.names = TRUE)
+# for(i in 1:length(all.fun)){source(all.fun[i])}
 
 #===============================================================
 # read in the data
@@ -48,8 +48,6 @@ geno <- cross.obj$geno.obj
 #===============================================================
 # before running cape, make sure the results directory is clean
 unlink(list.files(results.dir))
-
-setwd(results.dir)
 
 final.cross <- run.cape(cross, geno, cape.parameter.file, p.or.q = 0.05, n.cores = n.cores, 
                         run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE, 

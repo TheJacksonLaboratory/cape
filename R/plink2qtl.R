@@ -17,10 +17,6 @@
 #'
 #' @return None
 #'
-#' @examples
-#' cross <- plink2qtl(ped = "test.ped", map = "test.map", out = "cross.csvr", overwrite = TRUE)
-#' plot(scanone(cross))
-#'
 #' @export
 plink2qtl <- function(ped = "test.ped", map = "test.map", out = "out.csvr", missing.genotype = "0", 
                       no.fid = FALSE, no.parents = FALSE, no.sex = FALSE, no.pheno = FALSE,
