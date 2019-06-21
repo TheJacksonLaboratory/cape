@@ -22,7 +22,7 @@ singlescan(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
 
 \item{model.family}{array indicating the model family of the phenotypes. This can be either "gaussian" or "binomial" if length 1, all phenotypes will be assigned to the same family. If the phenotypes are a mixture, model.family can be a vector of length Np, where Np is the number of phenotypes indicating which phenotype belongs in which family.}
 
-\item{run.parallel}{boolean}
+\item{run.parallel}{boolean, default = TRUE}
 
 \item{n.cores}{integer number of cores to use if running in parallel}
 

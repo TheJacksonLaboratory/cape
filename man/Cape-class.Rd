@@ -15,9 +15,13 @@ Class \code{Cape} defines a CAPE analysis object.
 \section{Slots}{
 
 \describe{
-\item{\code{parameter_file}}{string, full path to YAML file with initialization parameters}
+\item{\code{parameter_file}}{string, full path to YAML file with initialization
+parameters}
 
-\item{\code{results_path}}{string, full path to directory for storing results (optional, a directory will be created if one is not specified)}
+\item{\code{results_path}}{string, full path to directory for storing results
+(optional, a directory will be created if one is not specified)}
+
+\item{\code{orginism}}{options are "mouse" or "human"}
 
 \item{\code{pheno}}{A phenotype matrix}
 
@@ -27,17 +31,36 @@ Class \code{Cape} defines a CAPE analysis object.
 
 \item{\code{marker_location}}{A numeric list of positions in centiMorgans}
 
-\item{\code{geno_names}}{A list of character names for each genotype, e.g., c("A", "B")}
+\item{\code{marker_selection_method}}{options are "top.effects", "from.list",
+"uniform", "by.gene", "effects.dist"}
+
+\item{\code{bp_buffer}}{when the marker selection method is "by.gene" this finds genes 
+from Ensemble that are within this number of base pairs of the input marker's 
+position}
+
+\item{\code{geno_names}}{A list of character names for each genotype, e.g., c("A","B")}
 
 \item{\code{geno}}{An array where the dimension names must be "sample", "allele", and "locus"}
 
-\item{\code{ref_allele}}{A character from the geno_names that represents the wild type}
+\item{\code{effect_size_cutoff}}{from select.markers.for.pairscan.R}
+
+\item{\code{peak_density}}{from select.markers.for.pariscan.R}
+
+\item{\code{window_size}}{from select.markers.for.pariscan.R}
+
+\item{\code{tolerance}}{from select.markers.for.pairscan.R}
+
+\item{\code{ref_allele}}{A character from the geno_names that represents the wildtype}
 
 \item{\code{covar_table}}{a matrix of}
 
 \item{\code{flat_geno}}{a flattened genotype matrix}
 
 \item{\code{non_allelic_covar}}{covariate}
+
+\item{\code{max_pair_cor}}{the maximum Pearson correlation that two markers are allowed}
+
+\item{\code{min_per_genotype}}{minimum number of individuals allowable per genotype}
 
 \item{\code{scan_what}}{string, "eigentraits", "normalized.traits" or "raw.traits"}
 
@@ -46,6 +69,26 @@ Class \code{Cape} defines a CAPE analysis object.
 \item{\code{traits_scaled}}{boolean}
 
 \item{\code{traits_normalized}}{boolean}
+
+\item{\code{var_to_var_influences_perm}}{added in \code{\link{error.prop}} 
+if error propogation is performed on permuted test statistics}
+
+\item{\code{var_to_var_influences}}{added in \code{\link{error.prop}} 
+if error propogation is performed on un-permuted test statistics}
+
+\item{\code{pval_correction}}{options are "holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none"}
+
+\item{\code{linkage_blocks_collapsed}}{see \code{\link{get.network}}}
+
+\item{\code{linkage_blocks_full}}{see \code{\link{get.network}}}
+
+\item{\code{var_to_var_p_val}}{see \code{\link{get.network}}}
+
+\item{\code{max_var_to_pheno_influence}}{see \code{\link{get.network}}}
+
+\item{\code{collapsed_net}}{see \code{\link{get.network}}}
+
+\item{\code{full_net}}{see \code{\link{get.network}}}
 }}
 
 \keyword{datasets}

@@ -39,7 +39,6 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     if(is.null(covarV) || is.null(pair)){
       model = regress(as.vector(phenotype)~1,~K, pos = c(TRUE, TRUE))	
     }else{
-      browser()  # Error in V[[i]][!isNA, !isNA] : (subscript) logical subscript too long 
       model = regress(as.vector(phenotype)~covarV, ~K, pos = c(TRUE, TRUE))
     }
     

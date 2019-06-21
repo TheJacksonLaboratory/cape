@@ -5,16 +5,7 @@
 #' @param pdf.label string
 #'
 #' @export
-get.pheno <- function(data.obj, covar = NULL){
-  
-  if(!is.null(covar)){
-    covar.info <- get.covar(data.obj)
-    covar.locale <- which(covar.info$covar.names %in% covar)
-    models <- apply(pheno, 2, function(x) lm(x~covar.info$covar.table[,covar.locale,drop=FALSE]))
-    resids <- lapply(models, residuals)
-    resid.table <- t(matrix(unlist(resids, use.names = FALSE), byrow = TRUE))
-    return(resid.table)
-  }
+get.pheno <- function(data.obj, scan.what = c("eigentraits", "normalized.traits", "raw.traits"), covar = NULL){
   
   #If the user does not specify a scan_what in the data.obj,
   #default to eigentraits, basically, if eigen,
@@ -48,6 +39,15 @@ get.pheno <- function(data.obj, covar = NULL){
   }
   
   pheno <- data.obj[[el.idx]]
+  
+  if(!is.null(covar)){
+    covar.info <- get.covar(data.obj)
+    covar.locale <- which(covar.info$covar.names %in% covar)
+    models <- apply(pheno, 2, function(x) lm(x~covar.info$covar.table[,covar.locale,drop=FALSE]))
+    resids <- lapply(models, residuals)
+    resid.table <- t(matrix(unlist(resids, use.names = FALSE), byrow = TRUE))
+    return(resid.table)
+  }
   
   return(pheno)
   

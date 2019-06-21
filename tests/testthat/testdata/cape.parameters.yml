@@ -4,8 +4,9 @@
 traits:
  - LEP_24
  - total_fat
-#covariates:
-# - mom
+covariates:
+# "mom" is the obesity status of the other
+ - mom
 scan_what:
  - eigentraits 
 traits_scaled:
@@ -25,6 +26,8 @@ pop:
  - 2PP
 locus:
  - char
+organism:
+ - mouse
 
 #================================================
 # Single Scan Parameters 
@@ -44,13 +47,15 @@ peak_density:
 tolerance:
  - 5 
 num_alleles_in_pairscan:
- - 1000
+ - 100
 
 #================================================
 # Pairscan Parameters 
 #================================================
 max_pair_cor:
  - 0.5 
+min_per_genotype:
+ - 5
 pairscan_null_size:
  - 1000 
 

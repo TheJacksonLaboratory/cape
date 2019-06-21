@@ -20,7 +20,7 @@
 #' @param n.perm integer number of permutations (default=100)
 #' @param alpha real significance level (either 0.01 or 0.05)
 #' @param model.family array indicating the model family of the phenotypes. This can be either "gaussian" or "binomial" if length 1, all phenotypes will be assigned to the same family. If the phenotypes are a mixture, model.family can be a vector of length Np, where Np is the number of phenotypes indicating which phenotype belongs in which family.
-#' @param run.parallel boolean
+#' @param run.parallel boolean, default = TRUE
 #' @param n.cores integer number of cores to use if running in parallel
 #' @param verbose boolean
 #' @param overwrite.alert boolean, for use when the script is run from the command line
@@ -45,8 +45,6 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
     if(choice == "n"){stop()}
   }
   
-  geno.names <- data.obj$geno_names
-  
   if(length(model.family) == 1){
     model.family <- rep(model.family, ncol (data.obj$pheno))
   }
@@ -62,6 +60,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
   #get the covariates and assign the variables
   #to the local environment
   covar.info <- get.covar(data.obj)
+  covar.names <- covar.info$covar.names
+  covar.table <- covar.info$covar.table
   for(i in 1:length(covar.info)){
     assign(names(covar.info)[i], covar.info[[i]])
   }
@@ -129,7 +129,6 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
   allele.dim <- which(names(dimnames(gene)) == "allele")
   
   n.phe <- dim(pheno)[2]
-  n.gene <- dim(gene)[locus.dim]
   
   #first do the permutations to get the significance threshold
   #results will be compared to the significance threshold to 
@@ -248,12 +247,14 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
       
       if (run.parallel) {
         
-        cl <- makeCluster(n.cores)
-        registerDoParallel(cl)
-        results.by.chr <- foreach(x = 1:dim(c.geno)[locus.dim], .export = c("get.stats.multiallele", "check.geno")) %dopar% {
+        cl <- parallel::makeCluster(n.cores)
+        doParallel::registerDoParallel(cl)
+        results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim], .export = c("get.stats.multiallele", "check.geno")) %dopar% {
+          # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined
+          # but it actually is defined in the foreach line above. You can safely ignore the warning.
           get.stats.multiallele(phenotype = c.pheno, genotype = c.geno[,,x], covar.table = c.covar, ph.family, ref.col)
         }
-        stopCluster(cl)
+        parallel::stopCluster(cl)
         
       } else {
         

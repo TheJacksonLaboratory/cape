@@ -4,7 +4,8 @@
 \alias{get.pheno}
 \title{Finds alleles from each founder were seleted for the pairscan}
 \usage{
-get.pheno(data.obj, covar = NULL)
+get.pheno(data.obj, scan.what = c("eigentraits", "normalized.traits",
+  "raw.traits"), covar = NULL)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}

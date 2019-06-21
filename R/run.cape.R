@@ -129,70 +129,95 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
   #===============================================================
   singlescan.results.file <- paste0(results.base.name, ".singlescan.RData")
   
-  if(run.singlescan){
-    singlescan.obj <- singlescan(
-      data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm,
-      alpha = c(0.01, 0.05), verbose = verbose, run.parallel = run.parallel,
-      n.cores = n.cores, model.family = "gaussian", overwrite.alert = FALSE
-    )
-    saveRDS(singlescan.obj, singlescan.results.file)
+  if (file.exists(singlescan.results.file)) {
     
-    
-    for(ph in 1:ncol(singlescan.obj$singlescan.effects)){
-      jpeg(paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Standardized.jpg"), width = 20, height = 6, units = "in", res = 300)
-      plotSinglescan(data.obj, singlescan.obj = singlescan.obj, standardized = TRUE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
-      dev.off()
-    }
-    
-    for(ph in 1:ncol(singlescan.obj$singlescan.effects)){
-      jpeg(paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Effects.jpg"), width = 20, height = 6, units = "in", res = 300)			
-      plotSinglescan(data.obj, singlescan.obj = singlescan.obj, standardized = FALSE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
-      dev.off()
-    }
-    
-  }else{
     singlescan.obj <- readRDS(singlescan.results.file)
+    
+  } else {
+    
+    if(run.singlescan){
+      singlescan.obj <- singlescan(
+        data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm,
+        alpha = c(0.01, 0.05), verbose = verbose, run.parallel = run.parallel,
+        n.cores = n.cores, model.family = "gaussian", overwrite.alert = FALSE
+      )
+      saveRDS(singlescan.obj, singlescan.results.file)
+      
+      for(ph in 1:ncol(singlescan.obj$singlescan.effects)){
+        jpeg(paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Standardized.jpg"), width = 20, height = 6, units = "in", res = 300)
+        plotSinglescan(data.obj, singlescan.obj = singlescan.obj, standardized = TRUE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
+        dev.off()
+      }
+      
+      for(ph in 1:ncol(singlescan.obj$singlescan.effects)){
+        jpeg(paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Effects.jpg"), width = 20, height = 6, units = "in", res = 300)			
+        plotSinglescan(data.obj, singlescan.obj = singlescan.obj, standardized = FALSE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
+        dev.off()
+      }
+      
+    }
+    
   }
   
   #===============================================================
   # run pairscan
   #===============================================================
   pairscan.file <- paste0(results.base.name, ".pairscan.RData")
-  if(run.pairscan){
-    if(marker.selection.method == "top.effects"){
-      data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, num.alleles = num.alleles.in.pairscan, peak.density = peak.density, verbose = verbose, plot.peaks = FALSE)
-    }
+  
+  marker.selection.method <- data.obj$marker_selection_method
+  num.alleles.in.pairscan <- data.obj$num_alleles_in_pairscan
+  peak.density <- data.obj$peak_density
+  max.pair.cor <- data.obj$max_pair_cor
+  min.per.genotype <- data.obj$min_per_genotype
+  pairscan.null.size <- data.obj$pairscan_null_size
+  scan.what <- data.obj$scan_what
+  
+  if (file.exists(pairscan.file)) {
     
-    if(marker.selection.method == "from.list"){
-      specific.markers <- read.table(SNPfile, sep = "\t", stringsAsFactors = FALSE)
-      data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
-    }
-    
-    
-    if(marker.selection.method == "uniform"){
-      data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, ref.allele = ref.allele, required.markers = NULL, num.alleles = num.alleles.in.pairscan, verbose = verbose)
-    }
-    
-    
-    if(marker.selection.method == "by.gene"){
-      gene.list.mat <- read.table("gene.list.txt", sep = "\t", stringsAsFactors = FALSE)		
-      gene.list <- gene.list.mat[,1]
-      data.obj <- select.markers.for.pairscan.by.gene(data.obj, geno.obj, ref.allele = ref.allele, gene.list = gene.list, num.snps = num.alleles.in.pairscan, bp.buffer = bp.buffer, organism = organism)
-    } else {
-      gene.list <- NULL
-    }
-    
-    saveRDS(data.obj, results.file)
-    
-    pairscan.obj <- pairscan(data.obj, geno.obj, scan.what = scan.what, pairscan.null.size = pairscan.null.size, min.per.genotype = min.per.geno, max.pair.cor = max.pair.cor, verbose = verbose, num.pairs.limit = Inf, overwrite.alert = FALSE, run.parallel = run.parallel, n.cores = n.cores, gene.list = gene.list, kin.obj = kin.obj)
-    saveRDS(pairscan.obj, pairscan.file)
-    
-    plotPairscan(data.obj, pairscan.obj, phenotype = NULL, pdf.label = "Pairscan.Regression.pdf", show.marker.labels = TRUE, show.alleles = FALSE)
-    
-    saveRDS(data.obj, results.file)
-  } else {
     pairscan.obj <- readRDS(pairscan.file)
+    
+  } else {
+    
+    if(run.pairscan){
+      if(marker.selection.method == "top.effects"){
+        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, num.alleles = num.alleles.in.pairscan, peak.density = peak.density, verbose = verbose, plot.peaks = FALSE)
+      }
+      
+      if(marker.selection.method == "from.list"){
+        specific.markers <- read.table(SNPfile, sep = "\t", stringsAsFactors = FALSE)
+        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
+      }
+      
+      if(marker.selection.method == "uniform"){
+        data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, required.markers = NULL, num.alleles = num.alleles.in.pairscan, verbose = verbose)
+      }
+       
+      if(marker.selection.method == "by.gene"){
+        gene.list.mat <- read.table("gene.list.txt", sep = "\t", stringsAsFactors = FALSE)		
+        gene.list <- gene.list.mat[,1]
+        data.obj <- select.markers.for.pairscan.by.gene(data.obj, geno.obj, gene.list = gene.list, 
+                                                        bp.buffer = data.obj$bp_buffer, organism = data.obj$organism)
+      } else {
+        gene.list <- NULL
+      }
+      
+      saveRDS(data.obj, results.file)
+      
+      pairscan.obj <- pairscan(data.obj, geno.obj, scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
+                               min.per.genotype = min.per.genotype, max.pair.cor = max.pair.cor, verbose = verbose, 
+                               num.pairs.limit = Inf, overwrite.alert = FALSE, run.parallel = run.parallel, 
+                               n.cores = n.cores, gene.list = gene.list, kin.obj = kin.obj)
+      saveRDS(pairscan.obj, pairscan.file)
+      
+      plotPairscan(data.obj, pairscan.obj, phenotype = NULL, pdf.label = "Pairscan.Regression.pdf", 
+                   show.marker.labels = TRUE, show.alleles = FALSE)
+      
+      saveRDS(data.obj, results.file)
+    } 
+    
   }
+  
+  
   
   
   #===============================================================
@@ -209,7 +234,7 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
     saveRDS(data.obj, results.file)
   }
   
-  data.obj <- calc.p(data.obj, pval.correction = pval.correction)
+  data.obj <- calc.p(data.obj, pval.correction = data.obj$pval_correction)
   
   if(length(grep("e", scan.what, ignore.case = TRUE)) > 0){
     transform.to.phenospace <- TRUE
@@ -217,7 +242,8 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
     transform.to.phenospace <- FALSE	
   }
   
-  data.obj <- direct.influence(data.obj, pairscan.obj, transform.to.phenospace = transform.to.phenospace, verbose = TRUE, pval.correction = pval.correction, save.permutations = TRUE, n.cores = n.cores)
+  data.obj <- direct.influence(data.obj, pairscan.obj, transform.to.phenospace = transform.to.phenospace, verbose = TRUE, 
+                               pval.correction = data.obj$pval_correction, save.permutations = TRUE, n.cores = n.cores)
   
   saveRDS(data.obj, results.file)
   
@@ -242,7 +268,9 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
   }	
   
   pdf("Network.View.pdf")
-  net.layout <- plotNetwork2(data.obj, zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, bg.col = "lightgray", arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1)
+  net.layout <- plotNetwork2(data.obj, zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, 
+                             bg.col = "lightgray", arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
+                             edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1)
   dev.off()
   
   

@@ -1,23 +1,40 @@
 #' The CAPE data object
-#' 
+#'
 #' Class \code{Cape} defines a CAPE analysis object.
 #'
 #' @name Cape-class
 #' @rdname Cape-class
 #' @exportClass Cape
 #'
-#' @slot parameter_file string, full path to YAML file with initialization parameters
-#' @slot results_path string, full path to directory for storing results (optional, a directory will be created if one is not specified)
+#' @slot parameter_file string, full path to YAML file with initialization
+#'   parameters
+#' @slot results_path string, full path to directory for storing results
+#'   (optional, a directory will be created if one is not specified)
+#' @slot orginism options are "mouse" or "human"
 #' @slot pheno A phenotype matrix
 #' @slot chromosome A chromosome character list
 #' @slot marker_num An integer list of marker numbers along a chromosome
 #' @slot marker_location A numeric list of positions in centiMorgans
-#' @slot geno_names A list of character names for each genotype, e.g., c("A", "B")
+#' @slot marker_selection_method options are "top.effects", "from.list",
+#'   "uniform", "by.gene", "effects.dist"
+#' @slot bp_buffer when the marker selection method is "by.gene" this finds genes 
+#'   from Ensemble that are within this number of base pairs of the input marker's 
+#'   position
+#' @slot geno_names A list of character names for each genotype, e.g., c("A","B")
 #' @slot geno An array where the dimension names must be "sample", "allele", and "locus"
-#' @slot ref_allele A character from the geno_names that represents the wild type
-#' @slot covar_table a matrix of 
+#' @slot geno_for_pairscan
+#' @slot effect_size_cutoff from select.markers.for.pairscan.R
+#' @slot peak_density from select.markers.for.pariscan.R
+#' @slot window_size from select.markers.for.pariscan.R
+#' @slot tolerance from select.markers.for.pairscan.R
+#' @slot ref_allele A character from the geno_names that represents the wildtype
+#' @slot covar_table a matrix of
 #' @slot flat_geno a flattened genotype matrix
 #' @slot non_allelic_covar covariate
+#' @slot num_alleles_in_pairscan
+#' @slot max_pair_cor the maximum Pearson correlation that two markers are allowed
+#' @slot min_per_genotype minimum number of individuals allowable per genotype
+#' @slot pairscan_null_size
 #' @slot p_covar
 #' @slot g_covar
 #' @slot p_covar_table
@@ -29,7 +46,18 @@
 #' @slot right_singular_vectors
 #' @slot traits_scaled boolean
 #' @slot traits_normalized boolean
-#' 
+#' @slot var_to_var_influences_perm added in \code{\link{error.prop}} 
+#' if error propogation is performed on permuted test statistics
+#' @slot var_to_var_influences added in \code{\link{error.prop}} 
+#' if error propogation is performed on un-permuted test statistics
+#' @slot pval_correction options are "holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none"
+#' @slot linkage_blocks_collapsed see \code{\link{get.network}}
+#' @slot linkage_blocks_full see \code{\link{get.network}}
+#' @slot var_to_var_p_val see \code{\link{get.network}}
+#' @slot max_var_to_pheno_influence see \code{\link{get.network}}
+#' @slot collapsed_net see \code{\link{get.network}}
+#' @slot full_net see \code{\link{get.network}}
+#'
 #' @export
 Cape <- R6::R6Class(
   "Cape",
@@ -39,16 +67,28 @@ Cape <- R6::R6Class(
   public = list(
     parameter_file = NULL,
     results_path = NULL,
+    organism = NULL,
     pheno = NULL,
     chromosome = NULL,
     marker_num = NULL,
     marker_location = NULL,
+    marker_selection_method = NULL,
+    bp_buffer = NULL,
     geno_names = NULL,
     geno = NULL,
+    geno_for_pairscan = NULL,
+    effect_size_cutoff = NULL,
+    peak_density = NULL,
+    window_size = NULL,
+    tolerance = NULL,
     ref_allele = NULL,
     covar_table = NULL,
     flat_geno = NULL,
     non_allelic_covar = NULL,
+    num_alleles_in_pairscan = NULL,
+    max_pair_cor = NULL,
+    min_per_genotype = NULL,
+    pairscan_null_size = NULL,
     p_covar = NULL,
     g_covar = NULL,
     p_covar_table = NULL,
@@ -60,6 +100,15 @@ Cape <- R6::R6Class(
     right_singular_vectors = NULL,
     traits_scaled = NULL,
     traits_normalized = NULL,
+    var_to_var_influences_perm = NULL,
+    var_to_var_influences = NULL,
+    pval_correction = NULL,
+    linkage_blocks_collapsed = NULL,
+    linkage_blocks_full = NULL,
+    var_to_var_p_val = NULL,
+    max_var_to_pheno_influence = NULL,
+    collapsed_net = NULL,
+    full_net = NULL,
     
     # this function assigns variables from the parameter file
     # to attributes in the Cape object
@@ -74,16 +123,28 @@ Cape <- R6::R6Class(
     initialize = function(
       parameter_file = NULL,
       results_path = NULL,
+      organism = NULL,
       pheno = NULL,
       chromosome = NULL,
       marker_num = NULL,
       marker_location = NULL,
+      marker_selection_method = NULL,
+      bp_buffer = NULL,
       geno_names = NULL,
       geno = NULL,
+      geno_for_pairscan = NULL,
+      effect_size_cutoff = NULL,
+      peak_density = NULL,
+      window_size = NULL,
+      tolerance = NULL, 
       ref_allele = NULL,
       covar_table = NULL,
       flat_geno = NULL,
       non_allelic_covar = NULL,
+      num_alleles_in_pairscan = NULL,
+      max_pair_cor = NULL,
+      min_per_genotype = NULL,
+      pairscan_null_size = NULL,
       p_covar = NULL,
       g_covar = NULL,
       p_covar_table = NULL,
@@ -94,7 +155,16 @@ Cape <- R6::R6Class(
       singular_values = NULL,
       right_singular_vectors = NULL,
       traits_scaled = NULL,
-      traits_normalized = NULL
+      traits_normalized = NULL,
+      var_to_var_influences_perm = NULL,
+      var_to_var_influences = NULL,
+      pval_correction = NULL,
+      linkage_blocks_collapsed = NULL,
+      linkage_blocks_full = NULL,
+      var_to_var_p_val = NULL,
+      max_var_to_pheno_influence = NULL,
+      collapsed_net = NULL,
+      full_net = NULL
     ) {
       self$parameter_file <- parameter_file
       if (missing(results_path)) {
@@ -110,11 +180,21 @@ Cape <- R6::R6Class(
       }
       dir.create(self$results_path, showWarnings = FALSE)
       self$results_path <- results_path
+      self$organism <- organism
       self$pheno <- pheno
       self$chromosome <- chromosome
       self$marker_num <- marker_num
       self$marker_location <- marker_location
+      self$marker_selection_method <- marker_selection_method
+      if (missing(bp_buffer)) {
+        self$bp_buffer <- 1000
+      }
       self$geno <- geno
+      self$geno_for_pairscan <- geno_for_pairscan
+      self$effect_size_cutoff <- effect_size_cutoff
+      self$peak_density <- peak_density
+      self$window_size <- window_size
+      self$tolerance <- tolerance
       self$geno_names <- geno_names
       if (!missing(ref_allele)) {
         stopifnot(is.character(ref_allele))
@@ -123,6 +203,10 @@ Cape <- R6::R6Class(
       self$covar_table <- covar_table
       self$flat_geno <- flat_geno
       self$non_allelic_covar <- non_allelic_covar
+      self$num_alleles_in_pairscan <- num_alleles_in_pairscan
+      self$max_pair_cor <- max_pair_cor
+      self$min_per_genotype <- min_per_genotype
+      self$pairscan_null_size <- pairscan_null_size
       self$p_covar <- p_covar
       self$g_covar <- g_covar
       self$p_covar_table <- p_covar_table
@@ -134,6 +218,15 @@ Cape <- R6::R6Class(
       self$right_singular_vectors <- right_singular_vectors
       self$traits_scaled <- traits_scaled
       self$traits_normalized <- traits_normalized
+      self$var_to_var_influences_perm <- var_to_var_influences_perm
+      self$var_to_var_influences <- var_to_var_influences
+      self$pval_correction <- pval_correction
+      self$linkage_blocks_collapsed <- linkage_blocks_collapsed
+      self$linkage_blocks_full <- linkage_blocks_full
+      self$var_to_var_p_val <- var_to_var_p_val
+      self$max_var_to_pheno_influence <- max_var_to_pheno_influence
+      self$collapsed_net <- collapsed_net
+      self$full_net <- full_net
       # assign parameters from the parameter_file
       self$assign_parameters()
       check.underscore(self)

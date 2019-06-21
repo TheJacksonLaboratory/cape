@@ -243,6 +243,7 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
     mtext(phenos.scanned[i], outer = TRUE, line = -3, cex = 2)
     
     if(plot.type.label == "t.stat"){
+      # TODO find out why the legend entries are missing
       browser()  # 'legend' is of length 0 
       legend(x = 0, y = ylim[2]+yrange*0.15, legend = used.alleles, col = allele.colors[,3], lty = 1, lwd = 3, xpd = TRUE, horiz = TRUE)
     }

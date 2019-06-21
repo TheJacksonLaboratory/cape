@@ -33,7 +33,7 @@ read.parameters <- function(filename = "cape.parameters.yml"){
   #================================================
   # pair scan
   #================================================
-  pair.param <- c("max_pair_cor", "min_per_geno", "pairscan_null_size")
+  pair.param <- c("max_pair_cor", "min_per_genotype", "pairscan_null_size")
   
   for ( param.name in c(gen.param, single.param, marker.param, pair.param) ) {
     if ( !is.element(param.name, names(parameter.table)) ){
