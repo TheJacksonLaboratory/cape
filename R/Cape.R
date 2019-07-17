@@ -57,6 +57,7 @@
 #' @slot max_var_to_pheno_influence see \code{\link{get.network}}
 #' @slot collapsed_net see \code{\link{get.network}}
 #' @slot full_net see \code{\link{get.network}}
+#' @slot use_kinship boolean
 #'
 #' @export
 Cape <- R6::R6Class(
@@ -109,6 +110,7 @@ Cape <- R6::R6Class(
     max_var_to_pheno_influence = NULL,
     collapsed_net = NULL,
     full_net = NULL,
+    use_kinship = NULL,
     
     # this function assigns variables from the parameter file
     # to attributes in the Cape object
@@ -164,7 +166,8 @@ Cape <- R6::R6Class(
       var_to_var_p_val = NULL,
       max_var_to_pheno_influence = NULL,
       collapsed_net = NULL,
-      full_net = NULL
+      full_net = NULL,
+      use_kinship = NULL
     ) {
       self$parameter_file <- parameter_file
       if (missing(results_path)) {
@@ -227,6 +230,7 @@ Cape <- R6::R6Class(
       self$max_var_to_pheno_influence <- max_var_to_pheno_influence
       self$collapsed_net <- collapsed_net
       self$full_net <- full_net
+      self$use_kinship <- use_kinship
       # assign parameters from the parameter_file
       self$assign_parameters()
       check.underscore(self)

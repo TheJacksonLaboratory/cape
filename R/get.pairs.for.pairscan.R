@@ -51,7 +51,6 @@ get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL
   all.covar.pairs <- NULL
   if(!is.null(covar.names)){
     covar.locale <- match(covar.names, colnames(gene))
-    covar.mat <- gene[,covar.locale,drop=FALSE]
     gene <- gene[,-covar.locale,drop=FALSE]
     covar.pairs <- pair.matrix(covar.names)
     covar.geno.pairs <- cbind(rep(colnames(gene), length(covar.names)), rep(covar.names, each = ncol(gene)))

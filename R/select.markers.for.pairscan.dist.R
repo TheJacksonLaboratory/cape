@@ -59,7 +59,7 @@ select.markers.for.pairscan.dist <- function(data.obj, singlescan.obj, geno.obj,
   
   if(class(singlescan.obj) == "list"){
     ref.allele <- singlescan.obj$ref.allele
-    data.obj$ref_allele <- ref_allele
+    data.obj$ref_allele <- ref.allele
   }else{
     ref.allele <- data.obj$ref_allele
   }
@@ -89,13 +89,13 @@ select.markers.for.pairscan.dist <- function(data.obj, singlescan.obj, geno.obj,
   geno.ind <- get.linearly.independent(data.obj)
   
   rownames(geno.ind$independent.markers) <- rownames(data.obj$pheno)
-  data.obj$geno.for.pairscan <- geno.ind$independent.markers
+  data.obj$geno_for_pairscan <- geno.ind$independent.markers
   
   if(verbose){
     cat(length(geno.ind[[2]]), "allele(s) rejected.\n")
     cat("Final alleles selected:", "\t", ncol(geno.ind$independent.markers), "\n")
   }
-  data.obj$marker.selection.method = "effects.dist"				
+  data.obj$marker_selection_method = "effects.dist"				
   return(data.obj)
   
   

@@ -52,8 +52,6 @@ select.markers.for.pairscan.by.gene <- function(data.obj, geno.obj, gene.list, b
   #take out the scaffold chromosomes
   gene.info <- gene.info[which(!suppressWarnings(is.na(as.numeric(gene.info[,"chromosome_name"])))),]
   
-  browser()
-  
   snp.list <- NULL
   for (gene.name in gene.list) {
     gene.locale <- which(tolower(gene.info[,1]) == tolower(gene.name))
@@ -72,7 +70,6 @@ select.markers.for.pairscan.by.gene <- function(data.obj, geno.obj, gene.list, b
   if (length(snp.list) == 0) {
     stop("The genes in the supplied gene list are not found either in the data.obj or in Ensembl.\n")
   }
-  browser()
   
   geno <- get.geno(data.obj, geno.obj)
   snp.locale <- match(snp.list, dimnames(geno)[[3]])

@@ -16,9 +16,7 @@
 #' @export
 flatten.array <- function(arrayX, margin1, margin2, slice.fun){
 	
-	dims <- 1:length(dim(arrayX))
 	array.dim <- unlist(dim(arrayX))
-	final.row <- array.dim[margin1]
 	final.col <- array.dim[margin2]
 	
 	slice.dim <- array.dim[-margin1]

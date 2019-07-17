@@ -62,15 +62,13 @@ direct.influence <- function(data.obj, pairscan.obj, transform.to.phenospace = T
   
   pval.correction = pval.correction[1]
   
-  data.obj$transform.to.phenospace <- transform.to.phenospace
-  
   #calculate the direct influences for either the actual
   #tests or the permutations. Return a list with one element
   #for each phenotype with columns:
   #marker1, marker2, marker1.influence.coef, marker2.influence.coef, marker1.se, marker2.se
   
   dir.inf <- function(data.obj, perm){
-    geno <- data.obj$geno.for.pairscan 
+    geno <- data.obj$geno_for_pairscan 
     n.gene <- dim(geno)[2]
     if(perm){
       scan.two.results <- pairscan.obj$pairscan.perm		
@@ -100,7 +98,7 @@ direct.influence <- function(data.obj, pairscan.obj, transform.to.phenospace = T
       }					
     }else{
       ET <- data.obj$ET
-      right.sing.vals <- data.obj$right.singular.vectors 
+      right.sing.vals <- data.obj$right_singular_vectors
       diag.mat <- round(t(ET)%*%orig.pheno%*%right.sing.vals, 2) #get the singular value matrix
       pheno.names <- colnames(data.obj$pheno)			
     }			
@@ -419,7 +417,7 @@ direct.influence <- function(data.obj, pairscan.obj, transform.to.phenospace = T
     colnames(max.stat.list[[i]]) <- colnames(emp.p.table[[i]])
   }
   
-  data.obj$max.var.to.pheno.influence <- max.stat.list
+  data.obj$max_var_to_pheno_influence <- max.stat.list
   
   
   return(data.obj)

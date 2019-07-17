@@ -34,7 +34,6 @@ marker2covar <- function(data.obj, geno.obj = NULL, singlescan.obj = NULL, covar
     
     covar.which <- lapply(oneD, function(x) which(x[,"t.stat"] >= covar.thresh))
     covar.names <- unique(unlist(lapply(covar.which, function(x) names(x))))
-    browser()
     new.covar.locale <- get.marker.idx(data.obj, covar.names)
     new.covar <- geno.mat[,new.covar.locale,drop=FALSE]
     dimnames(new.covar)[[3]] <- covar.names

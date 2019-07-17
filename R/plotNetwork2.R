@@ -216,7 +216,6 @@ plotNetwork2 <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main = 
     zoomed.coord[,1] <- zoomed.coord[,1] + xshift
     zoomed.coord[,2] <- zoomed.coord[,2] + yshift
     
-    
     block.alleles <- sapply(V(net)$name, function(x) get.block.allele(data.obj, x, collapsed.net))
     allele.cols <- get.allele.colors(color.scheme, unique(block.alleles))
     block.cols <- allele.cols[match(block.alleles, allele.cols[,2]), 3]

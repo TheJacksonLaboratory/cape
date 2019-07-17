@@ -84,15 +84,13 @@ pairscan <- function(data.obj, geno.obj = NULL,
                      num.pairs.limit = 1e6, num.perm.limit = 1e7, overwrite.alert = TRUE, 
                      run.parallel = TRUE, n.cores = 4, gene.list = NULL, verbose = FALSE) {
   
-  organism <- data.obj$organism
   marker.selection.method <- data.obj$marker_selection_method
-  bp.buffer <- data.obj$bp_buffer
   
   if(!run.parallel){n.cores = 1}
   
   if(is.null(kin.obj)){use.kinship = FALSE}
   if(!is.null(kin.obj)){use.kinship = TRUE}
-  data.obj$use.kinship <- use.kinship
+  data.obj$use_kinship <- use.kinship
   
   
   if(overwrite.alert){
@@ -113,20 +111,14 @@ pairscan <- function(data.obj, geno.obj = NULL,
   }
   
   pheno <- get.pheno(data.obj, scan.what)	
-  num.pheno <- dim(pheno)[2]
-  pheno.names <- colnames(pheno)
   
   covar.info <- get.covar(data.obj)
   covar.names <- covar.info$covar.names
-  covar.type <- covar.info$covar.type
   covar.table <- covar.info$covar.table
   
   #find the phenotypic covariates. These will
   #be tested separately, and not as part of a
   #chromosome
-  num.covar <- length(covar.names)
-  p.covar.locale <- which(covar.type == "p")
-  num.p.covar <- length(p.covar.locale)
   
   if(is.null(data.obj$geno_for_pairscan)){
     stop("select.markers.for.pairscan() must be run before pairscan()")
@@ -138,7 +130,6 @@ pairscan <- function(data.obj, geno.obj = NULL,
   #test all pairs
   gene <- get.geno.with.covar(data.obj, geno.obj, g.covar = TRUE, p.covar = TRUE, 
                               for.pairscan = TRUE)	
-  num.markers <- dim(gene)[2]
   
   #fill in a matrix to index the marker pairs
   if(verbose){cat("Getting marker pairs for pairscan...\n")}
@@ -174,7 +165,7 @@ pairscan <- function(data.obj, geno.obj = NULL,
   #run one.pairscan for each phenotype with results in scanone.result
   if(!use.kinship){
     pairscan.results <- pairscan.noKin(data.obj, pheno.mat = pheno, 
-                                       geno.mat = gene, covar.table = covar.table, paired.markers = pared.marker.mat, 
+                                       geno.mat = gene, covar.table = covar.table, marker.pairs = pared.marker.mat, 
                                        n.perm = pairscan.null.size, verbose = verbose, n.cores = n.cores, 
                                        run.parallel = run.parallel)
   }else{

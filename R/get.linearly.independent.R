@@ -19,7 +19,6 @@ get.linearly.independent <- function(data.obj, verbose = FALSE){
   }
   
   #use precision to the 3rd decimal place
-  orig.matrixX <- matrixX
   matrixX <- round(matrixX, 3)
   
   #find the markers without variation

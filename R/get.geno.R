@@ -49,7 +49,6 @@ get.geno <- function(data.obj, geno.obj){
   
   #check for NAs, meaning the locus from the data object cannot be
   #found in the genotyope object
-  na.locale <- which(is.na(locus.locale))
   locus.locale <- locus.locale[which(!is.na(locus.locale))]
   
   gene <- geno[ind.locale, allele.locale, locus.locale]

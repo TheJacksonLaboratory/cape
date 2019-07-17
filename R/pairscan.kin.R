@@ -55,13 +55,17 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
     }
     
     int.term = matrix(solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]], ncol = 1)
-    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, genotype.matrix = new.geno, int = int.term, covar.vector = new.covar, paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, run.parallel = FALSE, n.cores = n.cores)
+    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno,
+                                              genotype.matrix = new.geno, int = int.term, covar.vector = new.covar, 
+                                              paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, 
+                                              run.parallel = FALSE, n.cores = n.cores)
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)
       dummyV <- c(marker.num, rep(NA, 3))
       results <- list("effects" = dummyV, "se" = dummyV, "cov" = c(dummyV, rep(NA, 4)))
     }else{
-      results <- list("effects" = pairscan.results[[1]]$pairscan.effects, "se" = pairscan.results[[1]]$pairscan.se, "cov" = pairscan.results[[1]]$model.covariance)
+      results <- list("effects" = pairscan.results[[1]]$pairscan.effects, "se" = pairscan.results[[1]]$pairscan.se, 
+                      "cov" = pairscan.results[[1]]$model.covariance)
     }
     return(results)
   }

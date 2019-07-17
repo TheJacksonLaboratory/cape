@@ -81,10 +81,6 @@ impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.t
     }	
   }
   
-  
-  marker.names <- dimnames(new.geno)[[3]]
-  ind.names <- rownames(new.geno)
-  
   num.sections <- length(seq(1, dim(new.geno)[2], max.region))
   geno.chunks <- vector(mode = "list", length = num.sections)
   

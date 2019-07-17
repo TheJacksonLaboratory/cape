@@ -64,8 +64,7 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
   
   gene <- get.geno(data.obj, geno.obj)
   
-  #Get the dimension names to minimize confusion	
-  mouse.dim <- which(names(dimnames(gene)) == "mouse")
+  #Get the dimension names to minimize confusion
   locus.dim <- which(names(dimnames(gene)) == "locus")
   allele.dim <- which(names(dimnames(gene)) == "allele")
   
@@ -120,15 +119,6 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
     #gather the t statistics for all alleles
     t.stats <- model.coef[2:dim(model.coef)[1], 3]
     return(as.vector(t.stats))
-  }
-  
-  get.stat <- function(regression){
-    if(dim(summary(regression)$coefficients)[1] == 2){
-      stat <- summary(regression)$coefficients[2,1]/summary(regression)$coefficients[2,2]
-    }else{
-      stat <- NA
-    }
-    return(stat)
   }
   
   get.s <- function(evd.result, alpha){

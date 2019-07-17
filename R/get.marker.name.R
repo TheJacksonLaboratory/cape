@@ -13,7 +13,7 @@ get.marker.name <- function(data.obj, markers){
   }
   
   is.char <- as.logical(is.na(suppressWarnings(as.numeric(markers[1]))))
-  marker.names <- data.obj$geno.names[[3]]
+  marker.names <- data.obj$geno_names[[3]]
   
   
   if(is.char){
