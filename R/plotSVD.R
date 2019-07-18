@@ -193,7 +193,6 @@ plotSVD <- function(data.obj, orientation = c("vertical", "horizontal"), neg.col
     
     #2) plot the barplot
     par(mar = c(0, 0, 4, 2))
-    mids <- barplot(var.accounted, plot = FALSE)
     a <- barplot(var.accounted, names = "", horiz = FALSE, cex.axis = cex.barplot.axis, cex.lab = cex.barplot.labels, ylab = "% Total Var.")
     if(show.var.accounted){
       par(xpd = TRUE)

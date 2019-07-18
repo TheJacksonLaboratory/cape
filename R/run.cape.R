@@ -207,6 +207,7 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
                                min.per.genotype = min.per.genotype, max.pair.cor = max.pair.cor, verbose = verbose, 
                                num.pairs.limit = Inf, overwrite.alert = FALSE, run.parallel = run.parallel, 
                                n.cores = n.cores, gene.list = gene.list, kin.obj = kin.obj)
+      
       saveRDS(pairscan.obj, pairscan.file)
       
       plotPairscan(data.obj, pairscan.obj, phenotype = NULL, pdf.label = "Pairscan.Regression.pdf", 

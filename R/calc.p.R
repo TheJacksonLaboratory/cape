@@ -70,7 +70,7 @@ calc.p <- function(data.obj, pval.correction = c("holm", "hochberg", "hommel", "
   colnames(final.table)[c(6,7)] <- c("P_empirical", "p.adjusted")
   final.table <- final.table[order(as.numeric(final.table[,"|Effect|/SE"]), decreasing = TRUE),]
   
-  data.obj$var.to.var.p.val <- final.table
+  data.obj$var_to_var_p_val <- final.table
   
   return(data.obj)
 }

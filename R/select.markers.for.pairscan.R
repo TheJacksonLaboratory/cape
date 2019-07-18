@@ -42,8 +42,6 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     data.obj$marker_selection_method <- "from.list"	
   }
   
-  cols <- c("grey", "white")	
-  
   geno <- get.geno(data.obj, geno.obj)
   alleles <- dimnames(geno)[[2]]
   n.alleles <- length(alleles)
@@ -79,7 +77,6 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
       just.markers <- sapply(split.markers, function(x) x[1])
       geno.for.pairscan <- geno[,other.allele,just.markers]
       colnames(geno.for.pairscan) <- paste(colnames(geno.for.pairscan), data.obj$geno_names[[2]][other.allele], sep = "_")
-      data.obj$geno_for_pairscan <- geno.for.pairscan
     }else{
       split.markers <- strsplit(specific.markers, "_")
       just.markers <- sapply(split.markers, function(x) x[1])
@@ -241,7 +238,6 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
       total.bins <- matrix(total.bins, ncol = ncol(chr.bins))
       allele.bins[[ph]] <- rbind(allele.bins[[ph]], total.bins)
     }
-    
   }
   #===============================================================
   
@@ -290,7 +286,6 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     for(ph in 1:dim(results.no.covar)[[2]]){
       # quartz(width = 11, height = 7)
       pheno.results <- results.no.covar[,ph,,drop=FALSE]
-      throw.out <- apply(pheno.results, 2, function(x) bin.curve(x, plot.peaks = plot.peaks, window.size = window.size)$bins)
     }
   }
   

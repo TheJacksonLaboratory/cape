@@ -22,7 +22,7 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
                            include.covars = TRUE, show.selected = FALSE, line.type = "l", lwd = 1,
                            pch = 16, cex = 1, covar.label.size = 0.7){
   
-  geno.names <- data.obj$geno.names
+  geno.names <- data.obj$geno_names
   
   if(is.null(chr)){
     chr <- sort(as.numeric(unique(data.obj$chromosome)))
@@ -42,12 +42,8 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
   covar.info <- get.covar(data.obj)
   covar.names <- covar.info$covar.names
   
-  
   #Get the dimension names to minimize confusion	
-  mouse.dim <- which(names(geno.names) == "mouse")
-  locus.dim <- which(names(geno.names) == "locus")
   allele.dim <- which(names(geno.names) == "allele")
-  
   
   all.chromosomes <- data.obj$chromosome
   lod.scores <- singlescan.obj$locus.score.scores
@@ -140,7 +136,7 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
   
   
   if(show.selected){
-    ind.markers <- colnames(data.obj$geno.for.pairscan)
+    ind.markers <- colnames(data.obj$geno_for_pairscan)
     if(is.null(ind.markers)){stop("select.markers.for.pairscan() must be run before showing selected markers")}
     ind.loci <- apply(matrix(ind.markers, ncol = 1), 1, function(x) strsplit(x, "_")[[1]][1]) 
     ind.alleles <- apply(matrix(ind.markers, ncol = 1), 1, function(x) strsplit(x, "_")[[1]][2]) 
@@ -221,8 +217,8 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
       }
       
       if(plot.type.label == "t.stat"){
-        lines(x = c(1,num.loci), y = rep(data.obj$pairscan.thresh, 2), lty = 1, col = "darkgray")
-        lines(x = c(1,num.loci), y = rep(data.obj$covar.thresh, 2), lty = 2, col = "darkgray")
+        lines(x = c(1,num.loci), y = rep(data.obj$pairscan_thresh, 2), lty = 1, col = "darkgray")
+        lines(x = c(1,num.loci), y = rep(data.obj$covar_thresh, 2), lty = 2, col = "darkgray")
         # abline(h = data.obj$covar.thresh, lty = 2, col = "darkgray")
         par(xpd = TRUE)
         if(length(alpha.to.use) > 0){
@@ -243,8 +239,6 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
     mtext(phenos.scanned[i], outer = TRUE, line = -3, cex = 2)
     
     if(plot.type.label == "t.stat"){
-      # TODO find out why the legend entries are missing
-      browser()  # 'legend' is of length 0 
       legend(x = 0, y = ylim[2]+yrange*0.15, legend = used.alleles, col = allele.colors[,3], lty = 1, lwd = 3, xpd = TRUE, horiz = TRUE)
     }
     

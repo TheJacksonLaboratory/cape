@@ -6,6 +6,18 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
                           label.gap = 5, positive.col = "brown", negative.col = "blue", show.alleles = TRUE, 
                           allele.labels = NULL){
   
+  if(collapsed.net){
+    adj.mat <- data.obj$collapsed_net
+    blocks <- data.obj$linkage_blocks_collapsed
+  }else{
+    adj.mat <- data.obj$full_net
+    blocks <- data.obj$linkage_blocks_full
+  }
+  
+  if(is.null(adj.mat)){
+    stop("get.network() must be run before plotting the collapsed network.")
+  }
+  
   pos.col <- get.color(positive.col)[3]
   neg.col <- get.color(negative.col)[3]
   
@@ -16,7 +28,7 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
   chr.rel.length <- c(1)
   
   all.chr <- data.obj$chromosome
-  all.pos <- data.obj$marker.location
+  all.pos <- data.obj$marker_location
   all.pos[which(all.pos == 0)] <- 1 #we can't place markers as position 0. Change any 0s to 1.
   chr <- unique(all.chr)
   num.true.chr = length(chr)
@@ -52,10 +64,9 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
   # internal functions
   #============================================================================================
   
-  
-  get.block.coord <- function(radius.coord, start, pts.per.chr, block.rel.locale){
-    coord.x <- radius.coord$x[start:(start+pts.per.chr[i]-1)] #get the relative x and y coordinates for the block
-    coord.y <- radius.coord$y[start:(start+pts.per.chr[i]-1)]
+  get.block.coord <- function(radius.coord, start, pts.per.chr, block.rel.locale, idx, chr.blocks.locale, ch){
+    coord.x <- radius.coord$x[start:(start+pts.per.chr[idx]-1)] #get the relative x and y coordinates for the block
+    coord.y <- radius.coord$y[start:(start+pts.per.chr[idx]-1)]
     x.coord <- coord.x[round(length(coord.x)*as.numeric(block.rel.locale[2])):round(length(coord.x)*as.numeric(block.rel.locale[3]))]
     y.coord <- coord.y[round(length(coord.x)*as.numeric(block.rel.locale[2])):round(length(coord.y)*as.numeric(block.rel.locale[3]))]
     return(cbind(rep(names(chr.blocks.locale)[ch], length(x.coord)), x.coord, y.coord))
@@ -65,7 +76,7 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
   get.chr.pos <- function(block){
     split.names <- strsplit(block, "_")
     just.locus <- unlist(lapply(split.names, function(x) x[1]))
-    marker.locale <- which(data.obj$geno.names[[3]] %in% just.locus)
+    marker.locale <- which(data.obj$geno_names[[3]] %in% just.locus)
     if(length(marker.locale) == 0){ #if this marker isn't in the names, it's probably a covariate
       #look in the covariates
       marker.locale <- which(covar.names == block)
@@ -82,16 +93,7 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
     return(c(chr, min.pos/total.length, max.pos/total.length))
   }
   
-  get.block.effect <- function(block){
-    effects <- rep(NA, length(var.to.pheno)); names(effects) <- names(var.to.pheno)
-    marker.locale <- lapply(var.to.pheno, function(x) match(block, rownames(x)))
-    for(i in 1:length(marker.locale)){
-      effects[i] <- mean(var.to.pheno[[i]][marker.locale[[i]], "|t.stat|"])
-    }
-    return(effects)	
-  }
-  
-  get.block.col <- function(block){
+  get.block.col <- function(block, allele.colors){
     markers <- blocks[[block]]
     #blocks are split by allele, so we only need to look at the first entry
     allele <- strsplit(markers, "_")[[1]][2]
@@ -104,17 +106,9 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
   
   #get coordinates for the concentric circles we will use
   chr.radius <- get.circle(radius, dens = circle.dens) #circle for chromosomes
-  # plot(chr.radius$x, chr.radius$y, cex = 0.5)
   
   #these need to change if we are showing allele colors
   inner.bar.radius = get.circle(radius*0.98, dens = circle.dens) #circle for chr blocks if no alleles are shown
-  # points(inner.bar.radius$x, inner.bar.radius$y, col = "red", cex = 0.5)
-  
-  inter.radius = get.circle(radius*0.96, dens = circle.dens) #circle for interactions to point at
-  # points(inter.radius$x, inter.radius$y, col = "blue", cex = 0.5)
-  
-  bend.to.radius = get.circle(radius/2, dens = circle.dens) #circle for interaction arrows to bend toward
-  # points(bend.to.radius$x, bend.to.radius$y, col = "green", cex = 0.5)
   
   #divide into chromosomes
   num.chr = length(chr)
@@ -125,20 +119,6 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
   full.length <- length(chr.radius$x) - (gap*num.chr) - label.gap
   full.chr <- rel.length*(1/sum(rel.length))
   pts.per.chr <- floor(full.length*full.chr)
-  
-  
-  if(collapsed.net){
-    adj.mat <- data.obj$collapsed.net
-    blocks <- data.obj$linkage.blocks.collapsed
-  }else{
-    adj.mat <- data.obj$full.net
-    blocks <- data.obj$linkage.blocks.full
-  }
-  
-  if(is.null(adj.mat)){
-    stop("get.network() must be run before plotting the collapsed network.")
-  }
-  
   
   if(!is.null(marker.pairs)){
     source.chr <- names(blocks)[sapply(marker.pairs[,1], function(x) grep(x, blocks))]
@@ -154,47 +134,37 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
   
   
   if(collapsed.net){
-    blocks <- data.obj$linkage.blocks.collapsed
+    blocks <- data.obj$linkage_blocks_collapsed
     #remove the blocks that were never tested
     not.tested <- setdiff(names(blocks), rownames(adj.mat))
     if(length(not.tested) > 0){
       not.tested.locale <- match(not.tested, names(blocks))
       blocks <- blocks[-not.tested.locale]
-      data.obj$collapsed.net <- blocks
+      data.obj$collapsed_net <- blocks
     }
   }else{
-    blocks <- data.obj$linkage.blocks.full	
+    blocks <- data.obj$linkage_blocks_full	
     #remove the blocks that were never tested
     not.tested <- setdiff(names(blocks), rownames(adj.mat))
     if(length(not.tested) > 0){
       not.tested.locale <- match(not.tested, names(blocks))
       blocks <- blocks[-not.tested.locale]
-      data.obj$full.net <- blocks
+      data.obj$full_net <- blocks
     }
   }
-  
-  
-  
-  all.markers <- as.vector(unlist(blocks))
-  
   
   chr.pos <- t(sapply(blocks, get.chr.pos))
   colnames(chr.pos) <- c("chromosome", "min.position", "max.position")
   
   
-  #get the average effect size for the var to 
-  #pheno effects for each block
-  var.to.pheno <- data.obj$max.var.to.pheno.influence
-  
-  
   #and each phenotype
   if(is.null(trait)){
-    pheno <- names(data.obj$max.var.to.pheno.influence)				
+    pheno <- names(data.obj$max_var_to_pheno_influence)				
   }else{
     pheno <- trait
-    trait.locale <- which(trait %in% names(data.obj$max.var.to.pheno.influence))
+    trait.locale <- which(trait %in% names(data.obj$max_var_to_pheno_influence))
     if(length(trait.locale) < length(trait)){
-      not.found <- which(!trait %in% names(data.obj$max.var.to.pheno.influence))
+      not.found <- which(!trait %in% names(data.obj$max_var_to_pheno_influence))
       message("I couldn't find the following traits:")
       cat(trait[not.found], sep = "\n")
       return()
@@ -220,13 +190,9 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
   
   #also get circles and colors for the different 
   #alleles if we are going to show them
-  alleles <- unique(sapply(strsplit(colnames(data.obj$geno.for.pairscan), "_"), function(x) x[2]))
+  alleles <- unique(sapply(strsplit(colnames(data.obj$geno_for_pairscan), "_"), function(x) x[2]))
   if(show.alleles){
     allele.colors <- get.allele.colors(color.scheme, alleles)
-    allele.names <- allele.colors[,1]
-    allele.labels <- allele.colors[,2]
-    
-    allele.circ <- get.concent.circ(allele.names, start.rad = new.start.rad, gap.rad = gap.rad)
   }
   
   
@@ -289,12 +255,12 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
           
           if(main.effects[ph] != 0){ #if there are significant effects of this block, add them to the circle
             if(show.alleles && names(chr)[i] == "chr"){
-              trait.col <- get.block.col(names(chr.blocks.locale)[ch])
+              trait.col <- get.block.col(names(chr.blocks.locale)[ch], allele.colors = allele.colors)
             }else{
               if(main.effects[ph] < 0){trait.col = neg.col}else{trait.col = pos.col}
             }
             
-            block.coord <- get.block.coord(radius.coord = trait.circ[[ph]], start, pts.per.chr, block.rel.locale)
+            block.coord <- get.block.coord(radius.coord = trait.circ[[ph]], start, pts.per.chr, block.rel.locale, i, chr.blocks.locale, ch)
             if(nrow(block.coord) > 1){
               points(as.numeric(block.coord[,2]), as.numeric(block.coord[,3]), type = "l", lwd = main.lwd, col = trait.col)
             }else{
@@ -303,8 +269,9 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
           }
           
           #collect positions of the blocks for polygons and inner target bars on slightly smaller circles
-          block.coord.table <- rbind(block.coord.table, get.block.coord(inter.radius, start, pts.per.chr, block.rel.locale))
-          inner.bar.coord.table <- rbind(inner.bar.coord.table, get.block.coord(inner.bar.radius, start, pts.per.chr, block.rel.locale))
+          block.coord <- get.block.coord(inner.bar.radius, start, pts.per.chr, block.rel.locale, i, chr.blocks.locale, ch)
+          block.coord.table <- rbind(block.coord.table, block.coord)
+          inner.bar.coord.table <- rbind(inner.bar.coord.table, block.coord)
           
         } #end looping through phenotypes
       } #end looping through blocks
@@ -363,8 +330,6 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
         end.mat <- matrix(c(end.inter.x[1], end.inter.y[1], end.inter.x[length(end.inter.x)], end.inter.y[length(end.inter.y)]), ncol = 2, byrow = TRUE)
         rownames(start.mat) <- c("dist.start.min", "dist.start.max") 
         rownames(end.mat) <- c("dist.end.min", "dist.end.max") 
-        start.dist <- order(apply(start.mat, 1, function(x) dist(matrix(c(x, center.x, center.y), ncol = 2, byrow = TRUE))))
-        end.dist <- order(apply(end.mat, 1, function(x) dist(matrix(c(x, center.x, center.y), ncol = 2, byrow = TRUE))))
         
         #add a bar to indicate the block at the source end of the interaction
         start.bar.coord <- inner.bar.coord.table[which(inner.bar.coord.table[,1] == start.block),,drop=FALSE]

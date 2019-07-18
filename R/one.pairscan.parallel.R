@@ -19,7 +19,8 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
   if(!run.parallel){n.cores = 1}		
   
   m = p = NULL #for appeasing R CMD check
-  covar.names <- get.covar(data.obj)$covar_names
+  covar.names <- get.covar(data.obj)$covar.names  # don't change this to underscore notation!
+  
   #============================================================================
   # check to see that the covariates are not redundant and are linearly independent
   #============================================================================
@@ -109,7 +110,6 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
     if(length(which(is.na(coefficients(model)))) > 0){ 
       return(NULL)
     }
-    
     
     #take the last 3 terms
     keep.results <- tail(1:length(coef(model)), 3)
@@ -257,7 +257,6 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
       for (p in index) {
         perm.results <- rbind(perm.results, one.perm(p))
       }
-      
     }
     
     #also make variables to hold the permutation results
@@ -270,7 +269,6 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
     colnames(all.model.effects.perm) <- colnames(all.model.se.perm) <- column.names			
     rm(perm.results)
     
-    
     colnames(marker.pairs.used.perm) <- c("marker1", "marker2")
     final.effects.table.perm <- cbind(marker.pairs.used.perm, all.model.effects.perm)
     final.se.table.perm <- cbind(marker.pairs.used.perm, all.model.se.perm)	
@@ -282,7 +280,6 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
     phenotype.perm.results <- NULL
   }
   
-  
   final.results <- list(phenotype.results, phenotype.perm.results)
   names(final.results) <- c("pairscan.results", "pairscan.perm")
   
@@ -290,8 +287,6 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
     cat("\n") #make sure the prompt is on the next line at the end of everything
   }
   
-  
   return(final.results)
-  
   
 }

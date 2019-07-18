@@ -83,10 +83,8 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
   all.pairs.tested <- NULL
   
   n.top.markers <- ncol(data.obj$geno.for.pairscan)
-  null.markers <- matrix(NA, ncol = 1, nrow = n.top.markers*num.pheno)
   final.perm <- 1
   while(final.perm < pairscan.null.size){
-    start.marker = 1
     perm.order <- sample(1:dim(pheno)[1])
     
     

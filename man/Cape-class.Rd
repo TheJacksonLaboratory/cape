@@ -89,6 +89,8 @@ if error propogation is performed on un-permuted test statistics}
 \item{\code{collapsed_net}}{see \code{\link{get.network}}}
 
 \item{\code{full_net}}{see \code{\link{get.network}}}
+
+\item{\code{use_kinship}}{boolean}
 }}
 
 \keyword{datasets}

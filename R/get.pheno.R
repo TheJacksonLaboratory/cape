@@ -41,8 +41,6 @@ get.pheno <- function(data.obj, scan.what = c("eigentraits", "normalized.traits"
   pheno <- data.obj[[el.idx]]
   
   if(!is.null(covar)){
-    covar.info <- get.covar(data.obj)
-    covar.locale <- which(covar.info$covar.names %in% covar)
     models <- apply(pheno, 2, function(x) lm(x~covar.info$covar.table[,covar.locale,drop=FALSE]))
     resids <- lapply(models, residuals)
     resid.table <- t(matrix(unlist(resids, use.names = FALSE), byrow = TRUE))

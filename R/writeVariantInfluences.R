@@ -20,8 +20,8 @@ writeVariantInfluences <- function(data.obj, p.or.q = 0.05, include.main.effects
                                    filename = "Variant.Influences.csv", delim = ",", 
                                    mark.covar = FALSE, write.file = TRUE){
   
-  var.influences <- data.obj$var.to.var.p.val
-  pheno.results <- data.obj$max.var.to.pheno.influence
+  var.influences <- data.obj$var_to_var_p_val
+  pheno.results <- data.obj$max_var_to_pheno_influence
   pheno.names <- names(pheno.results)
   
   if(is.null(var.influences)){

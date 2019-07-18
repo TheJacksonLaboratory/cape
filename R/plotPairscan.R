@@ -105,7 +105,6 @@ plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized 
     }
     
     #create symetric matrices with the values
-    browser()
     net <- graph.edgelist(pairscan.result[[p]][[1]][,1:2])
     E(net)$weight <- pair.int
     results.mat <- as.matrix(as_adjacency_matrix(net, attr = "weight"))

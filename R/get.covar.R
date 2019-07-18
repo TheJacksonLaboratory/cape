@@ -38,8 +38,6 @@ get.covar <- function(data.obj){
 		covar.names <- c(data.obj$p_covar, data.obj$g_covar[1,])
 		p.covar.loc <- NULL
 		g.covar.loc <- NULL
-		p.covar.table <- NULL
-		g.covar.table <- NULL
 				
 		p.covar.locale <- which(covar.type == "p")
 		g.covar.locale <- which(covar.type == "g")

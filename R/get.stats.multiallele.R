@@ -104,7 +104,6 @@ get.stats.multiallele <- function(phenotype, genotype, covar.table, ph.family, r
     
     #if we are testing one of the covariates, the structure of the results is different
     #only fill in results for the A allele, all the others are the same
-    num.covar <- ncol(corrected.covar)
     if(length(covar.which) > 0){ 
       slopes <- c(rep(model.coef[coef.locale, 1], dim(geno.mat)[2]))
       ses <- c(rep(model.coef[coef.locale, 2], dim(geno.mat)[2]))

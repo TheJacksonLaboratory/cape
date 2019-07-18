@@ -125,6 +125,6 @@ plink2qtl <- function(ped = "test.ped", map = "test.map", out = "out.csvr", miss
   write.table(out.csvr, file = out, row.names=FALSE, col.names=FALSE,quote=FALSE, sep=",")
   
   # load the file using R/qtl's read.cross function (somewhere we need to make sure that the qtl library is available)
-  return (read.cross(file=out, "csvr", genotypes=c(1,2,3)))
+  return (qlt::read.cross(file=out, "csvr", genotypes=c(1,2,3)))
 }
 

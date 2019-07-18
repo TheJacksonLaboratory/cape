@@ -41,7 +41,6 @@ linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, thr
   geno.names <- data.obj$geno_names
   marker.names <- geno.names[[3]]
   net.data <- data.obj$var_to_var_p_val
-  pheno.net.data <- data.obj$max_var_to_pheno_influence
   
   
   if(length(net.data) == 0){
@@ -124,22 +123,6 @@ linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, thr
     chr.cor <- cor(chr.geno, use = "complete.obs")
     return(chr.cor)
   }
-  
-  add.chr.blocks <- function(link.blocks, new.blocks){
-    chr.block.num <- 1
-    if(is.null(link.blocks[[1]])){
-      num.blocks = 1
-    }else{
-      num.blocks = length(link.blocks) + 1	
-    }		
-    for(i in 1:length(new.blocks)){
-      link.blocks[[num.blocks]] <- new.blocks[[i]]
-      names(link.blocks)[num.blocks] <- names(new.blocks)[i]
-      num.blocks <- num.blocks + 1
-    }
-    return(link.blocks)
-  }
-  
   
   #========================================================================================
   # end internal functions
@@ -227,8 +210,6 @@ linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, thr
         num.blocks <- num.blocks + 1
       }else{ #otherwise, step through the communities and add each one as a block
         #making sure that different alleles are not grouped together
-        chr.marker.locale <- which(all.marker.chr == ch)
-        # chr.markers <- all.marker.names[chr.marker.locale]
         
         #for each block on the chromosome
         for(cm in 1:(length(cm.changes)+1)){

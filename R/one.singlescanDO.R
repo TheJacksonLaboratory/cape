@@ -48,6 +48,7 @@ one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.a
   #=====================================================================
   
   #apply the modeling function to each marker column
+  # !diagnostics suppress=m
   if (run.parallel) {
     
     cl <- parallel::makeCluster(n.cores)

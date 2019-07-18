@@ -131,33 +131,6 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, p
     }
   }
   
-  #This function replaces a row or column in a 
-  #matrix with another matrix. If adding rows,
-  #the two matrices must match in the number 
-  #of columns
-  replace.row.col <- function(orig.matrix, replace.matrix, row.col.num, row.or.col){
-    if(row.or.col == "row"){
-      orig.before <- orig.matrix[1:(min(row.col.num)-1),]
-      if(max(row.col.num) < nrow(orig.matrix)){
-        orig.after <- orig.matrix[(max(row.col.num)+1):nrow(orig.matrix), ]
-      }else{
-        orig.after <- NULL
-      }
-      new.mat <- rbind(orig.before, replace.matrix, orig.after)
-      return(new.mat)
-    }
-    if(row.or.col == "col"){
-      orig.before <- orig.matrix[,1:(min(row.col.num)-1)]
-      if(max(row.col.num) < nrow(orig.matrix)){
-        orig.after <- orig.matrix[,(max(row.col.num)+1):nrow(orig.matrix)]
-      }else{
-        orig.after <- NULL
-      }
-      new.mat <- cbind(orig.before, replace.matrix, orig.after)
-      return(new.mat)
-    }
-  }
-  
   if(all.markers){
     unique.markers <- geno.names[[3]]
   }else{
@@ -168,11 +141,11 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, p
   unique.marker.locale <- match(just.markers, marker.names)		
   sorted.markers <- unique.markers[order(unique.marker.locale)]
   
-  if(show.alleles){	
+  if(show.alleles){
+    # TODO non-character argument 
+    # the following line only breaks when running the code for a second time (reading in the data.obj)
     alleles <- unique(sapply(strsplit(colnames(data.obj$geno_for_pairscan), "_"), function(x) x[2]))
     allele.colors <- get.allele.colors(color.scheme, alleles)
-    allele.names <- allele.colors[,1]
-    allele.labels <- allele.colors[,2]
     all.alleles <- unlist(lapply(strsplit(sorted.markers, "_"), function(x) x[2]))
     allele.cols <- allele.colors[match(all.alleles, alleles),3]
   }else{
