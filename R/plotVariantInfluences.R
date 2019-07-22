@@ -142,8 +142,6 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, p
   sorted.markers <- unique.markers[order(unique.marker.locale)]
   
   if(show.alleles){
-    # TODO non-character argument 
-    # the following line only breaks when running the code for a second time (reading in the data.obj)
     alleles <- unique(sapply(strsplit(colnames(data.obj$geno_for_pairscan), "_"), function(x) x[2]))
     allele.colors <- get.allele.colors(color.scheme, alleles)
     all.alleles <- unlist(lapply(strsplit(sorted.markers, "_"), function(x) x[2]))

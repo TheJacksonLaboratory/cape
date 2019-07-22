@@ -26,9 +26,17 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
                      n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
                      error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE){
   
-  data.obj <- compare.markers(data.obj, geno.obj)
-  
   results.base.name <- gsub(".RData", "", results.file)
+  
+  # check for an existing data.obj CAPE object 
+  cape.file.name <- paste0(results.base.name, ".RData")
+  
+  # since this is the main data.obj, we can't allow it to return FALSE, check for the file first
+  if (file.exists(file.path(data.obj$results_path, cape.file.name))) {
+    data.obj <- data.obj$read_rds(cape.file.name)
+  } else {
+    data.obj <- compare.markers(data.obj, geno.obj)
+  }
   
   #===============================================================
   # figure out how to synchronize get.eigentraits and
@@ -39,9 +47,9 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
   #if we want to use a kinship correction
   if(as.logical(data.obj$use_kinship)){
     kin.file.name <- paste0(results.base.name, "_kinship.RData")
-    kin.file <- data.obj$read_rds(kin.file.name)
+    kin.obj <- data.obj$read_rds(kin.file.name)
     
-    if (isFALSE(kin.file)) {
+    if (isFALSE(kin.obj)) {
       #if there isn't a kinship object already, we need to make one
       geno <- get.geno(data.obj, geno.obj)
       missing.vals <- which(is.na(geno))
@@ -168,7 +176,7 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
   
   pairscan.obj <- data.obj$read_rds(pairscan.file)
   
-  if (isFALSE(pairscan.obj)) {
+  if (isFALSE(pairscan.obj) | is.null(data.obj$geno_for_pairscan)) {
     
     if (run.pairscan) {
       
@@ -216,11 +224,7 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
       
       data.obj$save_rds(data.obj, results.file)
     } 
-    
   }
-  
-  
-  
   
   #===============================================================
   # run reprametrization
@@ -238,7 +242,7 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
   
   data.obj <- calc.p(data.obj, pval.correction = data.obj$pval_correction)
   
-  if(length(grep("e", scan.what, ignore.case = TRUE)) > 0){
+  if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
     transform.to.phenospace <- TRUE
   }else{
     transform.to.phenospace <- FALSE	

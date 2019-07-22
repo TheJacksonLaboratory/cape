@@ -247,7 +247,7 @@ Cape <- R6::R6Class(
         "jpeg" = jpeg(full.path, res = 300, width = 7, height = 7, units = "in"),
         "jpg" = jpeg(full.path, res = 300, width = 7, height = 7, units = "in")
       )
-      plotSVD(data.obj, orientation = "vertical", show.var.accounted = TRUE)
+      plotSVD(self, orientation = "vertical", show.var.accounted = TRUE)
       dev.off()
       
     },
