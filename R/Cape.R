@@ -238,17 +238,82 @@ Cape <- R6::R6Class(
     },
     plot_svd = function(filename) {
       
-      svd.file <- file.path(self$results_path, filename)
+      full.path <- file.path(self$results_path, filename)
+      
       switch(
         tolower(tools::file_ext(filename)),
-        "pdf" = pdf(svd.file, width = 7, height = 7),
-        "png" = png(svd.file, res = 300, width = 7, height = 7, units = "in"),
-        "jpeg" = jpeg(svd.file, res = 300, width = 7, height = 7, units = "in"),
-        "jpg" = jpeg(svd.file, res = 300, width = 7, height = 7, units = "in")
+        "pdf" = pdf(full.path, width = 7, height = 7),
+        "png" = png(full.path, res = 300, width = 7, height = 7, units = "in"),
+        "jpeg" = jpeg(full.path, res = 300, width = 7, height = 7, units = "in"),
+        "jpg" = jpeg(full.path, res = 300, width = 7, height = 7, units = "in")
       )
       plotSVD(data.obj, orientation = "vertical", show.var.accounted = TRUE)
       dev.off()
       
+    },
+    plot_singlescan = function(filename, singlescan.obj, width = 20, height = 6, units = "in", res = 300, 
+                               standardized = TRUE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE, 
+                               line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = NULL) {
+      
+      full.path <- file.path(self$results_path, filename)
+      
+      jpeg(full.path, width = width, height = height, units = units, res = res)
+      plotSinglescan(self, singlescan.obj = singlescan.obj, standardized = standardized, allele.labels = allele.labels, 
+                     alpha = alpha, include.covars = include.covars, line.type = line.type, pch = pch, cex = cex, 
+                     lwd = lwd, traits = traits)
+      dev.off()
+      
+    },
+    plot_pairscan = function(filename, pairscan.obj, phenotype = NULL, 
+                             show.marker.labels = TRUE, show.alleles = FALSE) {
+      
+      # filename is usually "Pairscan.Regression.pdf"
+      
+      full.path <- file.path(self$results_path, filename)
+      
+      plotPairscan(self, pairscan.obj, phenotype = phenotype, pdf.label = full.path, 
+                   show.marker.labels = show.marker.labels, show.alleles = show.alleles)
+      
+    },
+    plot_variant_influences = function(filename, width = 10, height = 7,
+                                       p.or.q = p.or.q, standardize = FALSE, 
+                                       not.tested.col = "lightgray", 
+                                       covar.width = 30, pheno.width = 30) {
+      
+      full.path <- file.path(self$results_path, filename)
+      
+      pdf(full.path, width = width, height = height)
+      plotVariantInfluences(self, p.or.q = p.or.q, standardize = FALSE, 
+                            not.tested.col = "lightgray", 
+                            covar.width = 30, pheno.width = 30)
+      dev.off()
+      
+    },
+    plot_network_do = function(filename, label.gap = 10, label.cex = 1.5, show.alleles = FALSE) {
+      
+      full.path <- file.path(self$results_path, filename)
+      
+      pdf(full.path)
+      plotNetworkDO(self, label.gap = label.gap, label.cex = label.cex, show.alleles = show.alleles)
+      dev.off()
+    },
+    plot_full_network = function(filename, zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, 
+                                 bg.col = "lightgray", arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
+                                 edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1) {
+      
+      full.path <- file.path(self$results_path, filename)
+      
+      pdf(full.path)
+      plotFullNetwork(self, zoom = zoom, node.radius = node.radius, label.nodes = label.nodes, label.offset = label.offset, label.cex = label.cex, 
+                      bg.col = bg.col, arrow.length = arrow.length, layout.matrix = layout.matrix, legend.position = legend.position, 
+                      edge.lwd = edge.lwd, legend.radius = legend.radius, legend.cex = legend.cex, xshift = xshift)
+      dev.off()
+    },
+    write_variant_influences = function(filename, p.or.q = 0.05) {
+      
+      full.path <- file.path(self$results_path, filename)
+      
+      writeVariantInfluences(self, p.or.q = max(c(p.or.q, 0.2)), filename = full.path)
     },
     set_pheno = function(val) {
       self$pheno <- val
@@ -277,6 +342,19 @@ Cape <- R6::R6Class(
       self$chromosome <- c(self$chromosome, rep(0, length(value)))
       self$marker_location <- c(self$marker_location, 1:length(value))
       invisible(self)
+    },
+    save_rds = function(object, filename) {
+      full.path <- file.path(self$results_path, filename)
+      saveRDS(object, full.path)
+    },
+    read_rds = function(filename) {
+      full.path <- file.path(self$results_path, filename)
+      if (file.exists(full.path)) {
+        return(readRDS(full.path))
+      } else {
+        warning(paste0("File not found: ", full.path))
+        return(FALSE)
+      }
     }
   ),
   lock_objects = FALSE,

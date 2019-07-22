@@ -13,7 +13,7 @@
 #'  the network.
 #' 
 #' 
-plotNetwork2 <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main = NULL, 
+plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main = NULL, 
                          color.scheme = c("DO/CC", "other"), pos.col = "brown", neg.col = "blue", 
                          bg.col = "gray", light.dark = "l", node.border.lwd = 1, layout.matrix = NULL, 
                          zoom = 1, xshift = 0, yshift = 0, node.radius = 1, label.nodes = TRUE, 

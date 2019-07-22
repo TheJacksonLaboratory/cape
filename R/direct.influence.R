@@ -398,8 +398,7 @@ direct.influence <- function(data.obj, pairscan.obj, transform.to.phenospace = T
   
   
   if(save.permutations){
-    file.name <- normalizePath(paste0(path, "/permutation.data.RData"), mustWork = FALSE)
-    saveRDS(intermediate.data, file.name)
+    data.obj$save_rds(intermediate.data, "permutation.data.RData")
   }	
   
   
