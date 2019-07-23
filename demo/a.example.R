@@ -39,7 +39,8 @@ data.obj <- Cape$new(
   marker_num = cross.obj$data.obj$marker_num,
   marker_location = cross.obj$data.obj$marker_location,
   geno_names = dimnames(geno.obj),
-  geno = geno.obj
+  geno = geno.obj,
+  use_kinship = TRUE
 )
 
 # TODO search throughout the code for data.obj[[number]]
