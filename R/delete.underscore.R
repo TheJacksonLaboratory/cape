@@ -8,11 +8,7 @@
 #' @export
 delete.underscore <- function(data.obj, geno.obj = NULL){
   
-  if (is.null(geno.obj)) {
-    geno <- get.geno(data.obj, geno.obj)
-  } else {
-    geno <- geno.obj
-  }
+  geno <- get.geno(data.obj, geno.obj)
   
   marker.names <- data.obj$geno_names[[3]]
   under.locale <- grep("_", marker.names)
