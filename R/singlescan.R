@@ -243,7 +243,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
       if(length(cor.data) > 1){chr.locale <- which(data.obj$chromosome == names(cor.data)[ch])}
       c.geno <- cor.data[[ch]]$corrected.geno[,,chr.locale,drop=FALSE]
       c.pheno <- cor.data[[ch]]$corrected.pheno
-      c.covar <- cor.data[[ch]]$corrected.covar 
+      c.covar <- cor.data[[ch]]$corrected.covar
       
       if (run.parallel) {
         
@@ -273,7 +273,6 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
       
     } #end looping through data corrected by chromosome (loco)
     
-    
     #if there are covariates, run them through too
     if(!is.null(covar.table)){
       cat("\n")
@@ -290,7 +289,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
       c.pheno <- cor.data$corrected.pheno
       c.covar <- cor.data$corrected.covar 
       covar.results <- apply(c.covar, 2, function(x) get.stats.multiallele(c.pheno, x, c.covar, ph.family, ref.col))
-      names(covar.results) <- data.obj$p.covar
+      names(covar.results) <- data.obj$p_covar
       t.stat.array <- add.results.to.array(result.array = t.stat.array, results.list = covar.results, stat.name = "t.stat", is.covar = TRUE)
       effect.array <- add.results.to.array(effect.array, covar.results, "slope", is.covar = TRUE)
       first.na <- min(which(is.na(locus.score.scores[,i])))
