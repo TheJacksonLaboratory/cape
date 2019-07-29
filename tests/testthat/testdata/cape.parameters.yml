@@ -10,16 +10,16 @@ covariates:
 scan_what:
  - eigentraits 
 traits_scaled:
- - TRUE 
+ - true
 traits_normalized:
- - TRUE 
+ - true
 eig_which:
  - 1
  - 2 
 pval_correction:
  - fdr 
 use_kinship:
- - TRUE
+ - true
 kinship_type:
  - overall
 pop:
@@ -28,6 +28,10 @@ locus:
  - char
 organism:
  - mouse
+save_results:
+ - true
+use_saved_results:
+ - true
 
 #================================================
 # Single Scan Parameters 

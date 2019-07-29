@@ -23,7 +23,7 @@
 # }
 
 
-test.data.path <- "/Users/emersj/projects/cape/cape/tests/testthat/testdata"
+test.data.path <- here("/tests/testthat/testdata")
 file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param.file <- file.path(test.data.path, "cape.parameters.yml")
 
@@ -33,7 +33,7 @@ geno.obj <- cross.obj$geno.obj$geno
 
 data.obj <- Cape$new(
   parameter_file = param.file,
-  results_path = "/Users/emersj/projects/cape/cape/results",
+  results_path = here("results"),
   pheno = cross.obj$data.obj$pheno,
   chromosome = cross.obj$data.obj$chromosome,
   marker_num = cross.obj$data.obj$marker_num,
@@ -43,18 +43,9 @@ data.obj <- Cape$new(
   use_kinship = TRUE
 )
 
-# TODO search throughout the code for data.obj[[number]]
-# TODO that call won't work because the data.obj is an environmnet not a list now
-
-# TODO search for all the variables in read.parameters and prepend with "data.obj$"
-# TODO because these are part of the cape object now, and not in the global namespace
-
-# TODO handle all the calls to .RData files with readRDS and come up 
-# TODO with a scheme for controlling their storage and retrival via a cape$method()
-
 # TODO remove all calls to require() and ensure that the libraries are in the DESCRIPTION file
 
-final.cross <- run.cape(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file = "cross.RData",
+final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
                         n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
                         error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE)
 
