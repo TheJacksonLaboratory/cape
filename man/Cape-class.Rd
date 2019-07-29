@@ -21,6 +21,10 @@ parameters}
 \item{\code{results_path}}{string, full path to directory for storing results
 (optional, a directory will be created if one is not specified)}
 
+\item{\code{save_results}}{boolean, default: TRUE}
+
+\item{\code{use_saved_results}}{boolean, default: TRUE}
+
 \item{\code{orginism}}{options are "mouse" or "human"}
 
 \item{\code{pheno}}{A phenotype matrix}

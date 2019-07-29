@@ -14,28 +14,36 @@
 #'
 #' @param data.obj the S4 class from \code{\link{Cape}}
 #' @param geno.obj the genotype object
-#' TODO results.dir or resutls.file????
-#' @param results.dir a full path string to an existing empty directory. An error is thrown if the directory is not empty.
+#' @param results.file the name of the saved data.obj RData file. The base name is used as the base name for all saved RData files.
+#' @param p.or.q A threshold indicating the maximum adjusted p value considered 
+#' @param snp.file a one column, new-line separated list of marker names that has a non-empty interectsion with the genotype names
+#' @param n.cores integer, default is 4
+#' @param run.singlescan boolean, defaul: TRUE
+#' @param run.pairscan boolean, default: TRUE
+#' @param error.prop.coef, boolean, default: TRUE
+#' @param error.prop.perm, boolean, default: TRUE
+#' @param initialize.only, boolean, default: FALSE
 #' @param verbose boolean, output goes to stdout
 #' @param run.parallel boolean, if TRUE runs certain parts of the code as parallel blocks
 #'
-#' @return None, output artifacts are saved to the results.dir directory
+#' @return None, output artifacts are saved to the data.obj$results_path directory
 #'
 #' @export
-run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file = "cross.RData",
+run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
                      n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
                      error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE){
   
   results.base.name <- gsub(".RData", "", results.file)
   
-  # check for an existing data.obj CAPE object 
-  cape.file.name <- paste0(results.base.name, ".RData")
-  
   # since this is the main data.obj, we can't allow it to return FALSE, check for the file first
-  if (file.exists(file.path(data.obj$results_path, cape.file.name))) {
-    data.obj <- data.obj$read_rds(cape.file.name)
-  } else {
+  prior.data.obj <- data.obj$read_rds(results.file)
+  if (isFALSE(prior.data.obj)) {
     data.obj <- compare.markers(data.obj, geno.obj)
+  } else {
+    # things can get pretty confusing if these values don't match between the parameter file and the old data.obj
+    prior.data.obj$save_results <- data.obj$save_results
+    prior.data.obj$use_saved_results <- data.obj$use_saved_results
+    data.obj <- prior.data.obj
   }
   
   #===============================================================
@@ -193,7 +201,7 @@ run.cape <- function(data.obj, geno.obj, p.or.q = 0.05, path = ".", results.file
       }
       
       if(marker.selection.method == "from.list"){
-        specific.markers <- read.table(SNPfile, sep = "\t", stringsAsFactors = FALSE)
+        specific.markers <- read.table(snp.file, sep = "\t", stringsAsFactors = FALSE)
         data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
       }
       

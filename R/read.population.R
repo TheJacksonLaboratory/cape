@@ -1,12 +1,22 @@
-#This function reads in a data file in the r/qtl format
-#It converts letter genotypes to numbers if required.
-#It parses the data into a data object.
-#if filename is left empty, the script will ask the
-#use to choose a file.
-#phenotypes can be specified with a vector of column 
-#numbers or character strings. For each phenotype
-#specified with a name, the script will find its location. 
-
+#' Reads in a data file in the r/qtl format
+#' 
+#' This function reads in a data file in the r/qtl format
+#' It converts letter genotypes to numbers if required.
+#' It parses the data into a data object.
+#' if filename is left empty, the script will ask the
+#' use to choose a file.
+#' phenotypes can be specified with a vector of column 
+#' numbers or character strings. For each phenotype
+#' specified with a name, the script will find its location. 
+#' 
+#' @param filename
+#' @param pheno.col
+#' @param geno.col
+#' @param id.col
+#' @param delim column delimiter for the file, default is ","
+#' @param na.strings a character string indicating how NA values are specified, default is "-"
+#' @param check.chr.order boolean, default is TRUE
+#' 
 #' @export
 read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, id.col = NULL, delim = ",", na.strings = "-", check.chr.order = TRUE) {
 

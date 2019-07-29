@@ -1,4 +1,5 @@
 context("test run cape")
+skip_on_cran()
 
 #code for running cape
 #make sure there is a file called cape.parameters.txt in the results directory

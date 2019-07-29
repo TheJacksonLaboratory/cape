@@ -10,6 +10,8 @@
 #'   parameters
 #' @slot results_path string, full path to directory for storing results
 #'   (optional, a directory will be created if one is not specified)
+#' @slot save_results boolean, default: TRUE
+#' @slot use_saved_results boolean, default: TRUE
 #' @slot orginism options are "mouse" or "human"
 #' @slot pheno A phenotype matrix
 #' @slot chromosome A chromosome character list
@@ -68,6 +70,8 @@ Cape <- R6::R6Class(
   public = list(
     parameter_file = NULL,
     results_path = NULL,
+    save_results = NULL,
+    use_saved_results = NULL,
     organism = NULL,
     pheno = NULL,
     chromosome = NULL,
@@ -125,6 +129,8 @@ Cape <- R6::R6Class(
     initialize = function(
       parameter_file = NULL,
       results_path = NULL,
+      save_results = TRUE,
+      use_saved_results = TRUE,
       organism = NULL,
       pheno = NULL,
       chromosome = NULL,
@@ -183,6 +189,8 @@ Cape <- R6::R6Class(
       }
       dir.create(self$results_path, showWarnings = FALSE)
       self$results_path <- results_path
+      self$save_results <- save_results
+      self$use_saved_results <- use_saved_results
       self$organism <- organism
       self$pheno <- pheno
       self$chromosome <- chromosome
@@ -334,7 +342,6 @@ Cape <- R6::R6Class(
       self$covar_table <- self$pheno[,marker.locale,drop=FALSE]
       rownames(self$covar_table) <- rownames(self$pheno)
       
-      
       # take the phenotypes made into markers out of the phenotype matrix
       self$pheno <- self$pheno[,-marker.locale]
       self$non_allelic_covar <- value
@@ -344,15 +351,18 @@ Cape <- R6::R6Class(
       invisible(self)
     },
     save_rds = function(object, filename) {
-      full.path <- file.path(self$results_path, filename)
-      saveRDS(object, full.path)
+      # only save the results RData file if save_results is TRUE
+      if (self$save_results) {
+        full.path <- file.path(self$results_path, filename)
+        saveRDS(object, full.path)
+      }
     },
     read_rds = function(filename) {
       full.path <- file.path(self$results_path, filename)
-      if (file.exists(full.path)) {
+      # only return the results RData file if use_saved_results is TRUE
+      if ((self$use_saved_results) & (file.exists(full.path))) {
         return(readRDS(full.path))
       } else {
-        warning(paste0("File not found: ", full.path))
         return(FALSE)
       }
     }
