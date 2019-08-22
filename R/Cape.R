@@ -67,6 +67,19 @@ Cape <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   cloneable = FALSE,
+  private = list(
+    .geno_for_pairscan = NULL
+  ),
+  active = list(
+    geno_for_pairscan = function(value) {
+      if (missing(value)) {
+        private$.geno_for_pairscan
+      } else {
+        private$.geno_for_pairscan <- value
+        self
+      }
+    }
+  ),
   public = list(
     parameter_file = NULL,
     results_path = NULL,
@@ -81,7 +94,7 @@ Cape <- R6::R6Class(
     bp_buffer = NULL,
     geno_names = NULL,
     geno = NULL,
-    geno_for_pairscan = NULL,
+    # geno_for_pairscan = NULL,
     effect_size_cutoff = NULL,
     peak_density = NULL,
     window_size = NULL,
@@ -140,7 +153,7 @@ Cape <- R6::R6Class(
       bp_buffer = NULL,
       geno_names = NULL,
       geno = NULL,
-      geno_for_pairscan = NULL,
+      .geno_for_pairscan = NULL,
       effect_size_cutoff = NULL,
       peak_density = NULL,
       window_size = NULL,
@@ -201,7 +214,7 @@ Cape <- R6::R6Class(
         self$bp_buffer <- 1000
       }
       self$geno <- geno
-      self$geno_for_pairscan <- geno_for_pairscan
+      # self$geno_for_pairscan <- geno_for_pairscan
       self$effect_size_cutoff <- effect_size_cutoff
       self$peak_density <- peak_density
       self$window_size <- window_size

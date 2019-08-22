@@ -21,9 +21,10 @@
 # if (is.null(bed) | is.null(ped)) {
 #   stop("Input path is missing the BED or PED file.")
 # }
+if(!require(here)){install.packages("here")}
+# if(!require(cape)){install.packages("cape")}
 
-
-test.data.path <- here("/tests/testthat/testdata")
+test.data.path <- here("tests/testthat/testdata")
 file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param.file <- file.path(test.data.path, "cape.parameters.yml")
 
@@ -44,6 +45,8 @@ data.obj <- Cape$new(
 )
 
 # TODO remove all calls to require() and ensure that the libraries are in the DESCRIPTION file
+
+snp.file = here("tests/testthat/testdata/NON_NZO_marker_list.txt")
 
 final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
                         n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,

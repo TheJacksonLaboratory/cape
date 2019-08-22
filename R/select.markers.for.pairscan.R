@@ -29,7 +29,7 @@
 #' 
 #' @export
 select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, specific.markers = NULL, 
-                                        num.alleles = 1500, peak.density = 0.5, window.size = NULL, 
+                                        num.alleles = 50, peak.density = 0.5, window.size = NULL, 
                                         tolerance = 5, plot.peaks = FALSE, verbose = FALSE, 
                                         pdf.filename = "Peak.Plots.pdf"){
   
@@ -59,17 +59,22 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     data.obj$ref_allele <- ref.allele
   }
   
-  #if we are asking for more markers than there are in the dataset
-  #just take all of them.
-  if(num.alleles >= dim(geno)[3]*(dim(geno)[2]-1)){
-    num.alleles = dim(geno)[3]
-    data.obj$marker_selection_method <- "from.list"	
-    alt.alleles <- setdiff(dimnames(geno)[[2]], ref.allele)
-    specific.markers <- paste(dimnames(geno)[[3]], alt.alleles, sep = "_")
+  # if both num.alleles is defined and the number is > the number of markers in the geno 
+  # data, then ALL the markers are selected. However, we only want to allow this if
+  # specific.markers is undefined. 
+  
+  if (is.null(specific.markers)) {
+    #if we are asking for more markers than there are in the dataset
+    #just take all of them.
+    if (num.alleles >= dim(geno)[3]*(dim(geno)[2]-1))  {
+      num.alleles = dim(geno)[3]
+      data.obj$marker_selection_method <- "from.list"	
+      alt.alleles <- setdiff(dimnames(geno)[[2]], ref.allele)
+      specific.markers <- paste(dimnames(geno)[[3]], alt.alleles, sep = "_")
+    }
   }
-  
-  
-  if(!is.null(specific.markers)){
+    
+  if (!is.null(specific.markers)) {
     if(n.alleles == 2){
       ref.allele.locale <- which(data.obj$geno_names[[2]] == ref.allele)
       other.allele <- setdiff(1:2, ref.allele.locale)

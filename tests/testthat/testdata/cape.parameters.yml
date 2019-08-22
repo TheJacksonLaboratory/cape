@@ -45,7 +45,8 @@ singlescan_perm:
 # Marker Selection Parameters 
 #================================================
 marker_selection_method:
- - top.effects 
+ - top.effects
+# - from.list
 peak_density:
  - 0.5 
 tolerance:

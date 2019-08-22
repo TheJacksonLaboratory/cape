@@ -28,8 +28,6 @@ get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize
                         collapse.linked.markers = TRUE, threshold.power = 1, verbose = FALSE, 
                         plot.linkage.blocks = FALSE, lookup.marker.position = FALSE){
   
-  library(igraph)
-  
   if(verbose){cat("Calculating linkage blocks...\n")}
   #get the linkage blocks based on the significant markers
   data.obj <- linkage.blocks.network(data.obj, collapse.linked.markers = collapse.linked.markers, 
@@ -162,7 +160,6 @@ get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize
   }
   
   final.mat <- cbind(adj.mat, pheno.mat)
-  
   
   if(collapse.linked.markers){
     data.obj$collapsed_net <- final.mat

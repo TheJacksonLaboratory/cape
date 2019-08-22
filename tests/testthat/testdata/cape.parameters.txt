@@ -22,7 +22,7 @@ singlescan.perm 	 0
 #================================================
 # Marker Selection Parameters 
 #================================================
-marker.selection.method 	 top.effects 
+marker.selection.method 	 from.list 
 peak.density 	 0.5 
 tolerance 	 5 
 num.alleles.in.pairscan 	 100 
