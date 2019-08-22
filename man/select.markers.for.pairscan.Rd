@@ -5,7 +5,7 @@
 \title{This function takes in a singlescan object and bins the markers into bins based on the  either the LOD score, or the curve formed by the maximum allele t score at each point}
 \usage{
 \method{select}{markers.for.pairscan}(data.obj, singlescan.obj, geno.obj,
-  specific.markers = NULL, num.alleles = 1500, peak.density = 0.5,
+  specific.markers = NULL, num.alleles = 50, peak.density = 0.5,
   window.size = NULL, tolerance = 5, plot.peaks = FALSE,
   verbose = FALSE, pdf.filename = "Peak.Plots.pdf")
 }

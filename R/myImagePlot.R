@@ -139,8 +139,7 @@ myImagePlot <-
     poly.width <- plot.dim[2]*poly.perc
     poly.max <- plot.dim[1]; poly.min <- poly.max-poly.width; poly.mid <- mean(c(poly.min, poly.max))
     
-    
-    if(!is.null(chromosome.coordinates)){
+    if(!is.null(chromosome.coordinates) & length(chromosome.coordinates) == 2){
       par(xpd = TRUE)
       for(i in 1:(length(chromosome.coordinates)-1)){
         if(dim(x)[2]+1 >= max(chromosome.coordinates)){

@@ -25,8 +25,8 @@
 #' @param label.chr 
 #' @param show.alleles 
 #' @param scale.effects 
-#' @param pheno.width 
-#' @param covar.width 
+#' @param pheno.width width of the phenotype text on the plot, in pixels
+#' @param covar.width width of the covariate text on the plot, in pixels
 #' @param covar.labels 
 #' @param phenotype.labels 
 #' @param show.not.tested 
@@ -180,6 +180,7 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, p
         chromosomes <- c(chromosomes, rep(covar.names[i], covar.width))
       }
     }
+    
     u_chr <- unique(chromosomes[which(!is.na(chromosomes))])
     chr.boundaries <- apply(matrix(u_chr, ncol = 1), 1, function(x) max(which(chromosomes == x))) + 0.5
     chr.boundaries <- c(0, chr.boundaries)
@@ -344,7 +345,12 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, p
     text(0.5, 0.5, "No Significant Interactions")
   }else{
     
-    myImagePlot(x = full.inf.mat.num, min.x = min(full.inf.mat.num, na.rm = TRUE), max.x = max(full.inf.mat.num, na.rm = TRUE), main = main, xlab = "Target", ylab = "Source", mark.coords = not.tested.locale, mark.col = not.tested.col, show.labels = show.marker.labels, chromosome.coordinates = chr.boundaries, chr.names = chr.names, show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, allele.cols = allele.cols)
+    myImagePlot(x = full.inf.mat.num, 
+                min.x = min(full.inf.mat.num, na.rm = TRUE), max.x = max(full.inf.mat.num, na.rm = TRUE), 
+                main = main, xlab = "Target", ylab = "Source", mark.coords = not.tested.locale, 
+                mark.col = not.tested.col, show.labels = show.marker.labels, 
+                chromosome.coordinates = chr.boundaries, chr.names = chr.names, show.pheno.labels = TRUE, 
+                extra.col.mat = extra.col.mat, allele.cols = allele.cols)
     
     
     #add phenotype names

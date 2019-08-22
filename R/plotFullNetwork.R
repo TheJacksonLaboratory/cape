@@ -79,7 +79,7 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
   
   if(collapsed.net){
     blocks <- data.obj$linkage_blocks_collapsed
-    net.data <- data.obj$collapsed_net
+    net.data <- unlist(data.obj$collapsed_net)
     #convert this into an edge list to be compatible with the uncollapsed network
     sig.locale <- which(net.data != 0, arr.ind = TRUE)
     

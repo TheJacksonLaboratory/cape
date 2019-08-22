@@ -21,8 +21,6 @@
 #' 
 linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
   
-  require(igraph)	
-  
   if(lookup.marker.position){
     require(biomaRt)
     if(data.obj$organism == "mouse"){		
