@@ -40,9 +40,9 @@ this value specifies the maximum q value considered significant.}
 
 \item{scale.effects}{}
 
-\item{pheno.width}{}
+\item{pheno.width}{width of the phenotype text on the plot, in pixels}
 
-\item{covar.width}{}
+\item{covar.width}{width of the covariate text on the plot, in pixels}
 
 \item{covar.labels}{}
 

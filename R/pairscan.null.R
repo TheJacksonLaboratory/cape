@@ -37,7 +37,7 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
                           marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
                           run.parallel = TRUE, gene.list = NULL, n.cores = 4, verbose = FALSE){
   
-  marker.selection.method <- data.obj$marker.selection.method
+  marker.selection.method <- data.obj$marker_selection_method
   ref.allele <- data.obj$ref_allele
   
   
