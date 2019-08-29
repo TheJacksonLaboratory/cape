@@ -18,7 +18,7 @@ get.marker.num <- function(data.obj, markers){
   
   if(is.char){
     #use the markers vector first to translate
-    marker.num <- data.obj$marker.num[match(markers, data.obj$geno.names[[3]])]
+    marker.num <- data.obj$marker_num[match(markers, data.obj$geno_names[[3]])]
     
     #if there are any markers we didn't translate, look in the 
     #covariate tables for marker numbers
@@ -30,7 +30,7 @@ get.marker.num <- function(data.obj, markers){
     }
   }else{
     #use the markers vector first to translate
-    marker.num <- data.obj$marker.num[match(markers, data.obj$marker.num)]
+    marker.num <- data.obj$marker_num[match(markers, data.obj$marker_num)]
     
     #if there are any markers we didn't translate, look in the 
     #covariate tables for marker numbers

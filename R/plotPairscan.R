@@ -57,7 +57,7 @@ plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized 
   
   if(show.alleles){
     
-    alleles <- unique(sapply(strsplit(colnames(data.obj$geno.for.pairscan), "_"), function(x) x[2]))
+    alleles <- unique(sapply(strsplit(colnames(data.obj$geno_for_pairscan), "_"), function(x) x[2]))
     allele.colors <- get.allele.colors(color.scheme, alleles)
     allele.labels <- allele.colors[,2]
     

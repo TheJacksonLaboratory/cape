@@ -82,15 +82,15 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
   
   all.pairs.tested <- NULL
   
-  n.top.markers <- ncol(data.obj$geno.for.pairscan)
+  n.top.markers <- ncol(data.obj$geno_for_pairscan)
   final.perm <- 1
   while(final.perm < pairscan.null.size){
     perm.order <- sample(1:dim(pheno)[1])
     
     
     if(marker.selection.method != "by.gene" && marker.selection.method != "from.list"){
-      single.scan.result <- array(NA, dim = c(length(data.obj$geno.names[[3]]), num.pheno, (dim(geno)[[2]]-1)))
-      dimnames(single.scan.result) <- list(data.obj$geno.names[[3]], colnames(pheno), dimnames(geno)[[2]][-which(
+      single.scan.result <- array(NA, dim = c(length(data.obj$geno_names[[3]]), num.pheno, (dim(geno)[[2]]-1)))
+      dimnames(single.scan.result) <- list(data.obj$geno_names[[3]], colnames(pheno), dimnames(geno)[[2]][-which(
         dimnames(geno)[[2]] == ref.allele)])
       
       if(verbose){cat("Performing single marker scans of permuted traits.\n")}
@@ -109,12 +109,12 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
       
       if(marker.selection.method == "top.effects"){
         perm.data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj = single.scan.result, geno.obj, 
-                                                     num.alleles = n.top.markers, peak.density = data.obj$peak.density, 
-                                                     window.size = data.obj$window.size, tolerance = data.obj$tolerance, 
+                                                     num.alleles = n.top.markers, peak.density = data.obj$peak_density, 
+                                                     window.size = data.obj$window_size, tolerance = data.obj$tolerance, 
                                                      plot.peaks = FALSE, verbose = TRUE)
       }
       if(marker.selection.method == "uniform"){
-        perm.data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, num.alleles = ncol(data.obj$geno.for.pairscan), verbose = FALSE)	
+        perm.data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, num.alleles = ncol(data.obj$geno_for_pairscan), verbose = FALSE)	
       }
       if(marker.selection.method == "effects.dist"){
         perm.data.obj <- select.markers.for.pairscan.dist(data.obj, singlescan.obj = single.scan.result, geno.obj, verbose = FALSE)		
@@ -131,14 +131,14 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
       }
       if(marker.selection.method == "from.list"){
         single.scan.result <- list("ref.allele" = ref.allele)
-        specific.markers <- colnames(data.obj$geno.for.pairscan)
+        specific.markers <- colnames(data.obj$geno_for_pairscan)
         perm.data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj = single.scan.result, geno.obj, specific.markers = specific.markers)
       }
     }
     
     
     if(verbose){cat("\tGetting markers for permuted pairscan...\n")}
-    top.marker.pairs <- get.pairs.for.pairscan(gene = perm.data.obj$geno.for.pairscan, max.pair.cor = max.pair.cor, min.per.genotype = min.per.geno, verbose = FALSE)
+    top.marker.pairs <- get.pairs.for.pairscan(gene = perm.data.obj$geno_for_pairscan, max.pair.cor = max.pair.cor, min.per.genotype = min.per.geno, verbose = FALSE)
     total.pairs <- nrow(top.marker.pairs)
     num.to.add <- 10
     #we don't need to do extra permutations
@@ -162,7 +162,7 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
       if(verbose){cat("\t", colnames(pheno)[p], "...\n")}
       #run a pairscan on these markers and each permuted phenotype
       pairscan.results <- one.pairscan.parallel(perm.data.obj, phenotype.vector = pheno[perm.order,p], 
-                                                genotype.matrix = perm.data.obj$geno.for.pairscan, 
+                                                genotype.matrix = perm.data.obj$geno_for_pairscan, 
                                                 paired.markers = top.marker.pairs, n.perm = 0, 
                                                 run.parallel = run.parallel, n.cores = n.cores, 
                                                 verbose = FALSE)

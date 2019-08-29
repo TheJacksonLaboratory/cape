@@ -33,7 +33,6 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
                                         tolerance = 5, plot.peaks = FALSE, verbose = FALSE, 
                                         pdf.filename = "Peak.Plots.pdf"){
   
-  require(abind)
   chr <- unique(data.obj$chromosome)
   
   if(is.null(specific.markers)){

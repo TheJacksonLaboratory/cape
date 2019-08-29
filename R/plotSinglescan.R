@@ -219,7 +219,6 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
       if(plot.type.label == "t.stat"){
         lines(x = c(1,num.loci), y = rep(data.obj$pairscan_thresh, 2), lty = 1, col = "darkgray")
         lines(x = c(1,num.loci), y = rep(data.obj$covar_thresh, 2), lty = 2, col = "darkgray")
-        # abline(h = data.obj$covar.thresh, lty = 2, col = "darkgray")
         par(xpd = TRUE)
         if(length(alpha.to.use) > 0){
           for(a in 1:length(alpha.to.use)){
@@ -248,7 +247,7 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
     }	
     
     if(show.selected){
-      abline(h = data.obj$effect.size.cutoff)
+      abline(h = data.obj$effect_size_cutoff)
       par(xpd = TRUE)
       allele.cols <- get.allele.colors(color.scheme, used.alleles)
       y.pos <- ylim[1] - ylim[2]*0.01

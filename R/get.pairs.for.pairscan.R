@@ -85,7 +85,6 @@ get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL
     }		
   }
   
-  
   all.pairs <- pair.matrix(1:dim(gene)[2])
   all.pair.names <- pair.matrix(colnames(gene))
   

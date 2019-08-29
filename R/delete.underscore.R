@@ -17,7 +17,7 @@ delete.underscore <- function(data.obj, geno.obj = NULL){
     bad.names <- marker.names[under.locale]
     new.names <- unlist(lapply(strsplit(bad.names, "_"), function(x) paste(x[1:length(x)], collapse = "")))
     
-    data.obj$geno.names[[3]][under.locale] <- new.names
+    data.obj$geno_names[[3]][under.locale] <- new.names
     dimnames(geno)[[3]][under.locale] <- new.names
     message("Removing underscores from marker names\n")
     # cat(bad.names, sep = "\n")

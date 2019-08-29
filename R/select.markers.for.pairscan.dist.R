@@ -29,7 +29,7 @@ select.markers.for.pairscan.dist <- function(data.obj, singlescan.obj, geno.obj,
   # get the distribution of effect sizes across the traits
   # we want to match this distribution
   #===============================================================
-  geno.for.pairscan <- data.obj$geno.for.pairscan
+  geno.for.pairscan <- data.obj$geno_for_pairscan
   split.markers <- strsplit(colnames(geno.for.pairscan), "_")
   just.markers <- unlist(lapply(split.markers, function(x) x[1]))
   just.alleles <- unlist(lapply(split.markers, function(x) x[2]))
@@ -85,7 +85,7 @@ select.markers.for.pairscan.dist <- function(data.obj, singlescan.obj, geno.obj,
   #===============================================================
   
   if(verbose){cat("Checking for linear independence...\n")}
-  data.obj$geno.for.pairscan <- geno.for.pairscan
+  data.obj$geno_for_pairscan <- geno.for.pairscan
   geno.ind <- get.linearly.independent(data.obj)
   
   rownames(geno.ind$independent.markers) <- rownames(data.obj$pheno)

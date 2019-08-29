@@ -30,7 +30,7 @@ select.markers.for.pairscan.by.gene <- function(data.obj, geno.obj, gene.list, b
   ref.allele <- data.obj$ref_allele
   organism <- organism[1]
   
-  data.obj$marker.selection.method <- "by.gene"
+  data.obj$marker_selection_method <- "by.gene"
   
   if(length(data.obj$chromosome) != length(data.obj$geno_names[[3]])){
     stop("There are unequal lengths in the marker data\n")

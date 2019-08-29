@@ -95,7 +95,7 @@ remove.missing.genotype.data <- function(data.obj, geno.obj = NULL, ind.missing.
 		if(length(grep("f", prioritize, ignore.case = TRUE)) > 0){
 			test <- assess.missing(data.obj, geno)
 			perc.ind <- length(test$ind.missing.lots)/nrow(cross$pheno)
-			perc.markers <- length(test$marker.missing.lots)/length(data.obj$geno.names[[3]])
+			perc.markers <- length(test$marker.missing.lots)/length(data.obj$geno_names[[3]])
 			
 			if(perc.markers > 0 || perc.ind > 0){
 				if(perc.markers < perc.ind){
