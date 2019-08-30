@@ -91,6 +91,8 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
     }
     edge.vals <- net.data[which(net.data != 0)]
     sig.edges <- cbind(sig.locale, edge.vals)
+    # TODO: length of 'dimnames' [2] not equal to array extent 
+    #browser()
     colnames(sig.edges) <- c("Source", "Target", "Effect")
     block.names <- matrix(NA, ncol = 2, nrow = dim(sig.edges)[1])
     block.names[,1] <- rownames(net.data)[sig.edges[,1]]
