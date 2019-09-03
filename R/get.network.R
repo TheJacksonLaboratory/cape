@@ -56,6 +56,7 @@ get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize
       }	
     }
   }
+  
   if(collapse.linked.markers){
     data.obj$linkage_blocks_collapsed <- blocks
   }else{

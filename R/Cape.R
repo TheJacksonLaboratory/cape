@@ -68,7 +68,10 @@ Cape <- R6::R6Class(
   class = FALSE,
   cloneable = FALSE,
   private = list(
-    .geno_for_pairscan = NULL
+    .geno_for_pairscan = NULL,
+    .marker_selection_method = NULL,
+    .linkage_blocks_collapsed = NULL,
+    .collapsed_net = NULL
   ),
   active = list(
     geno_for_pairscan = function(value) {
@@ -76,6 +79,38 @@ Cape <- R6::R6Class(
         private$.geno_for_pairscan
       } else {
         private$.geno_for_pairscan <- value
+        self
+      }
+    },
+    marker_selection_method = function(value) {
+      if (missing(value)) {
+        private$.marker_selection_method
+      } else {
+        private$.marker_selection_method <- value
+        self
+      }
+    },
+    linkage_blocks_collapsed = function(value) {
+      if (missing(value)) {
+        private$.linkage_blocks_collapsed
+      } else {
+        private$.linkage_blocks_collapsed <- value
+        self
+      }
+    },
+    linkage_blocks_full = function(value) {
+      if (missing(value)) {
+        private$.linkage_blocks_full
+      } else {
+        private$.linkage_blocks_full <- value
+        self
+      }
+    },
+    collapsed_net = function(value) {
+      if (missing(value)) {
+        private$.collapsed_net
+      } else {
+        private$.collapsed_net <- value
         self
       }
     }
@@ -90,11 +125,9 @@ Cape <- R6::R6Class(
     chromosome = NULL,
     marker_num = NULL,
     marker_location = NULL,
-    marker_selection_method = NULL,
     bp_buffer = NULL,
     geno_names = NULL,
     geno = NULL,
-    # geno_for_pairscan = NULL,
     effect_size_cutoff = NULL,
     peak_density = NULL,
     window_size = NULL,
@@ -121,11 +154,8 @@ Cape <- R6::R6Class(
     var_to_var_influences_perm = NULL,
     var_to_var_influences = NULL,
     pval_correction = NULL,
-    linkage_blocks_collapsed = NULL,
-    linkage_blocks_full = NULL,
     var_to_var_p_val = NULL,
     max_var_to_pheno_influence = NULL,
-    collapsed_net = NULL,
     full_net = NULL,
     use_kinship = NULL,
     
@@ -149,7 +179,6 @@ Cape <- R6::R6Class(
       chromosome = NULL,
       marker_num = NULL,
       marker_location = NULL,
-      marker_selection_method = NULL,
       bp_buffer = NULL,
       geno_names = NULL,
       geno = NULL,
@@ -180,11 +209,8 @@ Cape <- R6::R6Class(
       var_to_var_influences_perm = NULL,
       var_to_var_influences = NULL,
       pval_correction = NULL,
-      linkage_blocks_collapsed = NULL,
-      linkage_blocks_full = NULL,
       var_to_var_p_val = NULL,
       max_var_to_pheno_influence = NULL,
-      collapsed_net = NULL,
       full_net = NULL,
       use_kinship = NULL
     ) {
@@ -209,12 +235,10 @@ Cape <- R6::R6Class(
       self$chromosome <- chromosome
       self$marker_num <- marker_num
       self$marker_location <- marker_location
-      self$marker_selection_method <- marker_selection_method
       if (missing(bp_buffer)) {
         self$bp_buffer <- 1000
       }
       self$geno <- geno
-      # self$geno_for_pairscan <- geno_for_pairscan
       self$effect_size_cutoff <- effect_size_cutoff
       self$peak_density <- peak_density
       self$window_size <- window_size
@@ -245,11 +269,8 @@ Cape <- R6::R6Class(
       self$var_to_var_influences_perm <- var_to_var_influences_perm
       self$var_to_var_influences <- var_to_var_influences
       self$pval_correction <- pval_correction
-      self$linkage_blocks_collapsed <- linkage_blocks_collapsed
-      self$linkage_blocks_full <- linkage_blocks_full
       self$var_to_var_p_val <- var_to_var_p_val
       self$max_var_to_pheno_influence <- max_var_to_pheno_influence
-      self$collapsed_net <- collapsed_net
       self$full_net <- full_net
       self$use_kinship <- use_kinship
       # assign parameters from the parameter_file

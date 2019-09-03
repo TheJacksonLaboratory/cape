@@ -132,7 +132,6 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
     marker.pairs[,2] <- rownames(just.int)[as.numeric(marker.pairs[,2])]		
   }
   
-  
   if(collapsed.net){
     blocks <- data.obj$linkage_blocks_collapsed
     #remove the blocks that were never tested
@@ -140,7 +139,11 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
     if(length(not.tested) > 0){
       not.tested.locale <- match(not.tested, names(blocks))
       blocks <- blocks[-not.tested.locale]
-      data.obj$collapsed_net <- blocks
+      # TODO which line below is correct? The commented out line causes a bug in plotFullNetwork.R
+      # TODO if the collapsed_net line is correct, then the setdiff on line 140 should be reversed
+      # TODO and the collapsed_net object built again like it is in get.network line 152 .. 172
+      #data.obj$collapsed_net <- blocks
+      data.obj$linkage_blocks_collapsed <- blocks
     }
   }else{
     blocks <- data.obj$linkage_blocks_full	
@@ -149,7 +152,9 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
     if(length(not.tested) > 0){
       not.tested.locale <- match(not.tested, names(blocks))
       blocks <- blocks[-not.tested.locale]
-      data.obj$full_net <- blocks
+      # TODO same as above...
+      #data.obj$full_net <- blocks
+      data.obj$linkage_blocks_full <- blocks
     }
   }
   
