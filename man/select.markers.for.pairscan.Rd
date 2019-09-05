@@ -20,6 +20,9 @@
 
 \item{pdf.filename}{default = "Peak.Plots.pdf"}
 }
+\value{
+updated \code{\link{Cape}} object
+}
 \description{
 This function takes in a singlescan object
 and bins the markers into bins based on the 

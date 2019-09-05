@@ -9,7 +9,7 @@
 #' @param scale.pheno if TRUE then phenotypes are mean centered and standardized
 #' @param rank.norm.pheno if TRUE then phenotypes are rank Z normalized
 #'
-#' @export
+#' @return updated \code{\link{Cape}} object
 select.pheno <- function(data.obj, pheno.which, min.entries = 5, scale.pheno = FALSE, rank.norm.pheno = FALSE){
   check.underscore(data.obj)
   # check.bad.markers(data.obj)

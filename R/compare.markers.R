@@ -5,7 +5,6 @@
 #'
 #' @return \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
 #'
-#' @export
 compare.markers <- function(data.obj, geno.obj){	
   geno <- get.geno(data.obj, geno.obj)
   missing.markers <- setdiff(data.obj$geno_names[[3]], dimnames(geno)[[3]])

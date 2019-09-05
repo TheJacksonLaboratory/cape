@@ -18,6 +18,9 @@
 
 \item{rank.norm.pheno}{if TRUE then phenotypes are rank Z normalized}
 }
+\value{
+updated \code{\link{Cape}} object
+}
 \description{
 Updates the pheno object to include only `pheno.which` columns, and optionally
 scales and/or normalizes them. This function is only applicable to numeric phenotypes.
