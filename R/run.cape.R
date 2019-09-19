@@ -59,40 +59,59 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
     
     if (isFALSE(kin.obj)) {
       #if there isn't a kinship object already, we need to make one
-      geno <- get.geno(data.obj, geno.obj)
-      missing.vals <- which(is.na(geno))
-      
-      if(length(missing.vals) > 0){ #if there are missing values in the genotype matrix, 
-        #we need to impute the missing values
-        imp.data.file <- paste0(results.base.name, "_data_imputed.RData")
-        imp.geno.file <- paste0(results.base.name, "_geno_imputed.RData")
-        
-        # check if there is already a saved genotype object
-        geno.obj <- data.obj$read_rds(imp.geno.file)
-        
-        if (isFALSE(geno.obj)) {  #if the imputation hasn't been done already
-          cat("There are missing values in geno.obj. Running impute.missing.geno...\n")
-          geno.imp <- impute.missing.geno(data.obj)
-          
-          # uopdate and save the data.obj  
-          data.obj <- geno.imp$data.obj
-          data.obj$save_rds(data.obj, imp.data.file)
-          
-          # uodate and save the geno.obj
-          geno.obj <- geno.imp$geno.obj
-          data.obj$save_rds(geno.obj, imp.geno.file)
-          
-        } else {  #if the imputation has been done, then it must have been done for the data.obj too
-          data.obj <- data.obj$read_rds(imp.data.file)
-        }
-      } #end case for when there are missing values in the genotype object
-      
-      # recalculate the kinship matrix with the updated objects
       kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, pop = data.obj$pop)
       data.obj$save_rds(kin.obj, kin.file.name)
     }
-  } else {
-    kin.obj <- NULL
+
+    #===============================================================
+    # We need a complete genotype matrix to calculate the kinship
+    # adjusted genotypes later on.
+    # Check for missing values in the genotype matrix.
+    # If there are missing values, impute them.
+    # Write out the imputed matrix, or read this in if it already
+    # exists.
+    #===============================================================
+    #we need to impute the missing values
+    imp.data.file <- paste0(results.base.name, "_data_imputed.RData")
+    imp.geno.file <- paste0(results.base.name, "_geno_imputed.RData")
+
+    # check if there is already a saved genotype object
+    geno <- data.obj$read_rds(imp.geno.file)
+
+    if (isFALSE(geno)) {  #if the imputation hasn't been done already
+      geno <- get.geno(data.obj, geno.obj)
+      missing.vals <- which(is.na(geno))
+
+      if (length(missing.vals) > 0) { #if there are missing values, impute them
+        cat("There are missing values in geno.obj. Running impute.missing.geno...\n")
+        geno.imp <- impute.missing.geno(data.obj)
+
+        # update and save the data.obj
+        data.obj <- geno.imp$data.obj
+        data.obj$save_rds(data.obj, imp.data.file)
+
+        # update and save the geno.obj
+        geno.obj <- geno.imp$geno.obj
+        data.obj$save_rds(geno.obj, imp.geno.file)
+      }
+
+    } else { #if the imputation has been done, then it must have been done for the data.obj too
+      data.obj <- geno.imp$data.obj
+      geno.obj <- geno.imp$geno.obj
+    }
+
+
+    # geno <- get.geno(data.obj, geno.obj)
+    # missing.vals <- which(is.na(geno))
+
+    if(length(missing.vals) > 0){ #if there are missing values in the genotype matrix,
+
+
+    } #end case for when there are missing values in the genotype object
+
+    # recalculate the kinship matrix with the updated objects
+    kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, pop = data.obj$pop)
+    data.obj$save_rds(kin.obj, kin.file.name)
   }
   
   if(any(!run.singlescan, !run.pairscan, !error.prop.coef, !error.prop.perm)){
@@ -150,9 +169,14 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
   
   singlescan.obj <- data.obj$read_rds(singlescan.results.file)
   
+  if (!exists("kin.obj")) {
+    kin.obj <- NULL
+  }
+  
   if (isFALSE(singlescan.obj)) {
     
     if (run.singlescan) {
+      
       singlescan.obj <- singlescan(
         data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm,
         alpha = c(0.01, 0.05), verbose = verbose, run.parallel = run.parallel,
