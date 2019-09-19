@@ -32,6 +32,7 @@ bin.curve <- function(the.curve, plot.peaks = FALSE, window.size = NULL, amp.min
     ind.order <- order(big.mat[,1])
     ordered.mat <- big.mat[ind.order,]
     
+    # browser()
     consec.runs <- rle(ordered.mat[,2])
     run.locale <- which(consec.runs[[1]] > 1)
     
