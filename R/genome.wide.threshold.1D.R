@@ -165,7 +165,7 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
   
   if (run.parallel) {
     cl <- parallel::makeCluster(n.cores)
-    doParalllel::registerDoParallel(cl)
+    doParallel::registerDoParallel(cl)
     max.stat <- foreach::foreach(p = 1:n.perm, .combine = "rbind")  %dopar% {
       one.perm()
     }
