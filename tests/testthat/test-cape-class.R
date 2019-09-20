@@ -1,5 +1,9 @@
 context("test CAPE class")
 
+source(here('R/cape2mpp.R'))
+source(here('R/read.population.R'))
+source(here('R/Cape.R'))
+
 test.data.path <- here("tests/testthat/testdata")
 file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param.file <- file.path(test.data.path, "cape.parameters.yml")
