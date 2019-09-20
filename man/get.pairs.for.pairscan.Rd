@@ -39,6 +39,6 @@ combinations. Marker pairs for which genotype combinations have insufficient
 numbers of individuals are not tested. This function determines which marker
 pairs have sufficient representation in all genotype combinations.
 }
-\details{
-#' @seealso \code{\link{one.pairscan}}
+\seealso{
+\code{\link{one.pairscan}}
 }
