@@ -1,8 +1,10 @@
 context("test CAPE class")
+library(here)
 
-source(here('R/cape2mpp.R'))
-source(here('R/read.population.R'))
-source(here('R/Cape.R'))
+pkg.path <- here("R")
+for (f in list.files(pkg.path)) {
+  source(file.path(pkg.path, f))
+}
 
 test.data.path <- here("tests/testthat/testdata")
 file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")

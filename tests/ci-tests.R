@@ -3,7 +3,6 @@ args = commandArgs(trailingOnly=TRUE)
 
 library(devtools)
 library(testthat)
-# library(cape)
 library(here)
 
 cat(args[1])
