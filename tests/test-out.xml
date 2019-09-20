@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="test CAPE class" timestamp="2019-09-20 14:09:50" hostname="mlg-bh0064.jax.org" tests="2" skipped="0" failures="0" errors="0" time="0.11">
+    <testcase time="0.08" classname="test_CAPE_class" name="test_that_the_pheno_matrix_is_right"/>
+    <testcase time="0.03" classname="test_CAPE_class" name="check_setting_the_ref_allele"/>
+  </testsuite>
+  <testsuite name="test get pairs for pairscan" timestamp="2019-09-20 14:09:50" hostname="mlg-bh0064.jax.org" tests="3" skipped="0" failures="0" errors="0" time="1.16">
+    <testcase time="1.16" classname="test_get_pairs_for_pairscan" name="test_that_there_are_no_self_pairs"/>
+    <testcase time="0" classname="test_get_pairs_for_pairscan" name="test_that_the_result_set_size_is_correct"/>
+    <testcase time="0" classname="test_get_pairs_for_pairscan" name="test_that_the_result_set_size_is_correct"/>
+  </testsuite>
+</testsuites>

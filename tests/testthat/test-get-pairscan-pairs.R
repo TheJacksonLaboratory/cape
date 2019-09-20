@@ -1,5 +1,9 @@
 context("test get pairs for pairscan")
-library(here)
+
+# test that requires sourcing the files under test
+source(here('R/get.pairs.for.pairscan.R'))
+source(here('R/pair.matrix.R'))
+source(here('R/chunkV.R'))
 
 #This example finds marker pairs to test in a randomly
 #generated genotype matrix

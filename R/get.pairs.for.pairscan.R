@@ -7,7 +7,7 @@
 #' numbers of individuals are not tested. This function determines which marker
 #' pairs have sufficient representation in all genotype combinations. 
 #' 
-#' #' @seealso \code{\link{one.pairscan}}
+#' @seealso \code{\link{one.pairscan}}
 #' 
 #' @param geno A two dimensional genotype matrix with rows containing 
 #'   individuals and columns containing markers. Each entry is a value between
@@ -26,6 +26,7 @@
 #'   matrix is then used as an argument in \code{\link{one.pairscan}} to
 #'   specify which marker pairs should be tested.
 #'   
+#' @export
 get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL, min.per.genotype = NULL, run.parallel = TRUE, n.cores = 4, verbose = TRUE){
   
   if(!run.parallel){n.cores = 1}

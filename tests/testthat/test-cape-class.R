@@ -1,6 +1,4 @@
 context("test CAPE class")
-library(here)
-
 
 test.data.path <- here("tests/testthat/testdata")
 file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
