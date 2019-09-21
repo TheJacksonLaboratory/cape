@@ -20,8 +20,7 @@ test_that("test that there are no self pairs", {
   expect_equal(0, len)
 })
 
-# change the reference allele, and check the change
 test_that("test that the result set size is correct", {
-  expect_lt(20, dim(pairs.which)[1])
+  expect_lt(10, dim(pairs.which)[1])
   expect_equal(2, dim(pairs.which)[2])
 })
