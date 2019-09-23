@@ -4,7 +4,7 @@ library(devtools)
 library(here)
 library(utils)
 
-dest_path = here("../cape_pkg")
+dest_path = here("cape_pkg")
 write("**********************************************************", stdout())
 write(dest_path, stdout())
 write("**********************************************************", stdout())

@@ -219,9 +219,9 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
       min.per.genotype <- data.obj$min_per_genotype
       pairscan.null.size <- data.obj$pairscan_null_size
       scan.what <- data.obj$scan_what
-      
       if(marker.selection.method == "top.effects"){
-        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, num.alleles = num.alleles.in.pairscan, peak.density = peak.density, verbose = verbose, plot.peaks = FALSE)
+        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, num.alleles = num.alleles.in.pairscan, 
+                                                peak.density = peak.density, verbose = verbose, plot.peaks = FALSE)
       }
       
       if(marker.selection.method == "from.list"){
