@@ -53,7 +53,7 @@ one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.a
     
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
-    results <- foreach::foreach(m = 1:dim(gene)[[locus.dim]], .export = c("get.stats.multiallele", "check.geno")) %dopar% {
+    results <- foreach::foreach(m = 1:dim(gene)[[locus.dim]], .packages = 'cape', .export = c("get.stats.multiallele", "check.geno")) %dopar% {
       get.stats.multiallele(phenotype.vector, gene[,,m], covar.table, model.family, ref.col)
     }
     parallel::stopCluster(cl)

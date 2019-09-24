@@ -109,7 +109,7 @@ get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL
     
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
-    good.pair.list <- foreach::foreach(p = 1:length(pair.list)) %dopar% {
+    good.pair.list <- foreach::foreach(p = 1:length(pair.list),  .packages = 'cape') %dopar% {
       check.multi.pairs(pair.list[[p]])
     }
     parallel::stopCluster(cl)

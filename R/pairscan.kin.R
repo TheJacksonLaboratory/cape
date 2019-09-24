@@ -134,7 +134,7 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
     if (run.parallel) {
       cl <- parallel::makeCluster(n.cores)
       doParallel::registerDoParallel(cl)
-      pairscan.results <- foreach::foreach(m = t(marker.pairs), .export = 
+      pairscan.results <- foreach::foreach(m = t(marker.pairs), .packages = 'cape', .export = 
                                     c("rankMatrix", "one.pairscan.parallel", "get.covar", "get.marker.num", 
                                       "get.marker.chr")) %dopar% {
                                         get.marker.pair.stats(m, kin.dat)
@@ -169,7 +169,8 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
             
             cl <- parallel::makeCluster(n.cores)
             doParallel::registerDoParallel(cl)
-            covar.results <- foreach::foreach(m = t(cv.markers), .export = c("rankMatrix", "one.pairscan.parallel", "get.covar", "get.marker.num", "get.marker.chr")) %dopar% {
+            covar.results <- foreach::foreach(m = t(cv.markers), .packages = 'cape',
+                                              .export = c("rankMatrix", "one.pairscan.parallel", "get.covar", "get.marker.num", "get.marker.chr")) %dopar% {
               get.covar.stats(m, kin.dat)
             }
             parallel::stopCluster(cl)

@@ -191,7 +191,7 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
   if (run.parallel) {
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
-    pair.results.list <- foreach::foreach(m = 1:length(chunked.pairs), .export = c("phenotype.vector", "rankMatrix")) %dopar% {
+    pair.results.list <- foreach::foreach(m = 1:length(chunked.pairs), .packages = 'cape', .export = c("phenotype.vector", "rankMatrix")) %dopar% {
       get.multi.pair.results(m.pair.v = chunked.pairs[m])
     }
     parallel::stopCluster(cl)
@@ -245,7 +245,7 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
       
       cl <- parallel::makeCluster(n.cores)
       doParallel::registerDoParallel(cl)
-      perm.results <- foreach::foreach(p = 1:n.perm, .export = c("phenotype.vector", "rankMatrix")) %dopar% {
+      perm.results <- foreach::foreach(p = 1:n.perm, .packages = 'cape', .export = c("phenotype.vector", "rankMatrix")) %dopar% {
         one.perm(p)
       }
       parallel::stopCluster(cl)
