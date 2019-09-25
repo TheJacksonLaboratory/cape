@@ -153,7 +153,7 @@ impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.t
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
     imputed.geno <- foreach::foreach(m = geno.chunks, .packages = "here", .export = "flatten.array") %dopar% {
-      .libPaths(here("cape_pkg"))
+      .libPaths("/opt/cape/cape_pkg")
       library("cape")
       impute.section(m)
     }
