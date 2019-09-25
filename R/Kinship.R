@@ -81,15 +81,19 @@ Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c
     
   }
   
+  # The QTL format file is a temporary object for transferring population data to R.qtl
+  qtl.file <- "QTL_format.csv"
+  qtl.path <- data.obj$results_path
+  
   ##############################################################
   #                                                            #
   #          Create probability and map file if RIL            #
   #                                                            #
   ##############################################################
   if(!("calc_genoprob" %in% class(geno.obj)) & pop=="RIL"){
-    writePopulation(data.obj,geno.obj,filename = "QTL_format.csv",na = "")
-    cross<-qtl::read.cross(format="csv",".","QTL_format.csv", genotypes=c(0,.5,1))
-    unlink("QTL_format.csv") #delete the file
+    writePopulation(data.obj, geno.obj, filename = file.path(qtl.path, qtl.file), na = "")
+    cross<-qtl::read.cross(format="csv", dir = qtl.path, qtl.file, genotypes=c(0,.5,1))
+    unlink(qtl.file) #delete the file
     cross<-qtl::convert2risib(cross)
     cross<-qtl::jittermap(cross)
     qtlprobs<-qtl::calc.genoprob(cross)
@@ -104,9 +108,9 @@ Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c
   #                                                            #
   ##############################################################
   if(!("calc_genoprob" %in% class(geno.obj)) & pop=="2PP"){
-    writePopulation(data.obj,geno.obj,filename = "QTL_format.csv",na = "")
-    cross<-qtl::read.cross(format="csv",".","QTL_format.csv", genotypes=c(0,.5,1))
-    unlink("QTL_format.csv") #delete the file
+    writePopulation(data.obj, geno.obj, filename = file.path(qtl.path, qtl.file), na = "")
+    cross<-qtl::read.cross(format="csv", dir = qtl.path, qtl.file, genotypes=c(0,.5,1))
+    unlink(qtl.file) #delete the file
     qtlprobs<-qtl::calc.genoprob(cross)
     probs<-qtl2convert::probs_qtl_to_qtl2(qtlprobs)
     genoprobs<-probs$probs
