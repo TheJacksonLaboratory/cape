@@ -273,6 +273,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         funcs <- as.vector(utils::lsf.str(envir=.GlobalEnv))
         parallel::clusterExport(cl, funcs, envir=.GlobalEnv)
         parallel::clusterExport(cl, {library(cape)})
+        ccc <- parallel::clusterEvalQ(cl, {library(cape)})
+        print(ccc)
         results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim], .export = c("get.stats.multiallele")) %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined
           # but it actually is defined in the foreach line above. You can safely ignore the warning.
