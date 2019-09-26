@@ -250,7 +250,6 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         cl <- parallel::makeCluster(n.cores)
         doParallel::registerDoParallel(cl)
         # the following line adds package variables to the parallel worker environments
-        browser()
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
         excludePackages<- c('parallel', 'doParallel', 'foreach')
         loadedPackages <- search()
