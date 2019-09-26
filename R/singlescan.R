@@ -251,23 +251,23 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         doParallel::registerDoParallel(cl)
         # the following line adds package variables to the parallel worker environments
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-        excludePackages<- c('parallel', 'doParallel', 'foreach')
-        loadedPackages <- search()
-        loadedPackages <- loadedPackages[grepl("^(package:)", loadedPackages)]
-        loadedPackages <- substr(loadedPackages, start=9, stop=100)
-        loadedPackages <- loadedPackages[!(loadedPackages %in% excludePackages)]
-        cat("1\n")
-        fspath <- fs::path
-        parallel::clusterCall(cl=cl, function(lib, fspath) {
-          cat("1.1\n")
-          print(fspath)
-          cat("1.2\n")
-          print(lib)
-          fleb <- .libPaths(fspath)
-          print(fleb)
-          for(i in 1:length(lib)) library(lib[i],character.only=TRUE)
-        }, lib=loadedPackages, path=.libPaths())
-        cat("2\n")
+        # excludePackages<- c('parallel', 'doParallel', 'foreach')
+        # loadedPackages <- search()
+        # loadedPackages <- loadedPackages[grepl("^(package:)", loadedPackages)]
+        # loadedPackages <- substr(loadedPackages, start=9, stop=100)
+        # loadedPackages <- loadedPackages[!(loadedPackages %in% excludePackages)]
+        # cat("1\n")
+        # fspath <- fs::path
+        # parallel::clusterCall(cl=cl, function(lib, fspath) {
+        #   cat("1.1\n")
+        #   print(fspath)
+        #   cat("1.2\n")
+        #   print(lib)
+        #   fleb <- .libPaths(fspath)
+        #   print(fleb)
+        #   for(i in 1:length(lib)) library(lib[i],character.only=TRUE)
+        # }, lib=loadedPackages, path=.libPaths())
+        # cat("2\n")
         
         # Copy functions in the workspace to the workers
         funcs <- as.vector(utils::lsf.str(envir=.GlobalEnv))
