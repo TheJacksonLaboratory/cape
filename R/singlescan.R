@@ -224,7 +224,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
     
     #get corrected genotype and phenotype values for each phenotype-chromosome pair
     if(use.kinship){
-      sink("regress.warnings") #create a temporary output file for the regress warnings
+      sink(file.path(data.obj$results_path,"regress.warnings")) #create a temporary output file for the regress warnings
       # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
       cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
       sink(NULL)
@@ -249,6 +249,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         
         cl <- parallel::makeCluster(n.cores)
         doParallel::registerDoParallel(cl)
+        # the following line adds package variables to the parallel worker environments
+        parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
         results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim], .packages = 'cape', .export = c("get.stats.multiallele", "check.geno")) %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined
           # but it actually is defined in the foreach line above. You can safely ignore the warning.
@@ -278,7 +280,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
       cat("\n")
       #get corrected genotype and phenotype values for the overall kinship matrix
       if(use.kinship){
-        sink("regress.warnings")
+        sink(file.path(data.obj$results_path,"regress.warnings"))
         # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
         cor.data <- kinship.on.the.fly(kin.obj, gene, phenoV = phenotype, covarV = covar.table)
         sink(NULL) #stop sinking to the file

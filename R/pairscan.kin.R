@@ -120,7 +120,7 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
     
     
     #sink the warnings from regress about solutions close to zero to a file
-    sink("regress.warnings")
+    sink(file.path(data.obj$results_path,"regress.warnings"))
     if(class(kin.obj) == "matrix"){
       #if we are using an overall kinship matrix
       kin.dat <- kinship.on.the.fly(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = pheno.vector, covarV = covar.vector)
