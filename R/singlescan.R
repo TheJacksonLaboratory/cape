@@ -256,18 +256,22 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         loadedPackages <- loadedPackages[grepl("^(package:)", loadedPackages)]
         loadedPackages <- substr(loadedPackages, start=9, stop=100)
         loadedPackages <- loadedPackages[!(loadedPackages %in% excludePackages)]
+        cat("1\n")
         parallel::clusterCall(cl=cl, function(lib, path) {
           .libPaths(path)
           for(i in 1:length(lib)) library(lib[i],character.only=TRUE)
         }, lib=loadedPackages, path=.libPaths())
+        cat("2\n")
         
         # Copy functions in the workspace to the workers
         funcs <- as.vector(utils::lsf.str(envir=.GlobalEnv))
+        cat("3\n")
         parallel::clusterExport(cl, funcs, envir=.GlobalEnv)
-        
+        cat("4\n")
         results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim]) %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined
           # but it actually is defined in the foreach line above. You can safely ignore the warning.
+          cat("5\n")
           get.stats.multiallele(phenotype = c.pheno, genotype = c.geno[,,x], covar.table = c.covar, ph.family, ref.col)
         }
         parallel::stopCluster(cl)
