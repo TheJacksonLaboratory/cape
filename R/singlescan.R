@@ -257,8 +257,14 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         loadedPackages <- substr(loadedPackages, start=9, stop=100)
         loadedPackages <- loadedPackages[!(loadedPackages %in% excludePackages)]
         cat("1\n")
-        parallel::clusterCall(cl=cl, function(lib, path) {
-          .libPaths(path)
+        fspath <- fs::path
+        parallel::clusterCall(cl=cl, function(lib, fspath) {
+          cat("1.1\n")
+          print(fspath)
+          cat("1.2\n")
+          print(lib)
+          fleb <- .libPaths(fspath)
+          print(fleb)
           for(i in 1:length(lib)) library(lib[i],character.only=TRUE)
         }, lib=loadedPackages, path=.libPaths())
         cat("2\n")
