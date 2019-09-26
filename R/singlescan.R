@@ -252,6 +252,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         # the following line adds package variables to the parallel worker environments
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
         
+        parallel::clusterEvalQ(cl, library(cape))
+        
         # Copy functions in the workspace to the workers
         # funcs <- as.vector(utils::lsf.str(envir=.GlobalEnv))
         # parallel::clusterExport(cl, funcs, envir=.GlobalEnv)
