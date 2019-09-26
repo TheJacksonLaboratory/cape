@@ -251,7 +251,17 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         doParallel::registerDoParallel(cl)
         # the following line adds package variables to the parallel worker environments
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-        results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim], .export = "check.geno") %dopar% {
+        excludePackages<- c('parallel', 'doParallel', 'foreach')
+        loadedPackages <- search()
+        loadedPackages <- loadedPackages[grepl("^(package:)", loadedPackages)]
+        loadedPackages <- substr(loadedPackages, start=9, stop=100)
+        loadedPackages <- loadedPackages[!(loadedPackages %in% excludePackages)]
+        parallel::clusterCall(cl=cl, function(lib, path) {
+          .libPaths(path)
+          for(i in 1:length(lib)) library(lib[i],character.only=TRUE)
+        }, lib=loadedPackages, path=.libPaths())
+        
+        results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim]) %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined
           # but it actually is defined in the foreach line above. You can safely ignore the warning.
           get.stats.multiallele(phenotype = c.pheno, genotype = c.geno[,,x], covar.table = c.covar, ph.family, ref.col)
