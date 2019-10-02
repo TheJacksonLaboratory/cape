@@ -1,5 +1,5 @@
 Package: cape
-Title: Combinatorial Analysis of Epistasis and Pleiotropy for Diversity Outbred Mice
+Title: Combined Analysis of Pleiotropy and Epistasis for Diversity Outbred Mice
 Version: 0.1.0
 Authors@R: c(
     person("Anna", "Tyler", role = c("aut", "cre"), email = "anna.tyler@jax.org.com"),
@@ -37,5 +37,6 @@ Depends:
 Imports:
   biomaRt
 Suggests: 
-  testthat
+  testthat, knitr, rmarkdown
+VignetteBuilder: knitr
 RoxygenNote: 6.1.1

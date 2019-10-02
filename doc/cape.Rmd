@@ -1,0 +1,28 @@
+---
+title: "Combined Analysis of Pleiotropy and Epistasis for Diversity Outbred Mice"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Combined Analysis of Pleiotropy and Epistasis for Diversity Outbred Mice}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+# Combined Analysis of Pleiotropy and Epistasis for Diversity Outbred Mice
+
+This package infers predictive networks between genetic variants and between
+genetic variants and phenotypes. It is specifically designed for use with the
+multi-allele mouse population known as the Diversity Outbred (DO) mice. It
+uses complementary information of pleiotropic gene variants across different
+phenotypes to resolve models of epistatic interactions between alleles. To
+do this, cape reparameterizes main effect and interaction coefficients from
+a pairwise variant regressions into directed influence parameters. These
+parameters describe how alleles each other, in terms of suppression and
+enhancement, as well as how gene variants influence phenotypes. In this
+framework, alleles originating from individual founders are selected for
+pairwise regressions based on their main effects on individual phenotypes.
+These alleles are then treated as independent genetic markers in the pairwise
+scans. The result is different founder alleles from the same locus may
+interact with each other in the form of intra-locus epistasis, or dominance.
+All of the final interactions are reported in terms of founder alleles at a
+given genomic location.
+

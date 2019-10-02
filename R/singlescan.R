@@ -251,15 +251,10 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         doParallel::registerDoParallel(cl)
         # the following line adds package variables to the parallel worker environments
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-        
+        # copy functions in the package to the workers
+        # TODO remove this hardcoded line, supply a variable to the Cape.obj containing the full path
         parallel::clusterEvalQ(cl, .libPaths("/opt/cape/cape_pkg"))
         
-        # Copy functions in the workspace to the workers
-        # funcs <- as.vector(utils::lsf.str(envir=.GlobalEnv))
-        # parallel::clusterExport(cl, funcs, envir=.GlobalEnv)
-        # cat("1\n")
-        # parallel::clusterExport(cl, "check.geno", envir=.GlobalEnv)
-        # cat("2\n")?
         results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim], .packages = 'cape') %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined
           # but it actually is defined in the foreach line above. You can safely ignore the warning.
