@@ -169,6 +169,16 @@ Cape <- R6::R6Class(
         self[[name]] <- val
       }
     },
+    check_inputs = function() {
+      stopifnot(length(self$chromosome) == length(self$marker_location))
+      stopifnot(length(self$chromosome) == length(self$marker_num))
+      stopifnot(length(self$chromosome) == length(self$geno_names$locus))
+    },
+    check_geno_names = function() {
+      # TODO make sure that individual names match between the pheno object, geno object, and geno names
+      stopifnot(TRUE)
+      
+    },
     initialize = function(
       parameter_file = NULL,
       results_path = NULL,
@@ -275,8 +285,11 @@ Cape <- R6::R6Class(
       self$use_kinship <- use_kinship
       # assign parameters from the parameter_file
       self$assign_parameters()
+      self$check_inputs()
+      self$check_geno_names()
       check.underscore(self)
       check.bad.markers(self)
+      # TODO make sure that individual names match between the pheno object, geno object, and geno names
     },
     plot_svd = function(filename) {
       

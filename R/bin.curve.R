@@ -32,7 +32,6 @@ bin.curve <- function(the.curve, plot.peaks = FALSE, window.size = NULL, amp.min
     ind.order <- order(big.mat[,1])
     ordered.mat <- big.mat[ind.order,]
     
-    # browser()
     consec.runs <- rle(ordered.mat[,2])
     run.locale <- which(consec.runs[[1]] > 1)
     
@@ -121,7 +120,6 @@ bin.curve <- function(the.curve, plot.peaks = FALSE, window.size = NULL, amp.min
   
   #remove any runs of peaks and troughs, which happens when there are flat spots
   #in the smoothed curve
-  
   trimmed.locale <- remove.runs(peak.locale, trough.locale, smoothed.curve)
   peak.locale <- trimmed.locale$peak.locale
   trough.locale <- trimmed.locale$trough.locale

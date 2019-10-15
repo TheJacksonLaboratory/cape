@@ -4,7 +4,7 @@
 # # which file?
 # file.base <- "test*"
 # 
-# # find the `map` and `ped` files in the globbed directory
+# # find the `map` and `ped` files in the globbed directory6
 # map <- NULL
 # ped <- NULL
 # 

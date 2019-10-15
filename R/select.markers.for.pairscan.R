@@ -72,7 +72,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
       specific.markers <- paste(dimnames(geno)[[3]], alt.alleles, sep = "_")
     }
   }
-    
+  
   if (!is.null(specific.markers)) {
     if(n.alleles == 2){
       ref.allele.locale <- which(data.obj$geno_names[[2]] == ref.allele)
@@ -156,6 +156,9 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     result.mat <- matrix(0, ncol = dim(allele.curves)[[3]], nrow = max(bins, na.rm = TRUE))
     rownames(result.mat) <- 1:nrow(result.mat)
     colnames(result.mat) <- dimnames(allele.curves)[[3]]
+    
+    # Error in 1:ncol(filtered.bins) : argument of length 0 
+    browser()
     
     #delete all effects that are less than the cutoff
     filtered.bins <- bins
@@ -267,7 +270,8 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     #a lot, if we need only a few more, don't lower it too much
     guess.point <- round(guess.point + num.alleles - total.alleles)
     min.effect.size = min(tail(sorted.results, guess.point))
-    
+    browser()
+    # Error in 1:ncol(filtered.bins) : argument of length 0 
     for(ph in 1:num.pheno){
       pheno.results <- results.no.covar[,ph,,drop=FALSE]
       ph.alleles[[ph]] <- markers.per.peak(pheno.results, allele.bins[[ph]], min.effect.size)

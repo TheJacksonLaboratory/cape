@@ -23,15 +23,15 @@ get.marker.chr <- function(data.obj, markers, character.names = TRUE){
   
   
   if(is.char){
-    marker.chr <- data.obj$chromosome[match(markers, data.obj$geno.names[[3]])]
+    marker.chr <- data.obj$chromosome[match(markers, data.obj$geno_names[[3]])]
     na.locale <- which(is.na(marker.chr))
     if(length(na.locale) > 0){
       covar.info <- get.covar(data.obj)
       geno.covar <- which(covar.info$covar.type == "g")
       if(length(geno.covar) > 0){
         unassigned <- markers[na.locale]
-        unassigned.locale <- match(unassigned, data.obj$g.covar[1,])
-        geno.covar.chr <- data.obj$g.covar[2,unassigned.locale]
+        unassigned.locale <- match(unassigned, data.obj$g_covar[1,])
+        geno.covar.chr <- data.obj$g_covar[2,unassigned.locale]
         marker.chr[na.locale] <- geno.covar.chr
       }
     }
@@ -46,15 +46,15 @@ get.marker.chr <- function(data.obj, markers, character.names = TRUE){
   
   
   if(!is.char){
-    marker.chr <- data.obj$chromosome[match(markers, data.obj$marker.num)]
+    marker.chr <- data.obj$chromosome[match(markers, data.obj$marker_num)]
     na.locale <- which(is.na(marker.chr))
     if(length(na.locale) > 0){
       covar.info <- get.covar(data.obj)
       geno.covar <- which(covar.info$covar.type == "g")
       if(length(geno.covar) > 0){
         unassigned <- markers[na.locale]
-        unassigned.locale <- match(unassigned, colnames(data.obj$g.covar))
-        geno.covar.chr <- data.obj$g.covar[2,unassigned.locale]
+        unassigned.locale <- match(unassigned, colnames(data.obj$g_covar))
+        geno.covar.chr <- data.obj$g_covar[2,unassigned.locale]
         marker.chr[na.locale] <- geno.covar.chr
       }
     }
