@@ -90,7 +90,10 @@ get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize
   
   edgelist <- cbind(source.markers, target.markers)
   
-  net <- graph_from_edgelist(edgelist)
+  # the igraph::graph_from_edgelist method fails on NA values. remove them.
+  filtered_edgelist <- subset(edgelist, !is.na(edgelist[,"source.markers"]) & !is.na(edgelist[,"target.markers"]))
+  
+  net <- igraph::graph_from_edgelist(filtered_edgelist)
   if(standardize){
     weights <- as.numeric(all.net.data[,5])
   }else{
@@ -99,13 +102,13 @@ get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize
   var.sig.col <- 7
   non.sig.locale <- which(as.numeric(all.net.data[,var.sig.col]) > p.or.q)
   weights[non.sig.locale] <- 0
-  E(net)$weight <- weights
+  igraph::E(net)$weight <- weights
   
   #remove multiple edges between blocks, take the edge with the maximum magnitude
   edge.attr.comb = list(weight = function(x) x[which.max(abs(x))], name="ignore")
   simple.net <- igraph::simplify(net, remove.multiple = TRUE, remove.loops = FALSE, edge.attr.comb = edge.attr.comb)
   
-  adj.mat <- as.matrix(as_adjacency_matrix(simple.net, type = "both", attr = "weight"))
+  adj.mat <- as.matrix(igraph::as_adjacency_matrix(simple.net, type = "both", attr = "weight"))
   
   #put the adjacency matrix in chromosome order
   split.labels <- unlist(lapply(strsplit(rownames(adj.mat), "Chr"), function(x) x[2]))

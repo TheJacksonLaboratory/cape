@@ -13,5 +13,5 @@
 echo "${BASH_SOURCE[0]}"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo 'Compiling and installing the CAPE package...'
-PKG=$(Rscript "${DIR}/compile_package.R")
+Rscript "${DIR}/compile_package.R"
 

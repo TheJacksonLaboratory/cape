@@ -26,9 +26,7 @@ calc.delta.errors <- function(markers,beta.m,se,beta.cov) {
   if(n.rows == n.cols){
     act_delta <- solve(beta.main)%*%beta.inter
   }else{
-    tolerance = max(dim(beta.main))*max(D)*.Machine$double.eps
-    act_delta <- try(corpcor::pseudoinverse(beta.main, tol = tolerance)
-                     %*%beta.inter, silent = TRUE)
+    act_delta <- try(corpcor::pseudoinverse(beta.main) %*% beta.inter, silent = TRUE)
     if(class(act_delta) == "try-error"){
       act_delta <- c(NA, NA)
     }

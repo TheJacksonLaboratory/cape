@@ -157,9 +157,6 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     rownames(result.mat) <- 1:nrow(result.mat)
     colnames(result.mat) <- dimnames(allele.curves)[[3]]
     
-    # Error in 1:ncol(filtered.bins) : argument of length 0 
-    browser()
-    
     #delete all effects that are less than the cutoff
     filtered.bins <- bins
     filtered.bins[which(abs(allele.curves) < cutoff)] <- NA
@@ -270,8 +267,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     #a lot, if we need only a few more, don't lower it too much
     guess.point <- round(guess.point + num.alleles - total.alleles)
     min.effect.size = min(tail(sorted.results, guess.point))
-    browser()
-    # Error in 1:ncol(filtered.bins) : argument of length 0 
+    
     for(ph in 1:num.pheno){
       pheno.results <- results.no.covar[,ph,,drop=FALSE]
       ph.alleles[[ph]] <- markers.per.peak(pheno.results, allele.bins[[ph]], min.effect.size)

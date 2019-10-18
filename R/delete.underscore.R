@@ -4,7 +4,7 @@
 #' @param geno.obj a genotype object
 #' 
 #' @return lists containing "data.obj" and "geno.obj"
-#' 
+
 delete.underscore <- function(data.obj, geno.obj = NULL){
   
   geno <- get.geno(data.obj, geno.obj)
@@ -19,7 +19,6 @@ delete.underscore <- function(data.obj, geno.obj = NULL){
     data.obj$geno_names[[3]][under.locale] <- new.names
     dimnames(geno)[[3]][under.locale] <- new.names
     message("Removing underscores from marker names\n")
-    # cat(bad.names, sep = "\n")
   }	
   
   results <- list(data.obj, geno)
