@@ -8,6 +8,7 @@
 #'
 #' @slot parameter_file string, full path to YAML file with initialization
 #'   parameters
+#' @slot yaml_parameters string representing YAML CAPE parameters
 #' @slot results_path string, full path to directory for storing results
 #'   (optional, a directory will be created if one is not specified)
 #' @slot save_results boolean, default: TRUE
@@ -117,6 +118,7 @@ Cape <- R6::R6Class(
   ),
   public = list(
     parameter_file = NULL,
+    yaml_parameters = NULL,
     results_path = NULL,
     save_results = NULL,
     use_saved_results = NULL,
@@ -163,7 +165,7 @@ Cape <- R6::R6Class(
     # to attributes in the Cape object
     assign_parameters = function() {
       
-      parameter.table <- read.parameters(self$parameter_file)
+      parameter.table <- read.parameters(self$parameter_file, self$yaml.parameters)
       for(name in names(parameter.table)){
         val <- parameter.table[[name]]
         self[[name]] <- val
@@ -181,6 +183,7 @@ Cape <- R6::R6Class(
     },
     initialize = function(
       parameter_file = NULL,
+      yaml_parameters = NULL,
       results_path = NULL,
       save_results = TRUE,
       use_saved_results = TRUE,
@@ -225,6 +228,7 @@ Cape <- R6::R6Class(
       use_kinship = NULL
     ) {
       self$parameter_file <- parameter_file
+
       if (missing(results_path)) {
         # if the path isn't suplied, take the parameter file's name and append
         # the date and time to create the results directory
