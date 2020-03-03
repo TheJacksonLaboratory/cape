@@ -9,7 +9,7 @@ load.input.and.run.cape(
   yaml_params = NULL,
   results_path = NULL,
   use_kinship = FALSE,
-  run.parallel = FALSE
+  run_parallel = FALSE
 )
 }
 \arguments{

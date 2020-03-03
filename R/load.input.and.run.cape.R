@@ -10,22 +10,15 @@
 #'
 #' @export
 load.input.and.run.cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL, use_kinship = FALSE,
-                                    run.parallel = FALSE){
+                                    run_parallel = FALSE){
   if(!require(here)){install.packages("here")}
+  library(tictoc)
   
-  test.data.path <- here("tests/testthat/testdata")
-  # "NON_NZO_Reifsnyder_pgm_CAPE_num.csv"
-  # file.name <- file.path(test.data.path, input_file)
-  file.name <- file.path(input_file) 
-  
-  # param.file <- file.path(test.data.path, "cape.parameters.yml")
-  
-  cross <- read.population(file.name)
+  cross <- read.population(input_file)
   cross.obj <- cape2mpp(cross)
   geno.obj <- cross.obj$geno.obj$geno
   
   data.obj <- Cape$new(
-    # parameter_file = param.file,
     yaml_parameters = yaml_params,
     results_path = results_path,
     pheno = cross.obj$data.obj$pheno,
@@ -38,9 +31,6 @@ load.input.and.run.cape <- function(input_file = NULL, yaml_params = NULL, resul
   )
   
   # TODO remove all calls to require() and ensure that the libraries are in the DESCRIPTION file
-  
-  snp.file = here("tests/testthat/testdata/NON_NZO_marker_list.txt")
-  
   final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
                           n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
                           error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = run_parallel)
