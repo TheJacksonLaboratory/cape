@@ -165,7 +165,7 @@ Cape <- R6::R6Class(
     # to attributes in the Cape object
     assign_parameters = function() {
       
-      parameter.table <- read.parameters(self$parameter_file, self$yaml.parameters)
+      parameter.table <- read.parameters(self$parameter_file, self$yaml_parameters)
       for(name in names(parameter.table)){
         val <- parameter.table[[name]]
         self[[name]] <- val
@@ -228,7 +228,7 @@ Cape <- R6::R6Class(
       use_kinship = NULL
     ) {
       self$parameter_file <- parameter_file
-
+      self$yaml_parameters <- yaml_parameters
       if (missing(results_path)) {
         # if the path isn't suplied, take the parameter file's name and append
         # the date and time to create the results directory
