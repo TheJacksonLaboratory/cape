@@ -342,7 +342,12 @@ Cape <- R6::R6Class(
       
       full.path <- file.path(self$results_path, filename)
       
-      pdf(full.path, width = width, height = height)
+      if (endsWith(full.path, "pdf")) {
+        pdf(full.path, width = width, height = height)
+      } else if (endsWith(full.path, "jpg")) {
+        jpeg(full.path, quality = 100)
+      }
+      
       plotVariantInfluences(self, p.or.q = p.or.q, standardize = FALSE, 
                             not.tested.col = "lightgray", 
                             covar.width = 30, pheno.width = 30)
@@ -352,8 +357,12 @@ Cape <- R6::R6Class(
     plot_network_do = function(filename, label.gap = 10, label.cex = 1.5, show.alleles = FALSE) {
       
       full.path <- file.path(self$results_path, filename)
-      
-      pdf(full.path)
+      if (endsWith(full.path, "pdf")) {
+        pdf(full.path)
+      } else if (endsWith(full.path, "jpg")) {
+        jpeg(full.path)
+      }
+
       plotNetworkDO(self, label.gap = label.gap, label.cex = label.cex, show.alleles = show.alleles)
       dev.off()
     },
@@ -363,7 +372,12 @@ Cape <- R6::R6Class(
       
       full.path <- file.path(self$results_path, filename)
       
-      pdf(full.path)
+      if (endsWith(full.path, "pdf")) {
+        pdf(full.path)
+      } else if (endsWith(full.path, "jpg")) {
+        jpeg(full.path)
+      }
+
       plotFullNetwork(self, zoom = zoom, node.radius = node.radius, label.nodes = label.nodes, label.offset = label.offset, label.cex = label.cex, 
                       bg.col = bg.col, arrow.length = arrow.length, layout.matrix = layout.matrix, legend.position = legend.position, 
                       edge.lwd = edge.lwd, legend.radius = legend.radius, legend.cex = legend.cex, xshift = xshift)

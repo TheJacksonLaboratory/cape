@@ -9,10 +9,9 @@
 #'
 #'
 #' @export
-load.input.and.run.cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL, use_kinship = FALSE,
-                                    run_parallel = FALSE){
+load.input.and.run.cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
+                                    use_kinship = FALSE, run_parallel = FALSE){
   if(!require(here)){install.packages("here")}
-  library(tictoc)
   
   cross <- read.population(input_file)
   cross.obj <- cape2mpp(cross)

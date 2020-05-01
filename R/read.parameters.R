@@ -7,14 +7,14 @@
 #' any and all potential variables.
 #'
 #' @param filename full path to the .yml file holding CAPE parameters (is not needed if yaml.parameters is provided)
-#' @param yaml.parameters yaml string holding CAPE parameters (can be NULL)
+#' @param yaml_parameters yaml string holding CAPE parameters (can be NULL)
 #'
 #' @return Returns a named list with all possible options
 #' 
 #' @export
-read.parameters <- function(filename = "cape.parameters.yml", yaml.parameters = NULL){
-  if (!is.null(yaml.parameters)) {
-    parameter.table <- yaml::yaml.load(yaml.parameters)
+read.parameters <- function(filename = "cape.parameters.yml", yaml_parameters = NULL){
+  if (!is.null(yaml_parameters)) {
+    parameter.table <- yaml::yaml.load(yaml_parameters)
   } else {
     parameter.table <- yaml::read_yaml(filename)
   }
