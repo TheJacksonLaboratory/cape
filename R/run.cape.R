@@ -142,6 +142,7 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
       )
       
       data.obj$plot_svd("svd.pdf")
+      data.obj$plot_svd("svd.jpg")
       
       # TODO update select.eigentraits
       data.obj <- select.eigentraits(data.obj, traits.which = data.obj$eig_which)
@@ -253,7 +254,8 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
       
       data.obj$plot_pairscan("Pairscan.Regression.pdf", pairscan.obj, phenotype = NULL, 
                              show.marker.labels = TRUE, show.alleles = FALSE)
-      
+      data.obj$plot_pairscan("Pairscan.Regression.jpg", pairscan.obj, phenotype = NULL, 
+                             show.marker.labels = TRUE, show.alleles = FALSE)
       data.obj$save_rds(data.obj, results.file)
     } 
   }
@@ -291,19 +293,28 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
                                    p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
                                    covar.width = 30, pheno.width = 30
                                    )
-  
+  data.obj$plot_variant_influences("variant.influences.jpg", width = 10, height = 7,
+                                   p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
+                                   covar.width = 30, pheno.width = 30
+                                   )
+
   data.obj <- get.network(data.obj, p.or.q = p.or.q, collapse.linked.markers = FALSE)
   data.obj <- get.network(data.obj, p.or.q = p.or.q, threshold.power = 1, collapse.linked.markers = TRUE, plot.linkage.blocks = FALSE)
   
   data.obj$save_rds(data.obj, results.file)
   
   data.obj$plot_network_do("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
-  
+  data.obj$plot_network_do("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
+
   if(dim(geno.obj)[2] == 8){
-    data.obj$plot_network_do("Network.Circular.DO.pdf", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)	
+    data.obj$plot_network_do("Network.Circular.DO.pdf", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
+    data.obj$plot_network_do("Network.Circular.DO.jpg", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
   }	
   
   data.obj$plot_full_network("Network.View.pdf", zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, 
+                             bg.col = "lightgray", arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
+                             edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1)
+  data.obj$plot_full_network("Network.View.jpg", zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, 
                              bg.col = "lightgray", arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
                              edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1)
   

@@ -11,7 +11,7 @@
 # 
 # 
 # # set output xml file
-# options(testthat.output_file = here("test-out.xml"))
+options(testthat.output_file = here("tests/test-out.xml"))
 # 
 # # run tests
-# testthat::test_dir(here("testthat"), env=.GlobalEnv, reporter = "junit")
+testthat::test_dir(here("tests/testthat"), env=.GlobalEnv, reporter = "junit")  #, filter = 'run')

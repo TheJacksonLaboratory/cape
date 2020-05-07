@@ -117,7 +117,12 @@ plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized 
     
   }	
   
-  pdf(pdf.label, width = 7, height = 6)
+  if (endsWith(pdf.label, "pdf")) {
+    pdf(pdf.label, width = 7, height = 6)
+  } else if (endsWith(pdf.label, "jpg")) {
+    jpeg(pdf.label, quality = 100)
+  }
+  
   for(p in 1:length(pheno.num)){
     myImagePlot(x = all.results.mats[[pheno.num[p]]], xlab = "marker1", ylab = "marker2", main = phenotype[p], min.x = min.x, max.x = max.x, show.labels = show.marker.labels, chromosome.coordinates = chr.boundaries, chr.names = chr.names, allele.cols = allele.cols, pos.col = pos.col, neg.col = neg.col)
   }

@@ -4,10 +4,12 @@
 \alias{read.parameters}
 \title{Read the parameter file, add missing entries}
 \usage{
-read.parameters(filename = "cape.parameters.yml")
+read.parameters(filename = "cape.parameters.yml", yaml.parameters = NULL)
 }
 \arguments{
-\item{filename}{full path to the .yml file holding CAPE parameters}
+\item{filename}{full path to the .yml file holding CAPE parameters (is not needed if yaml.parameters is provided)}
+
+\item{yaml.parameters}{yaml string holding CAPE parameters (can be NULL)}
 }
 \value{
 Returns a named list with all possible options
