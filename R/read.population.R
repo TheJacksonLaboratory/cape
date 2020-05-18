@@ -51,7 +51,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 		char.pheno <- which(pheno.classes == "character")
 	
 		if(length(char.pheno) > 0){
-			message("All phenotypes must be numeric.")
+			cat("All phenotypes must be numeric.")
 			cat("The following phenotype columns have character values:", colnames(cross.data)[char.pheno], sep = "\n")
 			cat("This error can occur if NA's are coded with multiple characters, or if na.strings is mis-specified. Make sure NA coding is consistent throughout the data set and specified correctly with na.strings.")
 			return(NULL)
@@ -222,7 +222,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 		#take out the sex chromosomes and invariant markers
 		x.locale <- grep("X", chr, ignore.case = TRUE)
 		if(length(x.locale) > 0){
-			message("\nRemoving markers on the X chromosome")
+			cat("\nRemoving markers on the X chromosome")
 			geno <- geno[,-x.locale]
 			chr <- chr[-x.locale]
 			marker_loc <- marker_loc[-x.locale]
@@ -230,7 +230,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 			
 		y.locale <- grep("Y", chr, ignore.case = TRUE)
 		if(length(y.locale) > 0){
-			message("\nRemoving markers on the Y chromosome")
+			cat("\nRemoving markers on the Y chromosome")
 			geno <- geno[,-y.locale]
 			chr <- chr[-y.locale]
 			marker_loc <- marker_loc[-y.locale]
@@ -238,7 +238,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 
 		m.locale <- grep("M", chr, ignore.case = TRUE)
 		if(length(m.locale) > 0){
-			message("\nRemoving markers on the mitochondrial chromosome")
+			cat("\nRemoving markers on the mitochondrial chromosome")
 			geno <- geno[,-m.locale]
 			chr <- chr[-m.locale]
 			marker_loc <- marker_loc[-m.locale]
@@ -249,7 +249,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 		num.allele <- apply(geno, 2, function(x) length(unique(x)))
 		mono.allele <- which(num.allele == 1)
 		if(length(mono.allele) > 0){
-			message("\nRemoving invariant markers.\n")
+			cat("\nRemoving invariant markers.\n")
 			geno <- geno[,-mono.allele]
 			chr <- chr[-mono.allele]
 			marker_loc <- marker_loc[-mono.allele]
@@ -259,7 +259,7 @@ read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, 
 	
 		na.locale <- which(is.na(geno))
 		if(length(na.locale) > 0){
-			message("I have detected missing values in the genotype matrix.\n\tIf you are planning to use the kinship correction, please use impute.geno() to impute the genotype data.\n")
+			cat("Missing values detected in the genotype matrix.\n\tIf you are planning to use the kinship correction, please use impute.geno() to impute the genotype data.\n")
 			}
 	
 		#put in code here to distribute the genotypes between -1 and 1 so we get symmetric m12/m21 null distributions

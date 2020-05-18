@@ -170,7 +170,7 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
     trait.locale <- which(trait %in% names(data.obj$max_var_to_pheno_influence))
     if(length(trait.locale) < length(trait)){
       not.found <- which(!trait %in% names(data.obj$max_var_to_pheno_influence))
-      message("I couldn't find the following traits:")
+      cat("I couldn't find the following traits:")
       cat(trait[not.found], sep = "\n")
       return()
     }

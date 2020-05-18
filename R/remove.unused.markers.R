@@ -47,7 +47,7 @@ remove.unused.markers <- function(data.obj, geno.obj){
   num.allele <- apply(gene, 3, function(x) sum(x, na.rm = TRUE))
   mono.allele <- which(num.allele == 0)
   if(length(mono.allele) > 0){
-    message(paste("\nRemoving", length(mono.allele), "markers with no data:"))
+    cat(paste("\nRemoving", length(mono.allele), "markers with no data:"))
     cat(data.obj$geno_names[[3]][mono.allele], sep = ", ")
     data.obj$chromosome <- data.obj$chromosome[-mono.allele]
     data.obj$marker_location <- data.obj$marker_location[-mono.allele]

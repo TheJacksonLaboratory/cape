@@ -35,7 +35,7 @@ select.pheno <- function(data.obj, pheno.which, min.entries = 5, scale.pheno = F
   
   if(length(bad.pheno) > 0){
     final.pheno <- new.pheno[,-bad.pheno]
-    message("The following phenotypes had fewer than ", min.entries, " entries and were removed.\n")
+    cat("The following phenotypes had fewer than ", min.entries, " entries and were removed.\n")
     cat(paste("\t", colnames(new.pheno)[bad.pheno], "\n"))
   }else{
     final.pheno <- new.pheno
