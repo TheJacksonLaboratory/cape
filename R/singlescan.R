@@ -253,7 +253,9 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
         # copy functions in the package to the workers
         # TODO remove this hardcoded line, supply a variable to the Cape.obj containing the full path
-        parallel::clusterEvalQ(cl, .libPaths("/opt/cape/cape_pkg"))
+        cape.dir <- find.package("cape")
+        #parallel::clusterEvalQ(cl, .libPaths("/opt/cape/cape_pkg"))
+        parallel::clusterEvalQ(cl, .libPaths(cape.dir))
         
         results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim], .packages = 'cape') %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined

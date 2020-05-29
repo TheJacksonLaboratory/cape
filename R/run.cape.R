@@ -226,7 +226,7 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
       }
       
       if(marker.selection.method == "from.list"){
-        specific.markers <- read.table(snp.file, sep = "\t", stringsAsFactors = FALSE)
+        specific.markers <- as.matrix(read.table(snp.file, sep = "\t", stringsAsFactors = FALSE))
         data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
       }
       
