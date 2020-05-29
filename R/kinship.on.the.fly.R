@@ -43,7 +43,8 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     }
     
     #This err.cov is the same as err.cov in Dan's code using estVC
-    err.cov = summary(model)$sigma[1]*K+summary(model)$sigma[2]*diag(nrow(K))
+    #err.cov = summary(model)$sigma[1]*K+summary(model)$sigma[2]*diag(nrow(K))
+    err.cov = model$sigma[1]*K+model$sigma[2]*diag(nrow(K))
     
     eW = eigen(err.cov, symmetric = TRUE)
     if(min(eW$values) < 0 && abs(min(eW$values)) > sqrt(.Machine$double.eps)){
