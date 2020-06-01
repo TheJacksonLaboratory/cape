@@ -79,7 +79,8 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
       other.allele <- setdiff(1:2, ref.allele.locale)
       split.markers <- strsplit(as.character(specific.markers), "_")
       just.markers <- sapply(split.markers, function(x) x[1])
-      geno.for.pairscan <- geno[,other.allele,just.markers]
+      just.marker.locale <- match(just.markers, dimnames(geno)[[3]])
+      geno.for.pairscan <- geno[,other.allele,just.marker.locale]
       colnames(geno.for.pairscan) <- paste(colnames(geno.for.pairscan), data.obj$geno_names[[2]][other.allele], sep = "_")
     }else{
       split.markers <- strsplit(specific.markers, "_")
