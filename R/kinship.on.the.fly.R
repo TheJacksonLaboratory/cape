@@ -41,14 +41,18 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     is.na.covar <- unique(which(is.na(covarV), arr.ind = TRUE)[,1])
     not.na <- setdiff(1:length(phenotype), unique(c(is.na.pheno, is.na.covar)))
 
-    kin.locale <- match(rownames(phenoV)[not.na], colnames(K))  
+    common.ind <- rownames(phenoV)[not.na]
+
+    kin.locale <- match(common.ind, colnames(full.kin))  
     K <- full.kin[kin.locale,kin.locale]
+
+    pheno.locale <- match(common.ind, rownames(phenotype))
 
     #if we are correcting the covariate only don't put it in the model
     if(is.null(covarV) || is.null(pair)){
-      model = regress::regress(as.vector(phenotype)~1,~K, pos = c(TRUE, TRUE))	
+      model = regress::regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))	
     }else{
-      model = regress::regress(as.vector(phenotype)~covarV, ~K, pos = c(TRUE, TRUE))
+      model = regress::regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, pos = c(TRUE, TRUE))
     }
     
     #This err.cov is the same as err.cov in Dan's code using estVC
@@ -65,14 +69,14 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     new.pheno <- err.cov %*% phenotype
     
     if(length(dim(geno)) == 3){
-      l.geno <- lapply(1:dim(geno)[2], function(x) err.cov %*% geno[,x,]); #hist(new.geno)
+      l.geno <- lapply(1:dim(geno)[2], function(x) err.cov %*% geno[pheno.locale,x,]); #hist(new.geno)
       new.geno <- array(NA, dim = dim(geno))
       for(i in 1:length(l.geno)){
-        new.geno[,i,] <- l.geno[[i]]
+        new.geno[pheno.locale,i,] <- l.geno[[i]]
       }
       dimnames(new.geno) <- dimnames(geno)
     }else{
-      new.geno <- err.cov %*% geno
+      new.geno <- err.cov %*% geno[pheno.locale,]
       dimnames(new.geno) <- dimnames(geno)				
     }
     
