@@ -35,7 +35,13 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
       full.kin <- kin.obj[[kin.mat.locale]]
     }
     
-    kin.locale <- match(rownames(phenoV), colnames(K))  
+    #also remove individuals with NAs in the phenotype
+    #or covariates
+    is.na.pheno <- which(is.na(phenotype))
+    is.na.covar <- unique(which(is.na(covarV), arr.ind = TRUE)[,1])
+    not.na <- setdiff(1:length(phenotype), unique(c(is.na.pheno, is.na.covar)))
+
+    kin.locale <- match(rownames(phenoV)[not.na], colnames(K))  
     K <- full.kin[kin.locale,kin.locale]
 
     #if we are correcting the covariate only don't put it in the model
