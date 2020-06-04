@@ -66,18 +66,18 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     } 
     err.cov = eW$vector %*% diag(eW$values^-0.5) %*% t(eW$vector)
     
-    new.pheno <- err.cov %*% phenotype
+    new.pheno <- err.cov %*% phenotype[pheno.locale,]
     
     if(length(dim(geno)) == 3){
       l.geno <- lapply(1:dim(geno)[2], function(x) err.cov %*% geno[pheno.locale,x,]); #hist(new.geno)
-      new.geno <- array(NA, dim = dim(geno))
+      new.geno <- array(NA, dim = dim(geno[pheno.locale,,]))
       for(i in 1:length(l.geno)){
-        new.geno[pheno.locale,i,] <- l.geno[[i]]
+        new.geno[,i,] <- l.geno[[i]]
       }
-      dimnames(new.geno) <- dimnames(geno)
+      dimnames(new.geno) <- dimnames(geno[pheno.locale,,])
     }else{
       new.geno <- err.cov %*% geno[pheno.locale,]
-      dimnames(new.geno) <- dimnames(geno)				
+      dimnames(new.geno) <- dimnames(geno[pheno.locale,])				
     }
     
     if(!is.null(covarV)){
