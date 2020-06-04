@@ -59,7 +59,8 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
     
     if (isFALSE(kin.obj)) {
       #if there isn't a kinship object already, we need to make one
-      kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, pop = data.obj$pop)
+      kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, 
+      pop = data.obj$pop)
       data.obj$save_rds(kin.obj, kin.file.name)
     }
 
@@ -120,7 +121,7 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
     
     if(verbose){cat("Removing unused markers...\n")}
     data.obj <- remove.unused.markers(data.obj, geno.obj)
-    combined.data.obj <- delete.underscore(data.obj, geno.obj)
+    combined.data.obj <- delete_underscore(data.obj, geno.obj)
     
     data.obj <- combined.data.obj$data.obj
     geno.obj <- combined.data.obj$geno.obj
