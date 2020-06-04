@@ -220,14 +220,15 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
   for(i in 1:n.phe){
     if(verbose){cat("\nScanning trait:", colnames(pheno)[i], "\n")}
     #take out the response variable
-    phenotype <- matrix(pheno[,i], ncol = 1)
+    phenotype <- pheno[,i,drop=FALSE]
     ph.family = model.family[i]
     
     #get corrected genotype and phenotype values for each phenotype-chromosome pair
     if(use.kinship){
       sink(file.path(data.obj$results_path,"regress.warnings")) #create a temporary output file for the regress warnings
       # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
-      cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
+      cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, 
+      chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
       sink(NULL)
       
       names(cor.data) <- chr.which
