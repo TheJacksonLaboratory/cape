@@ -29,12 +29,15 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     }
     
     if(class(kin.obj) == "matrix"){
-      K <- kin.obj
+      full.kin <- kin.obj
     }else{
       kin.mat.locale <- which(names(kin.obj) == pair.name)
-      K <- kin.obj[[kin.mat.locale]]
+      full.kin <- kin.obj[[kin.mat.locale]]
     }
     
+    kin.locale <- match(rownames(phenoV), colnames(K))  
+    K <- full.kin[kin.locale,kin.locale]
+
     #if we are correcting the covariate only don't put it in the model
     if(is.null(covarV) || is.null(pair)){
       model = regress::regress(as.vector(phenotype)~1,~K, pos = c(TRUE, TRUE))	
@@ -78,6 +81,7 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     return(results)
   }
   
+
   result <- get.g(pair = c(chr1, chr2), phenotype = phenoV, covarV = covarV)
   
   

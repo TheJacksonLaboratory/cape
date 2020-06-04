@@ -94,25 +94,18 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
         # update and save the geno.obj
         geno.obj <- geno.imp$geno.obj
         data.obj$save_rds(geno.obj, imp.geno.file)
-      }
+      
+        # recalculate the kinship matrix with the updated objects
+        kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, pop = data.obj$pop)
+        data.obj$save_rds(kin.obj, kin.file.name)
+
+      } #end case for when there are missing values but no imputed genotypes
 
     } else { #if the imputation has been done, then it must have been done for the data.obj too
       data.obj <- geno.imp$data.obj
       geno.obj <- geno.imp$geno.obj
     }
 
-
-    # geno <- get.geno(data.obj, geno.obj)
-    # missing.vals <- which(is.na(geno))
-
-    if(length(missing.vals) > 0){ #if there are missing values in the genotype matrix,
-
-
-    } #end case for when there are missing values in the genotype object
-
-    # recalculate the kinship matrix with the updated objects
-    kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, pop = data.obj$pop)
-    data.obj$save_rds(kin.obj, kin.file.name)
   }
   
   if(any(!run.singlescan, !run.pairscan, !error.prop.coef, !error.prop.perm)){
@@ -147,14 +140,6 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
       
       # TODO update select.eigentraits
       data.obj <- select.eigentraits(data.obj, traits.which = data.obj$eig_which)
-      
-      if(data.obj$use_kinship){
-        #if individuals were deleted from the phenotype matrix, delete these
-        #from the kinship object too
-        # TODO check for NAs in the kin.obj AND check for dim inconsistencies when using covariates
-        kin.obj <- remove.kin.ind(data.obj, kin.obj)
-        # saveRDS(kin.obj, kin.file)
-      }
     }
     
     data.obj$save_rds(data.obj, results.file)
