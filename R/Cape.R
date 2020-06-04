@@ -293,7 +293,7 @@ Cape <- R6::R6Class(
       self$check_geno_names()
       delete_underscore(self)
       check.underscore(self)
-      check.bad.markers(self)
+      #check.bad.markers(self)
       # TODO make sure that individual names match between the pheno object, geno object, and geno names
     },
     plot_svd = function(filename) {
