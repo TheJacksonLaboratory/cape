@@ -124,9 +124,10 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
   #==================================================================
   
   #Get the dimension names to minimize confusion	
-  mouse.dim <- which(names(dimnames(gene)) == "mouse")
-  locus.dim <- which(names(dimnames(gene)) == "locus")
-  allele.dim <- which(names(dimnames(gene)) == "allele")
+  geno.dims <- get_geno_dim()
+  mouse.dim <- geno.dims[which(names(geno.dims) == "mouse")]
+  allele.dim <- geno.dims[which(names(geno.dims) == "allele")]
+  locus.dim <- geno.dims[which(names(geno.dims) == "locus")]
   
   n.phe <- dim(pheno)[2]
   

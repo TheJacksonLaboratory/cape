@@ -37,9 +37,10 @@ get.geno <- function(data.obj, geno.obj){
     stop("I can't find the genotype data. Please make sure it is in either data.obj or geno.obj.")
   }
   
-  mouse.dim <- which(names(geno_names) == "mouse")
-  locus.dim <- which(names(geno_names) == "locus")
-  allele.dim <- which(names(geno_names) == "allele")
+  geno.dims <- get_geno_dim()
+  mouse.dim <- geno.dims[which(names(geno.dims) == "mouse")]
+  allele.dim <- geno.dims[which(names(geno.dims) == "allele")]
+  locus.dim <- geno.dims[which(names(geno.dims) == "locus")]
   
   #subset the genotype object to match the 
   #individuals and markers we want to scan
