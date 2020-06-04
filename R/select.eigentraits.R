@@ -14,6 +14,9 @@ select.eigentraits <- function(data.obj, traits.which = c(1,2)){
   # check.bad.markers(data.obj)
   
   ET <- data.obj$ET
+  
+  if(length(traits.which) > ncol(ET)){stop("There are more eigentraits specified than exist. Please select a smaller number in the parameter file.")}
+  
   selected.ET <- ET[,traits.which]
   data.obj$ET <- selected.ET
   return(data.obj)
