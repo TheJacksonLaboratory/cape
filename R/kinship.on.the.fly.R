@@ -39,13 +39,13 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     #or covariates
     is.na.pheno <- which(is.na(phenotype))
     is.na.covar <- unique(which(is.na(covarV), arr.ind = TRUE)[,1])
-    not.na <- setdiff(1:length(phenotype), unique(c(is.na.pheno, is.na.covar)))
-
-    common.ind <- rownames(phenoV)[not.na]
+    all.na <- unique(c(is.na.pheno, is.na.covar))
+    not.na <- setdiff(1:length(phenotype), all.na)
+    no.na.ind <- rownames(phenotype)[not.na]
+    common.ind <- intersect(no.na.ind, colnames(full.kin))
 
     kin.locale <- match(common.ind, colnames(full.kin))  
     K <- full.kin[kin.locale,kin.locale]
-
     pheno.locale <- match(common.ind, rownames(phenotype))
 
     #if we are correcting the covariate only don't put it in the model
@@ -81,7 +81,7 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     }
     
     if(!is.null(covarV)){
-      new.covar <- err.cov %*% covarV
+      new.covar <- err.cov %*% covarV[pheno.locale,]
     }else{
       new.covar <- NULL	
     }
