@@ -84,7 +84,7 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
 
       if (length(missing.vals) > 0) { #if there are missing values, impute them
         cat("There are missing values in geno.obj. Running impute.missing.geno...\n")
-        geno.imp <- impute.missing.geno(data.obj)
+        geno.imp <- impute.missing.geno(data.obj, run.parallel = run.parallel, n.cores = n.cores)
 
         # update and save the data.obj
         data.obj <- geno.imp$data.obj

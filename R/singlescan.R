@@ -118,7 +118,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
     missing.vals <- which(is.na(gene))
     if(length(missing.vals) > 0){
       warning("There are missing values in the genotype matrix. Please use impute.missing.geno().")
-      data.obj <- impute.missing.geno(data.obj, geno.obj)["data.obj"]
+      data.obj <- impute.missing.geno(data.obj, geno.obj = geno.obj, run.parallel = run.parallel, n.cores = n.cores)["data.obj"]
     }
   }
   #==================================================================
