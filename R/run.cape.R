@@ -89,10 +89,14 @@ run.cape <- function(data.obj, geno.obj,
 
       if (length(missing.vals) > 0) { #if there are missing values, impute them
         cat("There are missing values in geno.obj. Running impute.missing.geno...\n")
+<<<<<<< Upstream, based on origin/master
         geno.imp <- impute.missing.geno(data.obj, geno.obj = geno.obj, k = 10, 
         	ind.missing.thresh = 0, marker.missing.thresh = 0, prioritize = "fewer",
         	max.region.size = NULL, min.region.size = NULL, run.parallel = run.parallel,
         	verbose = verbose, n.cores = n.cores)
+=======
+        geno.imp <- impute.missing.geno(data.obj, run.parallel = run.parallel, n.cores = n.cores)
+>>>>>>> f882523 CAPE-76 pass run.parallel attribute to all functions that require it
 
         # update and save the data.obj
         data.obj <- geno.imp$data.obj
