@@ -12,7 +12,7 @@
 #' @param run.parallel default = TRUE
 #' @param n.cores default = 4
 #' 
-one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.allele = "A", covar.vector = NULL, run.parallel = TRUE, n.cores = 4){
+one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.allele = "A", covar.vector = NULL, run.parallel = FALSE, n.cores = 4){
   
   if(!run.parallel){n.cores = 1}
   
