@@ -15,12 +15,12 @@
 #' 
 select.markers.for.pairscan.uniform <- function(data.obj, geno.obj, required.markers = NULL, num.alleles = 500, verbose = FALSE){
   
-  require(abind)
+  #require(abind)
   data.obj$marker_selection_method <- "uniform"
   ref.allele <- data.obj$ref_allele
   
   geno <- get.geno(data.obj, geno.obj)
-  if(num.alleles == dim(geno)[3] || num.alleles > dim(geno)[3]){
+  if(num.alleles >= dim(geno)[3]){
     required.markers = dimnames(geno)[[3]]
   }
   
@@ -44,15 +44,15 @@ select.markers.for.pairscan.uniform <- function(data.obj, geno.obj, required.mar
   geno.for.pairscan <- geno[,other.allele,selected.idx]
   
   if(verbose){cat("Removing markers that are not linearly independent...\n")}
-  data.obj$geno.for.pairscan <- geno.for.pairscan
-  geno.ind <- get.linearly.independent(data.obj, verbose = verbose)
+  data.obj$geno_for_pairscan <- geno.for.pairscan
+  geno.ind <- get.linearly.independent(data.obj)
   if(verbose){
     cat(length(geno.ind[[2]]), "allele(s) rejected.\n")
-    cat("Final alleles selected:", "\t", ncol(geno.ind$independent.markers), "\n")
+    cat("Final alleles selected:", "\t", ncol(geno.ind$independent_markers), "\n")
   }
   
   rownames(geno.ind$independent.markers) <- rownames(data.obj$pheno)
-  data.obj$geno.for.pairscan <- geno.ind$independent.markers		
+  data.obj$geno_for_pairscan <- geno.ind$independent.markers		
   data.obj$marker.selection.method = "uniform"
   
   return(data.obj)
