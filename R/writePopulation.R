@@ -12,7 +12,8 @@
 #' @param filename absolute or relative path to the output file's destination
 #'
 #' @export
-writePopulation <- function(data.obj, geno.obj, ref.allele = "A", na = NA, filename = "capeData.csv"){
+writePopulation <- function(data.obj, geno.obj, ref.allele = "A", na = NA, 
+filename = "capeData.csv"){
   
   if(class(geno.obj)=="array"){
     geno.obj<-geno.obj}

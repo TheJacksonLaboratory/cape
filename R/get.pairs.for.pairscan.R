@@ -27,7 +27,8 @@
 #'   specify which marker pairs should be tested.
 #'   
 #' @export
-get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL, min.per.genotype = NULL, run.parallel = TRUE, n.cores = 4, verbose = TRUE){
+get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL, 
+	min.per.genotype = NULL, run.parallel = FALSE, n.cores = 4, verbose = TRUE){
   
   if(!run.parallel){n.cores = 1}
   

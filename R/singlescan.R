@@ -28,9 +28,9 @@
 #' @return \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
 #'
 #' @export
-singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha = c(0.01, 0.05), 
-                       model.family = "gaussian", run.parallel = TRUE, n.cores = 4, verbose = FALSE, 
-                       overwrite.alert = TRUE) {
+singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, 
+  alpha = c(0.01, 0.05), model.family = "gaussian", run.parallel = FALSE, 
+  n.cores = 4, verbose = FALSE, overwrite.alert = TRUE) {
   
   ref.allele <- data.obj$ref_allele
   scan.what <- data.obj$scan_what
