@@ -50,9 +50,9 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
 
     #if we are correcting the covariate only don't put it in the model
     if(is.null(covarV) || is.null(pair)){
-      model = regress::regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))	
+      model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))	
     }else{
-      model = regress::regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, pos = c(TRUE, TRUE))
+      model = regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, pos = c(TRUE, TRUE))
     }
     
     #This err.cov is the same as err.cov in Dan's code using estVC

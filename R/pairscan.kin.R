@@ -10,7 +10,8 @@
 #' @param run.parallel to parallel, or not to parallel
 #' @param n.cores if parallel, how many cores?
 #' 
-pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin.obj, verbose = TRUE, run.parallel = TRUE, n.cores = 2){
+pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, 
+kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
   
   m = NULL #for appeasing R CMD check
   
@@ -56,9 +57,10 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
     
     int.term = matrix(solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]], ncol = 1)
     pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno,
-                                              genotype.matrix = new.geno, int = int.term, covar.vector = new.covar, 
-                                              paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, 
-                                              run.parallel = FALSE, n.cores = n.cores)
+    		genotype.matrix = new.geno, int = int.term, covar.vector = new.covar, 
+    		paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = verbose, 
+    		run.parallel = run.parallel, n.cores = n.cores)
+    		
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)
       dummyV <- c(marker.num, rep(NA, 3))
@@ -96,7 +98,11 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
     covar.locale <- which(covar.names %in% m)
     int.term = solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]]
     
-    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, genotype.matrix = new.geno, int = int.term, covar.vector = new.covar[,-covar.locale,drop=FALSE], paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, run.parallel = FALSE, n.cores = n.cores)
+    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, 
+    		genotype.matrix = new.geno, int = int.term, 
+    		covar.vector = new.covar[,-covar.locale,drop=FALSE], 
+    		paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = verbose, 
+    		run.parallel = run.parallel, n.cores = n.cores)
     
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)
@@ -116,14 +122,15 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
     }
     
     covar.vector <- covar.info$covar.table
-    pheno.vector <- pheno[,p]
+    pheno.vector <- pheno[,p,drop=FALSE]
     
     
     #sink the warnings from regress about solutions close to zero to a file
     sink(file.path(data.obj$results_path,"regress.warnings"))
     if(class(kin.obj) == "matrix"){
       #if we are using an overall kinship matrix
-      kin.dat <- kinship.on.the.fly(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = pheno.vector, covarV = covar.vector)
+      kin.dat <- kinship.on.the.fly(kin.obj, geno, chr1 = NULL, chr2 = NULL, 
+      phenoV = pheno.vector, covarV = covar.vector)
     }else{
       #If we are using LTCO
       chr.pairs <- Reduce("rbind", strsplit(names(kin.obj), ","))
@@ -170,7 +177,7 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
             cl <- parallel::makeCluster(n.cores)
             doParallel::registerDoParallel(cl)
             covar.results <- foreach::foreach(m = t(cv.markers), .packages = 'cape',
-                                              .export = c("rankMatrix", "one.pairscan.parallel", "get.covar", "get.marker.num", "get.marker.chr")) %dopar% {
+            		.export = c("rankMatrix", "one.pairscan.parallel", "get.covar", "get.marker.num", "get.marker.chr")) %dopar% {
               get.covar.stats(m, kin.dat)
             }
             parallel::stopCluster(cl)
