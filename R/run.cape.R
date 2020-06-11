@@ -29,18 +29,22 @@
 #' @return None, output artifacts are saved to the data.obj$results_path directory
 #'
 #' @export
-run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
-                     n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
-                     error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE){
+run.cape <- function(data.obj, geno.obj, 
+  results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
+  n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, 
+  error.prop.coef = TRUE, error.prop.perm = TRUE, initialize.only = FALSE, 
+  verbose = TRUE, run.parallel = FALSE){
   
   results.base.name <- gsub(".RData", "", results.file)
   
-  # since this is the main data.obj, we can't allow it to return FALSE, check for the file first
+  # since this is the main data.obj, we can't allow it to return FALSE, 
+  #check for the file first
   prior.data.obj <- data.obj$read_rds(results.file)
   if (isFALSE(prior.data.obj)) {
     data.obj <- compare.markers(data.obj, geno.obj)
   } else {
-    # things can get pretty confusing if these values don't match between the parameter file and the old data.obj
+    # things can get pretty confusing if these values don't match between 
+    #the parameter file and the old data.obj
     prior.data.obj$save_results <- data.obj$save_results
     prior.data.obj$use_saved_results <- data.obj$use_saved_results
     data.obj <- prior.data.obj
@@ -85,7 +89,10 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
 
       if (length(missing.vals) > 0) { #if there are missing values, impute them
         cat("There are missing values in geno.obj. Running impute.missing.geno...\n")
-        geno.imp <- impute.missing.geno(data.obj)
+        geno.imp <- impute.missing.geno(data.obj, geno.obj = geno.obj, k = 10, 
+        	ind.missing.thresh = 0, marker.missing.thresh = 0, prioritize = "fewer",
+        	max.region.size = NULL, min.region.size = NULL, run.parallel = run.parallel,
+        	verbose = verbose, n.cores = n.cores)
 
         # update and save the data.obj
         data.obj <- geno.imp$data.obj
@@ -107,44 +114,39 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
     }
 
   }
+    
+  if(verbose){cat("Removing unused markers...\n")}
+  data.obj <- remove.unused.markers(data.obj, geno.obj)
+  combined.data.obj <- delete_underscore(data.obj, geno.obj)
   
-  if(any(!run.singlescan, !run.pairscan, !error.prop.coef, !error.prop.perm)){
-    data.obj <- data.obj$read_rds(results.file)
-  }else{
-    
-    if(verbose){cat("Removing unused markers...\n")}
-    data.obj <- remove.unused.markers(data.obj, geno.obj)
-    combined.data.obj <- delete_underscore(data.obj, geno.obj)
-    
-    data.obj <- combined.data.obj$data.obj
-    geno.obj <- combined.data.obj$geno.obj
-    
-    if(!is.null(data.obj$covariates)){
-      data.obj <- pheno2covar(data.obj, data.obj$covariates)
-    }
-    if(!is.null(data.obj$marker_covariates)){
-      data.obj <- marker2covar(data.obj, geno.obj, markers = data.obj$marker_covariates)
-    }
-    
-    data.obj <- select.pheno(data.obj, pheno.which = data.obj$traits)	
-    
-    if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
-      data.obj <- get.eigentraits(
-        data.obj, 
-        scale.pheno = as.logical(data.obj$traits_scaled), 
-        normalize.pheno = as.logical(data.obj$traits_normalized)
-      )
-      
-      data.obj$plot_svd("svd.pdf")
-      data.obj$plot_svd("svd.jpg")
-      
-      # TODO update select.eigentraits
-      data.obj <- select.eigentraits(data.obj, traits.which = data.obj$eig_which)
-    }
-    
-    data.obj$save_rds(data.obj, results.file)
+  data.obj <- combined.data.obj$data.obj
+  geno.obj <- combined.data.obj$geno.obj
+  
+  if(!is.null(data.obj$covariates)){
+    data.obj <- pheno2covar(data.obj, data.obj$covariates)
+  }
+  if(!is.null(data.obj$marker_covariates)){
+    data.obj <- marker2covar(data.obj, geno.obj, markers = data.obj$marker_covariates)
   }
   
+  data.obj <- select.pheno(data.obj, pheno.which = data.obj$traits)	
+  
+  if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
+    data.obj <- get.eigentraits(
+      data.obj, 
+      scale.pheno = as.logical(data.obj$traits_scaled), 
+      normalize.pheno = as.logical(data.obj$traits_normalized)
+    )
+    
+    data.obj$plot_svd("svd.pdf")
+    data.obj$plot_svd("svd.jpg")
+    
+    # TODO update select.eigentraits
+    data.obj <- select.eigentraits(data.obj, traits.which = data.obj$eig_which)
+  }
+  
+  data.obj$save_rds(data.obj, results.file)
+
   if(initialize.only){
     return(data.obj)
   }
@@ -174,9 +176,10 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
       
       for(ph in 1:ncol(singlescan.obj$singlescan.effects)){
         filename <- paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Standardized.jpg")
-        data.obj$plot_singlescan(filename, singlescan.obj, width = 20, height = 6, units = "in", res = 300, 
-                                 standardized = TRUE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE, 
-                                 line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
+        data.obj$plot_singlescan(filename, singlescan.obj, width = 20, height = 6, 
+          units = "in", res = 300, standardized = TRUE, allele.labels = NULL, 
+          alpha = c(0.05, 0.01), include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, 
+          lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
       }
       
       for(ph in 1:ncol(singlescan.obj$singlescan.effects)){
@@ -217,7 +220,8 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
       }
       
       if(marker.selection.method == "uniform"){
-        data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, required.markers = NULL, num.alleles = num.alleles.in.pairscan, verbose = verbose)
+        data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, 
+        required.markers = NULL, num.alleles = num.alleles.in.pairscan, verbose = verbose)
       }
       
       if(marker.selection.method == "by.gene"){
@@ -231,17 +235,18 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
       
       data.obj$save_rds(data.obj, results.file)
       
-      pairscan.obj <- pairscan(data.obj, geno.obj, scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
-                               min.per.genotype = min.per.genotype, max.pair.cor = max.pair.cor, verbose = verbose, 
-                               num.pairs.limit = Inf, overwrite.alert = FALSE, run.parallel = run.parallel, 
-                               n.cores = n.cores, gene.list = gene.list, kin.obj = kin.obj)
+      pairscan.obj <- pairscan(data.obj, geno.obj, scan.what = scan.what, 
+        pairscan.null.size = pairscan.null.size, min.per.genotype = min.per.genotype, 
+        max.pair.cor = max.pair.cor, verbose = verbose, num.pairs.limit = Inf, 
+        overwrite.alert = FALSE, run.parallel = run.parallel, n.cores = n.cores, 
+        gene.list = gene.list, kin.obj = kin.obj)
       
       data.obj$save_rds(pairscan.obj, pairscan.file)
       
-      data.obj$plot_pairscan("Pairscan.Regression.pdf", pairscan.obj, phenotype = NULL, 
-                             show.marker.labels = TRUE, show.alleles = FALSE)
-      data.obj$plot_pairscan("Pairscan.Regression.jpg", pairscan.obj, phenotype = NULL, 
-                             show.marker.labels = TRUE, show.alleles = FALSE)
+      data.obj$plot_pairscan("Pairscan.Regression.pdf", pairscan.obj, 
+        phenotype = NULL, show.marker.labels = TRUE, show.alleles = FALSE)
+      data.obj$plot_pairscan("Pairscan.Regression.jpg", pairscan.obj, 
+        phenotype = NULL, show.marker.labels = TRUE, show.alleles = FALSE)
       data.obj$save_rds(data.obj, results.file)
     } 
   }
@@ -268,21 +273,21 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
     transform.to.phenospace <- FALSE	
   }
   
-  data.obj <- direct.influence(data.obj, pairscan.obj, transform.to.phenospace = transform.to.phenospace, verbose = TRUE, 
-                               pval.correction = data.obj$pval_correction, save.permutations = TRUE, n.cores = n.cores)
+  data.obj <- direct.influence(data.obj, pairscan.obj, 
+    transform.to.phenospace = transform.to.phenospace, verbose = TRUE, 
+    pval.correction = data.obj$pval_correction, save.permutations = TRUE, n.cores = n.cores)
   
   data.obj$save_rds(data.obj, results.file)
   
   data.obj$write_variant_influences("Variant.Influences.csv", p.or.q = max(c(p.or.q, 0.2)))
   
   data.obj$plot_variant_influences("variant.influences.pdf", width = 10, height = 7,
-                                   p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
-                                   covar.width = 30, pheno.width = 30
-                                   )
+    p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
+    covar.width = 30, pheno.width = 30)
+
   data.obj$plot_variant_influences("variant.influences.jpg", width = 10, height = 7,
-                                   p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
-                                   covar.width = 30, pheno.width = 30
-                                   )
+    p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
+    covar.width = 30, pheno.width = 30)
 
   data.obj <- get.network(data.obj, p.or.q = p.or.q, collapse.linked.markers = FALSE)
   data.obj <- get.network(data.obj, p.or.q = p.or.q, threshold.power = 1, collapse.linked.markers = TRUE, plot.linkage.blocks = FALSE)
@@ -297,12 +302,15 @@ run.cape <- function(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 
     data.obj$plot_network_do("Network.Circular.DO.jpg", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
   }	
   
-  data.obj$plot_full_network("Network.View.pdf", zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, 
-                             bg.col = "lightgray", arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
-                             edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1)
-  data.obj$plot_full_network("Network.View.jpg", zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, 
-                             bg.col = "lightgray", arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
-                             edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1)
+  data.obj$plot_full_network("Network.View.pdf", zoom = 1.2, node.radius = 0.3, 
+    label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, bg.col = "lightgray", 
+    arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
+    edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1)
+  
+  data.obj$plot_full_network("Network.View.jpg", zoom = 1.2, node.radius = 0.3, 
+    label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, bg.col = "lightgray", 
+    arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
+    edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1)
   
   data.obj$save_rds(data.obj, results.file)
   
