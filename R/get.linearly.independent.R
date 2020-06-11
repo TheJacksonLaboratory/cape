@@ -7,10 +7,9 @@
 #' starting with markers with the highest effect size
 #'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param verbose boolean, default = FALSE
 #'
 #' @export
-get.linearly.independent <- function(data.obj, verbose = FALSE){
+get.linearly.independent <- function(data.obj){
   
   matrixX <- data.obj$geno_for_pairscan
   
@@ -51,7 +50,6 @@ get.linearly.independent <- function(data.obj, verbose = FALSE){
     }
     block.num <- 1
     for(i in 2:length(perfect.cor)){
-      if(verbose){report.progress(i, length(perfect.cor))}
       common.markers <- length(intersect(names(perfect.cor[[i]]), names(perfect.cor[[(i-1)]])))
       if(common.markers > 0){
         cor.blocks[[block.num]] <- unique(c(cor.blocks[[block.num]], names(perfect.cor[[i]])))

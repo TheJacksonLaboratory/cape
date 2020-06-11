@@ -36,11 +36,10 @@
 #' @param verbose boolean, default = FALSE
 #' 
 pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL, 
-                              scan.what = c("eigentraits", "raw.traits"), pairscan.null.size = NULL, 
-                              max.pair.cor = NULL, min.per.geno = NULL, model.family = "gaussian", 
-                              marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
-                              run.parallel = TRUE, n.cores = 4, verbose = FALSE, 
-                              gene.list = NULL){
+  scan.what = c("eigentraits", "raw.traits"), pairscan.null.size = NULL, 
+  max.pair.cor = NULL, min.per.geno = NULL, model.family = "gaussian", 
+  marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
+  run.parallel = FALSE, n.cores = 4, verbose = FALSE, gene.list = NULL){
   
   marker.selection.method <- data.obj$marker_selection_method
   
@@ -103,7 +102,10 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
       if(verbose){cat("Performing single marker scans of permuted traits.\n")}
       
       #sink all the warnings about solutions close to zero to a file
-      one.singlescan <- singlescan(perm.data.obj, geno.obj, kin.obj, n.perm = 0, model.family = model.family, run.parallel = run.parallel, n.cores = n.cores, verbose = verbose, overwrite.alert = FALSE)
+      one.singlescan <- singlescan(perm.data.obj, geno.obj, kin.obj, n.perm = 0, 
+        model.family = model.family, run.parallel = run.parallel, n.cores = n.cores, 
+        verbose = verbose, overwrite.alert = FALSE)
+      
       single.scan.result <- one.singlescan$singlescan.t.stats
       
       if(verbose){cat("Selecting markers for permuted pairscan...\n")}				
@@ -112,7 +114,7 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
       if(marker.selection.method == "top.effects"){
         perm.data.obj <- select.markers.for.pairscan(perm.data.obj, singlescan.obj = single.scan.result, geno.obj, num.alleles = n.top.markers, 
                                                      peak.density = data.obj$peak_density, window.size = data.obj$window_size, 
-                                                     tolerance = data.obj$tolerance, plot.peaks = FALSE, verbose = TRUE)
+                                                     tolerance = data.obj$tolerance, plot.peaks = FALSE, verbose = verbose)
       }
       if(marker.selection.method == "uniform"){
         perm.data.obj <- select.markers.for.pairscan.uniform(perm.data.obj, geno.obj, num.alleles = ncol(data.obj$geno_for_pairscan), verbose = FALSE)	

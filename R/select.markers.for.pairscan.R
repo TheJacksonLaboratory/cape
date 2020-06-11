@@ -96,7 +96,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     
     if(verbose){cat("Removing markers that are not linearly independent...\n")}
     data.obj$geno_for_pairscan <- geno.for.pairscan
-    geno.ind <- get.linearly.independent(data.obj, verbose = verbose)
+    geno.ind <- get.linearly.independent(data.obj)
     if(verbose){
       cat(length(geno.ind[[2]]), "allele(s) rejected.\n")
       cat("Final alleles selected:", "\t", ncol(geno.ind$independent.markers), "\n")
