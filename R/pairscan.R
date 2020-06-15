@@ -79,10 +79,10 @@
 #'
 #' @export
 pairscan <- function(data.obj, geno.obj = NULL,
-                     scan.what = c("eigentraits", "raw.traits"), pairscan.null.size = NULL, 
-                     max.pair.cor = NULL, min.per.genotype = NULL, kin.obj = NULL, 
-                     num.pairs.limit = 1e6, num.perm.limit = 1e7, overwrite.alert = TRUE, 
-                     run.parallel = TRUE, n.cores = 4, gene.list = NULL, verbose = FALSE) {
+  scan.what = c("eigentraits", "raw.traits"), pairscan.null.size = NULL, 
+  max.pair.cor = NULL, min.per.genotype = NULL, kin.obj = NULL, 
+  num.pairs.limit = 1e6, num.perm.limit = 1e7, overwrite.alert = TRUE, 
+  run.parallel = FALSE, n.cores = 4, gene.list = NULL, verbose = FALSE) {
   
   marker.selection.method <- data.obj$marker_selection_method
   
@@ -129,7 +129,7 @@ pairscan <- function(data.obj, geno.obj = NULL,
   #to the genotype matrix so that we 
   #test all pairs
   gene <- get.geno.with.covar(data.obj, geno.obj, g.covar = TRUE, p.covar = TRUE, 
-                              for.pairscan = TRUE)	
+    for.pairscan = TRUE)	
   
   #fill in a matrix to index the marker pairs
   if(verbose){cat("Getting marker pairs for pairscan...\n")}
@@ -165,13 +165,13 @@ pairscan <- function(data.obj, geno.obj = NULL,
   #run one.pairscan for each phenotype with results in scanone.result
   if(!use.kinship){
     pairscan.results <- pairscan.noKin(data.obj, pheno.mat = pheno, 
-                                       geno.mat = gene, covar.table = covar.table, marker.pairs = pared.marker.mat, 
-                                       n.perm = pairscan.null.size, verbose = verbose, n.cores = n.cores, 
-                                       run.parallel = run.parallel)
+      geno.mat = gene, covar.table = covar.table, marker.pairs = pared.marker.mat, 
+      n.perm = pairscan.null.size, verbose = verbose, n.cores = n.cores, 
+      run.parallel = run.parallel)
   }else{
     pairscan.results <- pairscan.kin(data.obj, geno.obj = geno.obj, 
-                                     scan.what = scan.what, marker.pairs = pared.marker.mat, kin.obj = kin.obj, 
-                                     verbose = verbose, run.parallel = run.parallel, n.cores = n.cores)
+      scan.what = scan.what, marker.pairs = pared.marker.mat, kin.obj = kin.obj, 
+      verbose = verbose, run.parallel = run.parallel, n.cores = n.cores)
   }	
   
   # print(str(pairscan.results))
@@ -181,15 +181,15 @@ pairscan <- function(data.obj, geno.obj = NULL,
   if(pairscan.null.size > 0){	
     if(use.kinship){
       pairscan.perm <- pairscan.null.kin(data.obj, geno.obj, kin.obj, 
-                                         scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
-                                         max.pair.cor = max.pair.cor, min.per.genotype, 
-                                         verbose = verbose, marker.selection.method = marker.selection.method, 
-                                         gene.list = gene.list)			
+        scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
+        max.pair.cor = max.pair.cor, min.per.genotype, verbose = verbose, 
+        marker.selection.method = marker.selection.method, gene.list = gene.list,
+        run.parallel = run.parallel)			
     }else{
       pairscan.perm <- pairscan.null(data.obj, geno.obj, scan.what = scan.what, 
-                                     pairscan.null.size = pairscan.null.size, 
-                                     max.pair.cor = max.pair.cor, min.per.genotype, verbose = verbose, 
-                                     marker.selection.method = marker.selection.method, gene.list = gene.list)
+        pairscan.null.size = pairscan.null.size, max.pair.cor = max.pair.cor, 
+        min.per.genotype, verbose = verbose, marker.selection.method = marker.selection.method, 
+        gene.list = gene.list, run.parallel = run.parallel)
     }
     #add the results to the data object
     pairscan.obj$pairscan.perm <- pairscan.perm$pairscan.perm 

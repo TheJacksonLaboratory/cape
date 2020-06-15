@@ -28,9 +28,9 @@
 #' @return \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
 #'
 #' @export
-singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha = c(0.01, 0.05), 
-                       model.family = "gaussian", run.parallel = TRUE, n.cores = 4, verbose = FALSE, 
-                       overwrite.alert = TRUE) {
+singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, 
+  alpha = c(0.01, 0.05), model.family = "gaussian", run.parallel = FALSE, 
+  n.cores = 4, verbose = FALSE, overwrite.alert = TRUE) {
   
   ref.allele <- data.obj$ref_allele
   scan.what <- data.obj$scan_what
@@ -124,9 +124,10 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
   #==================================================================
   
   #Get the dimension names to minimize confusion	
-  mouse.dim <- which(names(dimnames(gene)) == "mouse")
-  locus.dim <- which(names(dimnames(gene)) == "locus")
-  allele.dim <- which(names(dimnames(gene)) == "allele")
+  geno.dims <- get_geno_dim()
+  mouse.dim <- geno.dims[which(names(geno.dims) == "mouse")]
+  allele.dim <- geno.dims[which(names(geno.dims) == "allele")]
+  locus.dim <- geno.dims[which(names(geno.dims) == "locus")]
   
   n.phe <- dim(pheno)[2]
   
@@ -219,14 +220,15 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
   for(i in 1:n.phe){
     if(verbose){cat("\nScanning trait:", colnames(pheno)[i], "\n")}
     #take out the response variable
-    phenotype <- matrix(pheno[,i], ncol = 1)
+    phenotype <- pheno[,i,drop=FALSE]
     ph.family = model.family[i]
     
     #get corrected genotype and phenotype values for each phenotype-chromosome pair
     if(use.kinship){
       sink(file.path(data.obj$results_path,"regress.warnings")) #create a temporary output file for the regress warnings
       # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
-      cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
+      cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, 
+      chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
       sink(NULL)
       
       names(cor.data) <- chr.which
@@ -253,7 +255,9 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, alpha =
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
         # copy functions in the package to the workers
         # TODO remove this hardcoded line, supply a variable to the Cape.obj containing the full path
-        parallel::clusterEvalQ(cl, .libPaths("/opt/cape/cape_pkg"))
+        cape.dir <- find.package("cape")
+        #parallel::clusterEvalQ(cl, .libPaths("/opt/cape/cape_pkg"))
+        parallel::clusterEvalQ(cl, .libPaths(cape.dir))
         
         results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim], .packages = 'cape') %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined

@@ -15,6 +15,7 @@
 #' @export
 check.bad.markers <- function(data.obj, geno.obj = NULL){
   
+  remove.flag = 0
   gene <- get.geno(data.obj, geno.obj)
   
   #we do not scan markers on the sex chromosomes
@@ -22,16 +23,28 @@ check.bad.markers <- function(data.obj, geno.obj = NULL){
   x.locale <- grep("X", data.obj$chromosome, ignore.case = TRUE)
   y.locale <- grep("Y", data.obj$chromosome, ignore.case = TRUE)
   
-  if(length(x.locale) > 0 || length(y.locale) > 0){
-    stop("Sex chromosomes are not scanned in cape.\nPlease use remove.unused.markers() to remove these before proceeding.")
-  }
-  
   
   #take out markers with missing data
   # num.allele <- apply(gene, locus.dim, function(x) colSums(x, na.rm = TRUE))
   num.allele <- apply(gene, 3, function(x) sum(x, na.rm = TRUE))
   mono.allele <- which(num.allele == 0)
-  if(length(mono.allele) > 0){
-    stop("Some markers are invariant.\nPlease use remove.unused.markers() to remove these before proceeding.")
+
+  if(length(x.locale)){
+    remove.flag = 1
   }
+  
+  if(length(y.locale) > 0){
+    remove.flag = 1
+  }
+  if(length(mono.allele) > 0){
+    remove.flag = 1
+  }
+
+  if(remove.flag == 1){
+    cross.obj <- remove.unused.markers(data.obj, geno.obj)
+  }else{
+    cross.obj <- list(data.obj, geno.obj)
+  }
+
+  return(cross.obj)
 }

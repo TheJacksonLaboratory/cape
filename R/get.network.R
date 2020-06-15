@@ -91,16 +91,18 @@ get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize
   edgelist <- cbind(source.markers, target.markers)
   
   # the igraph::graph_from_edgelist method fails on NA values. remove them.
-  filtered_edgelist <- subset(edgelist, !is.na(edgelist[,"source.markers"]) & !is.na(edgelist[,"target.markers"]))
+  not.na <- which(apply(edgelist, 1, function(x) all(!is.na(x))))
+  filtered_edgelist <- edgelist[not.na,]
+  #filtered_edgelist <- subset(edgelist, !is.na(edgelist[,"source.markers"]) & !is.na(edgelist[,"target.markers"]))
   
   net <- igraph::graph_from_edgelist(filtered_edgelist)
   if(standardize){
-    weights <- as.numeric(all.net.data[,5])
+    weights <- as.numeric(all.net.data[not.na,5])
   }else{
-    weights <- as.numeric(all.net.data[,3])
+    weights <- as.numeric(all.net.data[not.na,3])
   }
   var.sig.col <- 7
-  non.sig.locale <- which(as.numeric(all.net.data[,var.sig.col]) > p.or.q)
+  non.sig.locale <- which(as.numeric(all.net.data[not.na,var.sig.col]) > p.or.q)
   weights[non.sig.locale] <- 0
   igraph::E(net)$weight <- weights
   
@@ -157,11 +159,9 @@ get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize
   #some alleles are never tested because they do not have any variance
   #but they still get a slot in the pheno.mat. Remove these before
   #binding the results together
-  not.tested <- setdiff(rownames(pheno.mat), rownames(adj.mat))
-  if(length(not.tested) > 0){
-    not.tested.locale <- match(not.tested, rownames(pheno.mat))
-    pheno.mat <- pheno.mat[-not.tested.locale,]
-  }
+  were.tested <- intersect(rownames(pheno.mat), rownames(adj.mat))
+  tested.locale <- match(were.tested, rownames(pheno.mat))
+  pheno.mat <- pheno.mat[tested.locale,]
   
   final.mat <- cbind(adj.mat, pheno.mat)
   

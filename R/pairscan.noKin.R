@@ -8,7 +8,7 @@
 #' @param run.parallel to parallel, or not to parallel
 #' @param n.cores if parallel, how many cores?
 #' 
-pairscan.noKin <- function(data.obj, pheno.mat, geno.mat, covar.table, marker.pairs, n.perm, verbose, run.parallel = TRUE, n.cores = NULL){
+pairscan.noKin <- function(data.obj, pheno.mat, geno.mat, covar.table, marker.pairs, n.perm, verbose = FALSE, run.parallel = FALSE, n.cores = NULL){
   
   num.pheno <- dim(pheno.mat)[2]
   # cat("num.pheno:", num.pheno, "\n")
@@ -21,7 +21,9 @@ pairscan.noKin <- function(data.obj, pheno.mat, geno.mat, covar.table, marker.pa
     if(verbose){
       cat("\nScanning phenotype ", colnames(pheno.mat)[p], ":\n", sep = "")
     }
-    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = pheno.mat[,p], genotype.matrix = geno.mat, covar.vector = covar.table, paired.markers = marker.pairs, n.perm = 0, verbose = verbose, n.cores = n.cores, run.parallel = run.parallel)
+    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = pheno.mat[,p], 
+    		genotype.matrix = geno.mat, covar.vector = covar.table, paired.markers = marker.pairs, 
+    		n.perm = 0, verbose = verbose, n.cores = n.cores, run.parallel = run.parallel)
     results.list[[p]] <- pairscan.results[[1]]
   } #end looping over phenotypes
   

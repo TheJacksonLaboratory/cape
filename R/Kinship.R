@@ -12,7 +12,8 @@
 #' @param n.cores integer, default 4
 #'
 #' @export
-Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c("MPP","2PP","RIL")){
+Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, 
+pop=c("MPP","2PP","RIL")){
   #file input could be geno.obj or genoprobs
   
   
@@ -108,7 +109,8 @@ Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, pop=c
   #                                                            #
   ##############################################################
   if(!("calc_genoprob" %in% class(geno.obj)) & pop=="2PP"){
-    writePopulation(data.obj, geno.obj, filename = file.path(qtl.path, qtl.file), na = "")
+    writePopulation(data.obj, geno.obj, filename = file.path(qtl.path, qtl.file), 
+    na = "")
     cross<-qtl::read.cross(format="csv", dir = qtl.path, qtl.file, genotypes=c(0,.5,1))
     unlink(qtl.file) #delete the file
     qtlprobs<-qtl::calc.genoprob(cross)

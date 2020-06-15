@@ -12,16 +12,17 @@
 #' @param run.parallel default = TRUE
 #' @param n.cores default = 4
 #' 
-one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.allele = "A", covar.vector = NULL, run.parallel = TRUE, n.cores = 4){
+one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.allele = "A", covar.vector = NULL, run.parallel = FALSE, n.cores = 4){
   
   if(!run.parallel){n.cores = 1}
   
   gene <- genotype.mat
   
   #Get the dimension names to minimize confusion	
-  mouse.dim <- which(names(dimnames(gene)) == "mouse")
-  locus.dim <- which(names(dimnames(gene)) == "locus")
-  allele.dim <- which(names(dimnames(gene)) == "allele")
+  geno.dims <- get_geno_dim()
+  mouse.dim <- geno.dims[which(names(geno.dims) == "mouse")]
+  allele.dim <- geno.dims[which(names(geno.dims) == "allele")]
+  locus.dim <- geno.dims[which(names(geno.dims) == "locus")]
   
   
   #if there are covariates specified, pull these out.

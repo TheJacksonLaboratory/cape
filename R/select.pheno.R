@@ -21,6 +21,10 @@ select.pheno <- function(data.obj, pheno.which, min.entries = 5, scale.pheno = F
   #names have been put in instead of numbers	
   pheno.num <- get.col.num(pheno, pheno.which)
   
+  if(length(pheno.num) < 2){
+    stop("There must be at least two phenotypes selected.")
+  }
+
   new.pheno <- pheno[,pheno.num]
   
   # #make sure the phenotypes are numeric

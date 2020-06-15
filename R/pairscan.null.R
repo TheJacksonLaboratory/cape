@@ -32,10 +32,11 @@
 #' @param gene.list boolean, only required for "by.gene" marker selection method
 #' @param verbose boolean, default = FALSE
 #' 
-pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits", "raw.traits"), pairscan.null.size = NULL, 
-                          max.pair.cor = NULL, min.per.geno = NULL, model.family = "gaussian", 
-                          marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
-                          run.parallel = TRUE, gene.list = NULL, n.cores = 4, verbose = FALSE){
+pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits", "raw.traits"), 
+  pairscan.null.size = NULL, max.pair.cor = NULL, min.per.geno = NULL, 
+  model.family = "gaussian", 
+  marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
+  run.parallel = FALSE, gene.list = NULL, n.cores = 4, verbose = FALSE){
   
   marker.selection.method <- data.obj$marker_selection_method
   ref.allele <- data.obj$ref_allele
@@ -98,9 +99,8 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
       for(p in 1:num.pheno){ 
         if(verbose){cat("\t", colnames(pheno)[p], "...\n")}
         one.singlescan.tstats <- one.singlescanDO(phenotype.vector = pheno[perm.order,p], 
-                                                  genotype.mat = geno, ref.allele = ref.allele, 
-                                                  model.family = model.family, run.parallel = run.parallel, 
-                                                  n.cores = n.cores)
+        		genotype.mat = geno, ref.allele = ref.allele, model.family = model.family, 
+        		run.parallel = run.parallel, n.cores = n.cores)
         single.scan.result[,p,] <- one.singlescan.tstats
       }
       
@@ -165,7 +165,7 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
                                                 genotype.matrix = perm.data.obj$geno_for_pairscan, 
                                                 paired.markers = top.marker.pairs, n.perm = 0, 
                                                 run.parallel = run.parallel, n.cores = n.cores, 
-                                                verbose = FALSE)
+                                                verbose = verbose)
       
       #integrate the results into the permutation object
       one.perm <- pairscan.results[[1]]

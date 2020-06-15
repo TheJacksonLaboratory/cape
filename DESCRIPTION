@@ -15,7 +15,7 @@ Description:
     multi-allele mouse population known as the Diversity Outbred (DO) mice. It
     uses complementary information of pleiotropic gene variants across different
     phenotypes to resolve models of epistatic interactions between alleles. To
-    do this, cape reparameterizes main effect and interaction coefficients from
+    do this, cape reparametrizes main effect and interaction coefficients from
     a pairwise variant regressions into directed influence parameters. These
     parameters describe how alleles each other, in terms of suppression and
     enhancement, as well as how gene variants influence phenotypes. In this
@@ -33,10 +33,10 @@ Depends:
   R6, here, tools, yaml, evd, Matrix, fdrtool, shape, MASS, corpcor, RColorBrewer,
     parallel, doParallel, foreach, caTools, stringr, abind, propagate, testthat, utils,
     qtl2, tidyr, qtl2convert, devtools, yaml, jsonlite, data.table, RcppEigen, RSQLite,
-    qtl, tools, regress, BiocManager, igraph
+    qtl, tools, BiocManager, igraph
 Imports:
   biomaRt
 Suggests: 
   testthat, knitr, rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

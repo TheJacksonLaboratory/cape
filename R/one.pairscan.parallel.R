@@ -14,7 +14,7 @@
 #' being run for a permutation test. In the case of a permutation
 #' test, the phenotype.vector being supplied should be permuted.
 #' 
-one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, int = NULL, covar.vector = NULL, paired.markers, n.perm = 0, run.parallel = TRUE, verbose = FALSE, n.cores = 4){
+one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, int = NULL, covar.vector = NULL, paired.markers, n.perm = 0, run.parallel = FALSE, verbose = FALSE, n.cores = 4){
   
   if(!run.parallel){n.cores = 1}		
   
@@ -283,9 +283,7 @@ one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, i
   final.results <- list(phenotype.results, phenotype.perm.results)
   names(final.results) <- c("pairscan.results", "pairscan.perm")
   
-  if(verbose){
-    cat("\n") #make sure the prompt is on the next line at the end of everything
-  }
+  #if(verbose){cat("\n")} #make sure the prompt is on the next line at the end of everything
   
   return(final.results)
   

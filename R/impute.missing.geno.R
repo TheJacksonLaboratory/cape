@@ -33,7 +33,7 @@
 #' @export
 impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.thresh = 0, 
                                 marker.missing.thresh = 0, prioritize = c("fewer", "ind", "marker"),
-                                max.region.size = NULL, min.region.size = NULL, run.parallel = TRUE,
+                                max.region.size = NULL, min.region.size = NULL, run.parallel = FALSE,
                                 verbose = FALSE, n.cores = 2){
   
   impute.full.genome = FALSE

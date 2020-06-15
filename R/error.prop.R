@@ -20,7 +20,7 @@
 #' p values.
 #' 
 error.prop <- function (data.obj, pairscan.obj, perm = FALSE, verbose = FALSE,
-                        run.parallel = TRUE, n.cores = 4, just.m = FALSE) {
+                        run.parallel = FALSE, n.cores = 4, just.m = FALSE) {
   
   if(!run.parallel){n.cores = 1}
   
