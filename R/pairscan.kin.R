@@ -58,7 +58,7 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
     pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno,
                                               genotype.matrix = new.geno, int = int.term, covar.vector = new.covar, 
                                               paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, 
-                                              run.parallel = FALSE, n.cores = n.cores)
+                                              run.parallel = run.parallel, n.cores = n.cores)
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)
       dummyV <- c(marker.num, rep(NA, 3))
@@ -96,7 +96,7 @@ pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, kin
     covar.locale <- which(covar.names %in% m)
     int.term = solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]]
     
-    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, genotype.matrix = new.geno, int = int.term, covar.vector = new.covar[,-covar.locale,drop=FALSE], paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, run.parallel = FALSE, n.cores = n.cores)
+    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, genotype.matrix = new.geno, int = int.term, covar.vector = new.covar[,-covar.locale,drop=FALSE], paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, run.parallel = run.parallel, n.cores = n.cores)
     
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)
