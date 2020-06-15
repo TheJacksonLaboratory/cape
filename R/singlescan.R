@@ -137,7 +137,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
   
   if(n.perm > 0){
     if(verbose){cat("\n\nPerforming permutations to calculate significance threshold...\n")}			
-    singlescan.obj$alpha.thresh <- genome.wide.threshold.1D(data.obj, geno.obj, n.perm = n.perm, scan.what = scan.what, ref.allele = ref.allele, alpha = alpha, model.family = model.family, n.cores = n.cores, run.parallel = TRUE)
+    singlescan.obj$alpha.thresh <- genome.wide.threshold.1D(data.obj, geno.obj, n.perm = n.perm, scan.what = scan.what, ref.allele = ref.allele, alpha = alpha, model.family = model.family, n.cores = n.cores, run.parallel = run.parallel)
   }else{
     cat("Not performing permutations...\n")	
   }
