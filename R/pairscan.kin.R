@@ -57,16 +57,10 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     
     int.term = matrix(solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]], ncol = 1)
     pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno,
-<<<<<<< Upstream, based on origin/master
     		genotype.matrix = new.geno, int = int.term, covar.vector = new.covar, 
     		paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = verbose, 
     		run.parallel = run.parallel, n.cores = n.cores)
-    		
-=======
-                                              genotype.matrix = new.geno, int = int.term, covar.vector = new.covar, 
-                                              paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, 
-                                              run.parallel = run.parallel, n.cores = n.cores)
->>>>>>> 8bbd3a2 CAPE-76 pass value of run.parallel to method call
+
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)
       dummyV <- c(marker.num, rep(NA, 3))
@@ -104,15 +98,11 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     covar.locale <- which(covar.names %in% m)
     int.term = solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]]
     
-<<<<<<< Upstream, based on origin/master
     pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, 
     		genotype.matrix = new.geno, int = int.term, 
     		covar.vector = new.covar[,-covar.locale,drop=FALSE], 
     		paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = verbose, 
     		run.parallel = run.parallel, n.cores = n.cores)
-=======
-    pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, genotype.matrix = new.geno, int = int.term, covar.vector = new.covar[,-covar.locale,drop=FALSE], paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = FALSE, run.parallel = run.parallel, n.cores = n.cores)
->>>>>>> 8bbd3a2 CAPE-76 pass value of run.parallel to method call
     
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)

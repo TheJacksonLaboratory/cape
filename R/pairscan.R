@@ -181,17 +181,33 @@ pairscan <- function(data.obj, geno.obj = NULL,
   if(pairscan.null.size > 0){	
     if(use.kinship){
       pairscan.perm <- pairscan.null.kin(data.obj, geno.obj, kin.obj, 
+<<<<<<< HEAD
         scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
         max.pair.cor = max.pair.cor, min.per.genotype, verbose = verbose, 
         marker.selection.method = marker.selection.method, 
         run.parallel = run.parallel, n.cores = n.cores, 
         gene.list = gene.list)
+=======
+                                         scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
+                                         max.pair.cor = max.pair.cor, min.per.genotype, 
+                                         verbose = verbose, marker.selection.method = marker.selection.method,
+                                         run.parallel = run.parallel, n.cores = n.cores,
+                                         gene.list = gene.list)			
+>>>>>>> branch 'CAPE-76_run_parallel_fix' of https://elkasb@bitbucket.jax.org/scm/cape/cape.git
     }else{
       pairscan.perm <- pairscan.null(data.obj, geno.obj, scan.what = scan.what, 
+<<<<<<< HEAD
         pairscan.null.size = pairscan.null.size, max.pair.cor = max.pair.cor, 
         min.per.genotype, verbose = verbose, marker.selection.method = marker.selection.method, 
         run.parallel = run.parallel, n.cores = n.cores, 
         gene.list = gene.list)
+=======
+                                     pairscan.null.size = pairscan.null.size, 
+                                     max.pair.cor = max.pair.cor, min.per.genotype, verbose = verbose, 
+                                     marker.selection.method = marker.selection.method, 
+                                     run.parallel = run.parallel, n.cores = n.cores,
+                                     gene.list = gene.list)
+>>>>>>> branch 'CAPE-76_run_parallel_fix' of https://elkasb@bitbucket.jax.org/scm/cape/cape.git
     }
     #add the results to the data object
     pairscan.obj$pairscan.perm <- pairscan.perm$pairscan.perm 
