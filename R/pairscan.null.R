@@ -138,7 +138,7 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
     
     
     if(verbose){cat("\tGetting markers for permuted pairscan...\n")}
-    top.marker.pairs <- get.pairs.for.pairscan(gene = perm.data.obj$geno_for_pairscan, max.pair.cor = max.pair.cor, min.per.genotype = min.per.geno, verbose = FALSE)
+    top.marker.pairs <- get.pairs.for.pairscan(gene = perm.data.obj$geno_for_pairscan, max.pair.cor = max.pair.cor, min.per.genotype = min.per.geno, run.parallel = run.parallel, n.cores = n.cores, verbose = FALSE)
     total.pairs <- nrow(top.marker.pairs)
     num.to.add <- 10
     #we don't need to do extra permutations

@@ -118,7 +118,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
     missing.vals <- which(is.na(gene))
     if(length(missing.vals) > 0){
       warning("There are missing values in the genotype matrix. Please use impute.missing.geno().")
-      data.obj <- impute.missing.geno(data.obj, geno.obj)["data.obj"]
+      data.obj <- impute.missing.geno(data.obj, geno.obj = geno.obj, run.parallel = run.parallel, n.cores = n.cores)["data.obj"]
     }
   }
   #==================================================================
@@ -137,7 +137,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
   
   if(n.perm > 0){
     if(verbose){cat("\n\nPerforming permutations to calculate significance threshold...\n")}			
-    singlescan.obj$alpha.thresh <- genome.wide.threshold.1D(data.obj, geno.obj, n.perm = n.perm, scan.what = scan.what, ref.allele = ref.allele, alpha = alpha, model.family = model.family, n.cores = n.cores, run.parallel = TRUE)
+    singlescan.obj$alpha.thresh <- genome.wide.threshold.1D(data.obj, geno.obj, n.perm = n.perm, scan.what = scan.what, ref.allele = ref.allele, alpha = alpha, model.family = model.family, n.cores = n.cores, run.parallel = run.parallel)
   }else{
     cat("Not performing permutations...\n")	
   }
