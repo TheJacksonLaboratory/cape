@@ -16,7 +16,8 @@
 #' @return \code{list("err.cov", "corrected.pheno", "corrected.geno", "corrected.covar")}
 #'
 #' @export
-kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, covarV = NULL){
+kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
+covarV = NULL){
   
   get.g=function(pair = NULL, phenotype, covarV){
     
@@ -35,10 +36,13 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
       full.kin <- kin.obj[[kin.mat.locale]]
     }
     
-    #also remove individuals with NAs in the phenotype
-    #or covariates
+    #remove individuals with NAs
     is.na.pheno <- which(is.na(phenotype))
-    is.na.covar <- unique(which(is.na(covarV), arr.ind = TRUE)[,1])
+    if(length(covarV) > 0){
+      is.na.covar <- unique(which(is.na(covarV), arr.ind = TRUE)[,1])
+      }else{
+        is.na.covar <- NULL
+      }
     all.na <- unique(c(is.na.pheno, is.na.covar))
     not.na <- setdiff(1:length(phenotype), all.na)
     no.na.ind <- rownames(phenotype)[not.na]
@@ -52,7 +56,8 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     if(is.null(covarV) || is.null(pair)){
       model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))	
     }else{
-      model = regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, pos = c(TRUE, TRUE))
+      model = regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, 
+      pos = c(TRUE, TRUE))
     }
     
     #This err.cov is the same as err.cov in Dan's code using estVC

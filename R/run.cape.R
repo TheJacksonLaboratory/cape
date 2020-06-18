@@ -109,8 +109,8 @@ run.cape <- function(data.obj, geno.obj,
       } #end case for when there are missing values but no imputed genotypes
 
     } else { #if the imputation has been done, then it must have been done for the data.obj too
-      data.obj <- geno.imp$data.obj
-      geno.obj <- geno.imp$geno.obj
+      #data.obj <- geno.imp$data.obj
+      geno.obj <- geno
     }
 
   }
