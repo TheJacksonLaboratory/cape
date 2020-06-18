@@ -34,12 +34,11 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
   
   ref.allele <- data.obj$ref_allele
   scan.what <- data.obj$scan_what
-  
+  use.kinship <- data.obj$use_kinship
+
   if(!run.parallel){n.cores = 1}
   
-  if(!is.null(kin.obj)){use.kinship = TRUE}
-  if(is.null(kin.obj)){use.kinship = FALSE}
-  
+
   if(overwrite.alert){
     choice <- readline(prompt = "Please make sure you assign the output of this function to a singlescan.obj, and NOT the data.obj. It will overwrite the data.obj.\nDo you want to continue (y/n) ")
     if(choice == "n"){stop()}
@@ -115,11 +114,11 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
       data.obj <- norm.pheno(data.obj)
     }
     
-    missing.vals <- which(is.na(gene))
-    if(length(missing.vals) > 0){
-      warning("There are missing values in the genotype matrix. Please use impute.missing.geno().")
-      data.obj <- impute.missing.geno(data.obj, geno.obj = geno.obj, run.parallel = run.parallel, n.cores = n.cores)["data.obj"]
-    }
+   # missing.vals <- which(is.na(gene))
+   # if(length(missing.vals) > 0){
+   #   warning("There are missing values in the genotype matrix. Please use impute.missing.geno().")
+   #   data.obj <- impute.missing.geno(data.obj, geno.obj = geno.obj, run.parallel = run.parallel, n.cores = n.cores)["data.obj"]
+   # }
   }
   #==================================================================
   
@@ -234,7 +233,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
       names(cor.data) <- chr.which
     }else{
       cor.data <- vector(mode = "list", length = 1)
-      cor.data[[1]] <- list("corrected.pheno" = phenotype, "corrected.geno" = gene, "corrected.covar" = covar.table)
+      cor.data[[1]] <- list("corrected.pheno" = phenotype, "corrected.geno" = gene, 
+      "corrected.covar" = covar.table)
     }
     
     results.by.chr <- vector(mode = "list", length = length(cor.data))							
@@ -271,7 +271,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
         results.by.chr <- c()
         index <- 1:dim(c.geno)[locus.dim]
         for (x in index) {
-          results.by.chr[[x]] <- get.stats.multiallele(phenotype = c.pheno, genotype = c.geno[,,x], covar.table = c.covar, ph.family, ref.col)
+          results.by.chr[[x]] <- get.stats.multiallele(phenotype = c.pheno, 
+          genotype = c.geno[,,x], covar.table = c.covar, ph.family, ref.col)
         }
         
       }
@@ -290,7 +291,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
       if(use.kinship){
         sink(file.path(data.obj$results_path,"regress.warnings"))
         # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
-        cor.data <- kinship.on.the.fly(kin.obj, gene, phenoV = phenotype, covarV = covar.table)
+        cor.data <- kinship.on.the.fly(kin.obj, gene, phenoV = phenotype, covarV = covar.table, 
+        verbose = verbose)
         sink(NULL) #stop sinking to the file
       }else{
         cor.data <- list("corrected.pheno" = phenotype, "corrected.geno" = gene, "corrected.covar" = covar.table)
