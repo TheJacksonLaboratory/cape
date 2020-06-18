@@ -34,7 +34,8 @@ run.cape <- function(data.obj, geno.obj,
   n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, 
   error.prop.coef = TRUE, error.prop.perm = TRUE, initialize.only = FALSE, 
   verbose = TRUE, run.parallel = FALSE){
-  
+  if(verbose){print("Govind")}
+  #print ("Govind first")
   results.base.name <- gsub(".RData", "", results.file)
   
   # since this is the main data.obj, we can't allow it to return FALSE, 

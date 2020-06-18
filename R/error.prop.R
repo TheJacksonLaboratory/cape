@@ -148,6 +148,8 @@ error.prop <- function (data.obj, pairscan.obj, perm = FALSE, verbose = FALSE,
   if (run.parallel) {
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
+    cape.dir <- paste(find.package("cape"),"/cape_pkg",sep="")
+    parallel::clusterCall(cl, function() {.libPaths(cape.dir)})
     # , .packages = 'cape'
     influence.coeffs <- foreach::foreach(p = c(1:length(chunked.pairs)), .combine = "rbind", .export = c("calc.delta.errors", "pseudoinverse", "propagate", "calc.m")) %dopar% {
       get.multi.pair.coeffs(chunked.pairs[[p]], scan.two.results, marker.mat)

@@ -139,8 +139,11 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     sink(NULL) #stop sinking output
     
     if (run.parallel) {
+      print("entering parallel")
       cl <- parallel::makeCluster(n.cores)
       doParallel::registerDoParallel(cl)
+      cape.dir <- paste(find.package("cape"),"/cape_pkg",sep="")
+      parallel::clusterCall(cl, function() {.libPaths(cape.dir)})
       pairscan.results <- foreach::foreach(m = t(marker.pairs), .packages = 'cape', .export = 
                                     c("rankMatrix", "one.pairscan.parallel", "get.covar", "get.marker.num", 
                                       "get.marker.chr")) %dopar% {
