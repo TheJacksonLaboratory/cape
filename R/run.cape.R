@@ -36,7 +36,7 @@ run.cape <- function(data.obj, geno.obj,
   verbose = TRUE, run.parallel = FALSE){
   
   results.base.name <- gsub(".RData", "", results.file)
-  
+    
   # since this is the main data.obj, we can't allow it to return FALSE, 
   #check for the file first
   prior.data.obj <- data.obj$read_rds(results.file)
@@ -83,7 +83,7 @@ run.cape <- function(data.obj, geno.obj,
     # check if there is already a saved genotype object
     geno <- data.obj$read_rds(imp.geno.file)
 
-    if (isFALSE(geno)) {  #if the imputation hasn't been done already
+	  if (isFALSE(geno)) {  #if the imputation hasn't been done already
       geno <- get.geno(data.obj, geno.obj)
       missing.vals <- which(is.na(geno))
 
@@ -114,7 +114,7 @@ run.cape <- function(data.obj, geno.obj,
     }
 
   }
-    
+      
   if(verbose){cat("Removing unused markers...\n")}
   data.obj <- remove.unused.markers(data.obj, geno.obj)
   combined.data.obj <- delete_underscore(data.obj, geno.obj)
@@ -210,8 +210,9 @@ run.cape <- function(data.obj, geno.obj,
       pairscan.null.size <- data.obj$pairscan_null_size
       scan.what <- data.obj$scan_what
       if(marker.selection.method == "top.effects"){
-        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, num.alleles = num.alleles.in.pairscan, 
-                                                peak.density = peak.density, verbose = verbose, plot.peaks = FALSE)
+        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, 
+          num.alleles = num.alleles.in.pairscan, peak.density = peak.density, 
+          verbose = verbose, plot.peaks = FALSE)
       }
       
       if(marker.selection.method == "from.list"){
@@ -280,6 +281,9 @@ run.cape <- function(data.obj, geno.obj,
   data.obj$save_rds(data.obj, results.file)
   
   data.obj$write_variant_influences("Variant.Influences.csv", p.or.q = max(c(p.or.q, 0.2)))
+
+  data.obj$write_variant_influences("Variant.Influences.Interactions.csv", 
+  include.main.effects = FALSE, p.or.q = max(c(p.or.q, 0.2)))
   
   data.obj$plot_variant_influences("variant.influences.pdf", width = 10, height = 7,
     p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 

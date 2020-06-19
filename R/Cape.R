@@ -383,11 +383,13 @@ Cape <- R6::R6Class(
                       edge.lwd = edge.lwd, legend.radius = legend.radius, legend.cex = legend.cex, xshift = xshift)
       dev.off()
     },
-    write_variant_influences = function(filename, p.or.q = 0.05) {
+    write_variant_influences = function(filename, p.or.q = 0.05, 
+    include.main.effects = TRUE) {
       
       full.path <- file.path(self$results_path, filename)
       
-      writeVariantInfluences(self, p.or.q = max(c(p.or.q, 0.2)), filename = full.path)
+      writeVariantInfluences(self, p.or.q = max(c(p.or.q, 0.2)), 
+      	include.main.effects = include.main.effects, filename = full.path)
     },
     set_pheno = function(val) {
       self$pheno <- val
