@@ -12,7 +12,8 @@
 #' @param run.parallel default = TRUE
 #' @param n.cores default = 4
 #' 
-one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.allele = "A", covar.vector = NULL, run.parallel = FALSE, n.cores = 4){
+one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.allele = "A", 
+covar.table = NULL, run.parallel = FALSE, n.cores = 4){
   
   if(!run.parallel){n.cores = 1}
   
@@ -24,22 +25,6 @@ one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.a
   allele.dim <- geno.dims[which(names(geno.dims) == "allele")]
   locus.dim <- geno.dims[which(names(geno.dims) == "locus")]
   
-  
-  #if there are covariates specified, pull these out.
-  #covariates must be coded as markers and contained in the
-  #genotype matrix
-  if(!is.null(covar.vector)){
-    covar <- names(covar.vector[which(covar.vector == 1)])
-    if(length(covar) > 0){
-      covar.loc <- get.col.num(gene, covar, locus.dim)
-      covar.table <- array(NA, dim = c(dim(gene)[[mouse.dim]], dim(gene)[[allele.dim]], length(covar)))
-      covar.table[,,1:length(covar)] <- gene[,,covar.loc]
-    }else{
-      covar.table = NULL
-    }
-  }else{
-    covar.table <- NULL
-  }
   
   ref.col <- which(dimnames(gene)[[allele.dim]] == ref.allele)
   new.allele.names <- dimnames(gene)[[allele.dim]][-ref.col]
@@ -55,22 +40,20 @@ one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.a
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
     results <- foreach::foreach(m = 1:dim(gene)[[locus.dim]], .packages = 'cape', .export = c("get.stats.multiallele", "check.geno")) %dopar% {
-      get.stats.multiallele(phenotype.vector, gene[,,m], covar.table, model.family, ref.col)
+      get.stats.multiallele(phenotype.vector, gene[,,m], covar.table = covar.table, 
+      model.family, ref.col)
     }
     parallel::stopCluster(cl)
     
   } else {
     
-    results <- c()
     index <- 1:dim(gene)[[locus.dim]]
-    for (m in index) {
-      results <- cbind(results, get.stats.multiallele(phenotype.vector, gene[,,m], covar.table, model.family, ref.col))
-    }
-    
+    results <- lapply(index, function(x) get.stats.multiallele(phenotype.vector, gene[,,x], 
+      covar.table, model.family, ref.col))    
   }
   
-  t.stat.array <- matrix(unlist(lapply(results, function(x) x[[1]]["t.stat",])), ncol = length(new.allele.names), byrow = TRUE)
-  
+  t.stat.array <- matrix(unlist(lapply(results, function(x) x[[1]]["t.stat",])), 
+  ncol = length(new.allele.names), byrow = TRUE)
   colnames(t.stat.array) <- new.allele.names
   
   

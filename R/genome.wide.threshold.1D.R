@@ -189,6 +189,7 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
   
   #apply the extreme value distribution to the results
   evd <- apply(max.stat, 2, function(x) fgev(x, std.err = FALSE))
+  data.obj$save_rds(max.stat, "singlescan.permutations.RData")
   
   s <- vector(mode = "list", length = length(alpha))
   for(a in 1:length(alpha)){
