@@ -1,6 +1,6 @@
 # # where are the data?
 # plink.path <- "/Users/emersj/projects/cape/data/plink"
-# 
+#testing 
 # # which file?
 # file.base <- "test*"
 # 
