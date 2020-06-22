@@ -118,7 +118,7 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
   
   for(p in 1:num.pheno){
     if(verbose){
-      cat("\nScanning phenotype Govind ", colnames(pheno)[p], ":\n", sep = "")
+      cat("\nScanning phenotype", colnames(pheno)[p], ":\n", sep = "")
     }
     
     covar.vector <- covar.info$covar.table
@@ -139,19 +139,13 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     sink(NULL) #stop sinking output
     
     if (run.parallel) {
-      print("entering parallel Govind Step 1")
-      print(nrow(marker.pairs))
-      print(dim(marker.pairs))
       cl <- parallel::makeCluster(n.cores)
       doParallel::registerDoParallel(cl)
       cape.dir.full <- find.package("cape")
       cape.dir <- str_replace(cape.dir.full,"cape_pkg/cape","cape_pkg")
-      parallel::clusterExport(cl, varlist=c("cape.dir","rankMatrix","one.pairscan.parallel","get.covar","get.marker.num","get.marker.chr"), envir=environment())
+      parallel::clusterExport(cl, varlist="cape.dir", envir=environment())
       parallel::clusterEvalQ(cl, .libPaths(cape.dir))
-      #.export = 
-       # c("rankMatrix", "one.pairscan.parallel", "get.covar", "get.marker.num", 
-        #  "get.marker.chr")
-      pairscan.results <- foreach::foreach(m = t(marker.pairs), .packages = 'cape') %dopar% {
+      pairscan.results <- foreach::foreach(m = t(marker.pairs), .export=c("rankMatrix", "one.pairscan.parallel", "get.covar", "get.marker.num","get.marker.chr"), .packages = 'cape') %dopar% {
                                         get.marker.pair.stats(m, kin.dat)
                                       }
       parallel::stopCluster(cl)
@@ -183,7 +177,6 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
         if(num.cv.pairs > 0){
           
           if (run.parallel) {
-            print("entering parallel Govind step2:")
             
             cl <- parallel::makeCluster(n.cores)
             doParallel::registerDoParallel(cl)

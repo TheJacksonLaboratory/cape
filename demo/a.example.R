@@ -49,7 +49,7 @@ data.obj <- Cape$new(
 snp.file = here("tests/testthat/testdata/NON_NZO_marker_list.txt")
 
 final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
-                        n.cores = 2, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
+                        n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
                         error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE)
 
 

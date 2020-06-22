@@ -246,7 +246,6 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
       c.covar <- cor.data[[ch]]$corrected.covar
       
       if (run.parallel) {
-        print("entering parallel")
         cl <- parallel::makeCluster(n.cores)
         doParallel::registerDoParallel(cl)
         
