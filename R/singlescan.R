@@ -216,14 +216,11 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
   locus.p.values <- matrix(NA, ncol = n.phe, nrow = dim(gene)[[locus.dim]]+n.covar)
   rownames(locus.score.scores) <- rownames(locus.p.values) <- c(dimnames(gene)[[locus.dim]], covar.names)
   colnames(locus.score.scores) <- colnames(locus.p.values) <- colnames(pheno)
-  print ("Govind 3")
   for(i in 1:n.phe){
-    print("Govind 2")
-    if(verbose){cat("\nScanning trait Govind:", colnames(pheno)[i], "\n")}
+    if(verbose){cat("\nScanning trait:", colnames(pheno)[i], "\n")}
     #take out the response variable
     phenotype <- pheno[,i,drop=FALSE]
     ph.family = model.family[i]
-    print("Govind 1")
     #get corrected genotype and phenotype values for each phenotype-chromosome pair
     if(use.kinship){
       sink(file.path(data.obj$results_path,"regress.warnings")) #create a temporary output file for the regress warnings
@@ -252,18 +249,15 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
         print("entering parallel")
         cl <- parallel::makeCluster(n.cores)
         doParallel::registerDoParallel(cl)
-        cape.dir <- paste(find.package("cape"),"/cape_pkg",sep="")
+        
         # the following line adds package variables to the parallel worker environments
-        #parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-        parallel::clusterCall(cl, function() {.libPaths(cape.dir)})
         # copy functions in the package to the workers
         # TODO remove this hardcoded line, supply a variable to the Cape.obj containing the full path
-        
-        #.libPaths(cape.dir)
-        #parallel::clusterExport(cl,"cape.dir")
-        #parallel::clusterEvalQ(cl, .libPaths("/Users/ramamg/Desktop/JAX/Projects/CAPE/cape/cape_pkg"))
-        #parallel::clusterEvalQ(cl, .libPaths(cape.dir))
-        
+        #cape.dir <- "/Users/ramamg/Desktop/JAX/Projects/CAPE/cape/cape_pkg"
+        cape.dir.full <- find.package("cape")
+        cape.dir <- str_replace(cape.dir.full,"cape_pkg/cape","cape_pkg")
+        parallel::clusterExport(cl, "cape.dir", envir=environment())
+        parallel::clusterEvalQ(cl, .libPaths(cape.dir))
         results.by.chr <- foreach::foreach(x = 1:dim(c.geno)[locus.dim], .packages = 'cape') %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined
           # but it actually is defined in the foreach line above. You can safely ignore the warning.

@@ -152,8 +152,10 @@ impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.t
     if(verbose){cat("Imputing missing genotypes...\n")}
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
-    cape.dir <- paste(find.package("cape"),"/cape_pkg",sep="")
-    parallel::clusterCall(cl, function() {.libPaths(cape.dir)})
+    cape.dir.full <- find.package("cape")
+    cape.dir <- str_replace(cape.dir.full,"cape_pkg/cape","cape_pkg")
+    parallel::clusterExport(cl, "cape.dir", envir=environment())
+    parallel::clusterEvalQ(cl, .libPaths(cape.dir))
     # the following line adds package variables to the parallel worker environments
     #parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
     imputed.geno <- foreach::foreach(m = geno.chunks, .export = "flatten.array") %dopar% {

@@ -110,8 +110,10 @@ get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL
     
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
-    cape.dir <- paste(find.package("cape"),"/cape_pkg",sep="")
-    parallel::clusterCall(cl, function() {.libPaths(cape.dir)})
+    cape.dir.full <- find.package("cape")
+    cape.dir <- str_replace(cape.dir.full,"cape_pkg/cape","cape_pkg")
+    parallel::clusterExport(cl, "cape.dir", envir=environment())
+    parallel::clusterEvalQ(cl, .libPaths(cape.dir))
     good.pair.list <- foreach::foreach(p = 1:length(pair.list)) %dopar% {
       check.multi.pairs(pair.list[[p]])
     }
