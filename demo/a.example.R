@@ -1,6 +1,6 @@
 # # where are the data?
 # plink.path <- "/Users/emersj/projects/cape/data/plink"
-#testing 
+# 
 # # which file?
 # file.base <- "test*"
 # 
@@ -22,8 +22,8 @@
 #   stop("Input path is missing the BED or PED file.")
 # }
 if(!require(here)){install.packages("here")}
-#if(!require(cape)){install.packages("cape")}
-library(cape, lib.loc = "/Users/ramamg/Desktop/JAX/Projects/CAPE/cape/cape_pkg")
+# if(!require(cape)){install.packages("cape")}
+
 test.data.path <- here("tests/testthat/testdata")
 file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param.file <- file.path(test.data.path, "cape.parameters.yml")
