@@ -31,13 +31,13 @@
 #' @param phenotype.labels 
 #' @param show.not.tested 
 #' 
-plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, plot.all.vals = FALSE, 
-                                  all.markers = FALSE, standardize = TRUE, color.scheme = c("DO/CC", "other"),
-                                  pos.col = "brown", neg.col = "blue", not.tested.col = "lightgray", 
-                                  show.marker.labels = FALSE, show.chr = TRUE, label.chr = TRUE, show.alleles = TRUE, 
-                                  scale.effects = c("log10", "sqrt", "none"), pheno.width = 11, covar.width = 11, 
-                                  covar.labels = NULL, phenotype.labels = NULL, show.not.tested = TRUE){
-  require(igraph)
+plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, 
+  plot.all.vals = FALSE, all.markers = FALSE, standardize = TRUE, 
+  color.scheme = c("DO/CC", "other"), pos.col = "brown", neg.col = "blue", 
+  not.tested.col = "lightgray", show.marker.labels = FALSE, show.chr = TRUE, 
+  label.chr = TRUE, show.alleles = TRUE, scale.effects = c("log10", "sqrt", "none"), 
+  pheno.width = 11, covar.width = 11, covar.labels = NULL, phenotype.labels = NULL, 
+  show.not.tested = TRUE){
   
   if(!show.not.tested){
     not.tested.col = FALSE
@@ -345,12 +345,12 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, p
     text(0.5, 0.5, "No Significant Interactions")
   }else{
     
-    myImagePlot(x = full.inf.mat.num, 
-                min.x = min(full.inf.mat.num, na.rm = TRUE), max.x = max(full.inf.mat.num, na.rm = TRUE), 
-                main = main, xlab = "Target", ylab = "Source", mark.coords = not.tested.locale, 
-                mark.col = not.tested.col, show.labels = show.marker.labels, 
-                chromosome.coordinates = chr.boundaries, chr.names = chr.names, show.pheno.labels = TRUE, 
-                extra.col.mat = extra.col.mat, allele.cols = allele.cols)
+    myImagePlot(x = full.inf.mat.num, min.x = min(full.inf.mat.num, na.rm = TRUE), 
+      max.x = max(full.inf.mat.num, na.rm = TRUE), main = main, xlab = "Target", 
+      ylab = "Source", mark.coords = not.tested.locale, mark.col = not.tested.col, 
+      show.labels = show.marker.labels, chromosome.coordinates = chr.boundaries, 
+      chr.names = chr.names, show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, 
+      allele.cols = allele.cols)
     
     
     #add phenotype names
