@@ -78,8 +78,7 @@ myImagePlot <-
     layout.mat <- matrix(c(1:3, 4, 4, 4), nrow=2, ncol=3, byrow = TRUE)
     layout(layout.mat, widths=c(0.75,4,0.75), heights = c(1,0.1))
     
-    ColorLevels <- seq(min.x, max.x, length=256)
-    
+    ColorLevels <- seq(min.x, max.x, length=256)    
     
     pos.cols <- get.color(pos.col, col.pal)
     neg.cols <- get.color(neg.col, col.pal)[3:1]
@@ -139,7 +138,7 @@ myImagePlot <-
     poly.width <- plot.dim[2]*poly.perc
     poly.max <- plot.dim[1]; poly.min <- poly.max-poly.width; poly.mid <- mean(c(poly.min, poly.max))
     
-    if(!is.null(chromosome.coordinates) & length(chromosome.coordinates) == 2){
+    if(!is.null(chromosome.coordinates)){
       par(xpd = TRUE)
       for(i in 1:(length(chromosome.coordinates)-1)){
         if(dim(x)[2]+1 >= max(chromosome.coordinates)){

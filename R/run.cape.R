@@ -257,12 +257,14 @@ run.cape <- function(data.obj, geno.obj,
   #===============================================================
   
   if(error.prop.coef){
-    data.obj <- error.prop(data.obj, pairscan.obj, perm = FALSE, verbose = verbose, n.cores = n.cores, run.parallel = run.parallel)
+    data.obj <- error.prop(data.obj, pairscan.obj, perm = FALSE, verbose = verbose, 
+    n.cores = n.cores, run.parallel = run.parallel)
     data.obj$save_rds(data.obj, results.file)
   }
   
   if(error.prop.perm){	
-    data.obj <- error.prop(data.obj, pairscan.obj, perm = TRUE, verbose = verbose, n.cores = n.cores, run.parallel = run.parallel)
+    data.obj <- error.prop(data.obj, pairscan.obj, perm = TRUE, verbose = verbose, 
+    n.cores = n.cores, run.parallel = run.parallel)
     data.obj$save_rds(data.obj, results.file)
   }
   
@@ -294,7 +296,8 @@ run.cape <- function(data.obj, geno.obj,
     covar.width = 30, pheno.width = 30)
 
   data.obj <- get.network(data.obj, p.or.q = p.or.q, collapse.linked.markers = FALSE)
-  data.obj <- get.network(data.obj, p.or.q = p.or.q, threshold.power = 1, collapse.linked.markers = TRUE, plot.linkage.blocks = FALSE)
+  data.obj <- get.network(data.obj, p.or.q = p.or.q, threshold.power = 1, 
+    collapse.linked.markers = TRUE, plot.linkage.blocks = FALSE)
   
   data.obj$save_rds(data.obj, results.file)
   

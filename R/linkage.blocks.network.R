@@ -19,7 +19,8 @@
 #' @param verbose default = FALSE
 #' @param plot.linkage.blocks 
 #' 
-linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
+linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, 
+threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
   
   if(lookup.marker.position){
     require(biomaRt)
@@ -65,22 +66,18 @@ linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, thr
     return(element[1])
   }
   
+  #get covariate information
+  covar.info <- get.covar(data.obj)
   
   #find all the chromosomes that were used in the pairwise scan and sort them
   used.markers <- colnames(data.obj$geno_for_pairscan)
+  #add covariates to used.markers
+  used.markers <- c(used.markers, covar.info$covar.names)
   all.marker.chr <- unlist(lapply(strsplit(used.markers, "_"), get.chr))
   u_chr <- unique(all.marker.chr)
   
-  #put 0 at the end
-  if(u_chr[1] == 0){
-    u_chr <- c(u_chr[-1], 0)
-  }
-  
   all.marker.names <- unlist(lapply(strsplit(used.markers, "_"), get.marker.name)) 
   marker.locale <- match(all.marker.names, geno.names[[3]])
-  
-  
-  
   #========================================================================================
   # internal functions
   #========================================================================================
@@ -127,7 +124,8 @@ linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, thr
   #========================================================================================
   
   
-  if(plot.blocks){pdf(paste("Recomb.Images.Genotype.Net.Thresh.", threshold.power, ".pdf", sep = ""), width = 10, height = 5)}
+  if(plot.blocks){pdf(paste("Recomb.Images.Genotype.Net.Thresh.", threshold.power, ".pdf", 
+  sep = ""), width = 10, height = 5)}
   #go through each chromosome separately and find the linkage blocks on each chromosome
   link.blocks <- vector(mode = "list", length = 1)
   num.blocks <- 1

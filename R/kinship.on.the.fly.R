@@ -17,10 +17,12 @@
 #'
 #' @export
 kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
-covarV = NULL){
+covarV = NULL, verbose = FALSE){
   
   get.g=function(pair = NULL, phenotype, covarV){
     
+    if(verbose){cat("Chromosomes:", pair, "\n")}
+
     if(is.null(pair) || unique(pair) == "overall"){pair = NULL}
     
     if(is.null(pair)){
@@ -53,17 +55,24 @@ covarV = NULL){
     pheno.locale <- match(common.ind, rownames(phenotype))
 
     #if we are correcting the covariate only don't put it in the model
+    if(verbose){cat("\tFitting model...\n")}
     if(is.null(covarV) || is.null(pair)){
-      model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))	
+      model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))
+      #implement lme4
+      #model = lmer(as.vector(phenotype[pheno.locale])~geno[pheno.locale,1,]|K[pheno.locale,pheno.locale])	
     }else{
       model = regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, 
       pos = c(TRUE, TRUE))
+      #implement lme4
+      #test <- lmer(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,]|K)
     }
     
     #This err.cov is the same as err.cov in Dan's code using estVC
     #err.cov = summary(model)$sigma[1]*K+summary(model)$sigma[2]*diag(nrow(K))
+    if(verbose){cat("\tCalculating err.cov...\n")}
     err.cov = model$sigma[1]*K+model$sigma[2]*diag(nrow(K))
     
+  if(verbose){cat("\tCalculating eW...\n")}
     eW = eigen(err.cov, symmetric = TRUE)
     if(min(eW$values) < 0 && abs(min(eW$values)) > sqrt(.Machine$double.eps)){
     }else{
