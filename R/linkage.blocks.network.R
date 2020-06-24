@@ -19,7 +19,7 @@
 #' @param verbose default = FALSE
 #' @param plot.linkage.blocks 
 #' 
-linkage.blocks.network <- function(data.obj, collapse.linked.markers = TRUE, 
+linkage.blocks.network <- function(data.obj, geno.obj, collapse.linked.markers = TRUE, 
 threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
   
   if(lookup.marker.position){
@@ -70,11 +70,16 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
   covar.info <- get.covar(data.obj)
   
   #find all the chromosomes that were used in the pairwise scan and sort them
-  used.markers <- colnames(data.obj$geno_for_pairscan)
-  #add covariates to used.markers
-  used.markers <- c(used.markers, covar.info$covar.names)
+  #with the refactoring geno_for_pairscan is no longer a reliable indicator 
+  #of which markers were used in the pairscan.
+  #used.markers <- colnames(data.obj$geno_for_pairscan) 
+  used.markers <- unique(as.vector(data.obj$var_to_var_p_val[,1:2]))
   all.marker.chr <- unlist(lapply(strsplit(used.markers, "_"), get.chr))
-  u_chr <- unique(all.marker.chr)
+  u_chr <- sort(as.numeric(unique(all.marker.chr)))
+
+  if(u_chr[1] == 0){
+    u_chr <- c(u_chr[-1], 0)
+  }
   
   all.marker.names <- unlist(lapply(strsplit(used.markers, "_"), get.marker.name)) 
   marker.locale <- match(all.marker.names, geno.names[[3]])
@@ -111,10 +116,10 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
   
   
   #get the recombination data for the markers on a given chromosome
-  get.chr.cor <- function(chr.markers){		
-    just.markers <- unique(chr.markers)
-    marker.locale <- which(colnames(data.obj$geno_for_pairscan) %in% just.markers)
-    chr.geno <- data.obj$geno_for_pairscan[,marker.locale]
+  get.chr.cor <- function(ordered.names, ordered.alleles){		
+    marker.pos <- match(ordered.names, dimnames(geno.obj)[[3]])
+    allele.pos <- match(ordered.alleles, dimnames(geno.obj)[[2]])
+    chr.geno <- sapply(1:length(marker.pos), function(x) geno.obj[,allele.pos[x], marker.pos[x]])
     chr.cor <- cor(chr.geno, use = "complete.obs")
     return(chr.cor)
   }
@@ -132,15 +137,15 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
   for(ch in u_chr){
     chr.blocks = 1
     chr.markers <- used.markers[which(all.marker.chr == ch)]
-    chr.alleles <- unlist(lapply(strsplit(chr.markers, "_"), get.allele))
-    
+    split.markers <- strsplit(chr.markers, "_")
+    chr.alleles <- sapply(split.markers, function(x) x[2])
+    chr.marker.names <- sapply(split.markers, function(x) x[1])
     
     if(lookup.marker.position){
       cat("looking up SNP positions...\n")
-      just.names <- unlist(lapply(strsplit(chr.markers, "_"), function(x) x[1]))
-      snp.info <- lapply(just.names, function(x) as.matrix(biomaRt::getBM(c("refsnp_id","allele","chr_name","chrom_start"), filters = "snp_filter", values = x, mart = snp.db)))
+      snp.info <- lapply(chr.marker.names, function(x) as.matrix(biomaRt::getBM(c("refsnp_id","allele","chr_name","chrom_start"), filters = "snp_filter", values = x, mart = snp.db)))
       block.bp <- lapply(snp.info, function(x) as.numeric(x[,4]))
-      names(block.bp) <- just.names
+      names(block.bp) <- chr.marker.names
       no.info <- which(unlist(lapply(block.bp, length)) == 0)
       block.bp[no.info] <- NA
       block.bp <- unlist(block.bp)	
@@ -154,7 +159,8 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
       # num.blocks <- num.blocks + length(link.blocks)
       num.blocks <- num.blocks + 1
     }else{
-      all.cor <- get.chr.cor(chr.markers[order(block.bp)])
+      marker.order <- order(block.bp)
+      all.cor <- get.chr.cor(chr.marker.names[marker.order], chr.alleles[marker.order])
       diag(all.cor) <- 0
       thresh.mat <- abs(all.cor^threshold.power)
       net <- graph.adjacency(thresh.mat, mode = "undirected", weighted = TRUE)
@@ -222,7 +228,6 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
     
     
     if(plot.blocks && ch != 0){
-      
       
       layout(matrix(c(1,2), nrow = 1))
       image(1:dim(all.cor)[1], 1:dim(all.cor)[2], all.cor, main = paste("Marker Correlation Chr", ch), xlim = c(0,(dim(all.cor)[1]+1)), ylim = c(0,(dim(all.cor)[1]+1)), col = my.palette(50), axes = FALSE, ylab = "", xlab = "")

@@ -1,10 +1,10 @@
 #' This script draws a head specifically over electrode locations
 #' It shouldn't need to be scaled independently of the net layout
-plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, trait = NULL, 
-                          phenotype.labels = NULL, ref.allele = "B", color.scheme = c("DO/CC", "other"),
-                          main.lwd = 4, inter.lwd = 3, label.cex = 1.5, percent.bend = 15, chr.gap = 1, 
-                          label.gap = 5, positive.col = "brown", negative.col = "blue", show.alleles = TRUE, 
-                          allele.labels = NULL){
+plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, 
+  trait = NULL, phenotype.labels = NULL, ref.allele = "B", 
+  color.scheme = c("DO/CC", "other"), main.lwd = 4, inter.lwd = 3, label.cex = 1.5, 
+  percent.bend = 15, chr.gap = 1, label.gap = 5, positive.col = "brown", 
+  negative.col = "blue", show.alleles = TRUE, allele.labels = NULL){
   
   if(collapsed.net){
     adj.mat <- data.obj$collapsed_net
@@ -89,7 +89,7 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
     }
     min.pos <- min(all.pos[marker.locale])
     max.pos <- max(all.pos[marker.locale])
-    total.length <- max(all.pos[all.chr == chr])
+    total.length <- max(all.pos[all.chr == chr], na.rm =TRUE)
     return(c(chr, min.pos/total.length, max.pos/total.length))
   }
   
@@ -274,7 +274,8 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, t
           }
           
           #collect positions of the blocks for polygons and inner target bars on slightly smaller circles
-          block.coord <- get.block.coord(inner.bar.radius, start, pts.per.chr, block.rel.locale, i, chr.blocks.locale, ch)
+          block.coord <- get.block.coord(inner.bar.radius, start, pts.per.chr, block.rel.locale, 
+          i, chr.blocks.locale, ch)
           block.coord.table <- rbind(block.coord.table, block.coord)
           inner.bar.coord.table <- rbind(inner.bar.coord.table, block.coord)
           

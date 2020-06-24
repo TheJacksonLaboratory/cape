@@ -295,14 +295,16 @@ run.cape <- function(data.obj, geno.obj,
     p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
     covar.width = NULL, pheno.width = NULL)
 
-  data.obj <- get.network(data.obj, p.or.q = p.or.q, collapse.linked.markers = FALSE)
-  data.obj <- get.network(data.obj, p.or.q = p.or.q, threshold.power = 1, 
+  data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, collapse.linked.markers = FALSE)
+  data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, threshold.power = 1, 
     collapse.linked.markers = TRUE, plot.linkage.blocks = FALSE)
   
   data.obj$save_rds(data.obj, results.file)
   
-  data.obj$plot_network_do("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
-  data.obj$plot_network_do("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
+  data.obj$plot_network_do("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, 
+  show.alleles = FALSE)
+  data.obj$plot_network_do("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, 
+  show.alleles = FALSE)
 
   if(dim(geno.obj)[2] == 8){
     data.obj$plot_network_do("Network.Circular.DO.pdf", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)

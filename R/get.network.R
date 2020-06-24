@@ -24,13 +24,13 @@
 #' @param plot.linkage.blocks 
 #' @param lookup.marker.position 
 #' 
-get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize = FALSE, 
+get.network <- function(data.obj, geno.obj, p.or.q = 0.05, min.std.effect = 0, standardize = FALSE, 
                         collapse.linked.markers = TRUE, threshold.power = 1, verbose = FALSE, 
                         plot.linkage.blocks = FALSE, lookup.marker.position = FALSE){
   
   if(verbose){cat("Calculating linkage blocks...\n")}
   #get the linkage blocks based on the significant markers
-  data.obj <- linkage.blocks.network(data.obj, 
+  data.obj <- linkage.blocks.network(data.obj, geno.obj,
     collapse.linked.markers = collapse.linked.markers, threshold.power = threshold.power, 
     plot.blocks = plot.linkage.blocks, lookup.marker.position = lookup.marker.position)
   

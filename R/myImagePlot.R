@@ -25,6 +25,8 @@ myImagePlot <-
     additional.arguments$chromosome.coordinates <- NULL
     chr.names <- additional.arguments$chr.names
     additional.arguments$chr.names <- NULL
+    chr.labels <- additional.arguments$chr.labels
+    additional.arguments$chr.labels <- NULL
     
     mark.coords <- additional.arguments$mark.coords
     mark.col <- additional.arguments$mark.col
@@ -143,11 +145,15 @@ myImagePlot <-
       for(i in 1:(length(chromosome.coordinates)-1)){
         if(dim(x)[2]+1 >= max(chromosome.coordinates)){
           polygon(x = c(chromosome.coordinates[i], chromosome.coordinates[i+1], chromosome.coordinates[i+1], chromosome.coordinates[i]), y = c(poly.min, poly.min, poly.max, poly.max), col = chr.cols[i])
-          text(x = mean(c(chromosome.coordinates[i], chromosome.coordinates[i+1])), y = poly.mid, cex = label.size, labels = chr.names[i])
+          #if(chr.labels[i] == 0){chr.srt = 90}else{chr.srt = 0}
+          chr.srt = 0
+          #cat(chr.names[i], chr.labels[i], chr.srt, "\n")
+          text(x = mean(c(chromosome.coordinates[i], chromosome.coordinates[i+1])), y = poly.mid, cex = label.size, labels = chr.names[i], srt = chr.srt)
         }
-        
+        chr.srt = 90
+        #if(chr.labels[i] == 0){chr.srt = 0}else{chr.srt = 90}
         polygon(y = c(y.chr.coord[i], y.chr.coord[i+1], y.chr.coord[i+1], y.chr.coord[i]), x = c(poly.min, poly.min, poly.max, poly.max), col = chr.cols[i])
-        text(y = mean(c(y.chr.coord[i], y.chr.coord[i+1])), x = poly.mid, cex = label.size, labels = chr.names[i], srt = 90)
+        text(y = mean(c(y.chr.coord[i], y.chr.coord[i+1])), x = poly.mid, cex = label.size, labels = chr.names[i], srt = chr.srt)
         
       }
       
