@@ -36,7 +36,7 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   color.scheme = c("DO/CC", "other"), pos.col = "brown", neg.col = "blue", 
   not.tested.col = "lightgray", show.marker.labels = FALSE, show.chr = TRUE, 
   label.chr = TRUE, show.alleles = TRUE, scale.effects = c("log10", "sqrt", "none"), 
-  pheno.width = 11, covar.width = 11, covar.labels = NULL, phenotype.labels = NULL, 
+  pheno.width = NULL, covar.width = NULL, covar.labels = NULL, phenotype.labels = NULL, 
   show.not.tested = TRUE){
   
   if(!show.not.tested){
@@ -53,14 +53,6 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
     if(scale.effects != "log10" & scale.effects != "sqrt" & scale.effects != "none"){
       stop("scale.effects must be 'log10', 'sqrt' or 'none.'")
     }
-  }
-  
-  if(covar.width < 1 || !is.numeric(covar.width)){
-    stop("covar.width must be a whole positive number.")
-  }
-  
-  if(pheno.width < 1 || !is.numeric(pheno.width)){
-    stop("pheno.width must be a whole positive number.")
   }
   
   var.influences <- data.obj$var_to_var_p_val
@@ -150,6 +142,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
     allele.cols <- NULL
   }
   
+  if(is.null(covar.width)){
+    covar.width <- round((length(sorted.markers)+length(covar.names))/20)
+  }
   
   #update the markers based on the covariate width
   covar.info <- get.covar(data.obj)
@@ -174,8 +169,11 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   if(show.chr){
     num.covar <- length(covar.names)
     orig.chromosomes <- get.marker.chr(data.obj, markers =  sapply(strsplit(sorted.markers, "_"), function(x) x[[1]]))
+    covar.locale <- which(orig.chromosomes == 0)
     chromosomes <- orig.chromosomes[which(orig.chromosomes != 0)]
+    chr.labels <- rep(1, length(unique(chromosomes)))
     if(num.covar > 0){
+      chr.labels <- c(chr.labels, rep(0, num.covar))
       for(i in 1:length(covar.names)){
         chromosomes <- c(chromosomes, rep(covar.names[i], covar.width))
       }
@@ -265,6 +263,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
     }
   }
   
+  if(is.null(pheno.width)){
+    pheno.width <- round((length(sorted.markers)+length(covar.names))/15)
+  }
   #expand the phenotype influence matrix to give it more visual weight in the plot
   expanded.pheno.mat <- expand.matrix(pheno.influence.mat, 1:ncol(pheno.influence.mat), "col", pheno.width)
   expanded.pheno.pval.mat <- expand.matrix(pheno.pval.mat, 1:ncol(pheno.pval.mat), "col", pheno.width)
@@ -349,8 +350,8 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
       max.x = max(full.inf.mat.num, na.rm = TRUE), main = main, xlab = "Target", 
       ylab = "Source", mark.coords = not.tested.locale, mark.col = not.tested.col, 
       show.labels = show.marker.labels, chromosome.coordinates = chr.boundaries, 
-      chr.names = chr.names, show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, 
-      allele.cols = allele.cols)
+      chr.names = chr.names, chr.labels = chr.labels, 
+      show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, allele.cols = allele.cols)
     
     
     #add phenotype names
