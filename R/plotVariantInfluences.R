@@ -129,26 +129,29 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
     unique.markers <- unique(c(as.vector(var.influences[,"Source"]), as.vector(var.influences[,"Target"]), rownames(pheno.inf[[1]])))
   }
   
-  just.markers <- sapply(strsplit(unique.markers, "_"), function(x) x[[1]][1])
+  split.markers <- strsplit(unique.markers, "_")
+  just.markers <- sapply(split.markers, function(x) x[1])
+  just.alleles <- sapply(split.markers, function(x) x[2])
   unique.marker.locale <- match(just.markers, marker.names)		
   sorted.markers <- unique.markers[order(unique.marker.locale)]
   
   if(show.alleles){
-    alleles <- unique(sapply(strsplit(colnames(data.obj$geno_for_pairscan), "_"), function(x) x[2]))
-    allele.colors <- get.allele.colors(color.scheme, alleles)
+    allele.colors <- get.allele.colors(color.scheme, just.alleles)
     all.alleles <- unlist(lapply(strsplit(sorted.markers, "_"), function(x) x[2]))
-    allele.cols <- allele.colors[match(all.alleles, alleles),3]
+    allele.cols <- allele.colors[match(all.alleles, just.alleles),3]
   }else{
     allele.cols <- NULL
   }
   
+   
+  #update the markers based on the covariate width
+  covar.info <- get.covar(data.obj)
+  covar.names <- covar.info$covar.names
   if(is.null(covar.width)){
     covar.width <- round((length(sorted.markers)+length(covar.names))/20)
   }
   
-  #update the markers based on the covariate width
-  covar.info <- get.covar(data.obj)
-  covar.names <- covar.info$covar.names
+  
   if(length(covar.names) > 0){
     covar.markers <- covar.names
     covar.locale <- match(covar.markers, sorted.markers)

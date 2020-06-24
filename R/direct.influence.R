@@ -68,8 +68,6 @@ direct.influence <- function(data.obj, pairscan.obj, transform.to.phenospace = T
   #marker1, marker2, marker1.influence.coef, marker2.influence.coef, marker1.se, marker2.se
   
   dir.inf <- function(data.obj, perm){
-    geno <- data.obj$geno_for_pairscan 
-    n.gene <- dim(geno)[2]
     if(perm){
       scan.two.results <- pairscan.obj$pairscan.perm		
       intermediate.data$pairscan.results <- scan.two.results

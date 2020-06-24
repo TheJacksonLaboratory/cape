@@ -195,7 +195,7 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE,
   
   #also get circles and colors for the different 
   #alleles if we are going to show them
-  alleles <- unique(sapply(strsplit(colnames(data.obj$geno_for_pairscan), "_"), function(x) x[2]))
+  alleles <- unique(sapply(strsplit(rownames(adj.mat), "_"), function(x) x[2]))
   if(show.alleles){
     allele.colors <- get.allele.colors(color.scheme, alleles)
   }
