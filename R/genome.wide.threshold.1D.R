@@ -202,7 +202,7 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
   thresholds <- lapply(s, mean)
   names(thresholds) <- alpha
   
-  if(verbose(cat("\n")))
+  if(verbose){cat("\n")}
 
   return(thresholds)
   
