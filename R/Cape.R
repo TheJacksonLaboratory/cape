@@ -350,7 +350,7 @@ Cape <- R6::R6Class(
       
       plotVariantInfluences(self, p.or.q = p.or.q, standardize = FALSE, 
                             not.tested.col = "lightgray", 
-                            covar.width = 30, pheno.width = 30)
+                            covar.width = NULL, pheno.width = NULL)
       dev.off()
       
     },
