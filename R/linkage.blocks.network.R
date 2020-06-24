@@ -54,12 +54,14 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
     }
   }
   
-  get.chr <- function(element){
-    if(length(element) == 1){
-      return(0)
+  get.chr <- function(marker.name){
+    just.marker <- strsplit(marker.name, "_")[[1]][1]
+    marker.locale <- which(geno.names[[3]] == just.marker)
+    if(length(marker.locale) > 0){
+      marker.chr <- data.obj$chromosome[marker.locale]
     }else{
-      return(data.obj$chromosome[which(geno.names[[3]] == element[1])])
-    }
+      return(0)
+    }  
   }
   
   get.marker.name <- function(element){
@@ -74,7 +76,7 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
   #of which markers were used in the pairscan.
   #used.markers <- colnames(data.obj$geno_for_pairscan) 
   used.markers <- unique(as.vector(data.obj$var_to_var_p_val[,1:2]))
-  all.marker.chr <- unlist(lapply(strsplit(used.markers, "_"), get.chr))
+  all.marker.chr <- sapply(used.markers, get.chr)
   u_chr <- sort(as.numeric(unique(all.marker.chr)))
 
   if(u_chr[1] == 0){
