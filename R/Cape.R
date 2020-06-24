@@ -338,7 +338,7 @@ Cape <- R6::R6Class(
     plot_variant_influences = function(filename, width = 10, height = 7,
                                        p.or.q = p.or.q, standardize = FALSE, 
                                        not.tested.col = "lightgray", 
-                                       covar.width = 30, pheno.width = 30) {
+                                       covar.width = NULL, pheno.width = NULL) {
       
       full.path <- file.path(self$results_path, filename)
       
