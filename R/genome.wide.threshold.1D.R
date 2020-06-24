@@ -52,7 +52,8 @@
 genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100, 
                                      scan.what = c("eigentraits", "raw.traits"), 
                                      ref.allele = NULL, alpha = c(0.01, 0.05), 
-                                     model.family, run.parallel = TRUE, n.cores = 4){
+                                     model.family, run.parallel = TRUE, n.cores = 4
+                                     verbose = verbose){
   
   if(!run.parallel){n.cores = 1}
   
@@ -176,6 +177,7 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
     max.stat <- c()
     index <- 1:n.perm
     for (p in index) {
+      if(verbose){report.progress(p, n.perm)}
       max.stat <- rbind(max.stat, one.perm())
     }
     
@@ -200,7 +202,8 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
   thresholds <- lapply(s, mean)
   names(thresholds) <- alpha
   
-  
+  if(verbose(cat("\n")))
+
   return(thresholds)
   
   

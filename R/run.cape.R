@@ -289,11 +289,11 @@ run.cape <- function(data.obj, geno.obj,
   
   data.obj$plot_variant_influences("variant.influences.pdf", width = 10, height = 7,
     p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
-    covar.width = 30, pheno.width = 30)
+    covar.width = NULL, pheno.width = NULL)
 
   data.obj$plot_variant_influences("variant.influences.jpg", width = 10, height = 7,
     p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
-    covar.width = 30, pheno.width = 30)
+    covar.width = NULL, pheno.width = NULL)
 
   data.obj <- get.network(data.obj, p.or.q = p.or.q, collapse.linked.markers = FALSE)
   data.obj <- get.network(data.obj, p.or.q = p.or.q, threshold.power = 1, 
