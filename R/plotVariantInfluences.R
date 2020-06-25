@@ -132,13 +132,13 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   split.markers <- strsplit(unique.markers, "_")
   just.markers <- sapply(split.markers, function(x) x[1])
   just.alleles <- sapply(split.markers, function(x) x[2])
-  unique.marker.locale <- match(just.markers, marker.names)		
-  sorted.markers <- unique.markers[order(unique.marker.locale)]
+  unique.marker.locale <- match(just.markers, marker.names)
+  marker.order <- order(unique.marker.locale)		
+  sorted.markers <- unique.markers[marker.order]
   
   if(show.alleles){
     allele.colors <- get.allele.colors(color.scheme, just.alleles)
-    all.alleles <- unlist(lapply(strsplit(sorted.markers, "_"), function(x) x[2]))
-    allele.cols <- allele.colors[match(all.alleles, just.alleles),3]
+    allele.cols <- allele.colors[match(just.alleles[marker.order], allele.colors[,2]),3]
   }else{
     allele.cols <- NULL
   }
