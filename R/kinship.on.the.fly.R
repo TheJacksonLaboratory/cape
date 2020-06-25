@@ -58,8 +58,6 @@ covarV = NULL, verbose = FALSE){
     if(verbose){cat("\tFitting model...\n")}
     if(is.null(covarV) || is.null(pair)){
       model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))
-      #implement lme4
-      #model = lmer(as.vector(phenotype[pheno.locale])~geno[pheno.locale,1,]|K[pheno.locale,pheno.locale])	
     }else{
       model = regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, 
       pos = c(TRUE, TRUE))
