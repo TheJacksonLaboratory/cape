@@ -15,6 +15,9 @@
 #' 
 bin.curve <- function(the.curve, plot.peaks = FALSE, window.size = NULL, amp.min = NULL){
   
+    if(all(is.na(the.curve))){
+      return(list("bins" = the.curve))
+    }
   
   #====================================================================		
   # internal functions
