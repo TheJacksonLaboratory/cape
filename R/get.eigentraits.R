@@ -73,6 +73,9 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
     return(final.v)
   }
   
+  #preserve the initial phentype matrix.
+  data.obj$raw_pheno <- pheno 
+
   if(normalize.pheno){
     pheno <- apply(pheno, 2, rz.transform)
   }
@@ -80,7 +83,6 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
   if(scale.pheno){
     pheno <- apply(pheno, 2, center.std) #mean center and standardize the phenotypes
   }
-  
   
   data.obj$pheno <- pheno #replace the raw phenotypes with scaled, normalized phenotypes (if we have done those things)
   
