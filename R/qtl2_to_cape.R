@@ -22,33 +22,34 @@
 #'
 #' @export
 
-qtl2_to_cape <- function(cross, genoprobs, map){
-
-    if(class(cross)[1] == "cross2"){
-        along = 3
-    }else{
-        along = 2
-    }
+qtl2_to_cape <- function(phenotype.matrix, genoprobs, map, covar = NULL){
 
     chr.to.add <- setdiff(names(genoprobs), c("1", "X", "Y", "M"))
-    geno <- genoprobs[[1]]
-    for(i in chr.to.add){
-        geno <- abind(geno, genoprobs[[i]], along = along)
+
+    cat("Converting genoprobs to array...\n")
+    n.dim.geno <- length(dim(genoprobs[[1]]))
+    if(n.dim.geno == 2){
+    	    geno <- abind(genoprobs[[1]], 1-genoprobs[[1]], along = 3)
+		 for(i in chr.to.add){
+		 	a.geno <- abind(genoprobs[[i]], 1-genoprobs[[i]], along = 3)
+	        geno <- abind(geno, a.geno, along = 2)
+    		}
+		geno <- aperm(geno, c(1,3,2))
+    }else{
+        geno <- abind(genoprobs[[1]], along = 3)
+		for(i in chr.to.add){
+	        geno <- abind(geno, genoprobs[[i]], along = 3)
+    		}
     }
 
-    if(class(cross)[1] != "cross2"){
-        #switch the second and third dimensions
-        geno <- aperm(geno, c(1,3,2))
-        rownames(geno) <- rownames(cross$pheno)
-    }
-    
     geno.names <- dimnames(geno)
 	
-    common.ind <- intersect(rownames(cross$pheno), dimnames(geno)[[1]])
-    common.pheno.locale <- match(common.ind, rownames(cross$pheno))
+    common.ind <- Reduce("intersect", list(rownames(phenotype.matrix), dimnames(geno)[[1]], rownames(covar)))
+    common.pheno.locale <- match(common.ind, rownames(phenotype.matrix))
     common.geno.locale <- match(common.ind, rownames(geno))
+    common.covar.locale <- match(common.ind, rownames(covar))
     
-    pheno <- as.matrix(cross$pheno[common.pheno.locale,])
+    pheno <- as.matrix(phenotype.matrix[common.pheno.locale,])
     rownames(pheno) <- common.ind
     geno <- geno[common.geno.locale,,]
 
@@ -58,6 +59,7 @@ qtl2_to_cape <- function(cross, genoprobs, map){
     data.obj <- list()
     data.obj$pheno <- pheno
     data.obj$geno_names <- geno.names
+    names(data.obj$geno_names) <- c("mouse", "allele", "locus")
     data.obj$marker_num <- 1:dim(geno)[[3]]
     
     chr.used <- setdiff(names(genoprobs), c("X", "Y", "M"))
@@ -66,9 +68,7 @@ qtl2_to_cape <- function(cross, genoprobs, map){
     split.marker <- strsplit(names(un_map), "\\.")
     chr <- sapply(split.marker, function(x) x[1])
     data.obj$chromosome <- as.numeric(chr)
-    data.obj$p_covar_table <- as.matrix(cross$covar)
-    rownames(data.obj$p_covar_table) <- common.ind
-    data.obj$p_covar <- colnames(cross$covar)
+    data.obj$pheno <- cbind(data.obj$pheno, covar[common.covar.locale,])
 
     result <- list("data.obj" = data.obj, "geno.obj" = geno)    
     
