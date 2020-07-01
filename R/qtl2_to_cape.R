@@ -22,8 +22,24 @@
 #'
 #' @export
 
-qtl2_to_cape <- function(phenotype.matrix, genoprobs, map, covar = NULL){
+qtl2_to_cape <- function(cross){
 
+	phenotype.matrix = as.matrix(cross$pheno)
+	genoprobs = cross$geno
+	map = cross$pmap
+	covar = as.matrix(cross$covar)
+    covar.ind <- rownames(covar)
+
+    #only take numeric covariates
+    covar.num <- apply(covar, 2, function(x) suppressWarnings(as.numeric(x)))
+    covar.which <- which(apply(covar.num, 2, function(x) !all(is.na(x))))
+
+    if(length(covar.which) < ncol(covar)){
+        cat("Removing non-numeric covariates\n")
+    }
+    covar <- covar.num[,covar.which]
+    rownames(covar) <- covar.ind
+    
     chr.to.add <- setdiff(names(genoprobs), c("1", "X", "Y", "M"))
 
     cat("Converting genoprobs to array...\n")
@@ -41,6 +57,7 @@ qtl2_to_cape <- function(phenotype.matrix, genoprobs, map, covar = NULL){
 	        geno <- abind(geno, genoprobs[[i]], along = 3)
     		}
     }
+    colnames(geno) <- LETTERS[1:ncol(geno)]
 
     geno.names <- dimnames(geno)
 	
