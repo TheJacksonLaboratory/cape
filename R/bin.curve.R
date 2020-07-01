@@ -8,8 +8,8 @@
 #' it then removes fluctuations in the curve that are 
 #' smaller than the sd of the smoothed curve values
 #' 
-#' @param the.curve
-#' @param plot.peaks defualt = FALSE
+#' @param the.curve vector representing the curve to be binned into peaks
+#' @param plot.peaks default = FALSE
 #' @param window.size 
 #' @param amp.min minimum amplitude
 #' 
