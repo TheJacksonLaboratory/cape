@@ -79,7 +79,7 @@ run.cape <- function(data.obj, geno.obj,
     #we need to impute the missing values
     imp.data.file <- paste0(results.base.name, "_data_imputed.RData")
     imp.geno.file <- paste0(results.base.name, "_geno_imputed.RData")
-
+    
     # check if there is already a saved genotype object
     geno <- data.obj$read_rds(imp.geno.file)
 
@@ -118,10 +118,18 @@ run.cape <- function(data.obj, geno.obj,
   if(verbose){cat("Removing unused markers...\n")}
   data.obj <- remove.unused.markers(data.obj, geno.obj)
   combined.data.obj <- delete_underscore(data.obj, geno.obj)
-  
+
   data.obj <- combined.data.obj$data.obj
-  geno.obj <- combined.data.obj$geno.obj
+  geno.obj <- combined.data.obj$geno.obj    
   
+  #because the genotype object can be changed by the above step, 
+  #save the final version. (or change the above step so it doesn't 
+  final.geno.file <- paste0(results.base.name, "_geno.RData")
+  data.obj$save_rds(geno.obj, final.geno.file)
+
+  #str(data.obj$geno_names)
+  #str(dimnames(geno.obj))
+
   if(!is.null(data.obj$covariates)){
     data.obj <- pheno2covar(data.obj, data.obj$covariates)
   }
