@@ -88,7 +88,6 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
   
   svd.pheno <- svd(pheno)
   
-  
   #add the eigentraits and singular values to the data object
   
   data.obj$ET <- svd.pheno$u

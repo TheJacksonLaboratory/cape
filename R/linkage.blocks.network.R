@@ -74,7 +74,6 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
   #find all the chromosomes that were used in the pairwise scan and sort them
   #with the refactoring geno_for_pairscan is no longer a reliable indicator 
   #of which markers were used in the pairscan.
-  #used.markers <- colnames(data.obj$geno_for_pairscan) 
   used.markers <- unique(as.vector(data.obj$var_to_var_p_val[,1:2]))
   all.marker.chr <- sapply(used.markers, get.chr)
   u_chr <- sort(as.numeric(unique(all.marker.chr)))
