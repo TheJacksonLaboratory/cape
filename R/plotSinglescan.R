@@ -17,10 +17,10 @@
 #' @param covar.label.size default is 0.7
 #' 
 #' @export
-plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, alpha = c(0.01, 0.05),
-                           standardized = TRUE, color.scheme = c("DO/CC","other"), allele.labels = NULL,
-                           include.covars = TRUE, show.selected = FALSE, line.type = "l", lwd = 1,
-                           pch = 16, cex = 1, covar.label.size = 0.7){
+plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
+  alpha = c(0.01, 0.05), standardized = TRUE, color.scheme = c("DO/CC","other"), 
+  allele.labels = NULL, include.covars = TRUE, show.selected = FALSE, 
+  line.type = "l", lwd = 1, pch = 16, cex = 1, covar.label.size = 0.7){
   
   geno.names <- data.obj$geno_names
   
@@ -100,8 +100,7 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
   
   max.x <- max(c(length(non.covar.locale), covar.x))
   
-  
-  
+    
   if(length(results) == 0){
     stop("You must run singlescan.R before plotting effects.")
   }

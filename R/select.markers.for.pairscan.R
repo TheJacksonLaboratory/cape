@@ -114,8 +114,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj,
   
   covar.info <- get.covar(data.obj)
   results.no.covar <- results[which(!rownames(results) %in% covar.info$covar.names),,,drop=FALSE]
-  result.chr <- get.marker.chr(data.obj, markers = rownames(results.no.covar), character.names = TRUE)
-  
+  result.chr <- get.marker.chr(data.obj, markers = rownames(results.no.covar), character.names = TRUE)  
   
   sorted.results <- sort(abs(as.vector(results.no.covar)))
   #start with a cutoff that might be near the number of 
