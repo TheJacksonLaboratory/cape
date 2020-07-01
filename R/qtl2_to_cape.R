@@ -14,15 +14,16 @@
 #' Genetics 211, no. 2 (2019): 495-502.
 #'
 #' @param cross a cross object created by the R/qtl2 function read_cross()
-#' @param genoprobs a genoprobs object created by the R/qtl2 function calc_genoprobs()
-#' @param map the genetic or physical map from an R/qtl2 object.
+#' @param param.file parameter file full path
+#' @param yaml.params yaml string containing the parameters. Either the param.file or yaml.params can be null.
+#' @param results.path paths of the results
 #'
 #' @return This function returns a list of two elements. The first element is a cape data
 #' object. The second element is a cape genotype object.
 #'
 #' @export
 
-qtl2_to_cape <- function(cross){
+qtl2_to_cape <- function(cross, param.file = NULL, yaml.params = NULL, results.path = NULL){
 
 	phenotype.matrix = as.matrix(cross$pheno)
 	genoprobs = cross$geno
@@ -72,21 +73,30 @@ qtl2_to_cape <- function(cross){
 
     geno.names <- dimnames(geno)
     names(geno.names) <- c("mouse", "allele" ,"locus")
-    
-    data.obj <- list()
-    data.obj$pheno <- pheno
-    data.obj$geno_names <- geno.names
-    names(data.obj$geno_names) <- c("mouse", "allele", "locus")
-    data.obj$marker_num <- 1:dim(geno)[[3]]
+
+    marker.num <- 1:dim(geno)[[3]]
     
     chr.used <- setdiff(names(genoprobs), c("X", "Y", "M"))
     un_map <- unlist(map[chr.used])
-    data.obj$marker_location <- as.numeric(un_map)
+    marker.location <- as.numeric(un_map)
     split.marker <- strsplit(names(un_map), "\\.")
     chr <- sapply(split.marker, function(x) x[1])
-    data.obj$chromosome <- as.numeric(chr)
-    data.obj$pheno <- cbind(data.obj$pheno, covar[common.covar.locale,])
-
-    result <- list("data.obj" = data.obj, "geno.obj" = geno)    
+    chromosome <- as.numeric(chr)
+    pheno <- cbind(pheno, covar[common.covar.locale,])
+    
+    cape.obj <- Cape$new(
+        parameter_file = param.file,
+        yaml_parameters = yaml.params,
+        results_path = results.path,
+        pheno = pheno,
+        chromosome = chromosome,
+        marker_num = marker.num,
+        marker_location = marker.location,
+        geno_names = geno.names,
+        geno = geno,
+        use_kinship = TRUE
+    )
+    
+    return(cape.obj)
     
 }

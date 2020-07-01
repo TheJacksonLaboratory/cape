@@ -16,21 +16,32 @@ load.input.and.run.cape <- function(input_file = NULL, yaml_params = NULL, resul
   		
   if(!require(here)){install.packages("here")}
   
-  cross <- read.population(input_file)
-  cross.obj <- cape2mpp(cross)
-  geno.obj <- cross.obj$geno.obj$geno
-  
-  data.obj <- Cape$new(
-    yaml_parameters = yaml_params,
-    results_path = results_path,
-    pheno = cross.obj$data.obj$pheno,
-    chromosome = cross.obj$data.obj$chromosome,
-    marker_num = cross.obj$data.obj$marker_num,
-    marker_location = cross.obj$data.obj$marker_location,
-    geno_names = dimnames(geno.obj),
-    geno = geno.obj,
-    use_kinship = use_kinship
-  )
+  # if R/QTL2 file format
+  if (endsWith(input_file, ".zip")) {
+
+    qtl2.bxd <- read_cross2(input_file)
+    
+    cape.object <- qtl2_to_cape(phenotype.matrix = qtl2.bxd$pheno, genoprobs = qtl2.bxd$geno, map = qtl2.bxd$pmap, covar = qtl2.bxd$covar, yaml_params = yaml_params)
+    data.obj <- cape.object$data.obj
+    geno.obj <- cape.object$geno.obj 
+  } else if (endsWith(input_file, ".csv")){
+    # csv file format like NON_NZO...csv
+    cross <- read.population(input_file)
+    cross.obj <- cape2mpp(cross)
+    geno.obj <- cross.obj$geno.obj$geno
+    
+    data.obj <- Cape$new(
+      yaml_parameters = yaml_params,
+      results_path = results_path,
+      pheno = cross.obj$data.obj$pheno,
+      chromosome = cross.obj$data.obj$chromosome,
+      marker_num = cross.obj$data.obj$marker_num,
+      marker_location = cross.obj$data.obj$marker_location,
+      geno_names = dimnames(geno.obj),
+      geno = geno.obj,
+      use_kinship = use_kinship
+    )
+  }
   
   # TODO remove all calls to require() and ensure that the libraries are in the DESCRIPTION file
   final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, 
