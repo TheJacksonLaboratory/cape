@@ -34,8 +34,8 @@ param.file <- file.path(test.data.path, "cape.parameters.chesler.DO.exp.group.ym
 # cross.obj <- cape2mpp(cross)
 # geno.obj <- cross.obj$geno.obj$geno
 
-pheno.obj<-readRDS(here("../data/CheslerDO_Data/CheslerDO.pheno.RData")) 
-geno.obj<-readRDS(here("../data/CheslerDO_Data/CheslerDO.geno.RData"))
+pheno.obj<-readRDS(file.path(test.data.path, "CheslerDO.pheno.RData"))
+geno.obj<-readRDS(file.path(test.data.path, "CheslerDO.geno.RData"))
 
 # set all the dotted list names in the pheno.obj to snake case
 names(pheno.obj) <- gsub("[.]", "_", names(pheno.obj))
@@ -49,26 +49,12 @@ names(pheno.obj) <- gsub("[.]", "_", names(pheno.obj))
 
 pheno.obj <- cape::remove.unused.markers(pheno.obj, geno.obj)
 
-browser()
-
-data.obj <- Cape$new(
-  parameter_file = param.file,
-  results_path = here("results"),
-  pheno = pheno.obj$pheno,
-  chromosome = pheno.obj$chromosome,
-  marker_num = pheno.obj$marker_num,
-  marker_location = pheno.obj$marker_location,
-  geno_names = pheno.obj$geno_names,
-  geno = geno.obj,
-  use_kinship = TRUE
-)
-
 # TODO remove all calls to require() and ensure that the libraries are in the DESCRIPTION file
 
-
-final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
+final.cross <- run.cape(pheno.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
                         n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
-                        error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE)
+                        error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = FALSE,
+                        param.file = param.file, results.path = here("results"))
 
 
 

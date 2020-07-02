@@ -1,0 +1,60 @@
+#================================================
+# General Parameters 
+#================================================
+traits:
+ - RVBD_0955
+ - RVBD_2115c
+ - RVBD_2560
+scan_what:
+ - eigentraits 
+traits_scaled:
+ - true
+traits_normalized:
+ - true
+eig_which:
+ - 1
+ - 2 
+ - 3
+pval_correction:
+ - fdr 
+use_kinship:
+ - true
+kinship_type:
+ - overall
+pop:
+ - RIL
+locus:
+ - char
+save_results:
+ - true
+use_saved_results:
+ - false
+
+#================================================
+# Single Scan Parameters 
+#================================================
+ref_allele:
+ - A 
+singlescan_perm:
+ - 0
+
+#================================================
+# Marker Selection Parameters 
+#================================================
+marker_selection_method:
+ - top.effects
+peak_density:
+ - 0.5 
+tolerance:
+ - 5 
+num_alleles_in_pairscan:
+ - 100
+
+#================================================
+# Pairscan Parameters 
+#================================================
+max_pair_cor:
+ - 0.5 
+pairscan_null_size:
+ - 1000 
+

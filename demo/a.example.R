@@ -30,19 +30,8 @@ param.file <- file.path(test.data.path, "cape.parameters.yml")
 
 cross <- read.population(file.name)
 cross.obj <- cape2mpp(cross)
+data.obj <- cross.obj$data.obj
 geno.obj <- cross.obj$geno.obj$geno
-
-data.obj <- Cape$new(
-  parameter_file = param.file,
-  results_path = here("results"),
-  pheno = cross.obj$data.obj$pheno,
-  chromosome = cross.obj$data.obj$chromosome,
-  marker_num = cross.obj$data.obj$marker_num,
-  marker_location = cross.obj$data.obj$marker_location,
-  geno_names = dimnames(geno.obj),
-  geno = geno.obj,
-  use_kinship = TRUE
-)
 
 # TODO remove all calls to require() and ensure that the libraries are in the DESCRIPTION file
 
@@ -50,7 +39,8 @@ snp.file = here("tests/testthat/testdata/NON_NZO_marker_list.txt")
 
 final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
                         n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
-                        error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = TRUE)
+                        error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, run.parallel = FALSE,
+                        param.file = param.file, results.path = here("results"))
 
 
 

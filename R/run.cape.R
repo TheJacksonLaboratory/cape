@@ -12,11 +12,11 @@
 #'
 #' This function assumes you already have all required libraries and functions loaded.
 #'
-#' @param data.obj the S4 class from \code{\link{Cape}}
+#' @param data the S4 class from \code{\link{Cape}}
 #' @param geno.obj the genotype object
 #' @param results.file the name of the saved data.obj RData file. The base name is used as the base name for all saved RData files.
 #' @param p.or.q A threshold indicating the maximum adjusted p value considered 
-#' @param snp.file a one column, new-line separated list of marker names that has a non-empty interectsion with the genotype names
+#' @param snp.file a one column, new-line separated list of marker names that has a non-empty interesection with the genotype names
 #' @param n.cores integer, default is 4
 #' @param run.singlescan boolean, defaul: TRUE
 #' @param run.pairscan boolean, default: TRUE
@@ -25,15 +25,33 @@
 #' @param initialize.only, boolean, default: FALSE
 #' @param verbose boolean, output goes to stdout
 #' @param run.parallel boolean, if TRUE runs certain parts of the code as parallel blocks
+#' @param param.file yaml parameter file full path
+#' @param yaml.params yaml string containing the parameters. Either the param.file or yaml.params can be null.
+#' @param results.path paths of the results
 #'
 #' @return None, output artifacts are saved to the data.obj$results_path directory
 #'
 #' @export
-run.cape <- function(data.obj, geno.obj, 
+run.cape <- function(data, geno.obj, 
   results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
   n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, 
   error.prop.coef = TRUE, error.prop.perm = TRUE, initialize.only = FALSE, 
-  verbose = TRUE, run.parallel = FALSE){
+  verbose = TRUE, run.parallel = FALSE, param.file = NULL, yaml.params = NULL,
+  results.path = NULL){
+  
+  # Instantiate the Cape R6 object
+  data.obj <- Cape$new(
+  		parameter_file = param.file,
+		yaml_parameters = yaml.params,
+  		results_path = results.path,
+  		pheno = data$pheno,
+  		chromosome = data$chromosome,
+  		marker_num = data$marker_num,
+  		marker_location = data$marker_location,
+  		geno_names = data$geno_names,
+  		geno = geno.obj,
+  		use_kinship = TRUE
+  )
   
   results.base.name <- gsub(".RData", "", results.file)
     
