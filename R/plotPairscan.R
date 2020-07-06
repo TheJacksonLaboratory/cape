@@ -23,6 +23,7 @@
 #' @param color.scheme options are "DO/CC" and "other"
 #' @param pdf.label default = "Pairscan.Regression.pdf"
 #'
+#' @export
 plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized = FALSE, show.marker.labels = FALSE,
                          show.chr = TRUE, label.chr = TRUE, show.alleles = TRUE, allele.labels = NULL, pos.col = "brown",
                          neg.col = "blue", color.scheme = c("DO/CC", "other"), pdf.label = "Pairscan.Regression.pdf") {

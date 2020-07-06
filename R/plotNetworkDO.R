@@ -1,10 +1,50 @@
-#' This script draws a head specifically over electrode locations
-#' It shouldn't need to be scaled independently of the net layout
+#' Plots cape results as a circular network
+#'
+#' This script plots cape results in a circular network.
+#' The chromosomes are arranged in a circle. Main effects
+#' are shown in concentric circles around the chromosomes,
+#' with each trait in its own circle. Main effects can 
+#' either be colored as negative or positive, or with parental
+#' allele colors for multi-parent populations. 
+#' 
+#' Interaction effects are shown as arrows linking chromosomal
+#' positions. They are colored based on whether they are positive
+#' or negative.
+#' 
+#' @param data.obj a \code{\link{Cape}} object
+#' @param marker.pairs a two-column matrix identifying which marker pairs should be plotted.
+#' This is particularly useful if the network is very dense. The default value, NULL, plots
+#' all marker pairs.
+#' @param collapse.net A logical value indicating whether to plot all individual SNPs
+#' or linkage blocks calculated by \code{\link{linkage.block.network}}.
+#' @param trait A character vector indicating which traits to plot. The default NULL
+#' value plots all traits.
+#' @param trait.labels A character vector indicating the names of the traits in case
+#' the names from the data object are not great for plotting.
+#' @param color.scheme A character value of either "DO/CC" or other indicating the 
+#' color scheme of main effects. If "DO/CC" allele effects can be plotted with the
+#' DO/CC colors.
+#' @param main.lwd A numeric value indicating the line width for the main effect lines
+#' @param inter.lwd A numeric value indicating the line width for the interaction lines
+#' @param label.cex A numeric value indicating the size of the labels
+#' @param percent.bend A numeric value indicating the amount that the arrows for the
+#' interaction effects should be bent. A value of 0 will plot straight lines.
+#' @param chr.gap A numeric value indicating the size of the gap plotted between chromosomes.
+#' @param label.gap A numeric value indicating the size of the gap the chromosomes and their labels.
+#' @param positive.col One of c("green", "purple", "red", "orange", "blue", "brown", "yellow", "gray")
+#' indicating the color for positive interactions.
+#' @param negative.col One of c("green", "purple", "red", "orange", "blue", "brown", "yellow", "gray")
+#' indicating the color for negative interactions.
+#' show.alleles A logical value indicating whether to color main effects by their allele values (TRUE)
+#' or by whether they are positive or negative (FALSE)
+#' 
+#' @export
+
 plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, 
-  trait = NULL, phenotype.labels = NULL, ref.allele = "B", 
-  color.scheme = c("DO/CC", "other"), main.lwd = 4, inter.lwd = 3, label.cex = 1.5, 
+  trait = NULL, trait.labels = NULL, color.scheme = c("DO/CC", "other"), 
+  main.lwd = 4, inter.lwd = 3, label.cex = 1.5, 
   percent.bend = 15, chr.gap = 1, label.gap = 5, positive.col = "brown", 
-  negative.col = "blue", show.alleles = TRUE, allele.labels = NULL){
+  negative.col = "blue", show.alleles = TRUE){
   
   if(collapsed.net){
     adj.mat <- data.obj$collapsed_net
@@ -176,11 +216,11 @@ plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE,
     }
   }
   
-  if(is.null(phenotype.labels)){
+  if(is.null(trait.labels)){
     pheno.names <- pheno
   }else{
-    pheno.names <- phenotype.labels
-    if(length(phenotype.labels) != length(pheno)){
+    pheno.names <- trait.labels
+    if(length(trait.labels) != length(pheno)){
       stop("I'm detecting the wrong number of phenotype labels.")
     }	
   }

@@ -31,6 +31,7 @@
 #' @param phenotype.labels 
 #' @param show.not.tested 
 #' 
+#' @export
 plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, 
   plot.all.vals = FALSE, all.markers = FALSE, standardize = TRUE, 
   color.scheme = c("DO/CC", "other"), pos.col = "brown", neg.col = "blue", 
