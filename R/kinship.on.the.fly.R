@@ -54,15 +54,17 @@ covarV = NULL, verbose = FALSE){
     K <- full.kin[kin.locale,kin.locale]
     pheno.locale <- match(common.ind, rownames(phenotype))
 
+    #for the corrections below, look into including epistatic kinship 
+    #matrices. This may help us gain power to see epistatic interactions
+
     #if we are correcting the covariate only don't put it in the model
     if(verbose){cat("\tFitting model...\n")}
     if(is.null(covarV) || is.null(pair)){
-      model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))
+      model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE), 
+      tol = 1e-2)
     }else{
       model = regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, 
-      pos = c(TRUE, TRUE))
-      #implement lme4
-      #test <- lmer(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,]|K)
+      pos = c(TRUE, TRUE), tol = 1e-2)
     }
     
     #This err.cov is the same as err.cov in Dan's code using estVC
