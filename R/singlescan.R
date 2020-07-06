@@ -232,7 +232,6 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
       cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, 
       chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
       sink(NULL)
-      
       names(cor.data) <- chr.which
     }else{
       cor.data <- vector(mode = "list", length = 1)

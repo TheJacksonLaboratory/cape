@@ -158,12 +158,8 @@ impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.t
     }
     parallel::stopCluster(cl)
   }else{
-    if(verbose){
-      cat("Imputing missing genotypes...\n")
-      imputed.geno <- lapply_pb(geno.chunks, impute.section)
-    }else{
+    if(verbose){cat("Imputing missing genotypes...\n")}
       imputed.geno <- lapply(geno.chunks, impute.section)
-    }
   }
   
   if(verbose){cat("Rebuilding genotype matrix...\n")}
