@@ -66,13 +66,14 @@ pop=c("MPP","2PP","RIL")){
   if(!("calc_genoprob" %in% class(geno.obj)) & locus=="char" & pop=="MPP"){
     
     ### create map and genoprobs using geno file
-    map<-data.frame(marker=dimnames(geno.obj)[[3]],chr=dimnames(geno.obj)[[3]],pos=dimnames(geno.obj)[[3]],stringsAsFactors = F)
+    map<-data.frame(marker = data.obj$geno_names[[3]],chr = data.obj$geno_names[[3]], 
+    		pos = data.obj$geno_names[[3]], stringsAsFactors = F)
     
-    map$marker<-as.list(data.obj$geno_names$locus)
+    map$marker <- as.list(data.obj$geno_names$locus)
     
-    map$chr<-as.list(data.obj$chromosome)
+    map$chr <- as.list(data.obj$chromosome)
     
-    map$pos<-as.list(data.obj$marker_location)
+    map$pos <- as.list(data.obj$marker_location)
     
     data.obj$save_rds(map,"map.RData")
     
