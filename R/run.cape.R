@@ -32,7 +32,7 @@
 #' @return None, output artifacts are saved to the data.obj$results_path directory
 #'
 #' @export
-run.cape <- function(data, geno.obj, 
+run.cape <- function(pheno.obj, geno.obj, 
   results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
   n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, 
   error.prop.coef = TRUE, error.prop.perm = TRUE, initialize.only = FALSE, 
@@ -44,11 +44,11 @@ run.cape <- function(data, geno.obj,
   		parameter_file = param.file,
 		yaml_parameters = yaml.params,
   		results_path = results.path,
-  		pheno = data$pheno,
-  		chromosome = data$chromosome,
-  		marker_num = data$marker_num,
-  		marker_location = data$marker_location,
-  		geno_names = data$geno_names,
+  		pheno = pheno.obj$pheno,
+  		chromosome = pheno.obj$chromosome,
+  		marker_num = pheno.obj$marker_num,
+  		marker_location = pheno.obj$marker_location,
+  		geno_names = pheno.obj$geno_names,
   		geno = geno.obj,
   		use_kinship = TRUE
   )
