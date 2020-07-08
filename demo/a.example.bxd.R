@@ -13,7 +13,6 @@ data.obj <- cape.object$data.obj
 geno.obj <- cape.object$geno.obj 
 
 final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05,
-         snp.file = snp.file, n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE,
-         error.prop.coef = TRUE, error.prop.perm = TRUE,
-         initialize.only = TRUE, verbose = TRUE, run.parallel = FALSE,
+         n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE, 
+         error.prop.perm = TRUE, initialize.only = TRUE, verbose = TRUE, run.parallel = FALSE,
          param.file = param.file, results.path = here("results"))

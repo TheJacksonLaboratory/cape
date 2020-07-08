@@ -16,7 +16,6 @@
 #' @param geno.obj the genotype object
 #' @param results.file the name of the saved data.obj RData file. The base name is used as the base name for all saved RData files.
 #' @param p.or.q A threshold indicating the maximum adjusted p value considered 
-#' @param snp.file a one column, new-line separated list of marker names that has a non-empty interesection with the genotype names
 #' @param n.cores integer, default is 4
 #' @param run.singlescan boolean, defaul: TRUE
 #' @param run.pairscan boolean, default: TRUE
@@ -33,10 +32,10 @@
 #'
 #' @export
 run.cape <- function(pheno.obj, geno.obj, 
-  results.file = "cross.RData", p.or.q = 0.05, snp.file = NULL,
-  n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, 
-  error.prop.coef = TRUE, error.prop.perm = TRUE, initialize.only = FALSE, 
-  verbose = TRUE, run.parallel = FALSE, param.file = NULL, yaml.params = NULL,
+  results.file = "cross.RData", p.or.q = 0.05, n.cores = 4, 
+  run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE, 
+  error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, 
+  run.parallel = FALSE, param.file = NULL, yaml.params = NULL,
   results.path = NULL){
   
   # Instantiate the Cape R6 object
@@ -242,6 +241,7 @@ run.cape <- function(pheno.obj, geno.obj,
       }
       
       if(marker.selection.method == "from.list"){
+        snp.file <- data.obj$snp_file
         specific.markers <- as.matrix(read.table(snp.file, sep = "\t", stringsAsFactors = FALSE))
         data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
       }

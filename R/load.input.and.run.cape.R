@@ -11,8 +11,8 @@
 #' @export
 load.input.and.run.cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
 	use_kinship = FALSE, run_parallel = FALSE, results.file = "cross.RData", p.or.q = 0.05, 
-  	snp.file = NULL, n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, 
-  	error.prop.coef = TRUE, error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE){
+  	n.cores = 4, run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE, 
+  	error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE){
   		
   if(!require(here)){install.packages("here")}
   
@@ -34,7 +34,7 @@ load.input.and.run.cape <- function(input_file = NULL, yaml_params = NULL, resul
   
   # TODO remove all calls to require() and ensure that the libraries are in the DESCRIPTION file
   final.cross <- run.cape(data.obj, geno.obj, results.file = "cross.RData", p.or.q = 0.05, 
-  	snp.file = snp.file, n.cores = 4, run.singlescan = run.singlescan, run.pairscan = run.pairscan, 
+  	n.cores = 4, run.singlescan = run.singlescan, run.pairscan = run.pairscan, 
   	error.prop.coef = error.prop.coef, error.prop.perm = error.prop.perm, 
   	initialize.only = initialize.only, verbose = verbose, run.parallel = run_parallel,
   	yaml.params = yaml_params, results.paths = results_path)

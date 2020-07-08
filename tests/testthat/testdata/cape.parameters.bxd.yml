@@ -5,6 +5,9 @@ traits:
  - RVBD_0955
  - RVBD_2115c
  - RVBD_2560
+# - 10001
+# - 10003
+# - 10007
 scan_what:
  - eigentraits 
 traits_scaled:
@@ -43,6 +46,10 @@ singlescan_perm:
 #================================================
 marker_selection_method:
  - top.effects
+# A one column, new-line separated list of marker names that has a non-empty 
+# interesection with the genotype names. If marker_selection_method = from.list
+#snp_file:
+# - /Full/path/to/BXD_marker_list.txt
 peak_density:
  - 0.5 
 tolerance:
