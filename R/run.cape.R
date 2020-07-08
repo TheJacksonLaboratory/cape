@@ -12,7 +12,7 @@
 #'
 #' This function assumes you already have all required libraries and functions loaded.
 #'
-#' @param data the S4 class from \code{\link{Cape}}
+#' @param pheno.obj the phenotype object
 #' @param geno.obj the genotype object
 #' @param results.file the name of the saved data.obj RData file. The base name is used as the base name for all saved RData files.
 #' @param p.or.q A threshold indicating the maximum adjusted p value considered 
