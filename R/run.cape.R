@@ -241,7 +241,7 @@ run.cape <- function(pheno.obj, geno.obj,
       }
       
       if(marker.selection.method == "from.list"){
-        snp.file <- data.obj$snp_file
+        snp.file <- file.path(results.path, data.obj$snp_file)
         specific.markers <- as.matrix(read.table(snp.file, sep = "\t", stringsAsFactors = FALSE))
         data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
       }

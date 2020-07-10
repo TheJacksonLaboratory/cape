@@ -57,8 +57,9 @@ marker_selection_method:
  - top.effects
 # A one column, new-line separated list of marker names that has a non-empty 
 # interesection with the genotype names. If marker_selection_method = from.list
+# This file needs to be in the result folder
 #snp_file:
-# - /path/to/chesler_marker_list.txt
+# - chesler_marker_list.txt
 peak_density:
  - 0.5
 tolerance:
