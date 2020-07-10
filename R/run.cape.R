@@ -96,11 +96,11 @@ run.cape <- function(pheno.obj, geno.obj,
     #we need to impute the missing values
     imp.data.file <- paste0(results.base.name, "_data_imputed.RData")
     imp.geno.file <- paste0(results.base.name, "_geno_imputed.RData")
-    
+
     # check if there is already a saved genotype object
     geno <- data.obj$read_rds(imp.geno.file)
 
-	  if (isFALSE(geno)) {  #if the imputation hasn't been done already
+    if (isFALSE(geno)) {  #if the imputation hasn't been done already
       geno <- get.geno(data.obj, geno.obj)
       missing.vals <- which(is.na(geno))
 
@@ -131,13 +131,13 @@ run.cape <- function(pheno.obj, geno.obj,
     }
 
   }
-      
+    
   if(verbose){cat("Removing unused markers...\n")}
   data.obj <- remove.unused.markers(data.obj, geno.obj)
   combined.data.obj <- delete_underscore(data.obj, geno.obj)
 
   data.obj <- combined.data.obj$data.obj
-  geno.obj <- combined.data.obj$geno.obj    
+  geno.obj <- combined.data.obj$geno.obj
   
   #because the genotype object can be changed by the above step, 
   #save the final version. (or change the above step so it doesn't 
@@ -210,8 +210,8 @@ run.cape <- function(pheno.obj, geno.obj,
       for(ph in 1:ncol(singlescan.obj$singlescan.effects)){
         filename <- paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Effects.jpg")
         data.obj$plot_singlescan(filename, singlescan.obj, width = 20, height = 6, units = "in", res = 300,
-                                 standardized = FALSE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE, 
-                                 line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
+          standardized = FALSE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE,
+          line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
       }
     }
   }
@@ -235,15 +235,16 @@ run.cape <- function(pheno.obj, geno.obj,
       pairscan.null.size <- data.obj$pairscan_null_size
       scan.what <- data.obj$scan_what
       if(marker.selection.method == "top.effects"){
-        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, 
-          num.alleles = num.alleles.in.pairscan, peak.density = peak.density, 
+        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj,
+          num.alleles = num.alleles.in.pairscan, peak.density = peak.density,
           verbose = verbose, plot.peaks = FALSE)
       }
       
       if(marker.selection.method == "from.list"){
         snp.file <- file.path(results.path, data.obj$snp_file)
         specific.markers <- as.matrix(read.table(snp.file, sep = "\t", stringsAsFactors = FALSE))
-        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj, specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
+        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj,
+          specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
       }
       
       if(marker.selection.method == "uniform"){
@@ -283,14 +284,14 @@ run.cape <- function(pheno.obj, geno.obj,
   #===============================================================
   
   if(error.prop.coef){
-    data.obj <- error.prop(data.obj, pairscan.obj, perm = FALSE, verbose = verbose, 
-    n.cores = n.cores, run.parallel = run.parallel)
+    data.obj <- error.prop(data.obj, pairscan.obj, perm = FALSE, verbose = verbose,
+      n.cores = n.cores, run.parallel = run.parallel)
     data.obj$save_rds(data.obj, results.file)
   }
   
   if(error.prop.perm){	
-    data.obj <- error.prop(data.obj, pairscan.obj, perm = TRUE, verbose = verbose, 
-    n.cores = n.cores, run.parallel = run.parallel)
+    data.obj <- error.prop(data.obj, pairscan.obj, perm = TRUE, verbose = verbose,
+      n.cores = n.cores, run.parallel = run.parallel)
     data.obj$save_rds(data.obj, results.file)
   }
   
@@ -311,7 +312,7 @@ run.cape <- function(pheno.obj, geno.obj,
   data.obj$write_variant_influences("Variant.Influences.csv", p.or.q = max(c(p.or.q, 0.2)))
 
   data.obj$write_variant_influences("Variant.Influences.Interactions.csv", 
-  include.main.effects = FALSE, p.or.q = max(c(p.or.q, 0.2)))
+    include.main.effects = FALSE, p.or.q = max(c(p.or.q, 0.2)))
   
   data.obj$plot_variant_influences("variant.influences.pdf", width = 10, height = 7,
     p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
@@ -327,10 +328,8 @@ run.cape <- function(pheno.obj, geno.obj,
   
   data.obj$save_rds(data.obj, results.file)
   
-  data.obj$plot_network_do("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, 
-  show.alleles = FALSE)
-  data.obj$plot_network_do("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, 
-  show.alleles = FALSE)
+  data.obj$plot_network_do("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
+  data.obj$plot_network_do("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
 
   if(dim(geno.obj)[2] == 8){
     data.obj$plot_network_do("Network.Circular.DO.pdf", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
