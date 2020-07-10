@@ -39,6 +39,10 @@ covar.table = NULL, run.parallel = FALSE, n.cores = 4){
     
     cl <- parallel::makeCluster(n.cores)
     doParallel::registerDoParallel(cl)
+    cape.dir.full <- find.package("cape")
+    cape.dir <- str_replace(cape.dir.full,"cape_pkg/cape","cape_pkg")
+    parallel::clusterExport(cl, "cape.dir", envir=environment())
+    parallel::clusterEvalQ(cl, .libPaths(cape.dir))
     results <- foreach::foreach(m = 1:dim(gene)[[locus.dim]], .packages = 'cape', .export = c("get.stats.multiallele", "check.geno")) %dopar% {
       get.stats.multiallele(phenotype.vector, gene[,,m], covar.table = covar.table, 
       model.family, ref.col)

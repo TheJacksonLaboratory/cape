@@ -32,16 +32,16 @@
 #'
 #' @export
 run.cape <- function(pheno.obj, geno.obj, 
-  results.file = "cross.RData", p.or.q = 0.05, n.cores = 4, 
-  run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE, 
-  error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE, 
+  results.file = "cross.RData", p.or.q = 0.05, n.cores = 4,
+  run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
+  error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE,
   run.parallel = FALSE, param.file = NULL, yaml.params = NULL,
   results.path = NULL){
   
   # Instantiate the Cape R6 object
   data.obj <- Cape$new(
   		parameter_file = param.file,
-		yaml_parameters = yaml.params,
+  		yaml_parameters = yaml.params,
   		results_path = results.path,
   		pheno = pheno.obj$pheno,
   		chromosome = pheno.obj$chromosome,
