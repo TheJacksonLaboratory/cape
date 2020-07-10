@@ -17,9 +17,7 @@
 #'
 #' @export
 get.geno <- function(data.obj, geno.obj){
-  
-  require(abind)
-  
+    
   geno_names <- data.obj$geno_names
   
   if(is.null(geno.obj)){

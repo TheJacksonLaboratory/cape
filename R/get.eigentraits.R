@@ -29,7 +29,7 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
   #sure the phenotypes are numeric
   ind.missing.pheno <- which(is.na(data.obj$pheno), arr.ind = TRUE)
   if(nrow(ind.missing.pheno) > 0){
-    cat("Removing ", length(unique(ind.missing.pheno[,1])), " individuals with missing phenotypes.")
+    cat("Removing", length(unique(ind.missing.pheno[,1])), "individuals with missing phenotypes.\n")
   }
   data.obj <- remove.ind(data.obj, ind.to.remove = unique(ind.missing.pheno[,1]))
   
@@ -39,7 +39,7 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
     var.check <- apply(data.obj$p_covar_table, 2, function(x) var(x, na.rm = TRUE))
     if(any(var.check == 0)){
       zero.locale <- which(var.check == 0)
-      cat("Some covariates now have zero variance. Removing:")
+      cat("Some covariates now have zero variance. Removing:\n")
       cat(data.obj$p_covar[zero.locale], sep = "\n")
       data.obj$p_covar_table <- as.array(data.obj$p_covar_table[,which(var.check > 0)])
       data.obj$p_covar <- as.array(data.obj$p_covar[which(var.check > 0)])
@@ -73,6 +73,9 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
     return(final.v)
   }
   
+  #preserve the initial phentype matrix.
+  data.obj$raw_pheno <- pheno 
+
   if(normalize.pheno){
     pheno <- apply(pheno, 2, rz.transform)
   }
@@ -81,11 +84,9 @@ get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE
     pheno <- apply(pheno, 2, center.std) #mean center and standardize the phenotypes
   }
   
-  
   data.obj$pheno <- pheno #replace the raw phenotypes with scaled, normalized phenotypes (if we have done those things)
   
   svd.pheno <- svd(pheno)
-  
   
   #add the eigentraits and singular values to the data object
   

@@ -24,15 +24,15 @@
 #' @param plot.linkage.blocks 
 #' @param lookup.marker.position 
 #' 
-get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize = FALSE, 
+get.network <- function(data.obj, geno.obj, p.or.q = 0.05, min.std.effect = 0, standardize = FALSE, 
                         collapse.linked.markers = TRUE, threshold.power = 1, verbose = FALSE, 
                         plot.linkage.blocks = FALSE, lookup.marker.position = FALSE){
   
   if(verbose){cat("Calculating linkage blocks...\n")}
   #get the linkage blocks based on the significant markers
-  data.obj <- linkage.blocks.network(data.obj, collapse.linked.markers = collapse.linked.markers, 
-                                     threshold.power = threshold.power, plot.blocks = plot.linkage.blocks, 
-                                     lookup.marker.position = lookup.marker.position)
+  data.obj <- linkage.blocks.network(data.obj, geno.obj,
+    collapse.linked.markers = collapse.linked.markers, threshold.power = threshold.power, 
+    plot.blocks = plot.linkage.blocks, lookup.marker.position = lookup.marker.position)
   
   if(collapse.linked.markers){
     blocks <- data.obj$linkage_blocks_collapsed
@@ -82,10 +82,11 @@ get.network <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, standardize
     return(marker.blocks)
   }
   
+
   if(verbose){cat("Creating adjacency matrix...\n")}
   
   #replace each marker name with the name of its block
-  source.markers <- rename.with.blocks(all.net.data[,1], blocks)
+  source.markers <- rename.with.blocks(marker.names = all.net.data[,1], blocks)
   target.markers <- rename.with.blocks(all.net.data[,2], blocks)
   
   edgelist <- cbind(source.markers, target.markers)

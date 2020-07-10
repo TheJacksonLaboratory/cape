@@ -88,9 +88,7 @@ pairscan <- function(data.obj, geno.obj = NULL,
   
   if(!run.parallel){n.cores = 1}
   
-  if(is.null(kin.obj)){use.kinship = FALSE}
-  if(!is.null(kin.obj)){use.kinship = TRUE}
-  data.obj$use_kinship <- use.kinship
+  use.kinship <- data.obj$use_kinship
   
   
   if(overwrite.alert){

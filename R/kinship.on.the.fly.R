@@ -16,10 +16,13 @@
 #' @return \code{list("err.cov", "corrected.pheno", "corrected.geno", "corrected.covar")}
 #'
 #' @export
-kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, covarV = NULL){
+kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
+covarV = NULL, verbose = FALSE){
   
   get.g=function(pair = NULL, phenotype, covarV){
     
+    if(verbose){cat("Chromosomes:", pair, "\n")}
+
     if(is.null(pair) || unique(pair) == "overall"){pair = NULL}
     
     if(is.null(pair)){
@@ -35,10 +38,13 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
       full.kin <- kin.obj[[kin.mat.locale]]
     }
     
-    #also remove individuals with NAs in the phenotype
-    #or covariates
+    #remove individuals with NAs
     is.na.pheno <- which(is.na(phenotype))
-    is.na.covar <- unique(which(is.na(covarV), arr.ind = TRUE)[,1])
+    if(length(covarV) > 0){
+      is.na.covar <- unique(which(is.na(covarV), arr.ind = TRUE)[,1])
+      }else{
+        is.na.covar <- NULL
+      }
     all.na <- unique(c(is.na.pheno, is.na.covar))
     not.na <- setdiff(1:length(phenotype), all.na)
     no.na.ind <- rownames(phenotype)[not.na]
@@ -48,17 +54,25 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     K <- full.kin[kin.locale,kin.locale]
     pheno.locale <- match(common.ind, rownames(phenotype))
 
+    #for the corrections below, look into including epistatic kinship 
+    #matrices. This may help us gain power to see epistatic interactions
+
     #if we are correcting the covariate only don't put it in the model
+    if(verbose){cat("\tFitting model...\n")}
     if(is.null(covarV) || is.null(pair)){
-      model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE))	
+      model = regress(as.vector(phenotype[pheno.locale])~1,~K, pos = c(TRUE, TRUE), 
+      tol = 1e-2)
     }else{
-      model = regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, pos = c(TRUE, TRUE))
+      model = regress(as.vector(phenotype)[pheno.locale]~covarV[pheno.locale,], ~K, 
+      pos = c(TRUE, TRUE), tol = 1e-2)
     }
     
     #This err.cov is the same as err.cov in Dan's code using estVC
     #err.cov = summary(model)$sigma[1]*K+summary(model)$sigma[2]*diag(nrow(K))
+    if(verbose){cat("\tCalculating err.cov...\n")}
     err.cov = model$sigma[1]*K+model$sigma[2]*diag(nrow(K))
     
+  if(verbose){cat("\tCalculating eW...\n")}
     eW = eigen(err.cov, symmetric = TRUE)
     if(min(eW$values) < 0 && abs(min(eW$values)) > sqrt(.Machine$double.eps)){
     }else{

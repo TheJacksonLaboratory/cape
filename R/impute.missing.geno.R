@@ -120,24 +120,23 @@ impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.t
     ind.missing.geno <- which(apply(sec.geno, 1, function(x) length(which(is.na(x)))) > 0)
     ind.dist <- array(NA, dim = c(nrow(sec.geno), nrow(sec.geno), dim(sec.geno)[2]))
     if(length(ind.missing.geno) > 0){
-      for(l in 1:dim(sec.geno)[2]){
-        ind.dist[,,l] <- as.matrix(dist(sec.geno[,l,]))
-      }
-      ind.dist.mean <- flatten.array(ind.dist, 1, 2, function(x) mean(x, na.rm = TRUE))
-      dimnames(ind.dist.mean) <- list(dimnames(sec.geno)[[1]], dimnames(sec.geno)[[1]])
+      list.geno <- lapply(1:dim(sec.geno)[2], function(x) sec.geno[,x,])
+      flat.geno <- Reduce("cbind", list.geno)
+      #dim(flat.geno)
+      ind.dist <- as.matrix(dist(flat.geno))
       for(id in 1:length(ind.missing.geno)){
         ind <- sec.geno[ind.missing.geno[id],,,drop=FALSE]
-        neighbors <- sort(ind.dist.mean[ind.missing.geno[id],])
+        neighbors <- sort(ind.dist[ind.missing.geno[id],])
         if(length(neighbors) < 2){
           next()
         }
         nearest.neighbors <- names(neighbors[2:min(c((k+1), length(neighbors)))])
-        neighbor.weights <- neighbors[nearest.neighbors]/sum(neighbors[nearest.neighbors], na.rm = TRUE)
+        neighbor.weights <- neighbors[nearest.neighbors]/sum(neighbors[nearest.neighbors], 
+        na.rm = TRUE)
         missing.geno <- which(is.na(ind), arr.ind = TRUE)
         
         
         missing.geno.ind <- array(sec.geno[as.character(nearest.neighbors),missing.geno[,2],missing.geno[,3],drop=FALSE], dim = c(length(nearest.neighbors), ncol(sec.geno), length(unique(missing.geno[,3]))))
-        
         
         weight.mat <- array(neighbor.weights, dim = dim(missing.geno.ind))
         missing.geno.weighted <- missing.geno.ind*weight.mat
@@ -163,11 +162,8 @@ impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.t
     }
     parallel::stopCluster(cl)
   }else{
-    # if(verbose){cat("Imputing missing genotypes...\n")
-    # imputed.geno <- lapply_pb(geno.chunks, impute.section)
-    # }else{-
-    imputed.geno <- lapply(geno.chunks, impute.section)
-    # }
+    if(verbose){cat("Imputing missing genotypes...\n")}
+      imputed.geno <- lapply(geno.chunks, impute.section)
   }
   
   if(verbose){cat("Rebuilding genotype matrix...\n")}
@@ -177,7 +173,8 @@ impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.t
   dimnames(imp.geno) <- dimnames(new.geno)
   
   if(verbose){cat("Removing missing data...\n")}
-  new.geno <- remove.missing.genotype.data(data.obj, imp.geno, ind.missing.thresh = 0, marker.missing.thresh = 0, prioritize = c("ind", "marker", "fewer"))
+  new.geno <- remove.missing.genotype.data(data.obj, imp.geno, ind.missing.thresh = 0, 
+  marker.missing.thresh = 0, prioritize = c("ind", "marker", "fewer"))
   
   
   final.obj <- list("data.obj" = new.geno, "geno.obj" = imp.geno)

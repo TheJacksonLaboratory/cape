@@ -291,8 +291,6 @@ Cape <- R6::R6Class(
       self$assign_parameters()
       self$check_inputs()
       self$check_geno_names()
-      delete_underscore(self)
-      check.underscore(self)
       #check.bad.markers(self)
       # TODO make sure that individual names match between the pheno object, geno object, and geno names
     },
@@ -338,7 +336,7 @@ Cape <- R6::R6Class(
     plot_variant_influences = function(filename, width = 10, height = 7,
                                        p.or.q = p.or.q, standardize = FALSE, 
                                        not.tested.col = "lightgray", 
-                                       covar.width = 30, pheno.width = 30) {
+                                       covar.width = NULL, pheno.width = NULL) {
       
       full.path <- file.path(self$results_path, filename)
       
@@ -350,7 +348,7 @@ Cape <- R6::R6Class(
       
       plotVariantInfluences(self, p.or.q = p.or.q, standardize = FALSE, 
                             not.tested.col = "lightgray", 
-                            covar.width = 30, pheno.width = 30)
+                            covar.width = NULL, pheno.width = NULL)
       dev.off()
       
     },
@@ -383,11 +381,13 @@ Cape <- R6::R6Class(
                       edge.lwd = edge.lwd, legend.radius = legend.radius, legend.cex = legend.cex, xshift = xshift)
       dev.off()
     },
-    write_variant_influences = function(filename, p.or.q = 0.05) {
+    write_variant_influences = function(filename, p.or.q = 0.05, 
+    include.main.effects = TRUE) {
       
       full.path <- file.path(self$results_path, filename)
       
-      writeVariantInfluences(self, p.or.q = max(c(p.or.q, 0.2)), filename = full.path)
+      writeVariantInfluences(self, p.or.q = max(c(p.or.q, 0.2)), 
+      	include.main.effects = include.main.effects, filename = full.path)
     },
     set_pheno = function(val) {
       self$pheno <- val

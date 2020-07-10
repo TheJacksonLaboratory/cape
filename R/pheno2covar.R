@@ -37,6 +37,14 @@ pheno2covar <- function(data.obj, pheno.which){
   covar.table <- pheno[,marker.locale,drop=FALSE]
   rownames(covar.table) <- rownames(pheno)
   
+  #check for invariant covariates
+  covar.var <- apply(covar.table, 2, function(x) var(x, na.rm = TRUE))
+  if(any(covar.var == 0)){
+    cat("Removing invariant covariates...\n")
+    covar.table <- covar.table[,-which(covar.var == 0),drop=FALSE]
+    data.obj$covariates <- data.obj$covariates[-which(covar.var == 0)]
+  }
+
   #the covariate's number starts after genetic markers and any existing phenotypic covariates
   start.covar <- max(as.numeric(data.obj$marker_num))+1+length(covar.info$covar.names)
   colnames(covar.table) <- start.covar:(start.covar+dim(covar.table)[2]-1)
@@ -44,7 +52,7 @@ pheno2covar <- function(data.obj, pheno.which){
   #scale the covariate(s) to be between 0 and 1
   scaled.table <- apply(covar.table, 2, function(x) x + abs(min(x, na.rm = TRUE)))
   scaled.table <- apply(scaled.table, 2, function(x) x/max(x, na.rm = TRUE))
-  
+
   #add the covariates to any existing covariates
   data.obj$p_covar_table <- cbind(data.obj$p_covar_table, scaled.table)
   
@@ -53,7 +61,7 @@ pheno2covar <- function(data.obj, pheno.which){
   data.obj$pheno <- new.pheno
   
   if (is.null(data.obj$p_covar)) {
-    data.obj$p_covar <- pheno.which
+    data.obj$p_covar <- data.obj$covariates
   } else {
     data.obj$p_covar <- c(data.obj$p_covar, pheno.which)
   }

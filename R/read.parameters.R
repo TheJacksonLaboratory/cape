@@ -6,7 +6,7 @@
 #' run, but it's handy to be able to check for 
 #' any and all potential variables.
 #'
-#' @param filename full path to the .yml file holding CAPE parameters (is not needed if yaml.parameters is provided)
+#' @param filename full path to the .yml file holding CAPE parameters (is not needed if yaml_parameters is provided)
 #' @param yaml_parameters yaml string holding CAPE parameters (can be NULL)
 #'
 #' @return Returns a named list with all possible options
@@ -32,7 +32,7 @@ read.parameters <- function(filename = "cape.parameters.yml", yaml_parameters = 
   #================================================
   # marker selection
   #================================================
-  marker.param <- c("marker_selection_method", "SNPfile", "peak_density", "tolerance", "window_size", "num_alleles_in_pairscan", "bp_buffer", "organism")
+  marker.param <- c("marker_selection_method", "snp_file", "peak_density", "tolerance", "window_size", "num_alleles_in_pairscan", "bp_buffer", "organism")
   
   #================================================
   # pair scan

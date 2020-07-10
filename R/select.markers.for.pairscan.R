@@ -28,18 +28,11 @@
 #' @param pdf.filename default = "Peak.Plots.pdf"
 #' 
 #' @return updated \code{\link{Cape}} object
-select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, specific.markers = NULL, 
-                                        num.alleles = 50, peak.density = 0.5, window.size = NULL, 
-                                        tolerance = 5, plot.peaks = FALSE, verbose = FALSE, 
-                                        pdf.filename = "Peak.Plots.pdf"){
+select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, 
+  specific.markers = NULL, num.alleles = 50, peak.density = 0.5, window.size = NULL, 
+  tolerance = 5, plot.peaks = FALSE, verbose = FALSE, pdf.filename = "Peak.Plots.pdf"){
   
   chr <- unique(data.obj$chromosome)
-  
-  if(is.null(specific.markers)){
-    data.obj$marker_selection_method <- "top.effects"
-  }else{
-    data.obj$marker_selection_method <- "from.list"	
-  }
   
   geno <- get.geno(data.obj, geno.obj)
   alleles <- dimnames(geno)[[2]]
@@ -62,7 +55,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
   # data, then ALL the markers are selected. However, we only want to allow this if
   # specific.markers is undefined. 
   
-  if (is.null(specific.markers)) {
+  if(is.null(specific.markers)) {
     #if we are asking for more markers than there are in the dataset
     #just take all of them.
     if (num.alleles >= dim(geno)[3]*(dim(geno)[2]-1))  {
@@ -73,7 +66,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     }
   }
   
-  if (!is.null(specific.markers)) {
+  if(!is.null(specific.markers)) {
     if(n.alleles == 2){
       ref.allele.locale <- which(data.obj$geno_names[[2]] == ref.allele)
       other.allele <- setdiff(1:2, ref.allele.locale)
@@ -121,8 +114,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
   
   covar.info <- get.covar(data.obj)
   results.no.covar <- results[which(!rownames(results) %in% covar.info$covar.names),,,drop=FALSE]
-  result.chr <- get.marker.chr(data.obj, markers = rownames(results.no.covar), character.names = TRUE)
-  
+  result.chr <- get.marker.chr(data.obj, markers = rownames(results.no.covar), character.names = TRUE)  
   
   sorted.results <- sort(abs(as.vector(results.no.covar)))
   #start with a cutoff that might be near the number of 
@@ -272,7 +264,8 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, spec
     
     for(ph in 1:num.pheno){
       pheno.results <- results.no.covar[,ph,,drop=FALSE]
-      ph.alleles[[ph]] <- markers.per.peak(pheno.results, allele.bins[[ph]], min.effect.size)
+      ph.alleles[[ph]] <- markers.per.peak(allele.curves = pheno.results, 
+      bins = allele.bins[[ph]], cutoff = min.effect.size)
       total.alleles <- round(sum(unlist(ph.alleles))*peak.density)
     }
     if(verbose){

@@ -40,7 +40,7 @@ organism:
 save_results:
  - true
 use_saved_results:
- - true
+ - false
 
 #================================================
 # Single Scan Parameters 
@@ -55,6 +55,11 @@ singlescan_perm:
 #================================================
 marker_selection_method:
  - top.effects
+# A one column, new-line separated list of marker names that has a non-empty 
+# interesection with the genotype names. If marker_selection_method = from.list
+# This file needs to be in the result folder
+#snp_file:
+# - chesler_marker_list.txt
 peak_density:
  - 0.5
 tolerance:

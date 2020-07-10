@@ -23,6 +23,7 @@
 #' @param color.scheme options are "DO/CC" and "other"
 #' @param pdf.label default = "Pairscan.Regression.pdf"
 #'
+#' @export
 plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized = FALSE, show.marker.labels = FALSE,
                          show.chr = TRUE, label.chr = TRUE, show.alleles = TRUE, allele.labels = NULL, pos.col = "brown",
                          neg.col = "blue", color.scheme = c("DO/CC", "other"), pdf.label = "Pairscan.Regression.pdf") {
@@ -34,7 +35,9 @@ plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized 
   marker.pairs <- pairscan.results[[1]][[1]][,1:2]
   #get the markers used in the pair scan and sort them.
   markers <- unique(as.vector(marker.pairs))
-  markers.no.allele <- unlist(lapply(strsplit(markers, "_"), function(x) x[[1]][1]))
+  split.markers <- strsplit(markers, "_")
+  markers.no.allele <- sapply(split.markers, function(x) x[1])
+  markers.just.allele <- sapply(split.markers, function(x) x[2])
   
   sorted.markers <- markers[order(as.numeric(get.marker.num(data.obj, markers.no.allele)))]
   
@@ -57,10 +60,8 @@ plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized 
   
   if(show.alleles){
     
-    alleles <- unique(sapply(strsplit(colnames(data.obj$geno_for_pairscan), "_"), function(x) x[2]))
-    allele.colors <- get.allele.colors(color.scheme, alleles)
+    allele.colors <- get.allele.colors(color.scheme, markers.just.allele)
     allele.labels <- allele.colors[,2]
-    
     
     all.alleles <- unlist(lapply(strsplit(sorted.markers, "_"), function(x) x[2]))
     allele.cols <- allele.colors[match(all.alleles, alleles),3]
