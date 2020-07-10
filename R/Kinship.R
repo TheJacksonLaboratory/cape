@@ -59,7 +59,7 @@ pop=c("MPP","2PP","RIL")){
   
   #################################################################
   #                                                               #
-  # Create probabiltiy and map file if locus is character for MPP #
+  # Create probability and map file if locus is character for MPP #
   #                                                               #
   #################################################################
   

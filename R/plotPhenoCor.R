@@ -13,8 +13,8 @@
 #' 
 #' @export
 
-plotPhenoCor <-
-function(data.obj, pheno.which = NULL, color.by = NULL, group.labels = NULL, text.cex = 1, pheno.labels = NULL, pt.cex = 1){
+plotPhenoCor <- function(data.obj, pheno.which = NULL, color.by = NULL, group.labels = NULL,
+  text.cex = 1, pheno.labels = NULL, pt.cex = 1){
 			
 	all.pheno <- data.obj$pheno
 
