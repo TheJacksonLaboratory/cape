@@ -20,13 +20,14 @@
 #' object as either pmap or gmap. By default the physical map (pmap) is used. 
 #' If it is missing, the genetic map is used. A provided map will be used 
 #' preferrentially over a map included in the cross object.
+#' @covar Optional matrix of any covariates to be included in the analysis.
 #'
 #' @return This function returns a list of two elements. The first element is a cape data
 #' object. The second element is a cape genotype object.
 #'
 #' @export
 
-qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL){
+qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL){
 
 	phenotype.matrix = as.matrix(cross$pheno)
 	
@@ -56,27 +57,30 @@ qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL){
 			geno.ind <- rownames(genoprobs[[1]])
 		}
 		
-	
-	if(!is.null(cross$covar)){
-		covar = as.matrix(cross$covar)
-		num.covar <- matrix(NA, nrow = nrow(covar),  ncol = ncol(covar))
-		dimnames(num.covar) <- dimnames(covar)
-    		covar.ind <- rownames(covar)
+	if(is.null(covar)){
+		if(!is.null(cross$covar)){
+			covar = as.matrix(cross$covar)
+			num.covar <- matrix(NA, nrow = nrow(covar),  ncol = ncol(covar))
+			dimnames(num.covar) <- dimnames(covar)
+				covar.ind <- rownames(covar)
 
-    		#convert non-numeric covariates to numeric
-    		for(i in 1:ncol(covar)){
-    			as.num <- suppressWarnings(as.numeric(covar[,i]))
-    			if(all(is.na(as.num))){
-    				cat("Converting", colnames(covar)[i], "to numeric.\n")
-    				new.covar <- as.numeric(as.factor(covar[,i])) - 1
-    				num.covar[,i] <- new.covar
-    				}
-    		}
-    		covar <- num.covar
-    	}else{
-    		covar <- NULL
-    		covar.ind <- rownames(phenotype.matrix)
-    	}
+				#convert non-numeric covariates to numeric
+				for(i in 1:ncol(covar)){
+					as.num <- suppressWarnings(as.numeric(covar[,i]))
+					if(all(is.na(as.num))){
+						cat("Converting", colnames(covar)[i], "to numeric.\n")
+						new.covar <- as.numeric(as.factor(covar[,i])) - 1
+						num.covar[,i] <- new.covar
+						}
+				}
+				covar <- num.covar
+			}else{
+				covar <- NULL
+				covar.ind <- rownames(phenotype.matrix)
+			}
+	}else{
+		covar.ind <- rownames(covar)
+	}
 
     
     chr.to.add <- setdiff(names(genoprobs), c("1", "X", "Y", "M"))
