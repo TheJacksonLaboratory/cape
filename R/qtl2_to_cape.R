@@ -23,20 +23,47 @@
 qtl2_to_cape <- function(cross){
 
 	phenotype.matrix = as.matrix(cross$pheno)
-	genoprobs = cross$geno
+	geno <- cross$geno
+	geno.ind <- rownames(geno[[1]])
 	map = cross$pmap
-	covar = as.matrix(cross$covar)
-    covar.ind <- rownames(covar)
+	
+	if(is.null(map)){
+		map <- cross$gmap
+	}
+	
+	crosstype = cross$crosstype
+	mpp.types <- c("do", "riself4", "riself8", "riself16", "magic19")
+	is.mpp <- as.logical(length(which(mpp.types == crosstype)))
+	
+	if(is.mpp){
+	    genoprobs<-qtl2convert::probs_doqtl_to_qtl2(geno, map = map, pos_column = "pos")
+	    genoprobs<-qtl2::genoprob_to_alleleprob(genoprobs)
+		}else{
+		genoprobs <- calc_genoprob(cross, map = map)
+		}
+		
+	
+	if(!is.null(cross$covar)){
+		covar = as.matrix(cross$covar)
+		num.covar <- matrix(NA, nrow = nrow(covar),  ncol = ncol(covar))
+		dimnames(num.covar) <- dimnames(covar)
+    		covar.ind <- rownames(covar)
 
-    #only take numeric covariates
-    covar.num <- apply(covar, 2, function(x) suppressWarnings(as.numeric(x)))
-    covar.which <- which(apply(covar.num, 2, function(x) !all(is.na(x))))
+    		#convert non-numeric covariates to numeric
+    		for(i in 1:ncol(covar)){
+    			as.num <- suppressWarnings(as.numeric(covar[,i]))
+    			if(all(is.na(as.num))){
+    				cat("Converting", colnames(covar)[i], "to numeric.\n")
+    				new.covar <- as.numeric(as.factor(covar[,i])) - 1
+    				num.covar[,i] <- new.covar
+    				}
+    		}
+    		covar <- num.covar
+    	}else{
+    		covar <- NULL
+    		covar.ind <- rownames(phenotype.matrix)
+    	}
 
-    if(length(covar.which) < ncol(covar)){
-        cat("Removing non-numeric covariates\n")
-    }
-    covar <- covar.num[,covar.which]
-    rownames(covar) <- covar.ind
     
     chr.to.add <- setdiff(names(genoprobs), c("1", "X", "Y", "M"))
 
@@ -55,35 +82,62 @@ qtl2_to_cape <- function(cross){
 	        geno <- abind(geno, genoprobs[[i]], along = 3)
     		}
     }
-    colnames(geno) <- LETTERS[1:ncol(geno)]
 
-    geno.names <- dimnames(geno)
-	
-    common.ind <- Reduce("intersect", list(rownames(phenotype.matrix), dimnames(geno)[[1]], rownames(covar)))
+	if(!is.mpp && dim(geno)[2] == 3){ #convert to bi-allelic probabilities
+		to_biallelic <- function(marker.mat){
+			allele1 <- marker.mat[,1]
+			het <- marker.mat[,2]
+			allele2 <- marker.mat[,3]
+			allele1 <- allele1 + het/2
+			allele2 <- allele2 + het/2
+			#test <- cbind(allele1, allele2)
+			biallele.mat <- cbind(allele1, allele2)
+			return(biallele.mat)
+		}
+		geno.temp <- apply(geno, 3, to_biallelic)
+		geno <- array(geno.temp, dim = c(nrow(phenotype.matrix), 2, dim(geno)[3]))
+		rownames(geno) <- geno.ind
+	}
+
+    colnames(geno) <- LETTERS[1:ncol(geno)]
+	rownames(geno) <- geno.ind
+
+    common.ind <- Reduce("intersect", list(rownames(phenotype.matrix), geno.ind, covar.ind))
     common.pheno.locale <- match(common.ind, rownames(phenotype.matrix))
     common.geno.locale <- match(common.ind, rownames(geno))
-    common.covar.locale <- match(common.ind, rownames(covar))
+    if(!is.null(covar)){
+	    common.covar.locale <- match(common.ind, rownames(covar))
+	    }
     
     pheno <- as.matrix(phenotype.matrix[common.pheno.locale,])
     rownames(pheno) <- common.ind
     geno <- geno[common.geno.locale,,]
 
+
+    chr.used <- setdiff(names(genoprobs), c("X", "Y", "M"))
+    un_map <- unlist(map[chr.used])
+ 	marker.location <- as.numeric(un_map)
+ 
+    split.marker <- strsplit(names(un_map), "\\.")
+    chr <- as.numeric(sapply(split.marker, function(x) x[1]))
+    marker_names <- sapply(split.marker, function(x) x[2])
+    dimnames(geno)[[3]] <- marker_names
+
     geno.names <- dimnames(geno)
     names(geno.names) <- c("mouse", "allele" ,"locus")
-    
+
+
     data.obj <- list()
     data.obj$pheno <- pheno
     data.obj$geno_names <- geno.names
-    names(data.obj$geno_names) <- c("mouse", "allele", "locus")
-    data.obj$marker_num <- 1:dim(geno)[[3]]
-    
-    chr.used <- setdiff(names(genoprobs), c("X", "Y", "M"))
-    un_map <- unlist(map[chr.used])
-    data.obj$marker_location <- as.numeric(un_map)
-    split.marker <- strsplit(names(un_map), "\\.")
-    chr <- sapply(split.marker, function(x) x[1])
-    data.obj$chromosome <- as.numeric(chr)
-    data.obj$pheno <- cbind(data.obj$pheno, covar[common.covar.locale,])
+    data.obj$chromosome <- chr
+    data.obj$marker_num <- 1:length(chr)
+	data.obj$marker_location <- marker.location
+	
+	
+    if(!is.null(covar)){
+	    data.obj$pheno <- cbind(data.obj$pheno, covar[common.covar.locale,])
+	    }
 
     result <- list("data.obj" = data.obj, "geno.obj" = geno)    
     

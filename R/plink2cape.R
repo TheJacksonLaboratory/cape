@@ -18,9 +18,10 @@
 #' @return None
 #'
 #' @export
-plink2qtl <- function(ped = "test.ped", map = "test.map", out = "out.csvr", missing.genotype = "0", 
-                      no.fid = FALSE, no.parents = FALSE, no.sex = FALSE, no.pheno = FALSE,
-                      verbose = FALSE, overwrite = FALSE){
+plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno", 
+	out = "out.csv", missing.genotype = "0", no.fid = FALSE, 
+	no.parents = FALSE, no.sex = FALSE, no.pheno = FALSE,
+	verbose = FALSE, overwrite = FALSE){
   
   # first check to see if the output file already exists
   if (file.exists(out) & overwrite == TRUE) {
@@ -29,6 +30,7 @@ plink2qtl <- function(ped = "test.ped", map = "test.map", out = "out.csvr", miss
     stop(paste('The file', out, 'already exists. Please rename it or set overwrite to TRUE.', collapse = ' '))
   }
   
+  pheno.table <- as.matrix(read.table(pheno, header = TRUE))
   # the map file should contain the following columns (see: https://www.cog-genomics.org/plink2/formats#map):
   # 1. Chromosome code. PLINK 1.9 also permits contig names here, but most older programs do not.
   # 2. Variant identifier
@@ -116,15 +118,19 @@ plink2qtl <- function(ped = "test.ped", map = "test.map", out = "out.csvr", miss
     genotypes[snp,] <- genotype
   }
   
-  # create the file in a happy little format
-  out.csvr <- rbind(c("Pheno", "", "", peddata[,"Pheno"]), 
-                    c("sex", "", "", peddata[,"Sex"]),
-                    cbind(mapdata[,c("ID","Chr","cM")], genotypes) # applies the csv rotated format
-  )
-  # save to disk
-  write.table(out.csvr, file = out, row.names=FALSE, col.names=FALSE,quote=FALSE, sep=",")
+  #create a table in the the qtl csv format
+  geno.info <- t(as.matrix(cbind(mapdata[,c("ID","Chr","BP")])))
+  geno.mat <- rbind(geno.info, t(genotypes)-1)
+  pheno.padding <- matrix(NA, nrow = 3, ncol = ncol(pheno.table)-2)
+  pheno.padding[1,] <- colnames(pheno.table)[3:ncol(pheno.table)]
+  pheno.mat <- rbind(pheno.padding, pheno.table[,3:ncol(pheno.table)])
+  final.table <- cbind(pheno.mat, geno.mat)
+  write.table(final.table, out, quote = FALSE, sep = ",", row.names = FALSE, col.names = FALSE,
+  na = "-")
   
-  # load the file using R/qtl's read.cross function (somewhere we need to make sure that the qtl library is available)
-  return (qlt::read.cross(file=out, "csvr", genotypes=c(1,2,3)))
+	cross.obj <- read.population(out)
+ 	new.obj <- cape2mpp(cross.obj)
+ 	return(new.obj)
+
 }
 
