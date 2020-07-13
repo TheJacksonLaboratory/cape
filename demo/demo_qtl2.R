@@ -1,10 +1,13 @@
 library(cape)
 
 demo.path <- here("demo", "demo_qtl2")
+data.path <- here("tests", "testthat", "testdata", "demo_qtl2_data")
+
+data.file <- file.path(data.path, "iron.yaml")
 param.file <- file.path(demo.path, "iron.parameters.yml")
 
 #read in example qtl2 data from remote host
-iron.qtl2 <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/iron/iron.yaml")
+iron.qtl2 <- read_cross2(data.file)
 
 iron.cape <- qtl2_to_cape(cross = iron.qtl2)
 data.obj <- iron.cape$data.obj
