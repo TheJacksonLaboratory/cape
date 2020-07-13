@@ -1,0 +1,20 @@
+setseed(1234)
+
+if(!require(cape)){install.packages("cape")}
+
+results.path <- here("demo", "demo_plink")
+data.path <- here("tests", "testthat", "testdata")
+ped <- file.path(data.path, "test.ped")
+map <- file.path(data.path, "test.map")
+pheno <- file.path(data.path, "test.pheno")
+out <- file.path(data.path, "test.csv")
+param.file <- file.path(results.path, "plink.parameters.yml")
+
+cross.obj <- plink2cape(ped, map, pheno, out = "out.csv")
+
+data.obj <- cross.obj$data.obj
+geno.obj <- cross.obj$geno.obj$geno
+
+final.cross <- run.cape(pheno.obj = data.obj, geno.obj, results.file = "plink.RData", 
+	p.or.q = 0.05, verbose = TRUE, param.file = param.file, 
+	results.path = results.path)

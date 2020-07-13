@@ -1,35 +1,56 @@
 #================================================
 # General Parameters 
 #================================================
-traits 	 LEP_24 total_fat
-covariates 	 mom 
-scan.what 	 Eigentraits 
-traits.scaled 	 TRUE 
-traits.normalized 	 TRUE 
-eig.which 	 1 2 
-pval.correction 	 fdr 
-use.kinship	TRUE
-kinship.type	overall
-pop   2PP
-locus   char
+traits:
+ - BW_24
+ - LEP_24
+covariates:
+ - mom
+scan_what:
+ - eigentraits 
+traits_scaled:
+ - true
+traits_normalized:
+ - true
+eig_which:
+ - 1
+ - 2 
+pval_correction:
+ - fdr 
+use_kinship:
+ - true
+kinship_type:
+ - overall
+pop:
+ - 2PP
+save_results:
+ - true
+use_saved_results:
+ - false
 
 #================================================
 # Single Scan Parameters 
 #================================================
-ref.allele 	 A 
-singlescan.perm 	 0 
+ref_allele:
+ - A 
+singlescan_perm:
+ - 0
 
 #================================================
 # Marker Selection Parameters 
 #================================================
-marker.selection.method 	 from.list 
-peak.density 	 0.5 
-tolerance 	 5 
-num.alleles.in.pairscan 	 100 
-
+marker_selection_method:
+ - top.effects
+peak_density:
+ - 0.5 
+tolerance:
+ - 5 
+num_alleles_in_pairscan:
+ - 84
 #================================================
 # Pairscan Parameters 
 #================================================
-max.pair.cor 	 0.5 
-pairscan.null.size 	 1000 
-
+max_pair_cor:
+ - 0.5 
+pairscan_null_size:
+ - 5000
