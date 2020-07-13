@@ -2,8 +2,9 @@ setseed(1234)
 
 if(!require(cape)){install.packages("cape")}
 
-results.path <- here("demo", "demo_plink")
-data.path <- here("tests", "testthat", "testdata")
+results.path <- here("demo", "demo_PLINK")
+data.path <- here("tests", "testthat", "testdata", "demo_PLINK_data")
+
 ped <- file.path(data.path, "test.ped")
 map <- file.path(data.path, "test.map")
 pheno <- file.path(data.path, "test.pheno")

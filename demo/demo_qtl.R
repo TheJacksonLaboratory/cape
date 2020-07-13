@@ -3,7 +3,9 @@ setseed(1234)
 if(!require(cape)){install.packages("cape")}
 
 results.path <- here("demo", "demo_qtl")
-data.file <- here("tests", "testthat", "testdata", "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
+data.path <- here("tests", "testthat", "testdata", "demo_qtl_data")
+
+data.file <- file.path(data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param.file <- file.path(results.path, "NON_NZO.parameters.yml")
 
 cross <- read.population(data.file)
