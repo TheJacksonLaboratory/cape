@@ -14,18 +14,25 @@
 #' Genetics 211, no. 2 (2019): 495-502.
 #'
 #' @param cross a cross object created by the R/qtl2 function read_cross()
+#' @genoprobs an optional argument for providing previously calculated genoprobs.
+#' if this parameter is missing, genoprobs are calculated by qtl_to_cape.
+#' @map The qtl2 map. This can be omitted if the map is included in the cross 
+#' object as either pmap or gmap. By default the physical map (pmap) is used. 
+#' If it is missing, the genetic map is used. A provided map will be used 
+#' preferrentially over a map included in the cross object.
 #'
 #' @return This function returns a list of two elements. The first element is a cape data
 #' object. The second element is a cape genotype object.
 #'
 #' @export
 
-qtl2_to_cape <- function(cross){
+qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL){
 
 	phenotype.matrix = as.matrix(cross$pheno)
-	geno <- cross$geno
-	geno.ind <- rownames(geno[[1]])
-	map = cross$pmap
+	
+	if(is.null(map)){
+		map = cross$pmap
+		}
 	
 	if(is.null(map)){
 		map <- cross$gmap
@@ -35,11 +42,18 @@ qtl2_to_cape <- function(cross){
 	mpp.types <- c("do", "riself4", "riself8", "riself16", "magic19")
 	is.mpp <- as.logical(length(which(mpp.types == crosstype)))
 	
-	if(is.mpp){
-	    genoprobs<-qtl2convert::probs_doqtl_to_qtl2(geno, map = map, pos_column = "pos")
-	    genoprobs<-qtl2::genoprob_to_alleleprob(genoprobs)
+	if(is.null(genoprobs)){
+		geno <- cross$geno
+		geno.ind <- rownames(geno[[1]])
+
+		if(is.mpp){
+		    genoprobs<-qtl2convert::probs_doqtl_to_qtl2(geno, map = map, pos_column = "pos")
+		    genoprobs<-qtl2::genoprob_to_alleleprob(genoprobs)
+			}else{
+			genoprobs <- calc_genoprob(cross, map = map)
+			}
 		}else{
-		genoprobs <- calc_genoprob(cross, map = map)
+			geno.ind <- rownames(genoprobs[[1]])
 		}
 		
 	
