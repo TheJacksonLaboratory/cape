@@ -20,8 +20,6 @@ kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
 covarV = NULL, verbose = FALSE){
   
   get.g=function(pair = NULL, phenotype, covarV){
-    
-    if(verbose){cat("Chromosomes:", pair, "\n")}
 
     if(is.null(pair) || unique(pair) == "overall"){pair = NULL}
     
@@ -30,6 +28,8 @@ covarV = NULL, verbose = FALSE){
     }else{
       pair.name <- paste(pair, collapse = ",")
     }
+    
+    if(verbose){cat("Chromosomes:", pair.name, "\n")}
     
     if(class(kin.obj) == "matrix"){
       full.kin <- kin.obj

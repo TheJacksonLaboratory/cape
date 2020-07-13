@@ -2,41 +2,25 @@
 # General Parameters 
 #================================================
 traits:
- - Paraclique1
- - Paraclique2
- - Paraclique3
- - Paraclique4
- - Paraclique5
-covariates:
-# "mom" is the obesity status of the other
- - Generation
- - Sex
- - Group.1
- - Group.2
- - Group.3
- - A.or.B
+ - Pheno1
+ - Pheno2
 scan_what:
- - eigentraits
+ - eigentraits 
 traits_scaled:
  - true
 traits_normalized:
  - true
 eig_which:
  - 1
- - 2
- - 3
+ - 2 
 pval_correction:
- - fdr
+ - fdr 
 use_kinship:
  - false
 kinship_type:
  - overall
 pop:
  - 2PP
-locus:
- - char
-organism:
- - mouse
 save_results:
  - true
 use_saved_results:
@@ -46,36 +30,26 @@ use_saved_results:
 # Single Scan Parameters 
 #================================================
 ref_allele:
- - B
+ - A 
 singlescan_perm:
- - 10
+ - 0
 
 #================================================
 # Marker Selection Parameters 
 #================================================
 marker_selection_method:
  - top.effects
-# A one column, new-line separated list of marker names that has a non-empty 
-# interesection with the genotype names. If marker_selection_method = from.list
-# This file needs to be in the result folder
-#snp_file:
-# - chesler_marker_list.txt
 peak_density:
- - 0.5
+ - 0.5 
 tolerance:
- - 10
+ - 5 
 num_alleles_in_pairscan:
- - 100
-
+ - 150
 #================================================
 # Pairscan Parameters 
 #================================================
 max_pair_cor:
- - 0.5
-min_per_genotype:
- - 5
+ - 0.5 
 pairscan_null_size:
- - 1000
-
-# pairscan.null.size 	 1500000
+ - 5000
 

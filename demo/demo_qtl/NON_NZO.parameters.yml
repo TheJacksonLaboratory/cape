@@ -2,10 +2,9 @@
 # General Parameters 
 #================================================
 traits:
+ - BW_24
  - LEP_24
- - total_fat
 covariates:
-# "mom" is the obesity status of the other
  - mom
 scan_what:
  - eigentraits 
@@ -24,10 +23,6 @@ kinship_type:
  - overall
 pop:
  - 2PP
-locus:
- - char
-organism:
- - mouse
 save_results:
  - true
 use_saved_results:
@@ -46,26 +41,16 @@ singlescan_perm:
 #================================================
 marker_selection_method:
  - top.effects
-# - from.list
-# A one column, new-line separated list of marker names that has a non-empty 
-# interesection with the genotype names. If marker_selection_method = from.list
-# This file needs to be in the result folder
-#snp_file:
-# - NON_NZO_marker_list.txt
 peak_density:
  - 0.5 
 tolerance:
  - 5 
 num_alleles_in_pairscan:
- - 100
-
+ - 84
 #================================================
 # Pairscan Parameters 
 #================================================
 max_pair_cor:
  - 0.5 
-min_per_genotype:
- - 5
 pairscan_null_size:
- - 1000 
-
+ - 5000

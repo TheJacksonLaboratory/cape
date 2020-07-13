@@ -286,7 +286,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
     
     #if there are covariates, run them through too
     if(!is.null(covar.table)){
-      cat("\n")
+      cat("\nTesting covariates \n")
       #get corrected genotype and phenotype values for the overall kinship matrix
       if(use.kinship){
         sink(file.path(data.obj$results_path,"regress.warnings"))
