@@ -1,9 +1,17 @@
-#' Internal function that deletes underscores from marker names
+#' Delete underscores from marker names
 #' 
+#' Because cape uses underscores to separate marker names
+#' from alleles, we need to delete any underscores that 
+#' were present in the original marker names. This function
+#' does that. 
+#'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
 #' 
-#' @return lists containing "data.obj" and "geno.obj"
+#' @return lists containing data.obj and geno.obj
+#' with underscores removed from data.obj$geno_names
+#' and dimnames(geno.obj). These two elements must be
+#' entered separately into \code{link{run.cape}}.
 #'
 #' @export
 
