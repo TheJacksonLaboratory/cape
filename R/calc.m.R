@@ -1,4 +1,23 @@
-calc.m <- function(markers,beta.m,beta.cov) {
+#' Calculate m
+#' 
+#' This function performs the reparametrization
+#' step originally described in
+#' Carter, G. W., Hays, M., Sherman, A. & Galitski, T. 
+#' Use of pleiotropy to model genetic interactions in a 
+#' population. PLoS Genet. 8, e1003010 (2012).
+#' 
+#' @param markers A vector of length two holding the
+#' names of the markers being tested.
+#' @param beta.m The matrix of beta values from the 
+#' pairwise linear regression testing the interaction
+#' between the markers.
+#'
+#' @return This function returns a matrix with one 
+#' row holding the m12 and m21 values as described 
+#' in Carter et al. 2012
+
+
+calc.m <- function(markers,beta.m) {
   beta.main <- beta.m[,1:2]
   beta.inter <- beta.m[,3]
   n.rows <- dim(beta.main)[1] #No of ETs
