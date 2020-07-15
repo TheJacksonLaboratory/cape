@@ -1,10 +1,15 @@
-#' consec.pairs
+#' Generate a matrix of consecutive elements
 #'
-#' Makes a matrix of consectutive pairs of elements
+#' Given a vector, this function generates a two-column
+#' matrix in which each row contains an element and its
+#' consecutive neighbor.
 #'
-#' @param elements a vector of elements to be paired up
+#' @param elements a vector of elements
 #'
-#' @return a matrix with two duplicated columns of elements
+#' @return a matrix with two columns. The first column
+#' is identical to elements with the last element taken
+#' off. And second column holds the next consecutive 
+#' element.
 #'
 #' @export
 consec.pairs <- function(elements){
