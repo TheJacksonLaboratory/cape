@@ -1,3 +1,5 @@
+set.seed(1234)
+
 library(cape)
 
 demo.path <- here("demo", "demo_qtl2")

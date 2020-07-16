@@ -1,6 +1,6 @@
 set.seed(1234)
 
-if(!require(cape)){install.packages("cape")}
+library(cape)
 
 results.path <- here("demo", "demo_qtl")
 data.path <- here("tests", "testthat", "testdata", "demo_qtl_data")
