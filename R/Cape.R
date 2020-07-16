@@ -31,6 +31,7 @@
 #' @slot window_size from select.markers.for.pariscan.R
 #' @slot tolerance from select.markers.for.pairscan.R
 #' @slot ref_allele A character from the geno_names that represents the wildtype
+#' @slot alpha real significance level (either 0.01 or 0.05)
 #' @slot covar_table a matrix of
 #' @slot flat_geno a flattened genotype matrix
 #' @slot non_allelic_covar covariate
@@ -135,6 +136,7 @@ Cape <- R6::R6Class(
     window_size = NULL,
     tolerance = NULL,
     ref_allele = NULL,
+    alpha = NULL,
     covar_table = NULL,
     flat_geno = NULL,
     non_allelic_covar = NULL,
@@ -201,6 +203,7 @@ Cape <- R6::R6Class(
       window_size = NULL,
       tolerance = NULL, 
       ref_allele = NULL,
+      alpha = NULL,
       covar_table = NULL,
       flat_geno = NULL,
       non_allelic_covar = NULL,
@@ -262,6 +265,7 @@ Cape <- R6::R6Class(
         stopifnot(is.character(ref_allele))
         self$ref_allele <- ref_allele
       }
+      self$alpha <- alpha
       self$covar_table <- covar_table
       self$flat_geno <- flat_geno
       self$non_allelic_covar <- non_allelic_covar
@@ -310,7 +314,7 @@ Cape <- R6::R6Class(
       
     },
     plot_singlescan = function(filename, singlescan.obj, width = 20, height = 6, units = "in", res = 300, 
-                               standardized = TRUE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE, 
+                               standardized = TRUE, allele.labels = NULL, alpha = alpha, include.covars = TRUE, 
                                line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = NULL) {
       
       full.path <- file.path(self$results_path, filename)

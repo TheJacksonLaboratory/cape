@@ -27,7 +27,7 @@ read.parameters <- function(filename = "cape.parameters.yml", yaml_parameters = 
   #================================================
   #single scan parameters
   #================================================
-  single.param <- c("ref_allele", "singlescan_perm")
+  single.param <- c("ref_allele", "singlescan_perm", "alpha")
   
   #================================================
   # marker selection
