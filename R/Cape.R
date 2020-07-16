@@ -31,7 +31,7 @@
 #' @slot window_size from select.markers.for.pariscan.R
 #' @slot tolerance from select.markers.for.pairscan.R
 #' @slot ref_allele A character from the geno_names that represents the wildtype
-#' @slot alpha real significance level (either 0.01 or 0.05)
+#' @slot alpha real significance level (can be any number between 0 and 1) Default value is c(0.05, 0.01)
 #' @slot covar_table a matrix of
 #' @slot flat_geno a flattened genotype matrix
 #' @slot non_allelic_covar covariate
@@ -265,7 +265,11 @@ Cape <- R6::R6Class(
         stopifnot(is.character(ref_allele))
         self$ref_allele <- ref_allele
       }
-      self$alpha <- alpha
+      if (is.null(alpha)) {
+        self$alpha <- c(0.05, 0.01)
+      } else {
+        self$alpha <- alpha 
+      }
       self$covar_table <- covar_table
       self$flat_geno <- flat_geno
       self$non_allelic_covar <- non_allelic_covar
