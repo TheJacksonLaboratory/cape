@@ -1,36 +1,56 @@
-#' impute missing genotype data using k nearest neighbors
+#' Impute missing genotype data using k nearest neighbors
 #' 
 #' This function uses k nearest neighbors to impute missing genotype data
-#' on a per chromosome basis prioritize lets you remove individuals before
-#' markers, vice versa, or decide based on which will remove fewer elements.
-#' If you have a separate data.obj and geno.obj, this script returns both 
-#' as \code{list(data.obj, geno.obj)}. The data.obj has the updated markers and 
-#' individuals, and the geno.obj has the imputed genetic data. These objects
-#' must be separated after running this script. max.region.size specifies the
-#' maximum number of markers to be used in calculating individual similarity.
-#' There is a trade-off between the time it takes to calculate a distance
-#' matrix for a large matrix and the time it takes to slide through the
-#' genome imputing markers. This function does not yet support imputation of
-#' covariates.
+#' on a per chromosome basis. If missing genotypes remain after imputations
+#' the user can prioritize whether to remove individuals, markers, or whichever
+#' has fewer missing values.
+#' 
+#' This function is run by \link{\code{run.cape}} and runs automatically if
+#' a kinship correction is specified and there are missing values in the 
+#' genotype object.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
-#' @param k integer number of neighboring markers, default = 10
-#' @param ind.missing.thresh percent of individuals that are acceptible to remove, default = 0
-#' @param marker.missing.thresh percent of genotype markers that are acceptible to remove, default = 0
-#' @param prioritize the basis prioritization is one of 
-#'        "fewer" = remove the fewest possible cells from the matrix
-#'        "ind" = remove the fewest possible individuals
-#'        "marker" = remove the fewest possible markers
-#' @param max.region.size maximum number of markers to be used in calculating individual similarity
+#' @param k The number of nearest neighbors to use to impute missing data. Defaults to 10.
+#' @param ind.missing.thresh percent A percentage of acceptable missing data. After imputation
+#' if an individual is missing more data than the percent specified, it will be removed.
+#' @param marker.missing.thresh A percentage of acceptable missing data. After imputation
+#' if a marker is missing more data than the percent specified, it will be removed.
+#' @param prioritize How to prioritize removal of rows and columns with missing data.
+#' "ind" = remove individuals with missing data exceeding the threshold before 
+#' considering markers to remove.
+#' "marker" = remove markers with missing data exceeding the threshold before
+#' considering individuals to remove.
+#' "fewer" = Determine how much data will be removed by prioritizing individuals
+#' or markers. Remove data in whichever order removes the least amount of data.
+#' @param max.region.size maximum number of markers to be used in calculating individual similarity.
+#' Defaults to the minimum chromosome size.
 #' @param min.region.size minimum number of markers to be used in calculating individual similarity
-#' @param run.parallel boolean
+#' Defaults to the maximum chromosome size.
+#' @param run.parallel A logical value indicating whether to run the process in parallel
 #' @param n.cores integer number of available CPU cores to use for parallel processing
-#' @param verbose boolean
+#' @param verbose A logical value indicating whether to print progress to the screen.
+#' 
+#' @details The prioritize parameter can be a bit confusing. If after imputation,
+#' there is one marker for which all data are missing, it makes sense to remove that
+#' one marker rather than all individuals with missing data, since all individuals
+#' would be removed. Similarly, if there is one individual with massive amounts of 
+#' missing data, it makes sense to remove that individual, rather than all markers
+#' that individual is missing. We recommend always using the default "fewer" option 
+#' here unless you know for certain that you want to prioritize individuals or markers 
+#' for removal.
+#' There is no need to specify max.region.size or min.region.size, but advanced
+#' users may want to specify them. There is a trade-off between the time it takes 
+#' to calculate a distance matrix for a large matrix and the time it takes to slide 
+#' through the genome imputing markers. This function does not yet support imputation 
+#' of covariates.
+#' If individuals are genotyped very densely, the user may want to specify max.region.size
+#' to be smaller than the maximum chromosome size to speed calculation of similarity matrices.
 #'
-#' @return an updated cape object
+#' @return This function returns a list that includes both the data.obj and geno.obj
+#' These objects must then be separated again to continue through the cape analysis.
 #'
-#' @export
+
 impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.thresh = 0, 
                                 marker.missing.thresh = 0, prioritize = c("fewer", "ind", "marker"),
                                 max.region.size = NULL, min.region.size = NULL, run.parallel = FALSE,

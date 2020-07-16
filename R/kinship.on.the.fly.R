@@ -1,21 +1,29 @@
-#' Calculates the leave-two-out kinship matrix
+#' Corrects genotypes, phenotypes, and covariates
+#' for kinship.
 #' 
-#' This function calculates the leave-two-out kinship matrix
-#' used in capeRel
-#' plot.adj.mat is used to plot the covariance matrices 
-#' vs. the positive definite matrices
-#' to correct just for the covariate, leave chr1 and chr2 NULL
+#' This function uses linear mixed models to adjust the
+#' genotype matrix, phenotype matrix, and covariate matrix
+#' for kinship based on the kinship matrix calculated 
+#' by \link{\code{Kinship}}.
 #'
-#' @param kin.obj a kinship object
-#' @param geno a genotype object. If this is not supplied then it is generated here.
-#' @param chr1
-#' @param chr2
-#' @param phenoV
-#' @param covarV
+#' @param kin.obj The kinship object calculated by \link{\code{Kinship}}
+#' @param geno a genotype object.
+#' @param chr1 The first of two chromomsomes to leave out of the calculation, if any.
+#' @param chr2 The second of two chromomsomes to leave out of the calculation, if any.
+#' @param phenoV The phenotype vector
+#' @param covarV The covariate vector or matrix
 #'
-#' @return \code{list("err.cov", "corrected.pheno", "corrected.geno", "corrected.covar")}
+#' @details If using leave-one-chromosome-out (LOCO), chr1 and chr2 should have the same value.
+#' If chr1 and chr2 are different, both specified, leave-two-chromosomes-out (LTCO) will be
+#' used. After testing LTCO, we do not recommend using this method. We instead recommend 
+#' always using the overall kinship correction. In this case, both chr1 and chr2 should
+#' be NULL, their default values.
+
+#' @return This function returns a list with the corrected phenotype,
+#' genotypes, and covariates. These are used in \link{\code{singlescan}}
+#' and \link{\code{pairscan.kin}}.
 #'
-#' @export
+
 kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
 covarV = NULL, verbose = FALSE){
   
