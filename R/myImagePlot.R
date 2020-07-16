@@ -1,3 +1,9 @@
+#' Generate a Heatmap-type image
+#'
+#' This internal function generates heatmap-type
+#' images for functions like \link{\code{plotSVD}}
+#' \link{\code{plotPairscan}}, and \link{\code{plotVariantInfluences}}
+
 myImagePlot <-
   function(x,...){
     # print(dim(x))

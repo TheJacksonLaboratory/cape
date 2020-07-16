@@ -1,18 +1,8 @@
-#This function runs a cape analysis from a parameter file
-#The input is the initial cape data object and a parameter
-#file name
-#
-#and functions loaded 
-#if using gene.based marker selection, there must be a file in
-#the working directory called gene.list.txt with an ordered list
-#of genes in a column
-#kinship.type can be either "overall" or "LTCO"
-# parameter.file = "cape.parameters.txt"; p.or.q = 0.05; results.file = "cross.RData"; n.cores = 4; run.singlescan = TRUE; run.pairscan = TRUE; error.prop.coef = TRUE; error.prop.perm = TRUE; initialize.only = FALSE; verbose = TRUE; run.parallel = TRUE
-#' Runs the CAPE algorithm
+#' Runs CAPE
 #'
 #' This function assumes you already have all required libraries and functions loaded.
 #'
-#' @param pheno.obj the phenotype object
+#' @param pheno.obj the cape object holding the phenotype data returned by 
 #' @param geno.obj the genotype object
 #' @param results.file the name of the saved data.obj RData file. The base name is used as the base name for all saved RData files.
 #' @param p.or.q A threshold indicating the maximum adjusted p value considered 
