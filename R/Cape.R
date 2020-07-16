@@ -361,7 +361,7 @@ Cape <- R6::R6Class(
         jpeg(full.path)
       }
 
-      plotNetworkDO(self, label.gap = label.gap, label.cex = label.cex, show.alleles = show.alleles)
+      plotNetwork(self, label.gap = label.gap, label.cex = label.cex, show.alleles = show.alleles)
       dev.off()
     },
     plot_full_network = function(filename, zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, 

@@ -1,9 +1,22 @@
-#' Finds alleles from each founder were seleted for the pairscan
+#' Get the phenotype matrix
+#' 
+#' This function can return a number of different trait matrices
+#' depending on the arguments.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param color.scheme string "CC/DO" or "other"
-#' @param pdf.label string
+#' @param scan.what A character string. One of "eigentraits", "normalized.trait",
+#' or "raw.traits." If "eigentraits" the function returns the eigentraits matrix.
+#' If "normalized.traits" the function returns the trait matrix after mean-centering
+#' and normalizing. If "raw.trait" the function returns the trait matrix before 
+#' mean-centering and normalization were applied.
+#' @param covar A character value indicating which, if any, covariates the traits
+#' should be adjusted for. If covariates are specified, the function fits a linear
+#' model to specify the traits with the covariates and returns the matrix of residuals
+#' (i.e. the traits after adjusting for the covariates).
 #'
+#' @return A matrix in which each column is a trait, and each row is an individual.
+#' The values correspond to the argument settings described above.
+#' 
 #' @export
 get.pheno <- function(data.obj, scan.what = c("eigentraits", "normalized.traits", "raw.traits"), covar = NULL){
   

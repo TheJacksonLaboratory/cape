@@ -40,7 +40,7 @@
 #' 
 #' @export
 
-plotNetworkDO <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, 
+plotNetwork <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE, 
   trait = NULL, trait.labels = NULL, color.scheme = c("DO/CC", "other"), 
   main.lwd = 4, inter.lwd = 3, label.cex = 1.5, 
   percent.bend = 15, chr.gap = 1, label.gap = 5, positive.col = "brown", 
