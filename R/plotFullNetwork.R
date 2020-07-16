@@ -65,7 +65,7 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
   #have main effects on
   plot.net.point <- function(x, y, node.radius = node.radius, cols = c("green", "green", "red"), node.label = NULL, label.offset = 0, label.cex = 1, border.col){
     
-    draw.pieDO(x = x, y = y, radius = node.radius, cols = cols, add = TRUE, node.border.lwd = node.border.lwd, border.col = border.col)
+    draw.pie(x = x, y = y, radius = node.radius, cols = cols, add = TRUE, node.border.lwd = node.border.lwd, border.col = border.col)
     
     
     if(!is.null(node.label)){
@@ -246,7 +246,7 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
     }
     
     
-    draw.pieDO(x = l.x, y = l.y, radius = legend.radius, cols = rep(bg.col, length(phenotypes)), labels = phenotypes, label.cex = legend.cex, node.border.lwd = node.border.lwd, border.col = "black")
+    draw.pie(x = l.x, y = l.y, radius = legend.radius, cols = rep(bg.col, length(phenotypes)), labels = phenotypes, label.cex = legend.cex, node.border.lwd = node.border.lwd, border.col = "black")
     
     if(!is.null(main)){
       text(x = mean(c(maxx, minx)), y = maxy, labels = main)
