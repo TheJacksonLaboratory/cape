@@ -203,7 +203,7 @@ run.cape <- function(pheno.obj, geno.obj,
         filename <- paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Standardized.jpg")
         data.obj$plot_singlescan(filename, singlescan.obj, width = 20, height = 6, 
           units = "in", res = 300, standardized = TRUE, allele.labels = NULL, 
-          alpha = c(0.05, 0.01), include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, 
+          alpha = data.obj$alpha, include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, 
           lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
       }
       
