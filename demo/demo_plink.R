@@ -11,7 +11,8 @@ pheno <- file.path(data.path, "test.pheno")
 out <- file.path(data.path, "test.csv")
 param.file <- file.path(results.path, "plink.parameters.yml")
 
-cross.obj <- plink2cape(ped, map, pheno, out = "out.csv")
+#unlink(out) #remove the out file if it exists
+cross.obj <- plink2cape(ped, map, pheno, out)
 
 data.obj <- cross.obj$data.obj
 geno.obj <- cross.obj$geno.obj$geno

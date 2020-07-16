@@ -66,9 +66,11 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
   gene <- get.geno(data.obj, geno.obj)
   
   #Get the dimension names to minimize confusion
-  locus.dim <- which(names(dimnames(gene)) == "locus")
-  allele.dim <- which(names(dimnames(gene)) == "allele")
-  
+  geno.dims <- get_geno_dim()
+  mouse.dim <- geno.dims[which(names(geno.dims) == "mouse")]
+  allele.dim <- geno.dims[which(names(geno.dims) == "allele")]
+  locus.dim <- geno.dims[which(names(geno.dims) == "locus")]
+   
   #check to make sure a reference allele has been chosen
   #and that we can find it in the array
   if(length(ref.allele) != 1){
@@ -117,9 +119,13 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
     regress.mat <- locus.mat[,-ref.col]
     model <- glm(phenotype~regress.mat, family = model.family)
     model.coef <- coef(summary(model))
-    #gather the t statistics for all alleles
-    t.stats <- model.coef[2:dim(model.coef)[1], 3]
-    return(as.vector(t.stats))
+    if(nrow(model.coef) == 2){
+	    #gather the t statistics for all alleles
+    		t.stats <- as.vector(model.coef[2:dim(model.coef)[1], 3])
+    		}else{
+    		t.stats <- NA
+    		}
+    return(t.stats)
   }
   
   get.s <- function(evd.result, alpha){
@@ -147,13 +153,13 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100,
     stat.mat <- array(NA, dim = c(dim(gene_perm)[locus.dim], ncol(gene_perm)-1, ncol(pheno)))
     
     # ptm <- proc.time()
-    for(et in 1:length(pheno[1,])){	 	  			
-      stat.mat[,,et] <- Reduce("rbind", lapply(1:dim(gene_perm)[locus.dim], function(x) multi.allele.regress(gene_perm[,,x], phenotype = pheno[,et], model.family = model.family[et])))
+    for(et in 1:ncol(pheno)){	 	  			
+      stat.mat[,,et] <- Reduce("rbind", lapply(1:dim(gene_perm)[locus.dim], function(x) multi.allele.regress(locus.mat = gene_perm[,,x], phenotype = pheno[,et], model.family = model.family[et])))
     }
     
     #find the maximum t statistic for the permutation
     #and record it.
-    max.stat <- apply(stat.mat, 2, max)
+    max.stat <- apply(stat.mat, 2, function(x) max(x, na.rm = TRUE))
     return(max.stat)        				
   }
   
