@@ -1,7 +1,7 @@
 #' Calculate eigentraits
 #' 
 #' This function uses singular value decomposition
-#' to calculate eigentraits from the phenotype 
+#' (SVD) to calculate eigentraits from the phenotype 
 #' matrix in the cape data object. It
 #' adds the eigentrait matrix to the data object
 #' along with the singular values and the right
@@ -17,6 +17,10 @@
 #' @param normalize.pheno A logical value indicating whether to 
 #' rankZ normalize the phenotypes.
 #'
+#' @details Because we use SVD in this step, there can be
+#' no missing values in the phenotype matrix. Any individuals
+#' with missing values are removed with a message. 
+
 #' @return Returns the data object with the eigentraits,
 #' singular values, and right singular vectors added.
 #'

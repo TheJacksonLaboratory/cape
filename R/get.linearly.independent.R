@@ -1,14 +1,21 @@
-#' Find linearly independent markers based on effect size
+#' Check selected markers for linear independence.
 #' 
-#' This function is a specialized script for getting
-#' linearly independent markers based on effect size
-#' instead of going through a matrix in order, this
-#' script builds a matrix of linearly independent markers
-#' starting with markers with the highest effect size
+#' This function checks a marker matrix selected by
+#' \link{\code{select.markers.for.pairscan}} for linear
+#' independence by checking the correlation between
+#' pairs of markers. If any are perfectly correlated,
+#' only one marker from the block of perfect correlation
+#' is kept.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #'
-#' @export
+#' @return This function returns a list with two elements.
+#' independent.markers: A matrix of the markers that are 
+#' linearly independent. 
+#' rejected.markers: A vector indicating which markers were
+#' removed for violating linear independence.
+#' 
+
 get.linearly.independent <- function(data.obj){
   
   matrixX <- data.obj$geno_for_pairscan

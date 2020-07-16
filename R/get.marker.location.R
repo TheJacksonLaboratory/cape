@@ -1,8 +1,17 @@
-#' This function returns the chromosomal marker location for a set of markers
+#' Get marker genomic position
+#' 
+#' Given a vector of marker names or numers, this 
+#' function returns the genomic coordinates for
+#' each marker, not including the chromosome number,
+#' which is retrieved using \link{\code{get.marker.chr}}.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param markers 
+#' @param markers A vector of marker names 
 #' 
+#' @return A vector the same length as the input markers vector
+#' indicating the genomic coordinate of each marker.
+#'
+
 get.marker.location <- function(data.obj, markers){
   
   

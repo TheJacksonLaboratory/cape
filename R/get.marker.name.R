@@ -1,8 +1,15 @@
-#' This function returns the marker names given the numbers
+#' Get marker names
+#' 
+#' Given a vector of marker numbers, this function 
+#' returns the name of each marker.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param markers covariate names
+#' @param markers A vector of marker numbers 
 #' 
+#' @return A vector the same length as the input 
+#' markers vector indicating the name of each marker
+#'
+
 get.marker.name <- function(data.obj, markers){
   
   if(is.null(markers)){return(NULL)}

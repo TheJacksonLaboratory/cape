@@ -1,9 +1,16 @@
-#' This function returns the marker index for marker names or numbers
-#'
+#' Get original indices for markers
+#' 
+#' Given a vector of marker names or numbers, this 
+#' function returns the indices in the genotype 
+#' matrix for each marker.
+#' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param markers
+#' @param markers A vector of marker names 
+#' 
+#' @return A vector the same length as the input markers vector
+#' indicating the index of each marker
 #'
-#' @export
+
 get.marker.idx <- function(data.obj, markers){
   
   und.check <- grep("_", markers[1])
