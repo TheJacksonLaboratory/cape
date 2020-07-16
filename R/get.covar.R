@@ -1,14 +1,19 @@
-#' Get the phenotype-genotype covariate table
+#' Get covariate information
 #' 
-#' This function returns a covariate table that combines
-#' the covariates specified from phenotypes and those
-#' specified from genotypes
+#' This function returns information about the covariates
+#' specified for the cape run.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #'
-#' @return Returns a list with "covar.names", "covar.type", "covar.loc", "covar.table"
+#' @return Returns a list with the following elements:
+#' covar.names: a character vector holding the names of the covariates  
+#' covar.type: a character vector indicating whether each covariate
+#' derived from the phenotype matrix ("p") or the genotype matrix ("g")
+#' covar.loc: A numeric vector indicating the locations of each covaraite
+#' covar.table: A matrix holding the individual values for each covariate.
 #' 
 #' @export
+
 get.covar <- function(data.obj){
 		
 	covar.table <- cbind(data.obj$p_covar_table, data.obj$g_covar_table)
