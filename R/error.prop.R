@@ -1,7 +1,8 @@
 #' Estimate Errors of Regression Coefficients
 #' 
-#' This function uses error propagation formulas for quantities computed from 
-#' regression coefficients to estimate the error for all regression coefficients.
+#' This function uses error propagation formulas for 
+#' quantities computed from regression coefficients to 
+#' estimate the error for all regression coefficients.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param pairscan.obj a pariscan object from \code{\link{pairscan}}
@@ -9,14 +10,15 @@
 #' performed on the test statistics (FALSE) or the permuted test statistics (TRUE).
 #' @param verbose A logical value to indicate whether the progress of the function 
 #' should be printed to the screen.
-#' @param run.parallel boolean, default = TRUE
-#' @param n.cores integer, default = 4
-#' @param just.m 
+#' @param run.parallel boolean, default = FALSE
+#' @param n.cores The number of cores to use if run.parallel is TRUE, default = 4
+#' @param just.m If TRUE only the m12 and m21 values are calculated. If FALSE, the
+#' default, the standard deviations are also calculated.
 #' 
 #' @return This function returns the data object with a new list element: var_to_var_influences 
 #' if perm is set to FALSE and var.to.var.influences.perm if perm is set to TRUE. These tables 
-#' include the errors calculated for the marker1 to marker2 influences as well as the marker2 
-#' to marker1 influences. These results are used by \code{\link{calc.p}} to calculate empirical 
+#' include the errors calculated for the marker1 to marker2 (m21) influences as well as the marker2 
+#' to marker1 (m12) influences. These results are used by \code{\link{calc.p}} to calculate empirical 
 #' p values.
 #' 
 error.prop <- function (data.obj, pairscan.obj, perm = FALSE, verbose = FALSE,
