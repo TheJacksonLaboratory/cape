@@ -153,11 +153,11 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     } else {
       
       pairscan.results <- vector(mode = "list", length = nrow(marker.pairs))
-      print(length(pairscan.results))
+      
       for(ind in 1:nrow(marker.pairs)){
         pairscan.results[[ind]] <- get.marker.pair.stats(m = marker.pairs[ind,], kin.dat)
       }
-      print(length(pairscan.results))
+      
       
     }
     

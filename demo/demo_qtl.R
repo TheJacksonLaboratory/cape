@@ -1,4 +1,4 @@
-setseed(1234)
+set.seed(1234)
 
 if(!require(cape)){install.packages("cape")}
 
