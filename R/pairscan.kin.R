@@ -62,7 +62,8 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     		run.parallel = run.parallel, n.cores = n.cores)
 
     if(is.null(pairscan.results[[1]])){
-      marker.num <- get.marker.num(data.obj, m)
+#      marker.num <- get.marker.num(data.obj, m)
+		marker.num <- m
       dummyV <- c(marker.num, rep(NA, 3))
       results <- list("effects" = dummyV, "se" = dummyV, "cov" = c(dummyV, rep(NA, 4)))
     }else{
