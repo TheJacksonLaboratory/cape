@@ -24,11 +24,10 @@
 #' @param pdf.label default = "Pairscan.Regression.pdf"
 #'
 #' @export
-plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized = FALSE, show.marker.labels = FALSE,
-                         show.chr = TRUE, label.chr = TRUE, show.alleles = TRUE, allele.labels = NULL, pos.col = "brown",
-                         neg.col = "blue", color.scheme = c("DO/CC", "other"), pdf.label = "Pairscan.Regression.pdf") {
-  
-  require(igraph)
+plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized = FALSE,
+	show.marker.labels = FALSE, show.chr = TRUE, label.chr = TRUE, show.alleles = TRUE,
+	allele.labels = NULL, pos.col = "brown", neg.col = "blue", 
+	color.scheme = c("DO/CC", "other"), pdf.label = "Pairscan.Regression.pdf") {
   
   pairscan.results <- pairscan.obj$pairscan.results
   
@@ -64,7 +63,7 @@ plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized 
     allele.labels <- allele.colors[,2]
     
     all.alleles <- unlist(lapply(strsplit(sorted.markers, "_"), function(x) x[2]))
-    allele.cols <- allele.colors[match(all.alleles, alleles),3]
+    allele.cols <- allele.colors[match(all.alleles, all.alleles),3]
     
   }else{
     allele.cols <- NULL
