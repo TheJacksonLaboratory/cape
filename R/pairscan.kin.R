@@ -1,30 +1,16 @@
-#' Run the pairscan with a kinship correction
+#' This function runs a pairscan when the kinship correction is being used.
 #' 
-#' This function is called by \link{\code{pairscan}}
-#' when a kinship correction is requested. It adjusts 
-#' each variable according to the kinship matrix using
-#' \link{\code{kinship.on.the.fly}} and then fits linear
-#' pairwise models to the adjusted data.
-#'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
 #' @param scan.what A character string uniquely identifying whether eigentraits
 #'   or raw traits should be scanned. Options are "eigentraits", "raw.traits"
-#' @param marker.pairs A two-column matrix containing the marker pairs
-#' to be tested.
+#' @param marker.pairs all length-2 combinations of markers
 #' @param kin.obj a kinship object
-#' @param verbose A logical value indicating whether to 
-#' print progress to the screen
-#' @param run.parallel A logical value indicating 
-#' whether parallel processing should be used
-#' @param n.cores The number of cores to be used if run.parallel is TRUE
+#' @param verbose show progress messages
+#' @param run.parallel to parallel, or not to parallel
+#' @param n.cores if parallel, how many cores?
 #' 
-#' @return This function returns a list with three elements. 
-#' The elements contain the marker pair effect sizes, the marker
-#' pair standard errors, and the covariance matrix for each test.
-#' The output is then further processed by \link{\code{pairscan}}.
-#' 
-pairscan.kin <- function(data.obj, geno.obj, scan.what, marker.pairs, 
+pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, 
 kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
   
   m = NULL #for appeasing R CMD check

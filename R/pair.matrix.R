@@ -1,22 +1,17 @@
-#' Get all pairs of elements in a vector
+#' get all 2-combinations of elements in a vector
 #' 
-#' This function makes a matrix with two columns 
+#' This script makes a matrix with two columns 
 #' listing all pairwise combinations of the elements
 #' of the input vector.
+#' the input vector must have all elements you want
+#' pairs of. It can be numeric or character strings
+#' For example, to get all pairs of numbers between 
+#' 1 and 5, markers = c(1,2,3,4,5)
 #' 
-#' @param elements a vector containing elements from 
-#' which to draw all possible pairs. Can be numeric or 
-#' strings
-#' @param ordered A logical value indicating whether the order of the
-#' pairs is important. If TRUE both a,b and b,a will be returned.
-#' If FALSE, only a,b will be returned.
-#' @param self.pairs A logical value indicating whether self pairs
-#' should be included. If TRUE, a,a will be returned. Otherwise it
-#' will be excluded.
+#' @param elements a vector containing elements from which to draw all possible pairs
+#' @param ordered boolean, TRUE if the elements are ordered
+#' @param self.pairs boolean, TRUE if we want to include self-pairs
 #' 
-#' @return A two-column matrix containing pairs of entries in elements.
-#'
-
 pair.matrix <- function(elements, ordered = FALSE, self.pairs = FALSE){
   
   num.elements <- length(elements)

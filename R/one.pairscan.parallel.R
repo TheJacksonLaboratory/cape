@@ -1,37 +1,18 @@
 #' Run a single pairscan
 #' 
-#' This is an internal function to run a single pairscan
-#' It is used both to do the actual pairscan 
-#' (\link{\code{pairscan.kin}} and \link{\code{pairscan.noKin}}), 
-#' as well as to do the permutations of the pairscan
-#' \link{\code{pairscan.null}}).
-#'
-#' @param data.obj a \link{\code{Cape}} object
-#' @param phenotype.vector A vector of trait values
-#' @param genotype.matrix A matrix of genotypes for markers to
-#' be tested
-#' @param int the interaction term added to the linear model
-#' when the kinship correction is being used. This term is
-#' calculated in \link{\code{pairscan.kin}}.
-#' @param covar.vector a vector or matrix of covariates to
-#' be used.
-#' @param paired.markers a two-column matrix indicating which
-#' marker pairs should be tested. The pairs are assigned in
-#' \link{\code{pairscan}} by \link{\code{get.pairs.for.pairscan}}.
-#' They are checked for pairwise correlations before being sent
-#' to the pairscan.
-#' @param n.perm the number of permutations to be performed.
-#' @param run.parallel a logical value indicating whether to 
-#' use parallel computing
-#' @verbose a logical value indicating whether progress should
-#' be printed to the screen.
-#' @param n.cores the number of CPUs to use if run.parallel is TRUE.
-#'
-#' @return This function returns a list with two slots: 
-#' pairscan.results and pairscan.perm
-#' Each of these elements is also a list containing effect
-#' sizes, standard errors, and covariance matrices for the
-#' pairwise tests.
+#' This function is an internal function to run a single pairscan
+#' It is used both to do the actual pairscan, as well as to 
+#' do the permutations of the pairscan.
+#' it takes in as arguments the vector of phenotype values, the
+#' matrix of genotypes for all markers and a vector of flags for
+#' covariates.
+#' It returns the effects matrix and the covariance matrix 
+#' for all marker pairs in the genotype matrix. The results
+#' are returned in a list that can be inserted directly into
+#' the data.obj if this is the actual scan. The results can
+#' also be dissected for the maximum effect if the scan is
+#' being run for a permutation test. In the case of a permutation
+#' test, the phenotype.vector being supplied should be permuted.
 #' 
 one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, int = NULL, covar.vector = NULL, paired.markers, n.perm = 0, run.parallel = FALSE, verbose = FALSE, n.cores = 4){
   
