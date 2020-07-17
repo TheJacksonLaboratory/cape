@@ -6,7 +6,6 @@
 #if using gene.based marker selection, there must be a file in
 #the working directory called gene.list.txt with an ordered list
 #of genes in a column
-#kinship.type can be either "overall" or "LTCO"
 # parameter.file = "cape.parameters.txt"; p.or.q = 0.05; results.file = "cross.RData"; n.cores = 4; run.singlescan = TRUE; run.pairscan = TRUE; error.prop.coef = TRUE; error.prop.perm = TRUE; initialize.only = FALSE; verbose = TRUE; run.parallel = TRUE
 #' Runs the CAPE algorithm
 #'
@@ -80,7 +79,7 @@ run.cape <- function(pheno.obj, geno.obj,
     
     if (isFALSE(kin.obj)) {
       #if there isn't a kinship object already, we need to make one
-      kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, 
+      kin.obj <- Kinship(data.obj, geno.obj, type = "overall", 
       pop = data.obj$pop)
       data.obj$save_rds(kin.obj, kin.file.name)
     }
@@ -120,7 +119,7 @@ run.cape <- function(pheno.obj, geno.obj,
         data.obj$save_rds(geno.obj, imp.geno.file)
       
         # recalculate the kinship matrix with the updated objects
-        kin.obj <- Kinship(data.obj, geno.obj, type = data.obj$kinship_type, pop = data.obj$pop)
+        kin.obj <- Kinship(data.obj, geno.obj, type = "overall", pop = data.obj$pop)
         data.obj$save_rds(kin.obj, kin.file.name)
 
       } #end case for when there are missing values but no imputed genotypes
