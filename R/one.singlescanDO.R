@@ -1,4 +1,10 @@
-#' Performs a 1D scan for generating the 2D null distribution
+#' Performs marker regression
+#' 
+#' This is an internal function called by \link{\code{pairscan.null}}
+#' when generating the null distribution for significance testing. 
+#' To perform permutations, we permute trait values, and then re-do
+#' the singlescan, marker selection, and the pair scan on the permuted
+#' data. This function performs the singlescan on the permuted data.
 #' 
 #' @param phenotype.vector A vector of phenotype values, one entry for each individual.
 #' @param genotype.mat A matrix of genotype values with individuals in rows and markers 
@@ -7,11 +13,15 @@
 #' @param model.family Indicates the model family of the phenotypes. This can be 
 #'   either "gaussian" or "binomial".
 #' @param ref.allele the reference allele from the Cape data.obj
-#' @param covar.vector A vector of 1's and 0's indicating which markers should be used 
-#' as covariats (1) and which should not (0), optional
-#' @param run.parallel default = TRUE
-#' @param n.cores default = 4
+#' @param covar.table A matrix of covariates with one row per individual.
+#' @param run.parallel A logical value indicating whether multiple 
+#' processors should be used
+#' @param n.cores The number of processors to use if run.parallel is TRUE.
 #' 
+#' @return This function returns the t.statistics for all linear models 
+#' testing the effects of each marker on the phenotype.
+
+
 one.singlescanDO <- function(phenotype.vector, genotype.mat, model.family, ref.allele = "A", 
 covar.table = NULL, run.parallel = FALSE, n.cores = 4){
   

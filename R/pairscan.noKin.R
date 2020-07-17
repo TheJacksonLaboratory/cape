@@ -1,12 +1,27 @@
-#' This function performs a pairscan for when there is no kinship correction required.
+#' Perform pairscan without a kinship correction
 #' 
+#' This internal function is called by \link{\code{pairscan}}
+#' when no kinship correction is requested. It can be
+#' compared to \link{\code{pairscan.kin}}. 
+#' It fits pairwise linear models to estimate the effects of 
+#' marker pairs on each trait. 
+#'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param pheno.mat a phenotype matrix
-#' @param geno.mat a genotype matrix
-#' @param marker.pairs all length-2 combinations of markers
-#' @param verbose show progress messages
-#' @param run.parallel to parallel, or not to parallel
-#' @param n.cores if parallel, how many cores?
+#' @param pheno.mat The matrix of trait values with individuals in rows
+#' and traits in columns.
+#' @param geno.mat The matrix of genotypes to be tested
+#' @param covar.table The matrix of covariates with individuals in rows.
+#' @param marker.pairs A two-column matrix containing the marker pairs
+#' to be tested.
+#' n.perm The number of permutations to be run
+#' @param verbose A logical value indicating whether to 
+#' print progress to the screen
+#' @param run.parallel A logical value indicating 
+#' whether parallel processing should be used
+#' @param n.cores The number of cores to be used if run.parallel is TRUE
+#' 
+#' @return This function calls \link{\code{one.pairscan.parallel}} and
+#' returns results for each trait as an element in a list.
 #' 
 pairscan.noKin <- function(data.obj, pheno.mat, geno.mat, covar.table, marker.pairs, n.perm, verbose = FALSE, run.parallel = FALSE, n.cores = NULL){
   
