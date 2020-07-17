@@ -76,7 +76,8 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     		run.parallel = run.parallel, n.cores = n.cores)
 
     if(is.null(pairscan.results[[1]])){
-      marker.num <- get.marker.num(data.obj, m)
+#      marker.num <- get.marker.num(data.obj, m)
+		marker.num <- m
       dummyV <- c(marker.num, rep(NA, 3))
       results <- list("effects" = dummyV, "se" = dummyV, "cov" = c(dummyV, rep(NA, 4)))
     }else{
@@ -132,7 +133,7 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
   
   for(p in 1:num.pheno){
     if(verbose){
-      cat("\nScanning phenotype", colnames(pheno)[p], ":\n", sep = "")
+      cat("\nScanning phenotype ", colnames(pheno)[p], ":\n", sep = "")
     }
     
     covar.vector <- covar.info$covar.table
@@ -166,17 +167,17 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
       
     } else {
       
-      pairscan.results <- vector(mode = "list", length = nrow(marker.pairs))
-      print(length(pairscan.results))
-      for(ind in 1:nrow(marker.pairs)){
-        pairscan.results[[ind]] <- get.marker.pair.stats(m = marker.pairs[ind,], kin.dat)
-      }
-      print(length(pairscan.results))
+     pairscan.results <- lapply(1:nrow(marker.pairs), 
+     function(x) get.marker.pair.stats(m = marker.pairs[x,], kin.dat))      
       
     }
     
     effects.mat <- matrix(unlist(lapply(pairscan.results, function(x) x$effects)), nrow = nrow(marker.pairs), byrow = TRUE)
+    colnames(effects.mat) <- c("marker1", "marker2", "marker1", "marker2", "marker1:marker2")
+    
     se.mat <- matrix(unlist(lapply(pairscan.results, function(x) x$se)), nrow = nrow(marker.pairs), byrow = TRUE)
+    colnames(se.mat) <- c("marker1", "marker2", "marker1", "marker2", "marker1:marker2")
+    
     cov.mat <- matrix(unlist(lapply(pairscan.results, function(x) x$cov)), nrow = nrow(marker.pairs), byrow = TRUE)
     
     
@@ -215,11 +216,12 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
           }
           
           covar.effects <- matrix(unlist(lapply(covar.results, function(x) x$effects)), nrow = num.cv.pairs, byrow = TRUE)
+          colnames(covar.effects) <- c("marker1", "marker2", "marker1", "marker2", "marker1:marker2")
+          
           covar.se <- matrix(unlist(lapply(covar.results, function(x) x$se)), nrow = num.cv.pairs, byrow = TRUE)
+          colnames(covar.se) <- c("marker1", "marker2", "marker1", "marker2", "marker1:marker2")
           covar.cov <- matrix(unlist(lapply(covar.results, function(x) x$cov)), nrow = num.cv.pairs, byrow = TRUE)
           
-          print(dim(effects.mat))
-          print(dim(covar.effects))
           effects.mat <- rbind(effects.mat, covar.effects)
           se.mat <- rbind(se.mat, covar.se)
           cov.mat <- rbind(cov.mat, covar.cov)
@@ -228,8 +230,7 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
       } #end looping through markers paired with covariates
     }#end case for when there are phenotypic covariates to test
     
-    colnames(effects.mat) <- colnames(pairscan.results[[1]]$effects)
-    colnames(se.mat) <- colnames(pairscan.results[[1]]$se)
+  
     
     
     #add the results for the phenotype

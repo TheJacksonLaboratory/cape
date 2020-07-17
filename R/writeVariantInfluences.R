@@ -50,6 +50,7 @@ writeVariantInfluences <- function(data.obj, p.or.q = 0.05, include.main.effects
     return(final.result)
   }
   
+  final.table = NULL
   if(include.main.effects){	
     #pull out the significan main effects and
     #add the phenotype name to the phenotype 

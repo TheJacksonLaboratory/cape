@@ -34,7 +34,7 @@
 #' 178, 1709–1723 (2008).
 #'
 #' @export
-Kinship<-function(data.obj, geno.obj, type=c("overall","ltco"), n.cores=4, 
+Kinship<-function(data.obj, geno.obj, type=c("overall"), n.cores=4, 
 pop=c("MPP","2PP","RIL")){
   #file input could be geno.obj or genoprobs
   
@@ -153,10 +153,10 @@ pop=c("MPP","2PP","RIL")){
       
       ## calculate kinship matrix using genotype or allele probabilities
       if(type=="chr"){
-        stop("Must be type overall or ltco")
+        stop("Must be type overall")
       }
       else if(type=="loco"){
-        stop("Must be type overall or ltco")}
+        stop("Must be type overall")}
       
       map<-qtl2convert::map_df_to_list(map,pos_column = "pos")
       
@@ -174,10 +174,10 @@ pop=c("MPP","2PP","RIL")){
     if(pop== "RIL"|| pop == "2PP"){
       
       if(type=="chr"){
-        stop("Must be type overall or ltco")
+        stop("Must be type overall")
       }
       else if(type=="loco"){
-        stop("Must be type overall or ltco")}
+        stop("Must be type overall")}
       
       kinship <- qtl2::calc_kinship(probs=genoprobs,type=type, cores=n.cores)
       rownames(kinship) <- colnames(kinship) <- rownames(data.obj$pheno)
@@ -194,10 +194,10 @@ pop=c("MPP","2PP","RIL")){
       if(pop=="MPP"){ genoprobs<-qtl2::genoprob_to_alleleprob(genoprobs)}
       
       if(type=="chr"){
-        stop("Must be type overall, or ltco")
+        stop("Must be type overall")
       }
       else if(type=="chr"){
-        stop("Must be type overall or ltco")}
+        stop("Must be type overall")}
       
       kinship <- qtl2::calc_kinship(probs=genoprobs,type=type, cores=n.cores)
       rownames(kinship) <- colnames(kinship) <- rownames(data.obj$pheno)
@@ -210,6 +210,9 @@ pop=c("MPP","2PP","RIL")){
   ##############################################################
   #                                                            #
   #       Create Leave two chromosome out Kinship matrix       #
+  #       For now this block of code will never run as we      #
+  #       have removed the ltco option, because of some        #
+  #       instability                                          #
   #                                                            #
   ##############################################################
   
