@@ -79,7 +79,7 @@ error.prop <- function (data.obj, pairscan.obj, perm = FALSE, verbose = FALSE,
     start.row.col <- (pheno.num*3)-2
     end.row.col <- (pheno.num*3)
     for(ph in 1:num.pheno){
-      cov.mat[start.row.col[ph]:end.row.col[ph], start.row.col[ph]:end.row.col[ph]] <- matrix(scan.two.results[[ph]][[3]][marker.pair.number,], ncol = 3)
+      cov.mat[start.row.col[ph]:end.row.col[ph], start.row.col[ph]:end.row.col[ph]] <- matrix(as.numeric(scan.two.results[[ph]][[3]][marker.pair.number,]), ncol = 3)
     }	
     return(cov.mat)
   }

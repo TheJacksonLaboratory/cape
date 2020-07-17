@@ -42,13 +42,21 @@ remove.unused.markers <- function(data.obj, geno.obj){
   }
   
   
-  #take out markers with missing data
+  #take out markers with no variation
   gene <- get.geno(data.obj, geno.obj)
   cat("Checking for invariant markers.\n")
-  num.allele <- apply(gene, 3, function(x) sum(x, na.rm = TRUE))
+  allelic.variation <- function(one.gene){
+  	allele.var <- apply(one.gene, 2, function(x) var(x, na.rm = TRUE))
+  	if(all(allele.var == 0)){
+  		return(0)
+  	}else{
+  		return(1)
+  	}
+  }
+  num.allele <- apply(gene, 3, allelic.variation)
   mono.allele <- which(num.allele == 0)
   if(length(mono.allele) > 0){
-    cat(paste("\nRemoving", length(mono.allele), "markers with no data:\n"))
+    cat(paste("\nRemoving", length(mono.allele), "invariant markers:\n"))
     cat(data.obj$geno_names[[3]][mono.allele], sep = ", ")
     data.obj$chromosome <- data.obj$chromosome[-mono.allele]
     data.obj$marker_location <- data.obj$marker_location[-mono.allele]

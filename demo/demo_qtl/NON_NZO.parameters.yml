@@ -35,6 +35,9 @@ ref_allele:
  - A 
 singlescan_perm:
  - 0
+alpha:
+ - 0.05
+ - 0.01
 
 #================================================
 # Marker Selection Parameters 

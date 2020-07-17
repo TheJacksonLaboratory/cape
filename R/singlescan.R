@@ -317,7 +317,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100,
   singlescan.obj$locus.score.scores <- locus.score.scores
   singlescan.obj$n.perm <- n.perm
   
-  unlink("regress.warnings") #remove the temporary file
+  unlink(file.path(data.obj$results_path,"regress.warnings")) #remove the temporary file
   return(singlescan.obj)
   
 }

@@ -193,7 +193,7 @@ run.cape <- function(pheno.obj, geno.obj,
       
       singlescan.obj <- singlescan(
         data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm,
-        alpha = c(0.01, 0.05), verbose = verbose, run.parallel = run.parallel,
+        alpha = data.obj$alpha, verbose = verbose, run.parallel = run.parallel,
         n.cores = n.cores, model.family = "gaussian", overwrite.alert = FALSE
       )
       
@@ -203,14 +203,14 @@ run.cape <- function(pheno.obj, geno.obj,
         filename <- paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Standardized.jpg")
         data.obj$plot_singlescan(filename, singlescan.obj, width = 20, height = 6, 
           units = "in", res = 300, standardized = TRUE, allele.labels = NULL, 
-          alpha = c(0.05, 0.01), include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, 
+          alpha = data.obj$alpha, include.covars = TRUE, line.type = "l", pch = 16, cex = 0.5, 
           lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
       }
       
       for(ph in 1:ncol(singlescan.obj$singlescan.effects)){
         filename <- paste0("Singlescan.", colnames(singlescan.obj$singlescan.effects)[ph], ".Effects.jpg")
         data.obj$plot_singlescan(filename, singlescan.obj, width = 20, height = 6, units = "in", res = 300,
-          standardized = FALSE, allele.labels = NULL, alpha = c(0.05, 0.01), include.covars = TRUE,
+          standardized = FALSE, allele.labels = NULL, alpha = data.obj$alpha, include.covars = TRUE,
           line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
       }
     }
