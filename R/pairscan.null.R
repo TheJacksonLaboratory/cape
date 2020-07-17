@@ -15,7 +15,13 @@
 #' @param geno.obj a genotype object
 #' @param scan.what A character string uniquely identifying whether eigentraits
 #'   or raw traits should be scanned. Options are "eigentraits", "raw.traits"
-#' @param pairscan.null.size
+#' @param pairscan.null.size The total size of the null distribution.
+#' This is DIFFERENT than the number of permutations to run. Each permutation
+#' generates n choose 2 elements for the pairscan. So for example, a permutation
+#' that tests 100 pairs of markers will generate a null distribution of size 4950.
+#' This process is repeated until the total null size is reached. If the null size
+#' is set to 5000, two permutations of 100 markers would be done to get to a null
+#' distribution size of 5000.
 #' @param max.pair.cor A numeric value between 0 and 1 indicating the maximum
 #'   Pearson correlation that two markers are allowed. If the correlation
 #'   between a pair of markers exceeds this threshold, the pair is not tested.

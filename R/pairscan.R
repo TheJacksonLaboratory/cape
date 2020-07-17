@@ -4,14 +4,7 @@
 #' The phenotypes used can be either eigentraits or raw phenotypes. Permutation
 #' testing is also performed.
 #'
-#' This script performs the pairwise scan on all markers It takes in the data as
-#' a cross object. The user has the choice to scan the eigentraits (default) or
-#' the original phenotypes. This script also calls the function to do
-#' permutations on the 2D scan. It adds the genome-wide threshold for the 2D
-#' scan to the data object n.top.markers is used in generating the null. A
-#' permutation of the singlescan is run, and the n top markers are used in a
-#' permutation of the pairscan. if n.top.markers is NULL, it defaults to the
-#' number of markers in geno.for.pairscan
+#' This function performs the pairwise scan on all markers.
 #'
 #' @details Not all marker pairs are necessarily tested. Before markers are
 #'   tested for interaction, they are checked for several conditions. Pairs are
@@ -19,34 +12,21 @@
 #'   there are fewer than min.per.genotype individuals in any of the genotype
 #'   combinations.
 #'
-#'   This function adds an element to the data object reporting the results of
-#'   the pair-wise scan: \item{pairscan.results}{The results of the pairwise
-#'   scan on the provided phenotype and genotypes.}
+#' @return This function returns an object assigned to pairscan.obj in 
+#' \link{\code{run.cape}}.
 #'
-#'   If permutations have been performed (n.perm > 0), an additional element is
-#'   added to the object reporting the results of the permutation tests:
-#'   \item{pairscan.perm}{The results of the permutations of the pairwise scan
-#'   on the provided phenotype and genotypes.}
-#'
-#'   Each of these results elements is itself a list of 3 elements:
-#'   \item{pairscan.effects}{A table of effects of each marker pair. The columns
-#'   list the effects in the following order: marker1, marker2, the variance of
-#'   marker1, the covariance of marker1 and marker2, the variance of marker2,
-#'   the covariance of marker1 and the interaction effect, the covariance
-#'   between marker2 and ther interaction effect, and the variance of the
-#'   interaction.} \item{pairscan.se}{A table of the standard errors from the
-#'   test on each marker pair. The columns are identical to those described for
-#'   pairscan.effects} \item{model.covariance}{This is a table in which each row
-#'   is the linearized matrix of the variance-covariance matrix of each pairwise
-#'   regression.}
-#'
-#'   The results element for the permutation tests has the same structure as for
-#'   the pairwise scan except that each row represents the results of one
-#'   permutation.
-#'
-#' @references Carter, G. W., Hays, M., Sherman, A., & Galitski, T. (2012). Use
-#'   of pleiotropy to model genetic interactions in a population. PLoS genetics,
-#'   8(10), e1003010. doi:10.1371/journal.pgen.1003010
+#' The results object is a list of five elements:
+#' ref.allele: The allele used as the reference for the tests.
+#' max.pair.cor: The maximum pairwise correlation between marker pairs
+#' pairscan.results: A list with one element per trait. The element for
+#' each trait is a list of the following three elements:
+#'    pairscan.effects: the effect sizes from the linear models
+#'    pairscan.se: the standard erros from the linear models
+#'    model.covariance: the model covariance from the linear models.
+#' pairscan.perm: The same structure as pairscan.results, but for the
+#' permuted data.
+#' pairs.tested.perm: A matrix of the marker pairs used in the permutation
+#' tests.
 #'   
 #' @seealso \code{\link{select.markers.for.pairscan}}, \code{\link{plotPairscan}}
 #'
@@ -54,7 +34,13 @@
 #' @param geno.obj a genotype object
 #' @param scan.what A character string uniquely identifying whether eigentraits
 #'   or raw traits should be scanned. Options are "eigentraits", "raw.traits"
-#' @param pairscan.null.size
+#' @param pairscan.null.size The total size of the null distribution.
+#' This is DIFFERENT than the number of permutations to run. Each permutation
+#' generates n choose 2 elements for the pairscan. So for example, a permutation
+#' that tests 100 pairs of markers will generate a null distribution of size 4950.
+#' This process is repeated until the total null size is reached. If the null size
+#' is set to 5000, two permutations of 100 markers would be done to get to a null
+#' distribution size of 5000.
 #' @param max.pair.cor A numeric value between 0 and 1 indicating the maximum
 #'   Pearson correlation that two markers are allowed. If the correlation
 #'   between a pair of markers exceeds this threshold, the pair is not tested.
@@ -63,7 +49,7 @@
 #'   genotype. If for a given marker pair, one of the genotypes is
 #'   underrepresented, the marker pair is not tested. If this value is NULL,
 #'   max.pair.cor must have a numeric value.
-#' @param kin.obj a kinship object
+#' @param kin.obj a kinship object calculated by \link{\code{Kinship}}.
 #' @param num.pairs.limit A number indicating the maximum number of pairs to
 #'   scan. If the number of pairs exceeds this threshold, the function asks for
 #'   confirmation before proceeding with the pairwise scan.
@@ -74,7 +60,7 @@
 #' @param overwrite.alert
 #' @param run.parallel
 #' @param n.cores
-#' @param gene.list
+#' @param gene.list Only used if marker_selection_method is "by.gene"
 #' @param verbose boolean, default = FALSE
 #'
 #' @export

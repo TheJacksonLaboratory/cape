@@ -1,28 +1,34 @@
-#' Plot the result of the 2D scan
+#' Plot the result of the pairwise scan
 #'
-#' This script plots the results of the 2D scan.
-#' It plots a 2D matrix of the t-statistics of
-#' the interactions between all pairs of 
-#' markers.
-#' The data object is only used to get marker
-#' order. This might be redundant, but it seemed
-#' easier for the user to put this in then to 
-#' extract the marker order themselves
+#' This function plots the results of the pairwise scan.
+#' It plots a matrix of the the interactions between all 
+#' pairs of markers.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param pairscan.obj a pariscan object from \code{\link{pairscan}}
-#' @param phenotype default = NULL, can be drawn from \code{pairscan.obj$pairscan.results}
-#' @param standardized default = FALSE
-#' @param show.marker.labels
-#' @param show.chr
-#' @param label.chr
-#' @param show.alleles
-#' @param allele.labels
-#' @param pos.col default = "brown"
-#' @param neg.col default = "blue"
-#' @param color.scheme options are "DO/CC" and "other"
-#' @param pdf.label default = "Pairscan.Regression.pdf"
+#' @param phenotype The names of the phenotypes to be plotted. If NULL,
+#' all phenotypes are plotted.
+#' @param standardized If TRUE, the standardized effects are plotted.
+#' IF FALSE, the effect sizes are plotted.
+#' @param show.marker.labels If TRUE marker labels are plotted along the
+#' axes. If FALSE, they are omitted.
+#' @param show.chr If TRUE, the chromosome boundaries are shown
+#' @param label.chr If TRUE, the chromsomes are labeled
+#' @param show.alleles If TRUE, the allele of each marker is indicated by color.
+#' @param allele.labels Labels for the alleles if other than those stored in the
+#' data object.
+#' @param pos.col The color to use for positive main effects and interactions
+#' must be one of "green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"
+#' see \link{\code{get.color}}
+#' @param neg.col The color to use for negative main effects and interactions
+#' takes the same values as pos.col.
+#' @param color.scheme either "DO/CC" or "other". "DO/CC" uses the official "DO/CC"
+#' colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
+#' "other" uses an unrelated color pallette for multiple alleles.
+#' @param pdf.label Label for the resulting file. Defaults to "Pairscan.Regression.pdf"
 #'
+#' @return Plots to a pdf
+#' 
 #' @export
 plotPairscan <- function(data.obj, pairscan.obj, phenotype = NULL, standardized = FALSE,
 	show.marker.labels = FALSE, show.chr = TRUE, label.chr = TRUE, show.alleles = TRUE,

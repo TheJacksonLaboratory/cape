@@ -1,16 +1,19 @@
-#' Create a marker variable from a covariate phenotype
+#' Create a covariate from a trait
 #' 
-#' This script takes a variable from the phenotype matrix
-#' for example, diet treament or sex and creates a marker
-#' variable that can be used as a covariate.
-#' It creates a marker that is numeric and assigns the 
-#' numeric value to each of the alleles at all loci for 
-#' the given individual.
+#' This function takes a variable from the phenotype matrix
+#' for example, diet treament or sex and converts it to
+#' a covariate.
 #'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param pheno.which array of covariate (phenotype) names from the parameters YAML file
+#' @param pheno.which vector of trait names to be used as covariates
+#'
+#' @return Returns the data object with the specified traits removed
+#' from the phenotype matrix and transferred where they will be used
+#' as covariates. Information about assigned covariates can be retrieved
+#' with \link{\code{get.covar}}.
 #'
 #' @export
+
 pheno2covar <- function(data.obj, pheno.which){
   
   pheno <- data.obj$pheno

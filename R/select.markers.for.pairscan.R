@@ -28,6 +28,7 @@
 #' @param pdf.filename default = "Peak.Plots.pdf"
 #' 
 #' @return updated \code{\link{Cape}} object
+#' @export
 select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, 
   specific.markers = NULL, num.alleles = 50, peak.density = 0.5, window.size = NULL, 
   tolerance = 5, plot.peaks = FALSE, verbose = FALSE, pdf.filename = "Peak.Plots.pdf"){

@@ -6,6 +6,7 @@
 #' @param data.obj a \code{\link{Cape}} object
 #' @param pheno.which A vector of trait names to plot. The default is to plot all traits.
 #' @param color.by A character string indicating a value to color the traits by, for example sex or treatment.
+#' It must be one of the covariates. See \link{\code{pheno2covar}}.
 #' @param group.labels A vector of names for the legend indicating the groups for the colored dots.
 #' @param text.cex A numeric value indicating the size of the text
 #' @param pheno.labels A vector of names for traits to appear in the plot in case the column names are not very pretty.
