@@ -1,6 +1,3 @@
-
-#data.obj = cross; geno.obj = geno; ind.missing.thresh = 0; marker.missing.thresh = 0; prioritize = c("ind", "marker", "fewer")
-
 #' Removes missing marker (column) or individual (row) data
 #' 
 #' This function removes missing data and let you remove 
@@ -21,7 +18,6 @@
 #'
 #' @return an updated cape object
 #'
-#' @export
 remove.missing.genotype.data <- function(data.obj, geno.obj = NULL, ind.missing.thresh = 0,
                                          marker.missing.thresh = 0, prioritize = c("fewer", "ind", "marker")){
 	

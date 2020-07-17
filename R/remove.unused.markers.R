@@ -1,7 +1,9 @@
-#' Take out markers on the sex chromosomes
+#' Take out markers not used in cape
 #' 
-#' This function removes any markers in the geno.obj on the sex
-#' chromosomes as well as invariant markers.
+#' This function removes any markers that are not
+#' used in cape. This includes markers on the sex 
+#' chromosomes, mitochondrial markers, and any 
+#' invariant markers.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object

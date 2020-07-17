@@ -1,3 +1,4 @@
+#' Report Progress of a Process
 #This function prints out the percent progress in a job
 #given the current iteration the total number of iterations
 #and the percentage at which a progress report is wanted

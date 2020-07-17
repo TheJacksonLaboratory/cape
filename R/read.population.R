@@ -1,4 +1,4 @@
-#' Reads in a data file in the r/qtl format
+#' Reads in data in the R/qtl csv format
 #' 
 #' This function reads in a data file in the r/qtl format
 #' It converts letter genotypes to numbers if required.
@@ -9,16 +9,27 @@
 #' numbers or character strings. For each phenotype
 #' specified with a name, the script will find its location. 
 #' 
-#' @param filename
-#' @param pheno.col
-#' @param geno.col
-#' @param id.col
+#' @param filename The name of the file to read in
+#' @param pheno.col Column numbers of desired traits. The default
+#' behavior is to read in all traits.
+#' @param geno.col Column numbers of desired markers. The default
+#' behavior is to read in all markers.
+#' @param id.col The column number of an ID column. This is helpful to
+#' specify if the individual IDs are strings. Strings are only
+#' allowed in the ID column. All other trait data must be numeric.
 #' @param delim column delimiter for the file, default is ","
 #' @param na.strings a character string indicating how NA values are specified, default is "-"
 #' @param check.chr.order boolean, default is TRUE
 #' 
+#' @references Broman et al. (2003) R/qtl: QTL mapping in experimental crosses. 
+#' Bioinformatics 19:889-890 doi:10.1093/bioinformatics/btg112
+#'
+#' @return This function returns a cape object in a former cape format.
+#' It must be updated using \link{\code{cape2mpp}}
+#'
 #' @export
-read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, id.col = NULL, delim = ",", na.strings = "-", check.chr.order = TRUE) {
+read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, id.col = NULL, 
+delim = ",", na.strings = "-", check.chr.order = TRUE) {
 
 		if(is.null(filename)){
 			filename <- file.choose()

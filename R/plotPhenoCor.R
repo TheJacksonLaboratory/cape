@@ -1,7 +1,7 @@
 #' Plot trait pairs against each other
 #' 
 #' This function plots pairs of traits against each other
-#' to check the correlations between traits.
+#' to visualize the correlations between traits.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
 #' @param pheno.which A vector of trait names to plot. The default is to plot all traits.

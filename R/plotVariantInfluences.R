@@ -1,35 +1,60 @@
-#' This function plots m12 and m21 using myImagePlot
+#' Plot cape coefficients
 #' 
-#' This function plots the reparameterized influences of variants on each other. 
-#' The epistatic interactions from the pairwise scan are reparameteriezed to 
-#' the terms \eqn{m_{12}} and \eqn{m_{21}}, where the subscripts indicate the 
-#' source and target variants respectively. These terms are interpreted as the 
-#' effect that the source variant exerts on the target variant when both are 
-#' present. Negative influences represent suppression while positive influences 
-#' represent enhancement.
+#' This function plots the the cape coefficients between
+#' pairs of markers as a heat map.
+#' The interactions are shown in the main part of the heatmap
+#' while the main effects are shown on the right hand side.
+#' Directed interactions are read from the y axis to the x axis.
+#' For example an interaction from marker1 to marker2 will be shown
+#' in the row corresponding to marker1 and the column corresponding
+#' to marker2. 
+#' Similarly, if marker1 has a main effect on any traits, these
+#' will be shown in the row for marker1 and the trait columns.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param p.or.q A threshold indicating the maximum adjusted p value considered 
-#' significant. If an fdr method has been used to correct for multiple testing, 
-#' this value specifies the maximum q value considered significant.
-#' @param min.std.effect 
-#' @param plot.all.vals 
-#' @param all.markers
-#' @param standardize
-#' @param color.scheme
-#' @param pos.col 
-#' @param neg.col 
-#' @param not.tested.col 
-#' @param show.marker.labels 
-#' @param show.chr 
-#' @param label.chr 
-#' @param show.alleles 
-#' @param scale.effects 
-#' @param pheno.width width of the phenotype text on the plot, in pixels
-#' @param covar.width width of the covariate text on the plot, in pixels
-#' @param covar.labels 
-#' @param phenotype.labels 
-#' @param show.not.tested 
+#' @param p.or.q A threshold indicating the maximum p value (or q value
+#' if FDR was used) of significant interactions and main effects
+#' @param min.std.effect An optional filter. The plot will exclude
+#' all pairs with standardized effects below the number set here.
+#' @param plot.all.vals If TRUE will plot all values regardless of 
+#' significant
+#' @param all.markers if TRUE will plot all markers in the genotype
+#' object, not just those that were tested. Not recommended for large
+#' genotype object.
+#' @param standardize Whether to plot effect sizes (FALSE) or standardized
+#' effect sizes (TRUE)
+#' @param color.scheme A character value of either "DO/CC" or other indicating the 
+#' color scheme of main effects. If "DO/CC" allele effects can be plotted with the
+#' DO/CC colors.
+#' @param pos.col The color to use for positive main effects and interactions
+#' must be one of "green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"
+#' see \link{\code{get.color}}
+#' @param neg.col The color to use for negative main effects and interactions
+#' takes the same values as pos.col.
+#' @param not.tested.col The color to use for marker pairs not tested. Takes
+#' the same values as pos.col and neg.col
+#' @param show.marker.labels Whether to write the marker labels on the plot
+#' @param show.chr Whether to show chromosome boundaries
+#' @param label.chr Whether to label chromosomes if plotted
+#' @param show.alleles If TRUE, the allele of each marker is indicated by color.
+#' @param scale.effects One of "log10", "sqrt", "none." If some effects are
+#' very large, scaling them can help show contrasts between smaller values.
+#' The default is no scaling.
+#' @param pheno.width Each marker and trait gets one column in the matrix. 
+#' If there are many markers, this makes the effects on the traits difficult 
+#' to see. pheno.width increases the number of columns given to the phenotypes.
+#' For example, if pheno.width = 11, the phenotypes will be shown 11 times wider
+#' than individual markers.
+#' @param covar.width See pheno.width. This is the same effect for covariates.
+#' @param covar.labels Labels for covariates if different from those stored in 
+#' the data object.
+#' @param phenotype.labels Labels for traits if different from those stored in 
+#' the data object
+#' @param show.not.tested Whether to color the marker pairs that were not
+#' tested. If FALSE, they will not be colored in.
+#' 
+#' @return This function invisibly returns the variant influences matrix.
+#' shown in the heat map.
 #' 
 #' @export
 plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, 

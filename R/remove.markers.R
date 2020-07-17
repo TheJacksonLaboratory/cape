@@ -1,7 +1,7 @@
 #' Removes unwanted markers
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param markers.to.remove
+#' @param markers.to.remove A vector of marker names to be removed.
 #' 
 remove.markers <- function(data.obj, markers.to.remove){
   

@@ -1,10 +1,11 @@
-#' This function removes individuals
+#' Remove individuals
 #'
 #' @param cape.obj a \code{\link{Cape}} object
-#' @param ind.to.remove 
-#' @param names.to.remove
+#' @param ind.to.remove Indices of individuals to remove
+#' @param names.to.remove Names of individuals to remove
+#' Only one of ind.to.remove or names.to.remove should be specified.
 #'
-#' @return an updated cape data object
+#' @return an updated cape data object with specified individuals removed.
 #'
 #' @export
 remove.ind <- function(data.obj, ind.to.remove = NULL, names.to.remove = NULL){
