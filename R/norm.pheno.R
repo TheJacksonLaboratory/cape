@@ -1,4 +1,19 @@
-#This function mean centers and rank z normalizes phenotypes
+#' Mean-center and normalize phenotypes
+#'
+#' This function is a wrapper for mean-centering
+#' normalizing and standardizing the trait matrix.
+#' in a data.obj.
+#'
+#' @param data.obj a \link{\code{Cape}} object
+#' mean.center a logical value indicating whether the
+#' traits should be mean centered. If FALSE, the traits
+#' are only normalized.
+#'
+#' @return the data object is returned. The pheno slot of
+#' the data object will have normalized and/or mean-centered
+#' traits. The function also preserves the original trait matrix
+#' in a slot called raw.pheno.
+#'
 norm.pheno <- function(data.obj, mean.center = TRUE){
   
   pheno <- data.obj$pheno
