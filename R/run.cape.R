@@ -1,24 +1,42 @@
 #' Runs CAPE
 #'
-#' This function assumes you already have all required libraries and functions loaded.
+#' This function takes in a data object and genotype object that
+#' have been formatted for cape, as well as a string identifying
+#' a parameter file. It runs cape on the data using the parameters
+#' specified in the file.
+#' 
+#' This function assumes you already have all required libraries 
+#' and functions loaded.
 #'
 #' @param pheno.obj the cape object holding the phenotype data returned by 
 #' @param geno.obj the genotype object
-#' @param results.file the name of the saved data.obj RData file. The base name is used as the base name for all saved RData files.
-#' @param p.or.q A threshold indicating the maximum adjusted p value considered 
-#' @param n.cores integer, default is 4
-#' @param run.singlescan boolean, defaul: TRUE
-#' @param run.pairscan boolean, default: TRUE
-#' @param error.prop.coef, boolean, default: TRUE
-#' @param error.prop.perm, boolean, default: TRUE
-#' @param initialize.only, boolean, default: FALSE
-#' @param verbose boolean, output goes to stdout
+#' @param results.file the name of the saved data.obj RData file. The base 
+#' name is used as the base name for all saved RData files.
+#' @param p.or.q A threshold indicating the maximum adjusted p value 
+#' considered significant. Or, if FDR p value correction is used, the
+#' the maximum q value considered significant.
+#' @param n.cores The number of CPUs to use if run_parallel is set to TRUE
+#' @param run.singlescan A logical value indicating whether to re-run the
+#' singlescan even if previously run.
+#' @param run.pairscan A logical value indicating whether to re-run the
+#' pairscan even if previously run.
+#' @param error.prop.coef, A logical value indicating whether to re-run the
+#' error propagation on the cape coefficients even if previously run.
+#' @param error.prop.perm, A logical value indicating whether to re-run the
+#' error propagation on the permuted cape coefficients even if previously run.
+#' @param initialize.only, If TRUE, cape will not be run. Instead an initialized
+#' data object will be returned. This data object will contain normalized and mean-centered
+#' trait values, and eigentraits, and will have covariates specified. However, the 
+#' singlescan, pairscan, etc. will not be run.
+#' @param verbose Whether progress should be printed to the screen
 #' @param run.parallel boolean, if TRUE runs certain parts of the code as parallel blocks
-#' @param param.file yaml parameter file full path
-#' @param yaml.params yaml string containing the parameters. Either the param.file or yaml.params can be null.
-#' @param results.path paths of the results
+#' @param param.file yaml full path to the parameter file
+#' @param yaml.params yaml string containing the parameters. Either the param.file or 
+#' yaml.params can be null.
+#' @param results.path path that results should be written to.
 #'
-#' @return None, output artifacts are saved to the data.obj$results_path directory
+#' @return This function invisibly returns the data object with all final 
+#' data included. In addition, data saved to the data.obj$results_path directory
 #'
 #' @export
 run.cape <- function(pheno.obj, geno.obj, 

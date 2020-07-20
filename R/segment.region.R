@@ -1,6 +1,7 @@
 #' Divide a region into equal parts.
 #' 
-#' This script returns n evenly spaced points in a given
+#' This is an internal function used to segment regions 
+#' for plotting. It returns n evenly spaced points in a given
 #' region. The points can be aligned to the ends of 
 #' the interval, or centered in the interval.
 #' 
@@ -10,6 +11,8 @@
 #' @param alignmnet A character element indicating whether the points should be 
 #' centered within the region or whether they should extend to the ends of the region.
 #' 
+#' @return Returns n points spaced evenly across the defined region
+#'
 segment.region <- function(region.min, region.max, num.points, alignment = c("center", "ends")){
   
   if(num.points < 2){

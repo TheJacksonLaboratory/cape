@@ -1,4 +1,4 @@
-#' Removes unwanted markers
+#' Removes genetic markers
 #' 
 #' @param data.obj a \code{\link{Cape}} object
 #' @param markers.to.remove A vector of marker names to be removed.
