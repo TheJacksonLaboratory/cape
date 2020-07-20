@@ -1,34 +1,53 @@
-#' Runs a 1D scan of the phenotype data to assess which markers to use as covariates for each phenotype
+#' Runs marker regression on each individual genetic marker
 #' 
-#' This script performs marker regression to associate
-#' individual markers with either traits or eigentraits.
+#' This function performs marker regression to associate
+#' individual markers with traits (or eigentraits).
 #' If n.perm is greater than 0, permutations are run to 
 #' determine effect size thresholds for the alpha values
 #' provided. The default alpha values are 0.05 and 0.01.
 #' Covariates are specified in the cape parameter file.
 #' 
 #' model.family indicates the model family of the phenotypes
-#' This can be either "gaussian" or "binomial"
-#' if length 1, all phenotypes will be assigned to the same
-#' family. If the phenotypes are a mixture, model.family can
-#' be a vector of length Np, where Np is the number of phenotypes
-#' indicating which phenotype belongs in which family of distributions.
+#' This can be either "gaussian" or "binomial". If this argument
+#' is length 1, all phenotypes will be assigned to the same
+#' family. Phenotypes can be assigned different model families by
+#' providing a vector of the same length as the number of phenotypes,
+#' indicating how each phenotype should be modeled.
 #'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param geno.obj a genotype object. If this is not supplied then it is generated here.
-#' @param kin.obj a kinship object
-#' @param n.perm integer number of permutations (default=100)
-#' @param alpha real significance level (either 0.01 or 0.05)
-#' @param model.family array indicating the model family of the phenotypes. This can be either "gaussian" or "binomial" if length 1, all phenotypes will be assigned to the same family. If the phenotypes are a mixture, model.family can be a vector of length Np, where Np is the number of phenotypes indicating which phenotype belongs in which family.
-#' @param run.parallel boolean, default = TRUE
-#' @param n.cores integer number of cores to use if running in parallel
-#' @param verbose boolean
-#' @param overwrite.alert boolean, for use when the script is run from the command line
+#' @param geno.obj a genotype object.
+#' @param kin.obj a kinship object. If NULL, the kinship correction is not performed.
+#' @param n.perm integer number of permutations. Permutation results are only
+#' used in \link{\code{plotSinglescan}}. They are not used for any other piece
+#' of the Cape analysis and may be safely omitted. The default number of permutations
+#' is 0.
+#' @param alpha significance level if permtuations are being run. If permutations are
+#' run effect size thresholds for each alpha level are cacluated using the extreme value
+#' distribution.
+#' @param model.family A vector indicating the model family of the phenotypes. This can 
+#' be either "gaussian" or "binomial." If length 1, all phenotypes will be assigned to the 
+#' same family. Phenotypes can be assigned different model families by
+#' providing a vector of the same length as the number of phenotypes,
+#' indicating how each phenotype should be modeled.
+#' @param run.parallel Whether to run on parallel CPUs
+#' @param n.cores The number of CPUs to use if run.parallel is TRUE
+#' @param verbose Whether to print progress to the screen
+#' @param overwrite.alert Used 
 #'
-#' @return \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
+#' @return Returns a list of the singlescan results. The list is
+#' of length seven, and has the following elements: 
+#'    alpha: The alpha values set in the argument alpha
+#'    alpha.thresh: The calculated effect size thresholds at each alpha if permutations are run.
+#'    ref.allele: The allele used as the reference allele
+#'    singlescan.effects: The effect sizes (beta coefficients) from the single-locus linear models
+#'    singlescan.t.stats: The t statistics from the single-locus linear models
+#'    locus.p.vals: Marker-level p values
+#'    locus.score.scores: Marker-level test statistics.
 #'
+#' @seealso \link{\code{plotSinglescan}}
 #' @export
-singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 100, 
+#' 
+singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0, 
   alpha = c(0.01, 0.05), model.family = "gaussian", run.parallel = FALSE, 
   n.cores = 4, verbose = FALSE, overwrite.alert = TRUE) {
   
