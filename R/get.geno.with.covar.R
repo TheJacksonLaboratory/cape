@@ -6,7 +6,7 @@
 #' that task.
 #' 
 #' @param data.obj The cape object. See \link{\code{Cape}}.
-#' @param geno.obj
+#' @param geno.obj A genotype object.
 #' @param g.covar A logical value indicating whether to append
 #' genotype-derived covariates to the final matrix. Defaults to TRUE.
 #' @param p.covar A logical value indicating whether to append

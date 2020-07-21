@@ -14,13 +14,13 @@
 #' Genetics 211, no. 2 (2019): 495-502.
 #'
 #' @param cross a cross object created by the R/qtl2 function read_cross()
-#' @genoprobs an optional argument for providing previously calculated genoprobs.
+#' @param genoprobs an optional argument for providing previously calculated genoprobs.
 #' if this parameter is missing, genoprobs are calculated by qtl_to_cape.
-#' @map The qtl2 map. This can be omitted if the map is included in the cross 
+#' @param map The qtl2 map. This can be omitted if the map is included in the cross 
 #' object as either pmap or gmap. By default the physical map (pmap) is used. 
 #' If it is missing, the genetic map is used. A provided map will be used 
 #' preferrentially over a map included in the cross object.
-#' @covar Optional matrix of any covariates to be included in the analysis.
+#' @param covar Optional matrix of any covariates to be included in the analysis.
 #'
 #' @return This function returns a list of two elements. The first element is a cape data
 #' object. The second element is a cape genotype object.

@@ -6,7 +6,7 @@
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj
 #'
-#' @export
+
 
 check.bad.markers <- function(data.obj, geno.obj){
   

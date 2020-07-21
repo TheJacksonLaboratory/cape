@@ -33,16 +33,15 @@
 #' @param model.family Indicates the model family of the phenotypes. This can be 
 #'   either "gaussian" or "binomial".
 #' @param marker.selection.method options are "top.effects", "uniform", "effects.dist", "by.gene"
-#' @param run.parallel
-#' @param n.cores
-#' @param gene.list boolean, only required for "by.gene" marker selection method
-#' @param verbose boolean, default = FALSE
+#' @param run.parallel Whether to run the analysis on multiple CPUs
+#' @param n.cores The number of CPUs to use if run.parallel is TRUE
+#' @param verbose Whether to write progress to the screen
 #' 
 pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits", "raw.traits"), 
   pairscan.null.size = NULL, max.pair.cor = NULL, min.per.geno = NULL, 
   model.family = "gaussian", 
   marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
-  run.parallel = FALSE, gene.list = NULL, n.cores = 4, verbose = FALSE){
+  run.parallel = FALSE, n.cores = 4, verbose = FALSE){
   
   marker.selection.method <- data.obj$marker_selection_method
   ref.allele <- data.obj$ref_allele
@@ -132,14 +131,14 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
       }
     }else{ 
       
-      if(marker.selection.method == "by.gene"){
-        #if we are using a gene-based method
-        #use a permuted gene list to select
-        #SNPs near genes
-        perm.data.obj <- select.markers.for.pairscan.by.gene(data.obj, ref.allele = ref.allele, 
-          geno.obj = geno.obj, gene.list = sample(gene.list), 
-          num.snps = ncol(data.obj$geno_for_pairscan), organism = data.obj$organism)
-      }
+      # if(marker.selection.method == "by.gene"){
+        # #if we are using a gene-based method
+        # #use a permuted gene list to select
+        # #SNPs near genes
+        # perm.data.obj <- select.markers.for.pairscan.by.gene(data.obj, ref.allele = ref.allele, 
+          # geno.obj = geno.obj, gene.list = sample(gene.list), 
+          # num.snps = ncol(data.obj$geno_for_pairscan), organism = data.obj$organism)
+      # }
       if(marker.selection.method == "from.list"){
         single.scan.result <- list("ref.allele" = ref.allele)
         specific.markers <- colnames(data.obj$geno_for_pairscan)

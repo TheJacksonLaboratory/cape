@@ -46,7 +46,7 @@
 #'   between a pair of markers exceeds this threshold, the pair is not tested.
 #'   If this value is set to NULL, min.per.genotype must have a numeric value.
 #' @param min.per.genotype The minimum number of individuals allowable per
-#'   genotype. If for a given marker pair, one of the genotypes is
+#'   genotype combination. If for a given marker pair, one of the genotype combinations is
 #'   underrepresented, the marker pair is not tested. If this value is NULL,
 #'   max.pair.cor must have a numeric value.
 #' @param kin.obj a kinship object calculated by \link{\code{Kinship}}.
@@ -57,18 +57,20 @@
 #'   permutations that will be performed. If the number of total permutations
 #'   exceeds this threshold, the function asks for confirmation before
 #'   proceeding with the pairwise scan.
-#' @param overwrite.alert
-#' @param run.parallel
-#' @param n.cores
-#' @param gene.list Only used if marker_selection_method is "by.gene"
-#' @param verbose boolean, default = FALSE
+#' @param overwrite.alert If TRUE raises a warning to users not to overwrite 
+#'   their data object with a singlescan object. A warning necessary after a 
+#'   new version of cape began separating results from different functions into
+#'   different results objects
+#' @param run.parallel Whether to run the analysis on parallel CPUs
+#' @param n.cores The number of CPUs to use if run.parallel is TRUE
+#' @param verbose Whether to write progress to the screen
 #'
 #' @export
 pairscan <- function(data.obj, geno.obj = NULL,
   scan.what = c("eigentraits", "raw.traits"), pairscan.null.size = NULL, 
   max.pair.cor = NULL, min.per.genotype = NULL, kin.obj = NULL, 
   num.pairs.limit = 1e6, num.perm.limit = 1e7, overwrite.alert = TRUE, 
-  run.parallel = FALSE, n.cores = 4, gene.list = NULL, verbose = FALSE) {
+  run.parallel = FALSE, n.cores = 4, verbose = FALSE) {
   
   marker.selection.method <- data.obj$marker_selection_method
   
@@ -168,14 +170,12 @@ pairscan <- function(data.obj, geno.obj = NULL,
         scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
         max.pair.cor = max.pair.cor, min.per.genotype, verbose = verbose, 
         marker.selection.method = marker.selection.method, 
-        run.parallel = run.parallel, n.cores = n.cores, 
-        gene.list = gene.list)
+        run.parallel = run.parallel, n.cores = n.cores)
     }else{
       pairscan.perm <- pairscan.null(data.obj, geno.obj, scan.what = scan.what, 
         pairscan.null.size = pairscan.null.size, max.pair.cor = max.pair.cor, 
         min.per.genotype, verbose = verbose, marker.selection.method = marker.selection.method, 
-        run.parallel = run.parallel, n.cores = n.cores, 
-        gene.list = gene.list)
+        run.parallel = run.parallel, n.cores = n.cores)
     }
     #add the results to the data object
     pairscan.obj$pairscan.perm <- pairscan.perm$pairscan.perm 

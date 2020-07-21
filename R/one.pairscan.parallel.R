@@ -21,7 +21,7 @@
 #' @param n.perm the number of permutations to be performed.
 #' @param run.parallel a logical value indicating whether to 
 #' use parallel computing
-#' @verbose a logical value indicating whether progress should
+#' @param verbose a logical value indicating whether progress should
 #' be printed to the screen.
 #' @param n.cores the number of CPUs to use if run.parallel is TRUE.
 #'

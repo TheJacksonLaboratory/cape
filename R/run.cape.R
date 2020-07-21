@@ -260,22 +260,21 @@ run.cape <- function(pheno.obj, geno.obj,
         required.markers = NULL, num.alleles = num.alleles.in.pairscan, verbose = verbose)
       }
       
-      if(marker.selection.method == "by.gene"){
-        gene.list.mat <- read.table("gene.list.txt", sep = "\t", stringsAsFactors = FALSE)		
-        gene.list <- gene.list.mat[,1]
-        data.obj <- select.markers.for.pairscan.by.gene(data.obj, geno.obj, gene.list = gene.list, 
-                                                        bp.buffer = data.obj$bp_buffer, organism = data.obj$organism)
-      } else {
-        gene.list <- NULL
-      }
+      # if(marker.selection.method == "by.gene"){
+        # gene.list.mat <- read.table("gene.list.txt", sep = "\t", stringsAsFactors = FALSE)		
+        # gene.list <- gene.list.mat[,1]
+        # data.obj <- select.markers.for.pairscan.by.gene(data.obj, geno.obj, gene.list = gene.list, 
+                                                        # bp.buffer = data.obj$bp_buffer, organism = data.obj$organism)
+      # } else {
+        # gene.list <- NULL
+      # }
       
       data.obj$save_rds(data.obj, results.file)
       
       pairscan.obj <- pairscan(data.obj, geno.obj, scan.what = scan.what, 
         pairscan.null.size = pairscan.null.size, min.per.genotype = min.per.genotype, 
         max.pair.cor = max.pair.cor, verbose = verbose, num.pairs.limit = Inf, 
-        overwrite.alert = FALSE, run.parallel = run.parallel, n.cores = n.cores, 
-        gene.list = gene.list, kin.obj = kin.obj)
+        overwrite.alert = FALSE, run.parallel = run.parallel, n.cores = n.cores, kin.obj = kin.obj)
       
       data.obj$save_rds(pairscan.obj, pairscan.file)
       

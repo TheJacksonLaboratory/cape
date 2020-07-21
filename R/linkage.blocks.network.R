@@ -33,6 +33,8 @@
 #' Each element of the list is one linkage block and contains
 #' a vector naming the markers in that block. Blocks are named
 #' with a chromosome number and an index.
+#' 
+#' @export
 
 linkage.blocks.network <- function(data.obj, geno.obj, collapse.linked.markers = TRUE, 
 threshold.power = 1, plot.blocks = TRUE){
