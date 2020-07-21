@@ -239,7 +239,7 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     results.list[[p]] <- pheno.results
   }	#end looping over phenotypes	
   
-  unlink("regress.warnings")
+  unlink(file.path(data.obj$results_path,"regress.warnings"))
   return(results.list)
   
   
