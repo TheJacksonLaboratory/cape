@@ -33,10 +33,10 @@ Depends:
   R6, here, tools, yaml, evd, Matrix, fdrtool, shape, MASS, corpcor, RColorBrewer,
     parallel, doParallel, foreach, caTools, stringr, abind, propagate, testthat, utils,
     qtl2, tidyr, qtl2convert, devtools, yaml, jsonlite, data.table, RcppEigen, RSQLite,
-    qtl, tools, BiocManager, igraph
+    qtl, tools, BiocManager, igraph, regress
 Imports:
   biomaRt
 Suggests: 
   testthat, knitr, rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
