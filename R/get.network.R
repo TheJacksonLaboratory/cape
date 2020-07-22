@@ -30,8 +30,6 @@
 #' @param plot.linkage.blocks A logical value indicating whether to plot heatmaps
 #' showing the marker correlation structure and where the linkage block boundaries
 #' were drawn.
-#' @param lookup.marker.position A logical value indicating whether to use the 
-#' package BiomaRt to look up genomic positions of markers.
 #' 
 #' @return This function returns the data object with an adjacency matrix defining
 #' the final cape network based on the above parameters. The network is put into 
@@ -43,13 +41,13 @@
 
 get.network <- function(data.obj, geno.obj, p.or.q = 0.05, min.std.effect = 0, standardize = FALSE, 
                         collapse.linked.markers = TRUE, threshold.power = 1, verbose = FALSE, 
-                        plot.linkage.blocks = FALSE, lookup.marker.position = FALSE){
+                        plot.linkage.blocks = FALSE){
   
   if(verbose){cat("Calculating linkage blocks...\n")}
   #get the linkage blocks based on the significant markers
   data.obj <- linkage.blocks.network(data.obj, geno.obj,
     collapse.linked.markers = collapse.linked.markers, threshold.power = threshold.power, 
-    plot.blocks = plot.linkage.blocks, lookup.marker.position = lookup.marker.position)
+    plot.blocks = plot.linkage.blocks)
   
   if(collapse.linked.markers){
     blocks <- data.obj$linkage_blocks_collapsed

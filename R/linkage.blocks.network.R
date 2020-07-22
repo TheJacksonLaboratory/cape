@@ -144,18 +144,18 @@ threshold.power = 1, plot.blocks = TRUE){
     chr.alleles <- sapply(split.markers, function(x) x[2])
     chr.marker.names <- sapply(split.markers, function(x) x[1])
     
-    if(lookup.marker.position){
-      cat("looking up SNP positions...\n")
-      snp.info <- lapply(chr.marker.names, function(x) as.matrix(biomaRt::getBM(c("refsnp_id","allele","chr_name","chrom_start"), filters = "snp_filter", values = x, mart = snp.db)))
-      block.bp <- lapply(snp.info, function(x) as.numeric(x[,4]))
-      names(block.bp) <- chr.marker.names
-      no.info <- which(unlist(lapply(block.bp, length)) == 0)
-      block.bp[no.info] <- NA
-      block.bp <- unlist(block.bp)	
-    }else{
+    # if(lookup.marker.position){
+      # cat("looking up SNP positions...\n")
+      # snp.info <- lapply(chr.marker.names, function(x) as.matrix(biomaRt::getBM(c("refsnp_id","allele","chr_name","chrom_start"), filters = "snp_filter", values = x, mart = snp.db)))
+      # block.bp <- lapply(snp.info, function(x) as.numeric(x[,4]))
+      # names(block.bp) <- chr.marker.names
+      # no.info <- which(unlist(lapply(block.bp, length)) == 0)
+      # block.bp[no.info] <- NA
+      # block.bp <- unlist(block.bp)	
+    # }else{
       #otherwise get positions from the data object
       block.bp <- get.marker.location(data.obj, chr.markers)
-    }
+    # }
     
     if(!collapse.linked.markers || length(chr.markers) == 1 || ch == 0){
       link.blocks <- add.ind.markers(link.blocks, ch, chr.markers)
