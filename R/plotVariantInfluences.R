@@ -58,7 +58,7 @@
 #' 
 #' @export
 plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, 
-  plot.all.vals = FALSE, all.markers = FALSE, standardize = TRUE, 
+  plot.all.vals = FALSE, all.markers = FALSE, standardize = FALSE, 
   color.scheme = c("DO/CC", "other"), pos.col = "brown", neg.col = "blue", 
   not.tested.col = "lightgray", show.marker.labels = FALSE, show.chr = TRUE, 
   label.chr = TRUE, show.alleles = TRUE, scale.effects = c("log10", "sqrt", "none"), 
@@ -109,6 +109,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   #This function expands the given rows or columns of 
   #a matrix by a given amount
   expand.matrix <- function(mat, row.col.num, row.or.col, expansion.factor){
+    if(expansion.factor == 1){
+      return(mat)
+      }
     if(row.or.col == "row"){
       row.labels <- 1:nrow(mat)
       for(i in 1:length(row.col.num)){
@@ -245,6 +248,11 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   var.influence.mat <- as.matrix(as_adjacency_matrix(var.influence.net, attr = "weight"))
   var.pval.mat <- as.matrix(as_adjacency_matrix(var.pval.net, attr = "weight"))
   
+  #put in marker order
+  mat.order <- match(sorted.markers, rownames(var.influence.mat))
+  var.influence.mat <- var.influence.mat[mat.order,mat.order]
+  var.pval.mat <- var.pval.mat[mat.order,mat.order]
+
   #turn the not-tested elements to NA
   var.influence.mat[which(var.influence.mat == 0)] <- NA
   var.pval.mat[which(var.pval.mat == 0)] <- NA
@@ -259,7 +267,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   if(length(covar.names) > 0){
     covar.locale <- which(sorted.markers %in% covar.names)
     
-    new.var.inf <- expand.matrix(mat = var.influence.mat, row.col.num = covar.locale, row.or.col = "row", expansion.factor = covar.width)
+    new.var.inf <- expand.matrix(mat = var.influence.mat, 
+      row.col.num = covar.locale, row.or.col = "row", 
+      expansion.factor = covar.width)
     new.var.inf <- expand.matrix(new.var.inf, covar.locale, "col", covar.width)
     
     new.var.pval <- expand.matrix(var.pval.mat, covar.locale, "row", covar.width)
@@ -296,7 +306,7 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
     pheno.width <- round((length(sorted.markers)+length(covar.names))/15)
   }
   #expand the phenotype influence matrix to give it more visual weight in the plot
-  expanded.pheno.mat <- expand.matrix(pheno.influence.mat, 1:ncol(pheno.influence.mat), "col", pheno.width)
+  expanded.pheno.mat <- expand.matrix(mat = pheno.influence.mat, 1:ncol(pheno.influence.mat), "col", pheno.width)
   expanded.pheno.pval.mat <- expand.matrix(pheno.pval.mat, 1:ncol(pheno.pval.mat), "col", pheno.width)
   
   #also expand the regions where the covariates are if there are covariates
@@ -380,7 +390,8 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
       ylab = "Source", mark.coords = not.tested.locale, mark.col = not.tested.col, 
       show.labels = show.marker.labels, chromosome.coordinates = chr.boundaries, 
       chr.names = chr.names, chr.labels = chr.labels, 
-      show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, allele.cols = allele.cols)
+      show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, 
+      allele.cols = allele.cols)
     
     
     #add phenotype names
