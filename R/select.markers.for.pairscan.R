@@ -19,7 +19,7 @@
 #' peak detection algorithm. It finds the peaks rising 
 #' above a starting threshold and samples markers within each
 #' peak based on the user-defined sampling density \code{peak.density}.
-#' Setting \code{peak.density} to 0.5 will result in 50% of the markers
+#' Setting \code{peak.density} to 0.5 will result in 50\% of the markers
 #' in a given peak being sampled uniformly at random. Sampling
 #' reduces the redundancy among linked markers tested in the pairscan.
 #' If LD is relatively low in the population, this density can be
@@ -47,7 +47,7 @@
 #' @param peak.density The fraction of markers to select under each 
 #' peak exceeding the current threshold. Should be set higher for populations
 #' with low LD. And should be set lower for populations with high LD. Defaults 
-#' to 0.5, corresponding to 50% of markers selected under each peak.
+#' to 0.5, corresponding to 50\% of markers selected under each peak.
 #' @param window.size The number of markers to use in a smoothing window when
 #' calculating main effect peaks. If NULL, the window size is selected automatically
 #' based on the number of markers with consecutive rises and falls of main effect
@@ -103,7 +103,6 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj,
     #just take all of them.
     if (num.alleles >= dim(geno)[3]*(dim(geno)[2]-1))  {
       num.alleles = dim(geno)[3]
-      data.obj$marker_selection_method <- "from.list"	
       alt.alleles <- setdiff(dimnames(geno)[[2]], ref.allele)
       specific.markers <- paste(dimnames(geno)[[3]], alt.alleles, sep = "_")
     }
@@ -402,7 +401,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj,
     cat(length(geno.ind[[2]]), "allele(s) rejected.\n")
     cat("Final alleles selected:", "\t", ncol(geno.ind$independent.markers), "\n")
   }
-  data.obj$marker_selection_method = "top.effects"
+
   if(plot.peaks){
     dev.off()
   }
