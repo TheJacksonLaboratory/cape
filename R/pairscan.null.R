@@ -163,7 +163,8 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
       num.needed <- pairscan.null.size - final.perm
       #testing just one pair was messing this up, so 
       #always test at least two pairs
-      top.marker.pairs <- top.marker.pairs[1:(num.needed+(min(c(num.to.add, total.pairs)))),,drop=FALSE]
+      rows.to.take <- min(c(nrow(top.marker.pairs), (num.needed+(min(c(num.to.add, total.pairs))))))
+      top.marker.pairs <- top.marker.pairs[1:rows.to.take,,drop=FALSE]
     }
     
     if(verbose){cat("\tTesting", dim(top.marker.pairs)[1], "pairs...\n")}
