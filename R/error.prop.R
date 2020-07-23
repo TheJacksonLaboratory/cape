@@ -21,6 +21,7 @@
 #' to marker1 (m12) influences. These results are used by \code{\link{calc.p}} to calculate empirical 
 #' p values.
 #' 
+#' @export
 error.prop <- function (data.obj, pairscan.obj, perm = FALSE, verbose = FALSE,
                         run.parallel = FALSE, n.cores = 4, just.m = FALSE) {
   

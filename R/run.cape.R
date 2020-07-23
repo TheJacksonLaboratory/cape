@@ -86,7 +86,7 @@ run.cape <- function(pheno.obj, geno.obj,
     kin.file.name <- paste0(results.base.name, "_kinship.RData")
     kin.obj <- data.obj$read_rds(kin.file.name)
     
-    if (isFALSE(kin.obj)) {
+    if (isFALSE(kin.obj)){
       #if there isn't a kinship object already, we need to make one
       kin.obj <- Kinship(data.obj, geno.obj, type = "overall", 
       pop = data.obj$pop)
@@ -335,12 +335,12 @@ run.cape <- function(pheno.obj, geno.obj,
   
   data.obj$save_rds(data.obj, results.file)
   
-  data.obj$plot_network_do("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
-  data.obj$plot_network_do("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
+  data.obj$plot_network("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
+  data.obj$plot_network("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
 
   if(dim(geno.obj)[2] == 8){
-    data.obj$plot_network_do("Network.Circular.DO.pdf", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
-    data.obj$plot_network_do("Network.Circular.DO.jpg", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
+    data.obj$plot_network("Network.Circular.DO.pdf", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
+    data.obj$plot_network("Network.Circular.DO.jpg", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
   }	
   
   data.obj$plot_full_network("Network.View.pdf", zoom = 1.2, node.radius = 0.3, 

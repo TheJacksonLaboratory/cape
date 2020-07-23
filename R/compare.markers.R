@@ -6,6 +6,7 @@
 #' @return The data.obj is returned, and any markers that were
 #' not present in geno.obj are removed from data.obj$geno_names
 #'
+#' @export
 compare.markers <- function(data.obj, geno.obj){	
   geno <- get.geno(data.obj, geno.obj)
   missing.markers <- setdiff(data.obj$geno_names[[3]], dimnames(geno)[[3]])

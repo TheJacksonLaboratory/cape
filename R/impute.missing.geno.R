@@ -50,6 +50,7 @@
 #' @return This function returns a list that includes both the data.obj and geno.obj
 #' These objects must then be separated again to continue through the cape analysis.
 #'
+#' @export
 
 impute.missing.geno <- function(data.obj, geno.obj = NULL, k = 10, ind.missing.thresh = 0, 
                                 marker.missing.thresh = 0, prioritize = c("fewer", "ind", "marker"),

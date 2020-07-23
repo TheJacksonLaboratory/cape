@@ -15,6 +15,7 @@
 #'
 #' @return updated \code{\link{Cape}} object
 #' 
+#' @export
 select.pheno <- function(data.obj, pheno.which, min.entries = 5, scale.pheno = FALSE, rank.norm.pheno = FALSE){
   check.underscore(data.obj)
   # check.bad.markers(data.obj)

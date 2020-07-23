@@ -9,6 +9,7 @@
 #' This table is the same as var_to_var_influences, but with p value and adjusted
 #' p value columns appended. 
 #' 
+#' @export
 calc.p <- function(data.obj, pval.correction = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none")) {
   
   

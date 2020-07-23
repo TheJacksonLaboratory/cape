@@ -42,6 +42,7 @@
 #' emp.p: the empirical p value of the direct influence coefficient
 #' p.adjusted: the adjusted p value of the direct influence coefficient.
 #'
+#' @export
  
 direct.influence <- function(data.obj, pairscan.obj, transform.to.phenospace = TRUE, 
                              pval.correction = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"), 

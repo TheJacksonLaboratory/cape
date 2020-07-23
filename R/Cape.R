@@ -417,7 +417,7 @@ Cape <- R6::R6Class(
       dev.off()
       
     },
-    plot_network_do = function(filename, label.gap = 10, label.cex = 1.5, show.alleles = FALSE) {
+    plot_network = function(filename, label.gap = 10, label.cex = 1.5, show.alleles = FALSE) {
       
       full.path <- file.path(self$results_path, filename)
       if (endsWith(full.path, "pdf")) {
