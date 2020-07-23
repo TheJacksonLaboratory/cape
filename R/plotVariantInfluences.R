@@ -330,8 +330,8 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   colnames(full.inf.mat.num) <- colnames(full.inf.mat)
   
   full.pval.mat.num <- apply(full.pval.mat, 2, as.numeric)
-  rownames(full.pval.mat.num) <- rownames(full.pval.mat)
-  colnames(full.pval.mat.num) <- colnames(full.pval.mat)
+  dimnames(full.pval.mat.num) <- dimnames(full.pval.mat)
+
   
   
   #get the coordinates for all pairs not tested
@@ -391,14 +391,19 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
     text(0.5, 0.5, "No Significant Interactions")
   }else{
     
-    myImagePlot(x = full.inf.mat.num, min.x = min(full.inf.mat.num, na.rm = TRUE), 
-      max.x = max(full.inf.mat.num, na.rm = TRUE), main = main, xlab = "Target", 
-      ylab = "Source", mark.coords = not.tested.locale, mark.col = not.tested.col, 
+    min.val <- min(full.inf.mat.num, na.rm = TRUE)
+    max.val <- max(full.inf.mat.num, na.rm = TRUE)
+    if(min.val == max.val){
+      if(min.val < 0){max.val <- 0}
+      if(min.val > 0){min.val <- 0}
+    }
+    myImagePlot(x = full.inf.mat.num, min.x = min.val, max.x = max.val, 
+      main = main, xlab = "Target", ylab = "Source", 
+      mark.coords = not.tested.locale, mark.col = not.tested.col, 
       show.labels = show.marker.labels, chromosome.coordinates = chr.boundaries, 
       chr.names = chr.names, chr.labels = chr.labels, 
       show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, 
       allele.cols = allele.cols)
-    
     
     #add phenotype names
     if(!is.null(not.tested.locale)){

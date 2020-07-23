@@ -312,7 +312,8 @@ run.cape <- function(pheno.obj, geno.obj,
   
   data.obj <- direct.influence(data.obj, pairscan.obj, 
     transform.to.phenospace = transform.to.phenospace, verbose = TRUE, 
-    pval.correction = data.obj$pval_correction, save.permutations = TRUE, n.cores = n.cores)
+    pval.correction = data.obj$pval_correction, save.permutations = TRUE, 
+    n.cores = n.cores)
   
   data.obj$save_rds(data.obj, results.file)
   
