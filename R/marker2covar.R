@@ -57,7 +57,7 @@ marker2covar <- function(data.obj, geno.obj, singlescan.obj = NULL, covar.thresh
     colnames(g.covar.info) <- data.obj$marker_num[new.covar.locale]
     rownames(g.covar.info) <- c("name", "chromosome", "position")
     
-    data.obj <- remove.markers(data.obj, markers.which = snp.names)
+    data.obj <- remove.markers(data.obj, markers.to.remove = snp.names)
     data.obj$g_covar_table <- new.covar
     data.obj$g_covar <- g.covar.info
     return(data.obj)		

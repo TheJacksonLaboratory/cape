@@ -109,7 +109,7 @@ error.prop <- function (data.obj, pairscan.obj, perm = FALSE, verbose = FALSE,
       if(!just.m){
         inf.coeffs <- calc.delta.errors(markers = marker.mat[marker.pair.number,], beta.m = beta.main, se = beta.se, beta.cov)
       }else{
-        inf.coeffs <- calc.m(markers = marker.mat[marker.pair.number,], beta.m = beta.main, beta.cov)	
+        inf.coeffs <- calc.m(markers = marker.mat[marker.pair.number,], beta.m = beta.main)	
       }
     }else{
       inf.coeffs <- NULL	
