@@ -38,12 +38,13 @@
 #' @return This function invisibly returns the data object with all final 
 #' data included. In addition, data saved to the data.obj$results_path directory
 #'
+#' @details TODO add transform.to.phenospace to cape parameter file.
 #' @export
 run.cape <- function(pheno.obj, geno.obj, 
   results.file = "cross.RData", p.or.q = 0.05, n.cores = 4, 
   initialize.only = FALSE, verbose = TRUE, run.parallel = FALSE, 
   param.file = NULL, yaml.params = NULL, results.path = NULL, 
-  transform.to.phenospace = FALSE){
+  transform.to.phenospace = TRUE){
   
   # Instantiate the Cape R6 object
   data.obj <- Cape$new(
