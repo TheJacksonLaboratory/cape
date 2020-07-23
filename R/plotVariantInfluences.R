@@ -178,6 +178,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   covar.names <- covar.info$covar.names
   if(is.null(covar.width)){
     covar.width <- round((length(sorted.markers)+length(covar.names))/20)
+    if(covar.width < 1){
+      covar.width = 1
+    }
   }
   
   
@@ -304,6 +307,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   
   if(is.null(pheno.width)){
     pheno.width <- round((length(sorted.markers)+length(covar.names))/15)
+    if(pheno.width < 1){
+      pheno.width <- 1
+      }
   }
   #expand the phenotype influence matrix to give it more visual weight in the plot
   expanded.pheno.mat <- expand.matrix(mat = pheno.influence.mat, 1:ncol(pheno.influence.mat), "col", pheno.width)
