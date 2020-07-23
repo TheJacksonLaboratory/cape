@@ -16,10 +16,10 @@
 #' default, the standard deviations are also calculated.
 #' 
 #' @return This function returns the data object with a new list element: var_to_var_influences 
-#' if perm is set to FALSE and var.to.var.influences.perm if perm is set to TRUE. These tables 
-#' include the errors calculated for the marker1 to marker2 (m21) influences as well as the marker2 
-#' to marker1 (m12) influences. These results are used by \code{\link{calc.p}} to calculate empirical 
-#' p values.
+#' if perm is set to FALSE and var_to_var_influences_perm if perm is set to TRUE. These tables 
+#' include the errors calculated for the marker1 to marker2 (m21) influences as well as the
+#' marker2 to marker1 (m12) influences. These results are used by \code{\link{calc.p}} to
+#' calculate empirical p values.
 #' 
 #' @export
 error.prop <- function (data.obj, pairscan.obj, perm = FALSE, verbose = FALSE,

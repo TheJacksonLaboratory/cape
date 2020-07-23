@@ -40,11 +40,10 @@
 #'
 #' @export
 run.cape <- function(pheno.obj, geno.obj, 
-  results.file = "cross.RData", p.or.q = 0.05, n.cores = 4,
-  run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
-  error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE,
-  run.parallel = FALSE, param.file = NULL, yaml.params = NULL,
-  results.path = NULL){
+  results.file = "cross.RData", p.or.q = 0.05, n.cores = 4, 
+  initialize.only = FALSE, verbose = TRUE, run.parallel = FALSE, 
+  param.file = NULL, yaml.params = NULL, results.path = NULL, 
+  transform.to.phenospace = FALSE){
   
   # Instantiate the Cape R6 object
   data.obj <- Cape$new(
@@ -196,8 +195,6 @@ run.cape <- function(pheno.obj, geno.obj,
   }
   
   if (isFALSE(singlescan.obj)) {
-    
-    if (run.singlescan) {
       
       singlescan.obj <- singlescan(
         data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm,
@@ -221,7 +218,6 @@ run.cape <- function(pheno.obj, geno.obj,
           standardized = FALSE, allele.labels = NULL, alpha = data.obj$alpha, include.covars = TRUE,
           line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
       }
-    }
   }
   
   #===============================================================
@@ -232,8 +228,6 @@ run.cape <- function(pheno.obj, geno.obj,
   pairscan.obj <- data.obj$read_rds(pairscan.file)
   
   if (isFALSE(pairscan.obj) | is.null(data.obj$geno_for_pairscan)) {
-    
-    if (run.pairscan) {
       
       marker.selection.method <- data.obj$marker_selection_method
       num.alleles.in.pairscan <- data.obj$num_alleles_in_pairscan
@@ -283,39 +277,44 @@ run.cape <- function(pheno.obj, geno.obj,
       data.obj$plot_pairscan("Pairscan.Regression.jpg", pairscan.obj, 
         phenotype = NULL, show.marker.labels = TRUE, show.alleles = FALSE)
       data.obj$save_rds(data.obj, results.file)
-    } 
+
   }
   
   #===============================================================
   # run reprametrization
   #===============================================================
   
-  if(error.prop.coef){
+
+  if(!data.obj$use_saved_results || is.null(data.obj$var_to_var_influences)){
     data.obj <- error.prop(data.obj, pairscan.obj, perm = FALSE, verbose = verbose,
       n.cores = n.cores, run.parallel = run.parallel)
     data.obj$save_rds(data.obj, results.file)
   }
   
-  if(error.prop.perm){	
+  if(!data.obj$use_saved_results || is.null(data.obj$var_to_var_influences_perm)){	
     data.obj <- error.prop(data.obj, pairscan.obj, perm = TRUE, verbose = verbose,
       n.cores = n.cores, run.parallel = run.parallel)
-    data.obj$save_rds(data.obj, results.file)
+     data.obj$save_rds(data.obj, results.file)
   }
   
-  data.obj <- calc.p(data.obj, pval.correction = data.obj$pval_correction)
-  
-  if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
-    transform.to.phenospace <- TRUE
-  }else{
-    transform.to.phenospace <- FALSE	
+  if(!data.obj$use_saved_results || is.null(data.obj$var_to_var_p_val)){
+    data.obj <- calc.p(data.obj, pval.correction = data.obj$pval_correction)
   }
   
-  data.obj <- direct.influence(data.obj, pairscan.obj, 
-    transform.to.phenospace = transform.to.phenospace, verbose = TRUE, 
-    pval.correction = data.obj$pval_correction, save.permutations = TRUE, 
-    n.cores = n.cores)
+  #if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
+  #  transform.to.phenospace <- TRUE
+  #}else{
+  #  transform.to.phenospace <- FALSE	
+  #}
   
-  data.obj$save_rds(data.obj, results.file)
+  if(!data.obj$use_saved_results || is.null(data.obj$max_var_to_pheno_influence)){
+    data.obj <- direct.influence(data.obj, pairscan.obj, 
+      transform.to.phenospace = transform.to.phenospace, verbose = TRUE, 
+      pval.correction = data.obj$pval_correction, save.permutations = TRUE, 
+      n.cores = n.cores)
+      data.obj$save_rds(data.obj, results.file)
+  }
+  
   
   data.obj$write_variant_influences("Variant.Influences.csv", p.or.q = max(c(p.or.q, 0.2)))
 
@@ -330,9 +329,15 @@ run.cape <- function(pheno.obj, geno.obj,
     p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
     covar.width = NULL, pheno.width = NULL)
 
-  data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, collapse.linked.markers = FALSE)
-  data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, threshold.power = 1, 
+  if(!data.obj$use_saved_results || is.null(data.obj$full_net)){
+    data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, 
+    collapse.linked.markers = FALSE)
+  }
+  
+  if(!data.obj$use_saved_results || is.null(data.obj$collapsed_net)){
+    data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, threshold.power = 1, 
     collapse.linked.markers = TRUE, plot.linkage.blocks = FALSE)
+  }
   
   data.obj$save_rds(data.obj, results.file)
   
