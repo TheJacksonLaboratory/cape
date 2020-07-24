@@ -70,7 +70,7 @@
  
 plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main = NULL, 
                          color.scheme = c("DO/CC", "other"), pos.col = "brown", neg.col = "blue", 
-                         bg.col = "gray", light.dark = "l", node.border.lwd = 1, layout.matrix = NULL, 
+                         bg.col = "gray", light.dark = "f", node.border.lwd = 1, layout.matrix = NULL, 
                          zoom = 1, xshift = 0, yshift = 0, node.radius = 1, label.nodes = TRUE, 
                          label.offset = 0, label.cex = 1, legend.radius = 1, legend.cex = 1, 
                          legend.position = "topleft", arrow.offset = node.radius, arrow.length = 0.2, 
@@ -118,9 +118,12 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
   #is subdivided into polygons each with a different color
   #This is for adding information to nodes about which phenotypes they
   #have main effects on
-  plot.net.point <- function(x, y, node.radius = node.radius, cols = c("green", "green", "red"), node.label = NULL, label.offset = 0, label.cex = 1, border.col){
+  plot.net.point <- function(x, y, node.radius = node.radius, 
+  cols = c("green", "green", "red"), node.label = NULL, label.offset = 0, 
+  label.cex = 1, border.col){
     
-    draw.pie(x = x, y = y, radius = node.radius, cols = cols, add = TRUE, node.border.lwd = node.border.lwd, border.col = border.col)
+    draw.pie(x = x, y = y, radius = node.radius, cols = cols, add = TRUE, 
+    node.border.lwd = node.border.lwd, border.col = border.col)
     
     
     if(!is.null(node.label)){
@@ -228,8 +231,7 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
   }else{	
     
     edgelist <- matrix(c(as.vector(interactions[,1]), as.vector(interactions[,2])), ncol = 2, byrow = FALSE)
-    
-    
+        
     net <- graph.edgelist(edgelist)
     vertex.names <- V(net)$name
     
@@ -281,10 +283,15 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
     plot.new()
     plot.window(xlim = c(minx, maxx), ylim = c(miny, maxy))
     par(xpd = TRUE)
-    plot.net.edges(net = net, net.layout = zoomed.coord, lwd = edge.lwd, edge.col = edge.col, arrow.offset = arrow.offset)
+    plot.net.edges(net = net, net.layout = zoomed.coord, lwd = edge.lwd, 
+    edge.col = edge.col, arrow.offset = arrow.offset)
     
     for(i in 1:length(V(net)$name)){
-      plot.net.point(x = zoomed.coord[i,1], y = zoomed.coord[i,2], node.radius = node.radius, cols = get.node.cols(node.name = V(net)$name[i], phenotypes = phenotypes, main.effects = main.effects), node.label = vertex.names[i], label.offset = label.offset, label.cex = label.cex, border.col = block.cols[i])
+      plot.net.point(x = zoomed.coord[i,1], y = zoomed.coord[i,2], 
+      node.radius = node.radius, 
+      cols = get.node.cols(node.name = V(net)$name[i], phenotypes = phenotypes, main.effects = main.effects), 
+      node.label = vertex.names[i], label.offset = label.offset, 
+      label.cex = label.cex, border.col = block.cols[i])
     }
     
     if(legend.position == "topleft"){

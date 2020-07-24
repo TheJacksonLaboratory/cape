@@ -28,10 +28,7 @@
 #' added to an existing plot (TRUE) or drawn on a new plot (FALSE).
 #'
 #' @export 
-draw.pie <- function(x = 0.5, y = 0.5, radius = 1, cols = c("red", "green"), 
-                       border.col = "black", node.border.lwd = 1, labels = NULL, 
-                       edges = 200, label.cex = 1, xlim = NULL, ylim = NULL, 
-                       add = TRUE){
+draw.pie <- function(x = 0.5, y = 0.5, radius = 1, cols = c("red", "green"), border.col = "black", node.border.lwd = 1, labels = NULL, edges = 200, label.cex = 1, xlim = NULL, ylim = NULL, add = TRUE){
   
   pies <- rep(1, length(cols))
   init.angle = 0
