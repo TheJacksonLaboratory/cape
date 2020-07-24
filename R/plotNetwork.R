@@ -127,9 +127,9 @@ plotNetwork <- function(data.obj, marker.pairs = NULL, collapsed.net = TRUE,
       chr.char <- paste(chr, collapse = ", ")
       stop(paste("There is linkage between markers on chromosomes ", chr.char,". Please try a high r2.thresh.", sep = ""))
     }
-    min.pos <- min(all.pos[marker.locale])
-    max.pos <- max(all.pos[marker.locale])
-    total.length <- max(all.pos[all.chr == chr], na.rm =TRUE)
+    min.pos <- min(as.numeric(all.pos[marker.locale]))
+    max.pos <- max(as.numeric(all.pos[marker.locale]))
+    total.length <- max(as.numeric(all.pos[all.chr == chr]), na.rm =TRUE)
     return(c(chr, min.pos/total.length, max.pos/total.length))
   }
   
