@@ -15,7 +15,6 @@ qnormPheno <- function(data.obj, pheno.which = NULL, pheno.labels = NULL){
 	
 	all.pheno <- data.obj$pheno
 
-
 	if(is.null(pheno.which)){
 		pheno.names <- colnames(all.pheno)
 		}else{
@@ -29,12 +28,16 @@ qnormPheno <- function(data.obj, pheno.which = NULL, pheno.labels = NULL){
 	if(is.null(pheno.labels)){
 		pheno.labels <- pheno.names
 		}
+	
 		
-	pheno.num.pairs <- pair.matrix(1:length(pheno.labels))
-
-		layout.mat <- get.layout.mat(dim(pheno.num.pairs)[1])
+		layout.mat <- get.layout.mat(length(pheno.labels))
 		layout(layout.mat)
-		for(p in 1:nrow(pheno.num.pairs)){
-			qqplot(data.obj$pheno[,pheno.num.pairs[p,1]], data.obj$pheno[,pheno.num.pairs[p,2]], xlab = pheno.labels[pheno.num.pairs[p,1]], ylab = pheno.labels[pheno.num.pairs[p,2]])
+		for(p in 1:length(pheno.which)){
+			trait.locale <- which(colnames(data.obj$pheno) == pheno.which[p])
+			trait.vals <- data.obj$pheno[,trait.locale]
+			theo.norm <- rnorm(10000, mean(trait.vals, na.rm = TRUE), sd(trait.vals, na.rm = TRUE))
+			qqplot(trait.vals, theo.norm, xlab = pheno.labels[p], ylab = "Theoretical Normal Quantiles",
+			main = pheno.labels[p])
+			abline(0,1)
 			}
 	}
