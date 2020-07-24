@@ -14,6 +14,7 @@
 #' traits. The function also preserves the original trait matrix
 #' in a slot called raw.pheno.
 #'
+#'@export
 norm.pheno <- function(data.obj, mean.center = TRUE){
   
   pheno <- data.obj$pheno
