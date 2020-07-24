@@ -12,7 +12,7 @@
 #'
 #' @export
 
-remove.unused.markers <- function(data.obj, geno.obj){
+remove.unused.markers <- function(data.obj, geno.obj, verbose = FALSE){
   
   #we do not scan markers on the sex chromosomes
   #take these out here.
@@ -46,7 +46,7 @@ remove.unused.markers <- function(data.obj, geno.obj){
   
   #take out markers with no variation
   gene <- get.geno(data.obj, geno.obj)
-  cat("Checking for invariant markers.\n")
+  if(verbose){cat("Checking for invariant markers.\n")}
   allelic.variation <- function(one.gene){
   	allele.var <- apply(one.gene, 2, function(x) var(x, na.rm = TRUE))
   	if(all(allele.var == 0)){

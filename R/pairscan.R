@@ -147,7 +147,7 @@ pairscan <- function(data.obj, geno.obj = NULL,
     }
   }
   
-  cat("Performing pairwise tests...\n")
+  if(verbose){cat("Performing pairwise tests...\n")}
   #run one.pairscan for each phenotype with results in scanone.result
   if(!use.kinship){
     pairscan.results <- pairscan.noKin(data.obj, pheno.mat = pheno, 

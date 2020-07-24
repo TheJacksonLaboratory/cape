@@ -33,7 +33,7 @@
 #'   
 #' @export
 get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL, 
-	min.per.genotype = NULL, run.parallel = FALSE, n.cores = 4, verbose = TRUE){
+	min.per.genotype = NULL, run.parallel = FALSE, n.cores = 4, verbose = FALSE){
   
   if(!run.parallel){n.cores = 1}
   

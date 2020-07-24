@@ -141,7 +141,7 @@ run.cape <- function(pheno.obj, geno.obj,
   }
     
   if(verbose){cat("Removing unused markers...\n")}
-  data.obj <- remove.unused.markers(data.obj, geno.obj)
+  data.obj <- remove.unused.markers(data.obj, geno.obj, verbose = verbose)
   combined.data.obj <- delete_underscore(data.obj, geno.obj)
 
   data.obj <- combined.data.obj$data.obj
@@ -310,7 +310,7 @@ run.cape <- function(pheno.obj, geno.obj,
   
   if(!data.obj$use_saved_results || is.null(data.obj$max_var_to_pheno_influence)){
     data.obj <- direct.influence(data.obj, pairscan.obj, 
-      transform.to.phenospace = transform.to.phenospace, verbose = TRUE, 
+      transform.to.phenospace = transform.to.phenospace, verbose = verbose, 
       pval.correction = data.obj$pval_correction, save.permutations = TRUE, 
       n.cores = n.cores)
       data.obj$save_rds(data.obj, results.file)

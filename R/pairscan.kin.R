@@ -25,7 +25,7 @@
 #' The output is then further processed by \link{\code{pairscan}}.
 #' 
 pairscan.kin <- function(data.obj, geno.obj, scan.what, marker.pairs, 
-kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
+kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
   
   m = NULL #for appeasing R CMD check
   

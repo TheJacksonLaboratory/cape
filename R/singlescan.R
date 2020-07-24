@@ -160,7 +160,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0,
     model.family = model.family, n.cores = n.cores, run.parallel = run.parallel,
     verbose = verbose)
   }else{
-    cat("Not performing permutations...\n")	
+    if(verbose){cat("Not performing permutations in singlescan.\n")}
   }
   
   
@@ -305,7 +305,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0,
     
     #if there are covariates, run them through too
     if(!is.null(covar.table)){
-      cat("\nTesting covariates \n")
+      if(verbose){cat("\nTesting covariates \n")}
       #get corrected genotype and phenotype values for the overall kinship matrix
       if(use.kinship){
         sink(file.path(data.obj$results_path,"regress.warnings"))

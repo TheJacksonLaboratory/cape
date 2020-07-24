@@ -119,15 +119,15 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
         perm.data.obj <- select.markers.for.pairscan(data.obj, 
           singlescan.obj = single.scan.result, geno.obj, num.alleles = n.top.markers, 
           peak.density = data.obj$peak_density, window.size = data.obj$window_size, 
-          tolerance = data.obj$tolerance, plot.peaks = FALSE, verbose = TRUE)
+          tolerance = data.obj$tolerance, plot.peaks = FALSE, verbose = verbose)
       }
       if(marker.selection.method == "uniform"){
         perm.data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, 
-        num.alleles = ncol(data.obj$geno_for_pairscan), verbose = FALSE)	
+        num.alleles = ncol(data.obj$geno_for_pairscan), verbose = verbose)	
       }
       if(marker.selection.method == "effects.dist"){
         perm.data.obj <- select.markers.for.pairscan.dist(data.obj, 
-        singlescan.obj = single.scan.result, geno.obj, verbose = FALSE)		
+        singlescan.obj = single.scan.result, geno.obj, verbose = verbose)		
       }
     }else{ 
       
@@ -151,7 +151,7 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
     if(verbose){cat("\tGetting markers for permuted pairscan...\n")}
     top.marker.pairs <- get.pairs.for.pairscan(gene = perm.data.obj$geno_for_pairscan, 
       max.pair.cor = max.pair.cor, min.per.genotype = min.per.geno, 
-      run.parallel = run.parallel, n.cores = n.cores, verbose = FALSE)
+      run.parallel = run.parallel, n.cores = n.cores, verbose = verbose)
     total.pairs <- nrow(top.marker.pairs)
     num.to.add <- 10
     #we don't need to do extra permutations
