@@ -89,7 +89,12 @@ plotPoints <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.l
 			error.type = "se")
 			segments(x0 = (as.numeric(genotypes) - mean.bar.width), y0 = errors$means[g,], x1 = (as.numeric(genotypes) + mean.bar.width), col = geno.col[g], lwd = 3)
 			}
-		legend("topright", legend = genotypes, col = geno.col, pch = 1, title = marker2.label)
+		
+		par(xpd = TRUE)
+		legend(x = max(marker1.vals, na.rm = TRUE)*1.15, 
+		y = max(phenoV, na.rm = TRUE), 
+		legend = genotypes, col = geno.col, pch = 1, title = marker2.label)
+		par(xpd = FALSE)
 
 		
 		} #end case for if there are two markers

@@ -79,7 +79,12 @@
 #'
 #' @export
 
-plotEffects <- function(data.obj, geno.obj, marker1, marker2, pheno.type = "normalized", plot.type = c("l", "p", "b", "h"), error.bars = "none", ymin = NULL, ymax = NULL, covar = NULL, marker1.label = "", marker2.label = "", bin.continuous.genotypes = TRUE, ref.centered = TRUE, gen.model = "Additive", bins.marker1 = 50, bins.marker2 = 50){
+plotEffects <- function(data.obj, geno.obj, marker1, marker2 = NULL, 
+pheno.type = "normalized", plot.type = c("l", "p", "b", "h"),
+error.bars = "none", ymin = NULL, ymax = NULL, covar = NULL, 
+marker1.label = NULL, marker2.label = NULL, bin.continuous.genotypes = TRUE, 
+ref.centered = TRUE, gen.model = "Additive", bins.marker1 = 50, 
+bins.marker2 = 50){
 
 	plot.type = plot.type[1]
 		
@@ -116,8 +121,8 @@ plotEffects <- function(data.obj, geno.obj, marker1, marker2, pheno.type = "norm
     ind.pheno.locale <- match(common.ind, rownames(pheno))
     ind.geno.locale <- match(common.ind, rownames(marker.vals))
     
-    pheno.to.plot <- pheno[ind.pheno.locale,]
-    geno.to.plot <- marker.vals[ind.geno.locale,]
+    pheno.to.plot <- pheno[ind.pheno.locale,,drop=FALSE]
+    geno.to.plot <- marker.vals[ind.geno.locale,,drop=FALSE]
  	#==========================================
 
 
@@ -147,8 +152,8 @@ plotEffects <- function(data.obj, geno.obj, marker1, marker2, pheno.type = "norm
 	#============================================================
 	# assign the marker names
 	#============================================================
-	if(!is.null(marker1.label)){marker1.label = marker1}
-	if(!is.null(marker2.label)){marker2.label = marker2}
+	if(is.null(marker1.label)){marker1.label = marker1}
+	if(is.null(marker2.label)){marker2.label = marker2}
 	marker.names <- c(marker1.label, marker2.label)
 	#============================================================
 
@@ -165,9 +170,14 @@ plotEffects <- function(data.obj, geno.obj, marker1, marker2, pheno.type = "norm
 		phenoV = pheno.to.plot[,ph]
 		pheno.name = colnames(pheno)[ph]
 		marker1.vals <- geno.to.plot[,1]
-		marker2.vals <- geno.to.plot[,2]
+		if(!is.null(marker2)){
+			marker2.vals <- geno.to.plot[,2]
+		}else{
+			marker2.vals <- NULL
+		}
 		
 		if(plot.type == "h"){
+			if(is.null(marker2.vals)){stop("Two markers are required for the heat map.")}
 			IntHeat(phenoV, marker1.vals, marker2.vals, pheno.name,
 			marker1.label, marker2.label, bins1 = bins.marker1, bins2 = bins.marker2)
 		}
