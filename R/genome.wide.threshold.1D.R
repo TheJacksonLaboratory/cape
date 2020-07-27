@@ -43,9 +43,7 @@ genome.wide.threshold.1D <- function(data.obj, geno.obj, n.perm = 100,
                                      verbose = verbose){
   
   if(!run.parallel){n.cores = 1}
-  
-  require("evd")
-  
+    
   if(n.perm < 2){
     stop("You must do more than one permutation.")
   }

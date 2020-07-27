@@ -76,9 +76,7 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
                          legend.position = "topleft", arrow.offset = node.radius, arrow.length = 0.2, 
                          edge.lwd = 2){
   
-  
-  require(igraph)
-  
+    
   pheno.tables <- data.obj$max_var_to_pheno_influence
   phenotypes <- names(pheno.tables)	
   
