@@ -36,6 +36,7 @@ To install...
 After installation load cape with the following command:
 
 ```{r load_cape}
+set.seed(1234)
 library(cape)
 ```
 
@@ -820,18 +821,20 @@ Both the network figure and the adjacency matrix show direct influences of
 markers on the phenotypes as well as interactions between markers. As 
 expected, many NZO variants on multiple chromosomes show positive 
 effects on plasma insulin and glucose levels as well as on body weight. 
-Two loci had no main effects themselves, but enhanced the effects of 
-maternal obesity on glucose levels. 
 
-In the interaction plot below we can see that animals with obese mothers 
-had higher blood glucose levels than those with non-obese mothers. 
-However, those individuals with the heterozygous genotype at D13MIT54 
-showed a greater increase in glucose with obese mothers than did the 
-individuals with the NON genotype at this locus. Thus the NZO allele at 
-this locus enhances the effect of maternal obesity on blood glucose levels.
+We can plot individual interactions from the Variant Influences table
+to get a more detailed look at some of these interactions. There is a
+new plotting function in cape called `plot.effects` that can be used
+to plot the phenotypic effects of individual interactions in multiple
+different styles. 
+
+```{r plot_lines}
+plot.effects(data.obj = final.cross, geno.obj = obesity.geno, 
+marker1 = "D2Mit133_B", marker2 = "D15Mit159_B", plot.type = "b", 
+error.bars = "se")
+```
 
 
-# add effect plotting functions to cape and plot here
 
 It can also be seen in this figure why the direction of action from the 
 genetic locus to the maternal factor was inferred. The genetic locus
@@ -866,8 +869,6 @@ and R/qtlbim (@rqtlbim).
 **qnormPheno:**
 
 ## Output Files
-
-Variant.Influences.csv
 
 Network.Circular.jpg
 

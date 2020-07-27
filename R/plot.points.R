@@ -35,7 +35,6 @@
 plot.points <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label, marker2.label, ymin = NULL, ymax = NULL){
 	
 	
-	geno.col = c("purple", "green", "blue", "red", "black", "orange", "gold")
 	mean.bar.width = 0.15
 	jitter.factor = 0.1
 	upper.plot.buffer = 0.5
@@ -53,7 +52,9 @@ plot.points <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.
 
 		#get the genotype values
 		genotypes <- sort(unique(marker1.vals[which(!is.na(marker1.vals))]))
-			
+		geno.col <- colors.from.values(1:length(genotypes), use.pheatmap.colors = TRUE)
+		#barplot(rep(1, length(geno.col)), col = geno.col)
+		
 		stripchart(phenoV~as.factor(marker1.vals), vertical = TRUE, method = "jitter", 
 		jitter = jitter.factor, pch = 1, col = geno.col[1:length(genotypes)], 
 		xlab = marker1.label, ylab = pheno.name, ylim = c(ymin, ymax), main = pheno.name)
@@ -70,7 +71,7 @@ plot.points <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.
 
 		#get the genotype values for marker 2
 		genotypes <- sort(unique(marker2.vals[which(!is.na(marker2.vals))]))
-
+		geno.col <- colors.from.values(1:length(genotypes), use.pheatmap.colors = TRUE)
 
 		ind.cols <- rep(NA, length(phenoV))
 		for(g in 1:length(genotypes)){

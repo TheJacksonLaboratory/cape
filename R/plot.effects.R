@@ -181,7 +181,7 @@ plot.effects <- function(data.obj, geno.obj, marker1, marker2, pheno.type = "nor
 			}
 		if(plot.type == "b"){
 			plot.bars(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
-			marker2.label, ymin, ymax, error.bars)
+			marker2.label, ymin, ymax, error.bars, ref.centered)
 		}
 		
 	} #end looping through phenotypes

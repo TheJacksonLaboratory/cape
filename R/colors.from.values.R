@@ -65,7 +65,6 @@ grad.dir = c("high", "low", "middle", "ends"), color.fun = c("linear", "exponent
 exp.steepness = 1, global.color.scale = FALSE, global.min = NULL, global.max = NULL, 
 use.pheatmap.colors = FALSE, na.col = "lightgray"){
 
-		require(grid)
 	 	class.mat = NULL
 		#make sure Inf and -Inf are coded as NA
 		vals[which(!is.finite(vals))] <- NA

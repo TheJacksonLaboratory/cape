@@ -34,11 +34,12 @@
 #' @param error.bars A string indicating the type of error
 #' bars to draw. Can be "sd" for standard deviation, "se"
 #' for standard error, or "none".
-#'
+#' @param ref.centered Whether to center the effects
+#' on the reference genotype.
 #' @return None
 
 plot.bars <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
-marker2.label, ymin = NULL, ymax = NULL, error.bars){
+marker2.label, ymin = NULL, ymax = NULL, error.bars, ref.centered){
 
 		error.bar.width = 0.1
 		addline.width = 0.5
