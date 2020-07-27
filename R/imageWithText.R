@@ -77,54 +77,6 @@
 #' @return None
 
 
-col.names = colnames(mat), row.names = rownames(mat), row.text.adj = 1, row.text.shift = 0, 
-row.text.rotation = 0, col.text.rotation = 90, col.text.adj = 1, 
-col.text.shift = 0, show.text = TRUE, cex = 0.5, col.text.cex = 1, 
-row.text.cex = 1, main.cex = 1, split.at.vals = FALSE, split.points = 0, 
-col.scale = "gray", color.spread = 50, light.dark = "f", class.mat = NULL, 
-grad.dir = c("high", "low", "middle", "ends"), color.fun = c("linear", "exponential"), 
-exp.steepness = 1, global.color.scale = FALSE, global.min = NULL, global.max = NULL, 
-sig.digs = 3, use.pheatmap.colors = FALSE, na.col = "lightgray", gridlines = FALSE
-
-#' @param split.at.vals A logical value indicating whether
-#' the numbers should be broken into classes with different 
-#' colors.
-#' @param split.points If split.at.vals is TRUE, split.points
-#' is used to define multiple classes of numbers. For example,
-#' if split.points is 0, negative numbers will be assigned one
-#' class of colors, and positive numbers will be assigned another.
-#' @param col.scale One of c("green", "purple", "orange", "blue", 
-#' "brown", "gray") to indicate the color scale to be used. Defaults
-#' to gray.
-#' @param light.dark One of "l", "d", or "f" indicating whether
-#' the colors used should be light ("l"), dark ("d"), or from
-#' across the full spectrum ("f").
-#' @param grad.dir A string specifying how the color gradient 
-#' should be applied. If "high" higher values are given darker
-#' colors. If "low", lower values are given darker colors.
-#' If "middle" values in the middle of the spectrum are 
-#' given darker colors, and if "end" values at the ends
-#' of the spectrum are given darker colors.
-#' @param color.fun Either "linear" or "exponential" indicating
-#' how the colors should transition from light to dark across
-#' values.
-#' @param exp.steepness If color.fun is "exponential," exp.steepness
-#' indicates how quickly the colors should transition from light 
-#' to dark.
-#' @param global.color.scale Whether to impose a global minimum
-#' and maximum to the colors, or to use the values themselves to 
-#' determine the top and bottom of the color scale.
-#' @param global.min If global.color.scale is TRUE, the minimum
-#' value that should be assigned a color.
-#' @param global.max If global.color.scale is TRUE, the maximum
-#' value that should be assigned a color.
-#' @param use.pheatmap.colors If TRUE, all other color parameters
-#' are ignored, and colors like those used in the R package
-#' pheatmap are used instead.
-#' @param na.col The color to use for missing values.
-#'
-
-
 imageWithText <- function(mat, xlab = "", ylab = "", main = NULL, main.shift = 0.12, 
 col.names = colnames(mat), row.names = rownames(mat), row.text.adj = 1, row.text.shift = 0, 
 row.text.rotation = 0, col.text.rotation = 90, col.text.adj = 1, 
@@ -134,8 +86,6 @@ col.scale = "gray", color.spread = 50, light.dark = "f", class.mat = NULL,
 grad.dir = c("high", "low", "middle", "ends"), color.fun = c("linear", "exponential"), 
 exp.steepness = 1, global.color.scale = FALSE, global.min = NULL, global.max = NULL, 
 sig.digs = 3, use.pheatmap.colors = FALSE, na.col = "lightgray", gridlines = FALSE){
-
-		require(grid)
 		
 		#make sure Inf and -Inf are coded as NA
 		mat[which(!is.finite(mat))] <- NA
