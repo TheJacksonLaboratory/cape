@@ -32,7 +32,7 @@
 #'
 #' @return None
 
-plot.points <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label, marker2.label, ymin = NULL, ymax = NULL){
+plotPoints <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label, marker2.label, ymin = NULL, ymax = NULL){
 	
 	
 	mean.bar.width = 0.15

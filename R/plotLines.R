@@ -29,7 +29,7 @@
 #'
 #' @return None
 
-plot.lines <- function(phenoV, marker1.vals, marker2.vals = NULL, pheno.name, marker1.label, marker2.label, ymin = NULL, ymax = NULL, error.bars){
+plotLines <- function(phenoV, marker1.vals, marker2.vals = NULL, pheno.name, marker1.label, marker2.label, ymin = NULL, ymax = NULL, error.bars){
 	
 	error.bar.width = 0.15
 

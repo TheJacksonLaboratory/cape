@@ -38,7 +38,7 @@
 #' on the reference genotype.
 #' @return None
 
-plot.bars <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
+plotBars <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
 marker2.label, ymin = NULL, ymax = NULL, error.bars, ref.centered){
 
 		error.bar.width = 0.1

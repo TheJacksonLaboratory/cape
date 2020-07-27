@@ -79,7 +79,7 @@
 #'
 #' @export
 
-plot.effects <- function(data.obj, geno.obj, marker1, marker2, pheno.type = "normalized", plot.type = c("l", "p", "b", "h"), error.bars = "none", ymin = NULL, ymax = NULL, covar = NULL, marker1.label = "", marker2.label = "", bin.continuous.genotypes = TRUE, ref.centered = TRUE, gen.model = "Additive", bins.marker1 = 50, bins.marker2 = 50){
+plotEffects <- function(data.obj, geno.obj, marker1, marker2, pheno.type = "normalized", plot.type = c("l", "p", "b", "h"), error.bars = "none", ymin = NULL, ymax = NULL, covar = NULL, marker1.label = "", marker2.label = "", bin.continuous.genotypes = TRUE, ref.centered = TRUE, gen.model = "Additive", bins.marker1 = 50, bins.marker2 = 50){
 
 	plot.type = plot.type[1]
 		
@@ -172,15 +172,15 @@ plot.effects <- function(data.obj, geno.obj, marker1, marker2, pheno.type = "nor
 			marker1.label, marker2.label, bins1 = bins.marker1, bins2 = bins.marker2)
 		}
 		if(plot.type == "l"){
-			plot.lines(phenoV, marker1.vals, marker2.vals, pheno.name, 
+			plotLines(phenoV, marker1.vals, marker2.vals, pheno.name, 
 			marker1.label, marker2.label, ymin, ymax, error.bars)
 			}
 		if(plot.type == "p"){
-			plot.points(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
+			plotPoints(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
 			marker2.label, ymin, ymax)
 			}
 		if(plot.type == "b"){
-			plot.bars(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
+			plotBars(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
 			marker2.label, ymin, ymax, error.bars, ref.centered)
 		}
 		
