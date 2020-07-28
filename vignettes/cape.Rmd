@@ -828,21 +828,51 @@ new plotting function in cape called `plot.effects` that can be used
 to plot the phenotypic effects of individual interactions in multiple
 different styles. 
 
-```{r plot_lines}
-plot.effects(data.obj = final.cross, geno.obj = obesity.geno, 
-marker1 = "D2Mit133_B", marker2 = "D15Mit159_B", plot.type = "b", 
+For example, there is a positive interaction between Chrs 2 and 15
+in which the presence of the NZO allele on Chr 2 enhances the positive
+influence of the NZO allele on all traits.
+
+We can look at both the main effects and the interaction effects using 
+`ploEffects`. First to verify the positive effect of the marker on Chr 15,
+we can plot it by itself. Here we use `plot.type = l` which generates a line
+plot.
+
+```{r plot_main, fig.width = 7, fig.height = 3}
+plotEffects(data.obj = final.cross, geno.obj = obesity.geno, 
+marker1 = "D15Mit72_B", marker1.label = "Chr15", plot.type = "l", 
 error.bars = "se")
 ```
 
+We can then look at both markers together to see the enhanced
+effect of this allele when the Chr 2 NZO allele is present.
 
+```{r plot_int, fig.width = 7, fig.height = 3}
+plotEffects(data.obj = final.cross, geno.obj = obesity.geno, 
+marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1.label = "Chr2",
+marker2.label = "Chr15", plot.type = "l", error.bars = "se")
+```
 
-It can also be seen in this figure why the direction of action from the 
-genetic locus to the maternal factor was inferred. The genetic locus
-enhances the phenotypic effect of maternal obesity, but the genetic
-marker itself does not have a direct effect on glucose that can be 
-enhanced or suppressed by maternal obesity. Furthermore, the 
-phenotypic effects associated with this locus on insulin and body
-weight are not influenced by maternal obesity.
+We can see from this plot that the effect of the Chr 15 NZO allele
+is negligible when the Chr 2 NZO allele is present, but is quite 
+substantial when the Chr 2 NZO allele is present. Thus the NZO allele
+on Chr 2 enhances the positive effect of the Chr 15 allele across 
+all traits.
+
+We can look at this with other types of visualization. The bar plot
+below shows the same data in a different form. We can see here that the
+Chr 2 allele has a negative effect on the trait, while the Chr 15 allele
+has a small positive effect. However, when both NZO alleles are present, 
+all trait values are higher than expected from the additive effects alone.
+
+```{r int_bar, fig.width = 7, fig.height = 3}
+plotEffects(data.obj = final.cross, geno.obj = obesity.geno, 
+marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1.label = "Chr2",
+marker2.label = "Chr15", plot.type = "b", error.bars = "se")
+```
+
+There are several other plotting types that are worth exploring when looking
+at different types of interactions, including heat maps, and points for individual
+values. 
 
 These findings illustrate how `cape` is designed to find interactions that 
 simultaneously model all phenotypes under the assumption that interactions 
@@ -851,24 +881,66 @@ interaction network. Thus we recommend users assess single-phenotype epistasis
 using functions in `cape` or in parallel analyses using tools such as R/qtl2
 and R/qtlbim (@rqtlbim).
 
-## Plotting Functions
-**plotFullNetwork:**
+## List of Plotting Functions
+The following list describes the plotting functions available in cape.
+They are ordered by where you would probably use them in a cape analysis.
 
-**plotNetwork:**
+**histPheno:** Plots trait distributions as histograms. Helps identify
+whether traits are normally distributed.
 
-**plotPairscan:**
+**qnormPheno:** Plots trait quantiles compared to theoretical normal 
+quantiles. Helps identify whether traits are normally distributed.
 
-**plotPhenoCor:**
+**plotPhenoCor:** Plots the correlation between pairs of traits. 
+Includes individual trait distributions, correlation plots, and 
+correlation values. Points can be color-coded by a covariate or 
+another trait.
 
-**plotSinglescan:**
+**plotSVD:** Plots the results of the singular value decomposition
+that generates the eigentraits. Shows the total trait variance 
+explained by each eigentrait, as well as the contribution of 
+each trait to each eigentrait.
 
-**plotSVD:**
+**plotSinglescan:** Plots the results of the single-locus scan.
+Can plot either standardized effects or undstandardized effects.
+Also plots effects both by allele and by marker.
 
-**plotVariantInfluences:**
+**plotPairscan:** Plots the results of the pairwise scan.
 
-**qnormPheno:**
+**plotVariantInfluences:** Plots cape results as a heatmap. Genetic
+interactions are plotted in the main part of the heatmap, and main
+effects are plotted along the right-hand side. Positive and negative
+effects are distinguished by color. This plot is useful for identifying
+overall trends in interaction networks, particularly dense interaction 
+networks. 
 
-## Output Files
+**plotNetwork:** Plots cape results as a circular network. Genetic
+markers are laid out in a circle with traits in concentric circles
+around the chromosomes. Main effects are indicated in the trait 
+circles. Interactions are drawn as arrows between genetic markers
+or between genetic markers and covariates. This view is good for 
+identifying patterns on a finer scale than the heat map view, particularly 
+for sparse networks. This view is not very informative for dense networks.
+
+**plotFullNetwork:** Plots cape results in a standard network layout.
+Each marker is a node, and its main effects are shown in a pie chart
+in which each section of the pie is a trait. Interactions are shown 
+as arrows between nodes. This view is good for looking at overall
+network structure independent of genomic position. This view
+can be informative both for dense and sparse networks. The function 
+contains many arguments for adjusting the layout of the network for
+better visualization.
+
+**plotEffects:** Plots the effects of individual interactions on traits.
+This function is for exploring individual interactions in more detail.
+It can plot main effects and interaction effects as lines, points, bars,
+or heatmaps. To select individual interactions to plot, use the file
+plotVariantInfluences.csv or Variant.Influences.Interactions.csv. The 
+function plotVariantInfluences can also return these tables invisibly 
+without writing to a file. 
+
+## List of Output Files
+The following list describes each output file 
 
 Network.Circular.jpg
 
