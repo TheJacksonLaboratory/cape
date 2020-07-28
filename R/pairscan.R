@@ -1,34 +1,8 @@
-#' Perform regressions for all pairs of markers and all phenotypes.
+#' This function performs the pairwise scan on all markers.
 #'
 #' This function performs the pairwise regression on all selected marker pairs.
 #' The phenotypes used can be either eigentraits or raw phenotypes. Permutation
 #' testing is also performed.
-#'
-#' This function performs the pairwise scan on all markers.
-#'
-#' @details Not all marker pairs are necessarily tested. Before markers are
-#'   tested for interaction, they are checked for several conditions. Pairs are
-#'   discarded if (1) at least one of the markers is on the X chromosome, or (2)
-#'   there are fewer than min.per.genotype individuals in any of the genotype
-#'   combinations.
-#'
-#' @return This function returns an object assigned to pairscan.obj in 
-#' \link{\code{run.cape}}.
-#'
-#' The results object is a list of five elements:
-#' ref.allele: The allele used as the reference for the tests.
-#' max.pair.cor: The maximum pairwise correlation between marker pairs
-#' pairscan.results: A list with one element per trait. The element for
-#' each trait is a list of the following three elements:
-#'    pairscan.effects: the effect sizes from the linear models
-#'    pairscan.se: the standard erros from the linear models
-#'    model.covariance: the model covariance from the linear models.
-#' pairscan.perm: The same structure as pairscan.results, but for the
-#' permuted data.
-#' pairs.tested.perm: A matrix of the marker pairs used in the permutation
-#' tests.
-#'   
-#' @seealso \code{\link{select.markers.for.pairscan}}, \code{\link{plotPairscan}}
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
@@ -64,6 +38,31 @@
 #' @param run.parallel Whether to run the analysis on parallel CPUs
 #' @param n.cores The number of CPUs to use if run.parallel is TRUE
 #' @param verbose Whether to write progress to the screen
+#'
+#'
+#' @details Not all marker pairs are necessarily tested. Before markers are
+#'   tested for interaction, they are checked for several conditions. Pairs are
+#'   discarded if (1) at least one of the markers is on the X chromosome, or (2)
+#'   there are fewer than min.per.genotype individuals in any of the genotype
+#'   combinations.
+#'
+#' @return This function returns an object assigned to pairscan.obj in 
+#' \link{\code{run.cape}}.
+#'
+#' The results object is a list of five elements:
+#' ref.allele: The allele used as the reference for the tests.
+#' max.pair.cor: The maximum pairwise correlation between marker pairs
+#' pairscan.results: A list with one element per trait. The element for
+#' each trait is a list of the following three elements:
+#'    pairscan.effects: the effect sizes from the linear models
+#'    pairscan.se: the standard erros from the linear models
+#'    model.covariance: the model covariance from the linear models.
+#' pairscan.perm: The same structure as pairscan.results, but for the
+#' permuted data.
+#' pairs.tested.perm: A matrix of the marker pairs used in the permutation
+#' tests.
+#'   
+#' @seealso \code{\link{select.markers.for.pairscan}}, \code{\link{plotPairscan}}
 #'
 #' @export
 pairscan <- function(data.obj, geno.obj = NULL,
