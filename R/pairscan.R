@@ -164,18 +164,18 @@ pairscan <- function(data.obj, geno.obj = NULL,
   pairscan.obj$pairscan.results <- pairscan.results	
   
   if(pairscan.null.size > 0){	
-    if(use.kinship){
-      pairscan.perm <- pairscan.null.kin(data.obj, geno.obj, kin.obj, 
-        scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
-        max.pair.cor = max.pair.cor, min.per.genotype, verbose = verbose, 
-        marker.selection.method = marker.selection.method, 
-        run.parallel = run.parallel, n.cores = n.cores)
-    }else{
+    #if(use.kinship){
+    #  pairscan.perm <- pairscan.null.kin(data.obj, geno.obj, kin.obj, 
+    #    scan.what = scan.what, pairscan.null.size = pairscan.null.size, 
+    #    max.pair.cor = max.pair.cor, min.per.genotype, verbose = verbose, 
+    #    marker.selection.method = marker.selection.method, 
+    #    run.parallel = run.parallel, n.cores = n.cores)
+    #}else{
       pairscan.perm <- pairscan.null(data.obj, geno.obj, scan.what = scan.what, 
         pairscan.null.size = pairscan.null.size, max.pair.cor = max.pair.cor, 
         min.per.genotype, verbose = verbose, marker.selection.method = marker.selection.method, 
         run.parallel = run.parallel, n.cores = n.cores)
-    }
+    #}
     #add the results to the data object
     pairscan.obj$pairscan.perm <- pairscan.perm$pairscan.perm 
     #add the results to the data object
