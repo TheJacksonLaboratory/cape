@@ -244,7 +244,9 @@ run.cape <- function(pheno.obj, geno.obj,
       }
       
       if(marker.selection.method == "from.list"){
+        if(is.null(data.obj$snp_file)){stop("Please specify a marker list in the parameter file.\n")}
         snp.file <- file.path(results.path, data.obj$snp_file)
+        if(!file.exists(snp.file)){stop("Can't fine the specified marker list.\n")}
         specific.markers <- as.matrix(read.table(snp.file, sep = "\t", stringsAsFactors = FALSE))
         data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj,
           specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
