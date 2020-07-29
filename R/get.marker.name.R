@@ -9,7 +9,7 @@
 #' @return A vector the same length as the input 
 #' markers vector indicating the name of each marker
 #'
-
+#' @export
 get.marker.name <- function(data.obj, markers){
   
   if(is.null(markers)){return(NULL)}

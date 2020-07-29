@@ -12,7 +12,8 @@
 #' @return A vector the same length as the input markers vector
 #' indicating which chromosome each marker in markers lives on.
 #'
-
+#' @export 
+#' 
 get.marker.chr <- function(data.obj, markers, character.names = TRUE){
   
   und.check <- grep("_", markers)

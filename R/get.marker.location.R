@@ -11,6 +11,7 @@
 #' @return A vector the same length as the input markers vector
 #' indicating the genomic coordinate of each marker.
 #'
+#' @export
 
 get.marker.location <- function(data.obj, markers){
   
