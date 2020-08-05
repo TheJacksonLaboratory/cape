@@ -117,7 +117,7 @@ pop=c("MPP","2PP","RIL")){
   if(!("calc_genoprob" %in% class(geno.obj)) & pop=="RIL"){
     writePopulation(data.obj, geno.obj, filename = file.path(qtl.path, qtl.file), na = "")
     cross<-qtl::read.cross(format="csv", dir = qtl.path, qtl.file, genotypes=c(0,.5,1))
-    unlink(qtl.file) #delete the file
+    unlink(file.path(qtl.path, qtl.file)) #delete the file
     cross<-qtl::convert2risib(cross)
     cross<-qtl::jittermap(cross)
     qtlprobs<-qtl::calc.genoprob(cross)
@@ -135,7 +135,7 @@ pop=c("MPP","2PP","RIL")){
     writePopulation(data.obj, geno.obj, filename = file.path(qtl.path, qtl.file), 
     na = "")
     cross<-qtl::read.cross(format="csv", dir = qtl.path, qtl.file, genotypes=c(0,.5,1))
-    unlink(qtl.file) #delete the file
+    unlink(file.path(qtl.path, qtl.file)) #delete the file
     qtlprobs<-qtl::calc.genoprob(cross)
     probs<-qtl2convert::probs_qtl_to_qtl2(qtlprobs)
     genoprobs<-probs$probs
@@ -251,6 +251,6 @@ pop=c("MPP","2PP","RIL")){
   if(length(K) == 1){
     K <- K[[1]]
   }
-  
+
   return(K)
 }
