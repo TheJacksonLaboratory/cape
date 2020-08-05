@@ -7,7 +7,7 @@
 #' provided in the argument bins
 #' 
 #' @param vectorX A vector of numeric values to bin
-#' @bins A vector of values to snap the values in vectorX to.
+#' @param bins A vector of values to snap the values in vectorX to.
 #' 
 #' @return A vector the same length as vectorX in which 
 #' each value in vectorX has been sent to the nearest value
