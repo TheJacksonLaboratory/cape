@@ -35,7 +35,7 @@ To install...
 
 After installation load cape with the following command:
 
-```{r load_cape}
+```{r load_cape, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE}
 set.seed(1234)
 library(cape)
 ```
