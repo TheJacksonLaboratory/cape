@@ -111,13 +111,16 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     
     
     covar.locale <- which(covar.names %in% m)
+    if(length(covar.locale) > 0){
+      new.covar <- new.covar[,-covar.locale,drop=FALSE]
+    }
     int.term = solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]]
     
     pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, 
     		genotype.matrix = new.geno, int = int.term, 
-    		covar.vector = new.covar[,-covar.locale,drop=FALSE], 
-    		paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = verbose, 
-    		run.parallel = run.parallel, n.cores = n.cores)
+    		covar.vector = new.covar, paired.markers = matrix(m, ncol = 2), 
+        n.perm = 0, verbose = verbose, run.parallel = run.parallel, 
+        n.cores = n.cores)
     
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)
@@ -139,7 +142,6 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     covar.vector <- covar.info$covar.table
     pheno.vector <- pheno[,p,drop=FALSE]
     
-    
     #sink the warnings from regress about solutions close to zero to a file
     sink(file.path(data.obj$results_path,"regress.warnings"))
     if(class(kin.obj) == "matrix"){
@@ -149,7 +151,8 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     }else{
       #If we are using LTCO
       chr.pairs <- Reduce("rbind", strsplit(names(kin.obj), ","))
-      kin.dat <- apply(chr.pairs, 1, function(x) kinship.on.the.fly(kin.obj, geno, x[1], x[2], phenoV = pheno.vector, covarV = covar.vector))
+      kin.dat <- apply(chr.pairs, 1, function(x) kinship.on.the.fly(kin.obj, geno, 
+      x[1], x[2], phenoV = pheno.vector, covarV = covar.vector))
     }
     sink(NULL) #stop sinking output
     
