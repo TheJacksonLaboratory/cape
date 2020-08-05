@@ -3,6 +3,7 @@
 #' @param data.obj a \code{\link{Cape}} object
 #' @param markers.to.remove A vector of marker names to be removed.
 #' 
+#' @export
 remove.markers <- function(data.obj, markers.to.remove){
   
   marker.idx <- match(markers.to.remove, data.obj$geno_names[[3]])
