@@ -71,7 +71,7 @@ pop=c("MPP","2PP","RIL")){
     
     map$pos<-as.numeric(sapply(temp,"[",2)) #pulls second column and makes it a list
     
-    data.obj$save_rds(map,"map.RData")
+    #data.obj$save_rds(map,"map.RData")
     
     genoprobs<-qtl2convert::probs_doqtl_to_qtl2(geno.obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
@@ -97,7 +97,7 @@ pop=c("MPP","2PP","RIL")){
     
     map$pos <- as.list(data.obj$marker_location)
     
-    data.obj$save_rds(map,"map.RData")
+    #data.obj$save_rds(map,"map.RData")
     
     genoprobs<-qtl2convert::probs_doqtl_to_qtl2(geno.obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
@@ -160,7 +160,7 @@ pop=c("MPP","2PP","RIL")){
       
       map<-qtl2convert::map_df_to_list(map,pos_column = "pos")
       
-      data.obj$save_rds(map,"map.RData")
+      #data.obj$save_rds(map,"map.RData")
       
       K<-qtl2::calc_kinship(probs=genoprobs,type=type, cores=n.cores)}
     
