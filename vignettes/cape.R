@@ -1,4 +1,5 @@
 ## ----load_cape----------------------------------------------------------------
+set.seed(1234)
 library(cape)
 
 ## ----read_csv_format----------------------------------------------------------
@@ -77,4 +78,19 @@ cat(paste0("![](", circ.net.file, ")\n"))
 ## ----net_vis, results = "asis", echo = FALSE----------------------------------
 net.file <- here("demo", "demo_qtl", "Network.View.jpg")
 cat(paste0("![](", net.file, ")\n"))
+
+## ----plot_main, fig.width = 7, fig.height = 3---------------------------------
+plotEffects(data.obj = final.cross, geno.obj = obesity.geno, 
+marker1 = "D15Mit72_B", marker1.label = "Chr15", plot.type = "l", 
+error.bars = "se")
+
+## ----plot_int, fig.width = 7, fig.height = 3----------------------------------
+plotEffects(data.obj = final.cross, geno.obj = obesity.geno, 
+marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1.label = "Chr2",
+marker2.label = "Chr15", plot.type = "l", error.bars = "se")
+
+## ----int_bar, fig.width = 7, fig.height = 3-----------------------------------
+plotEffects(data.obj = final.cross, geno.obj = obesity.geno, 
+marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1.label = "Chr2",
+marker2.label = "Chr15", plot.type = "b", error.bars = "se")
 

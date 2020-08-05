@@ -2,10 +2,33 @@
 % Please edit documentation in R/get.line.R
 \name{get.line}
 \alias{get.line}
-\title{This function returns the points on a line between two points}
+\title{Get line coordinates}
 \usage{
 get.line(x0, y0, x1, y1, dens = 5e-04)
 }
+\arguments{
+\item{x0}{The x coordinate of the starting point
+for the line}
+
+\item{y0}{The y coordinate of the starting point
+for the line}
+
+\item{x1}{The x coordinate of the ending point
+for the line}
+
+\item{y1}{The y coordinate of the ending point
+for the line}
+
+\item{dens}{A numerical value indicating the density
+of points to define along the line. Small values lead
+to more densely calculated points.}
+}
+\value{
+A list with two elements, x and y. These 
+elements hold the x and y coordinates respectively 
+for drawing the line.
+}
 \description{
-This function returns the points on a line between two points
+This function generates points along a line
+whose coordinates are user-defined.
 }

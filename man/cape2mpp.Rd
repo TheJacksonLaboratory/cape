@@ -7,15 +7,18 @@
 cape2mpp(data.obj, geno.obj = NULL)
 }
 \arguments{
-\item{data.obj}{a \code{\link{read.population}} object}
+\item{data.obj}{a data.obj formatted for cape 1.0}
 
-\item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
+\item{geno.obj}{a genotype object. If geno.obj is NULL
+the genotype object is generated from data.obj$geno.}
 }
 \value{
+This function returns a list with two objects:
 \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
+These two objects must be separated again to run through 
+cape.
 }
 \description{
-This function converts an old cape object to
-capeDO objects. The genotype object should ideally
-be separate from the rest of the data
+This function converts an object formatted for cape 1.0
+to an object formatted for cape 2.0
 }

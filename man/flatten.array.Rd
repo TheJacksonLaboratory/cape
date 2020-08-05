@@ -2,7 +2,8 @@
 % Please edit documentation in R/flatten.array.R
 \name{flatten.array}
 \alias{flatten.array}
-\title{drop the 3rd dimension of an array using a summary function, e.g., min max, mean}
+\title{Drop the 3rd dimension of an array using a summary 
+function, e.g., min max, mean}
 \usage{
 flatten.array(arrayX, margin1, margin2, slice.fun)
 }
@@ -16,12 +17,12 @@ flatten.array(arrayX, margin1, margin2, slice.fun)
 \item{slice.fun}{summary function, e.g., \code{function(x) mean(x, na.rm = TRUE)}}
 }
 \value{
-an updated cape object
+A 2D matrix summarizing the input array
 }
 \description{
 This function takes in a 3D array of values, effects or t.stats, etc.
 and returns a 2D matrix in wich each entry contains a single value
 representing all corresponding entries in the 3rd dimension. This
-number is determined by the function the user uses. It could be min,
+number is determined by the function specified by the user. It could be min,
 max, mean, etc.
 }

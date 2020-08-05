@@ -13,6 +13,10 @@ get.layout.mat(num.panes, type = c("landscape", "upright"))
 should have more columns than rows ("landscape"), or more rows than 
 columns ("upright"), if the resulting matrix is not square.}
 }
+\value{
+A layout matrix with positions for each element in num.panes
+and zeros filling the rest of the rectangle where nothing will be plotted.
+}
 \description{
 This function is for automatically deciding how to lay out multiple
 images per page. It takes as an argument the number of images the user

@@ -2,22 +2,26 @@
 % Please edit documentation in R/get.col.num.R
 \name{get.col.num}
 \alias{get.col.num}
-\title{Find the column number of a pheno type from it's name}
+\title{Find column numbers using column names}
 \usage{
 get.col.num(data.mat, col.which = NULL, dim.which = 2)
 }
 \arguments{
-\item{data.mat}{a labeled matrix of phenotype with columns as phenotypes}
+\item{data.mat}{a matrix with column names}
 
-\item{col.which}{a character string name of a phenotype column header}
+\item{col.which}{a character string indicating which column should be identified
+If col.which is numeric the number is returned.}
 
-\item{dim.which}{in the absence of a column header, use an integer here to select a column}
+\item{dim.which}{A number indicating whether the algorithm should look
+in rows (1) or columns (2) for the name.}
 }
 \value{
-None, output artifacts are saved to the results.dir directory
+A numeric value indicating the column number corresponding
+to the name given by col.which. If col.which was a number, col.which
+is returned.
 }
 \description{
 This is an internal function to find the
 column numbers of phenotypes when names
-are put in instead of column numbers
+are put in instead of column numbers.
 }

@@ -2,16 +2,21 @@
 % Please edit documentation in R/consec.pairs.R
 \name{consec.pairs}
 \alias{consec.pairs}
-\title{consec.pairs}
+\title{Generate a matrix of consecutive elements}
 \usage{
 consec.pairs(elements)
 }
 \arguments{
-\item{elements}{a vector of elements to be paired up}
+\item{elements}{a vector of elements}
 }
 \value{
-a matrix with two duplicated columns of elements
+a matrix with two columns. The first column
+is identical to elements with the last element taken
+off. And second column holds the next consecutive 
+element.
 }
 \description{
-Makes a matrix of consectutive pairs of elements
+Given a vector, this function generates a two-column
+matrix in which each row contains an element and its
+consecutive neighbor.
 }

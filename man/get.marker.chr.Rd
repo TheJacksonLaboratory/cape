@@ -2,17 +2,24 @@
 % Please edit documentation in R/get.marker.chr.R
 \name{get.marker.chr}
 \alias{get.marker.chr}
-\title{This function returns the marker chromosome number with covariates 
-returning Chr 0}
+\title{Get chromosome numbers for markers}
 \usage{
 get.marker.chr(data.obj, markers, character.names = TRUE)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{markers}{covariate names}
+\item{markers}{A vector of marker names}
+
+\item{character.names}{A logical value indicating whether
+the marker names are characters (TRUE) or numbers (FALSE)}
+}
+\value{
+A vector the same length as the input markers vector
+indicating which chromosome each marker in markers lives on.
 }
 \description{
-This function returns the marker chromosome number with covariates 
-returning Chr 0
+Given a vector of marker names or numbers, this 
+function returns the chromosome on which each 
+marker lives.Covariates are assigned to chromsome 0.
 }

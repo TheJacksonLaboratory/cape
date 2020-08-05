@@ -2,9 +2,9 @@
 % Please edit documentation in R/remove.unused.markers.R
 \name{remove.unused.markers}
 \alias{remove.unused.markers}
-\title{Take out markers on the sex chromosomes}
+\title{Take out markers not used in cape}
 \usage{
-remove.unused.markers(data.obj, geno.obj)
+remove.unused.markers(data.obj, geno.obj, verbose = FALSE)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
@@ -15,6 +15,8 @@ remove.unused.markers(data.obj, geno.obj)
 an updated \code{\link{Cape}} object (data.obj)
 }
 \description{
-This function removes any markers in the geno.obj on the sex
-chromosomes as well as invariant markers.
+This function removes any markers that are not
+used in cape. This includes markers on the sex 
+chromosomes, mitochondrial markers, and any 
+invariant markers.
 }

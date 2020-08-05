@@ -2,15 +2,22 @@
 % Please edit documentation in R/get.marker.location.R
 \name{get.marker.location}
 \alias{get.marker.location}
-\title{This function returns the chromosomal marker location for a set of markers}
+\title{Get marker genomic position}
 \usage{
 get.marker.location(data.obj, markers)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{markers}{}
+\item{markers}{A vector of marker names}
+}
+\value{
+A vector the same length as the input markers vector
+indicating the genomic coordinate of each marker.
 }
 \description{
-This function returns the chromosomal marker location for a set of markers
+Given a vector of marker names or numers, this 
+function returns the genomic coordinates for
+each marker, not including the chromosome number,
+which is retrieved using \link{\code{get.marker.chr}}.
 }

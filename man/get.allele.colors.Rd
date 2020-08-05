@@ -2,15 +2,23 @@
 % Please edit documentation in R/get.allele.colors.R
 \name{get.allele.colors}
 \alias{get.allele.colors}
-\title{Makes an allele color table}
+\title{Get DO colors}
 \usage{
 get.allele.colors(color.scheme = c("DO/CC", "other"), alleles = NULL)
 }
 \arguments{
-\item{color.scheme}{"DO/CC" or "other"}
+\item{color.scheme}{"DO/CC" or "other" The default is "DO/CC"
+If set to "other", colors unrelated to the DO/CC are used.}
 
-\item{alleles}{an array af alleles in the set "AJ", "B6", "129", "NOD", "NZO", "CAST", "PWK", "WSB"}
+\item{alleles}{an vector af alleles in the set "AJ", "B6", "129", 
+"NOD", "NZO", "CAST", "PWK", "WSB". This argument can be used to 
+retrieve colors only for a subset of alleles.}
+}
+\value{
+A table with three columns corresponding to strain names,
+strain nicknames, and the assigned color values.
 }
 \description{
-Makes an allele color table
+This function returns the official DO allele colors.
+as described here \url{https://compgen.unc.edu/wp/?page_id=577}
 }

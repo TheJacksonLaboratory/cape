@@ -2,12 +2,15 @@
 % Please edit documentation in R/rotate.mat.R
 \name{rotate.mat}
 \alias{rotate.mat}
-\title{orients a matrix for proper display in a plot}
+\title{Orients a matrix for proper display in a plot}
 \usage{
 rotate.mat(mat)
 }
 \arguments{
 \item{mat}{a matrix}
+}
+\value{
+The matrix "mat" rotated 90 degrees.
 }
 \description{
 This function reassembles a matrix 

@@ -6,6 +6,14 @@
 \usage{
 calc.emp.p(obs.dist, null.dist)
 }
+\arguments{
+\item{obs.dist}{The observed distribution}
+
+\item{null.dist}{The null distribution}
+}
+\value{
+An empirical p value for each observed value
+}
 \description{
 This function uses ecdf to calculate empirical p values
 given a null distribution and an observed distribution

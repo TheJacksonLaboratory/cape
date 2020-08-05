@@ -2,15 +2,20 @@
 % Please edit documentation in R/get.marker.num.R
 \name{get.marker.num}
 \alias{get.marker.num}
-\title{This function takes in a vector of marker names and returns their number}
+\title{Get numbers for markers}
 \usage{
 get.marker.num(data.obj, markers)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{markers}{covariate names}
+\item{markers}{A vector of marker names}
+}
+\value{
+A vector the same length as the input markers vector
+indicating the number of each chromosome.
 }
 \description{
-This function takes in a vector of marker names and returns their number
+Given a vector of marker names or numbers, this 
+function returns the numeric index of each marker.
 }

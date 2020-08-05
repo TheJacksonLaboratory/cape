@@ -9,10 +9,11 @@
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
+\item{geno.obj}{a genotype object}
 }
 \value{
-\code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
+The data.obj is returned, and any markers that were
+not present in geno.obj are removed from data.obj$geno_names
 }
 \description{
 Removes markers from data.obj that are not present in the geno.obj

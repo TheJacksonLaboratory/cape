@@ -2,26 +2,22 @@
 % Please edit documentation in R/get.geno.R
 \name{get.geno}
 \alias{get.geno}
-\title{Gets the geno object whether it is put in separately or with the data.obj}
+\title{Gets the geno object}
 \usage{
 get.geno(data.obj, geno.obj)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{geno.obj}{a genotype object. If this is not supplied then it is generated here.}
+\item{geno.obj}{a genotype object.}
 }
 \value{
-\code{list("cape.obj" = cape.obj, "geno.obj" = geno.obj)}
+Returns the genotype array matching 
+the markers and individuals specified in 
+data.obj$geno_names
 }
 \description{
-This is an internal function that gets the geno 
-object whether it is put in separately or with 
-the data.obj it warns the user if it can't find 
-the genotypes. If the data object specifies that only a subset
-of loci, individuals, or alleles should be used
-the genotype object is subset before being returned
-This function essentially recreates the geno used
-in the original cape, so modifications to the code
-should be fairly minimal otherwise
+This is an internal function returns the 
+genotype matrix for scanning as defined by 
+the markers and individuals specified in
 }

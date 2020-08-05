@@ -2,27 +2,42 @@
 % Please edit documentation in R/get.stats.multiallele.R
 \name{get.stats.multiallele}
 \alias{get.stats.multiallele}
-\title{This function performs regressions and
-collects the relevant statistics.
-Take out markers on the sex chromosomes}
+\title{Perform linear regression on multi-allele markers.}
 \usage{
 get.stats.multiallele(phenotype, genotype, covar.table, ph.family, ref.col)
 }
 \arguments{
-\item{phenotype}{kinship corrected phenotype data}
+\item{phenotype}{A phenotype vector}
 
-\item{genotype}{kinship corrected genotype data}
+\item{covar.table}{The covariate matrix, with each covariate
+in a column, and each individual in a row.}
 
-\item{covar.table}{kinship corrected covariate data}
+\item{ph.family}{a character string for a description of the 
+error distribution. Can be either "gaussian" or "binomial"}
 
-\item{ph.family}{a character string for a description of the error distribution (see? "family" param in the glm function)}
+\item{ref.col}{The column belonging to the reference allele.
+The reference allele is removed from the genotype matrix so
+that the matrix is linearly independent. There are only n-1
+degrees of freedom in the genotype matrix, where n is the number
+of alleles.}
 
-\item{ref.col}{}
+\item{Individual}{genotypes of the marker being tested. 
+If this is a vector, it will be converted into a one-column 
+matrix. If it is a matrix, each column represents an allele,
+and each row represents an individual.}
 }
 \value{
 a list with "stats", "pval", "score"
+stats is a matrix holding the t statistics and slopes (beta coefficients)
+from the linear model.
+pval holds the p value for the marker overall
+and score holds the test statistic for the marker overall.
 }
 \description{
-This function removes any markers in the geno.obj on the sex
-chromosomes as well as invariant markers.
+This function performs the multi-allele version of 
+linear regression. It is used in \link{\code{singlescan}}
+and \link{\code{one.singlescan}}. It performs marker-by-marker
+linear regressions for each trait and adjusts for covariates.
+It collects parameters from the linear models and returns
+for downstream use.
 }

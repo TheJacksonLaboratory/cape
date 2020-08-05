@@ -2,20 +2,23 @@
 % Please edit documentation in R/pheno2covar.R
 \name{pheno2covar}
 \alias{pheno2covar}
-\title{Create a marker variable from a covariate phenotype}
+\title{Create a covariate from a trait}
 \usage{
 pheno2covar(data.obj, pheno.which)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{pheno.which}{array of covariate (phenotype) names from the parameters YAML file}
+\item{pheno.which}{vector of trait names to be used as covariates}
+}
+\value{
+Returns the data object with the specified traits removed
+from the phenotype matrix and transferred where they will be used
+as covariates. Information about assigned covariates can be retrieved
+with \link{\code{get.covar}}.
 }
 \description{
-This script takes a variable from the phenotype matrix
-for example, diet treament or sex and creates a marker
-variable that can be used as a covariate.
-It creates a marker that is numeric and assigns the 
-numeric value to each of the alleles at all loci for 
-the given individual.
+This function takes a variable from the phenotype matrix
+for example, diet treament or sex and converts it to
+a covariate.
 }

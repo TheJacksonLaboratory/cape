@@ -2,20 +2,21 @@
 % Please edit documentation in R/remove.ind.R
 \name{remove.ind}
 \alias{remove.ind}
-\title{This function removes individuals}
+\title{Remove individuals}
 \usage{
 remove.ind(data.obj, ind.to.remove = NULL, names.to.remove = NULL)
 }
 \arguments{
-\item{ind.to.remove}{}
+\item{ind.to.remove}{Indices of individuals to remove}
 
-\item{names.to.remove}{}
+\item{names.to.remove}{Names of individuals to remove
+Only one of ind.to.remove or names.to.remove should be specified.}
 
 \item{cape.obj}{a \code{\link{Cape}} object}
 }
 \value{
-an updated cape data object
+an updated cape data object with specified individuals removed.
 }
 \description{
-This function removes individuals
+Remove individuals
 }
