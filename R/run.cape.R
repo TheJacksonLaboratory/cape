@@ -56,8 +56,7 @@ run.cape <- function(pheno.obj, geno.obj,
   		marker_num = pheno.obj$marker_num,
   		marker_location = pheno.obj$marker_location,
   		geno_names = pheno.obj$geno_names,
-  		geno = geno.obj,
-  		use_kinship = TRUE
+  		geno = geno.obj
   )
   
   results.base.name <- gsub(".RData", "", results.file)
@@ -191,7 +190,7 @@ run.cape <- function(pheno.obj, geno.obj,
   
   singlescan.obj <- data.obj$read_rds(singlescan.results.file)
   
-  if (!exists("kin.obj")) {
+  if(!data.obj$use_kinship) {
     kin.obj <- NULL
   }
   
