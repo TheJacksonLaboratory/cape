@@ -1,4 +1,4 @@
-## ----load_cape----------------------------------------------------------------
+## ----load_cape, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE----
 set.seed(1234)
 library(cape)
 

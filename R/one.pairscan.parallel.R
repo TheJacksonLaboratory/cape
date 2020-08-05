@@ -31,7 +31,9 @@
 #' sizes, standard errors, and covariance matrices for the
 #' pairwise tests.
 #' 
-one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, int = NULL, covar.vector = NULL, paired.markers, n.perm = 0, run.parallel = FALSE, verbose = FALSE, n.cores = 4){
+one.pairscan.parallel <- function(data.obj, phenotype.vector, genotype.matrix, 
+int = NULL, covar.vector = NULL, paired.markers, n.perm = 0, run.parallel = FALSE, 
+verbose = FALSE, n.cores = 4){
   
   if(!run.parallel){n.cores = 1}		
   
