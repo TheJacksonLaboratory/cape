@@ -505,9 +505,9 @@ associated with the common components of groups of traits.
 Cape uses the function `plotSVD` to plot the results of the SVD. The 
 plot for the NON/NZO data set are shown below.
 
-```{r eigentraits, results = "asis", echo = FALSE, out.width = 4, out.height = 4}
+```{r eigentraits, results = "asis", echo = FALSE, out.width = '100%'}
 svd.file <- here("demo", "demo_qtl", "svd.jpg")
-cat(paste0("![](", svd.file, ")\n"))
+knitr::include_graphics(svd.file)
 ```
 
 In the example illustrated here, the first eigentrait captures 75\% of the 
@@ -620,9 +620,9 @@ idea of `cape` is that these coefficients can be combined across eigentraits
 and reparameterized to calculate how each pair of markers influences each 
 other directly and independently of eigentrait.
 
-```{r reparam_fig, results = "asis", echo = FALSE, fig.width = 3, fig.height = 3}
+```{r reparam_fig, results = "asis", echo = FALSE, out.width='100%'}
 reparam.file <- here("vignettes", "reparam.png")
-cat(paste0("![](", reparam.file, ")\n"))
+knitr::include_graphics(reparam.file)
 ```
 
 The first step in this reparameterization is to define two new parameters 
@@ -734,7 +734,7 @@ $$
 \sigma^{2}_{m_{12}} \cong \sum_{ij} \sigma^2_{\beta_{i}^{j}} \Bigg(\frac{\partial m_{12}}
 {\partial \beta_{i}^{j}}\Bigg)^2 + 2 \sum_{i<k, j < l} \sigma^2_{\beta^{j}_{i}\beta^{l}_{k}} \Bigg(\frac{\partial m_{12}}
 {\partial \beta^{j}_{i}} \Bigg) \Bigg(\frac{\partial m_{12}}{\partial \beta^{l}_{k}} \Bigg)
- $$
+$$
  
 In this equation, the indices $i$ and $k$ run over regression parameters and $j$ 
 and $l$ run from 1 to the number of traits. 
