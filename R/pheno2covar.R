@@ -48,6 +48,12 @@ pheno2covar <- function(data.obj, pheno.which){
     data.obj$covariates <- data.obj$covariates[-which(covar.var == 0)]
   }
 
+  #if after removing invariant covariates, there
+  #are none left, just return the data object.
+  if(length(data.obj$covariates) == 0){
+    return(data.obj)
+  }
+
   #the covariate's number starts after genetic markers and any existing phenotypic covariates
   start.covar <- max(as.numeric(data.obj$marker_num))+1+length(covar.info$covar.names)
   colnames(covar.table) <- start.covar:(start.covar+dim(covar.table)[2]-1)
