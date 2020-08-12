@@ -248,8 +248,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0,
       # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
       cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, 
       chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
-      sink(NULL)
       names(cor.data) <- chr.which
+      sink(NULL)
     }else{
       cor.data <- vector(mode = "list", length = 1)
       cor.data[[1]] <- list("corrected.pheno" = phenotype, "corrected.geno" = gene, 

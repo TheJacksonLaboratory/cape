@@ -34,7 +34,7 @@ covarV = NULL, verbose = FALSE){
     if(is.null(pair)){
       pair.name <- "overall"
     }else{
-      pair.name <- paste(pair, collapse = ",")
+      pair.name <- paste(unique(pair), collapse = ",")
     }
     
     if(verbose){cat("Chromosomes:", pair.name, "\n")}
@@ -113,8 +113,29 @@ covarV = NULL, verbose = FALSE){
     return(results)
   }
   
+  #only use LOCO, LTCO gives weird results  
+  use.loco <- TRUE
+  check.na <- is.na(chr1) || is.na(chr2)
+  check.null <- is.null(chr1) || is.null(chr2)
+  
+  if(any(c(check.na, check.null))){
+    use.loco = FALSE
+  }else{
+      if(chr1 != chr2){
+        use.loco <- FALSE
+      }
+    }
 
-  result <- get.g(pair = c(chr1, chr2), phenotype = phenoV, covarV = covarV)
+
+  if(use.loco){
+    chr.pair <- c(chr1, chr2)
+  }else{
+    chr.pair <- NULL
+  }
+
+  if(use.loco){cat("Using LOCO.\n")}else{cat("Using Overall Kinship Matrix.\n")}
+
+  result <- get.g(pair = chr.pair, phenotype = phenoV, covarV = covarV)
   
   
   return(result)

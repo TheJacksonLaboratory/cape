@@ -56,17 +56,22 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
       new.covar <- kin.dat$corrected.covar
       err.cov <- kin.dat$err.cov
     }else{
-      marker.chr <- get.marker.chr(data.obj, m)
-      non.covar <- setdiff(marker.chr, 0)
-      if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
-      if(length(non.covar) == 1){kin.name = paste(rep(non.covar, 2), collapse = ",")}
-      if(length(non.covar) == 2){kin.name = paste(marker.chr, collapse = ",")}
-      kin.locale <- which(names(kin.obj) == kin.name)
+      #taking out the LTCO option for now, since it has weird behavior
+      new.pheno <- kin.dat[[1]]$corrected.pheno
+      new.geno <- kin.dat[[1]]$corrected.geno
+      new.covar <- kin.dat[[1]]$corrected.covar
+      err.cov <- kin.dat[[1]]$err.cov
+    #  marker.chr <- get.marker.chr(data.obj, m)
+    #  non.covar <- setdiff(marker.chr, 0)
+    #  if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
+    #  if(length(non.covar) == 1){kin.name = paste(rep(non.covar, 2), collapse = ",")}
+    #  if(length(non.covar) == 2){kin.name = paste(marker.chr, collapse = ",")}
+    #  kin.locale <- which(names(kin.obj) == kin.name)
       
-      new.pheno <- kin.dat[[kin.locale]]$corrected.pheno
-      new.geno <- kin.dat[[kin.locale]]$corrected.geno
-      new.covar <- kin.dat[[kin.locale]]$corrected.covar
-      err.cov <- kin.dat[[kin.locale]]$err.cov			
+    #  new.pheno <- kin.dat[[kin.locale]]$corrected.pheno
+    #  new.geno <- kin.dat[[kin.locale]]$corrected.geno
+    #  new.covar <- kin.dat[[kin.locale]]$corrected.covar
+    #  err.cov <- kin.dat[[kin.locale]]$err.cov			
     }
     
     int.term = matrix(solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]], ncol = 1)
@@ -95,18 +100,23 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
       new.geno <- kin.dat$corrected.geno
       new.covar <- kin.dat$corrected.covar
       err.cov <- kin.dat$err.cov
+      #taking out LTCO option for now, since it has werid results
     }else{
-      marker.chr <- get.marker.chr(data.obj, m)
-      non.covar <- setdiff(marker.chr, 0)
-      if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
-      if(length(non.covar) == 1){kin.name = paste(rep(non.covar, 2), collapse = ",")}
-      if(length(non.covar) == 2){kin.name = paste(marker.chr, collapse = ",")}
-      kin.locale <- which(names(kin.obj) == kin.name)
+      new.pheno <- kin.dat[[1]]$corrected.pheno
+      new.geno <- kin.dat[[1]]$corrected.geno
+      new.covar <- kin.dat[[1]]$corrected.covar
+      err.cov <- kin.dat[[1]]$err.cov
+    #  marker.chr <- get.marker.chr(data.obj, m)
+    #  non.covar <- setdiff(marker.chr, 0)
+    #  if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
+    #  if(length(non.covar) == 1){kin.name = paste(rep(non.covar, 2), collapse = ",")}
+    #  if(length(non.covar) == 2){kin.name = paste(marker.chr, collapse = ",")}
+    #  kin.locale <- which(names(kin.obj) == kin.name)
       
-      new.pheno <- kin.dat[[kin.locale]]$corrected.pheno
-      new.geno <- kin.dat[[kin.locale]]$corrected.geno
-      new.covar <- kin.dat[[kin.locale]]$corrected.covar
-      err.cov <- kin.dat[[kin.locale]]$err.cov			
+    #  new.pheno <- kin.dat[[kin.locale]]$corrected.pheno
+    #  new.geno <- kin.dat[[kin.locale]]$corrected.geno
+    #  new.covar <- kin.dat[[kin.locale]]$corrected.covar
+    #  err.cov <- kin.dat[[kin.locale]]$err.cov			
     }
     
     

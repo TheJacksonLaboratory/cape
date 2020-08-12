@@ -591,7 +591,7 @@ using the markers on the remaining chromosomes as follows:
 
 $$ K = \frac{G \times G^T}{n},$$
 
-where $G and n is the number of markers in $G$. This matrix is then used to 
+where $G$ and n is the number of markers in $G$. This matrix is then used to 
 correct the genotype and phenotype matrices for kinship using hierarchical 
 linear models (@Kang:2008bx, @gelman2006data).
 

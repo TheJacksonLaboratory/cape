@@ -127,8 +127,8 @@ run.cape <- function(pheno.obj, geno.obj,
         data.obj$save_rds(geno.obj, imp.geno.file)
       
         # recalculate the kinship matrix with the updated objects
-        kin.obj <- Kinship(data.obj, geno.obj, type = "overall", pop = data.obj$pop)
-        data.obj$save_rds(kin.obj, kin.file.name)
+        #kin.obj <- Kinship(data.obj, geno.obj, type = "overall", pop = data.obj$pop)
+        #data.obj$save_rds(kin.obj, kin.file.name)
 
       } #end case for when there are missing values but no imputed genotypes
 
@@ -270,7 +270,8 @@ run.cape <- function(pheno.obj, geno.obj,
       pairscan.obj <- pairscan(data.obj, geno.obj, scan.what = scan.what, 
         pairscan.null.size = pairscan.null.size, min.per.genotype = min.per.genotype, 
         max.pair.cor = max.pair.cor, verbose = verbose, num.pairs.limit = Inf, 
-        overwrite.alert = FALSE, run.parallel = run.parallel, n.cores = n.cores, kin.obj = kin.obj)
+        overwrite.alert = FALSE, run.parallel = run.parallel, n.cores = n.cores, 
+        kin.obj = kin.obj)
       
       data.obj$save_rds(pairscan.obj, pairscan.file)
       
