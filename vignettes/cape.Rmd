@@ -461,7 +461,7 @@ LD in your population.
 ## Running cape
 Unlike previous versions of cape, which required the user to perform many 
 individual steps, this version of cape can be run with a single command 
-`run.cape()`. Now that we've done the hard work of reading in our data
+`run.cape`. Now that we've done the hard work of reading in our data
 and specifying our parameters, we can sit back and let the computer take 
 care of the rest. The line below runs the complete cape pipeline for the 
 demo NON/NZO mouse backcross. If you run this line interactively, set verbose
@@ -940,7 +940,7 @@ function plotVariantInfluences can also return these tables invisibly
 without writing to a file. 
 
 ## List of Output Files
-The following list describes each output file produced by `run.cape()`.
+The following list describes each output file produced by `run.cape`.
 Where we use `cross` below, this stands in for the user-defined 
 experiment name. The default experiment name in cape is "cross."
 
