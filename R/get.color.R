@@ -1,19 +1,27 @@
-#This internal function stores colors for image 
+#
 #plotting. Given a color name it returns the hex 
 #colors used to make color ramps
 
-
 #' get a hex color string
 #' 
-#' given a color name ("green", "purple", "red", "orange", "blue", "brown", "yellow", "gray")
-#' and a darkness ("f", "l", "d"), return the coressponding hex color string.
+#' This internal function stores colors for plotting.
+#' Given a color name ("green", "purple", "red", "orange", 
+#' "blue", "brown", "yellow", "gray")
+#' and a darkness: "l" for light colors, "d" for dark colors 
+#' and "f" for the full light/dark spectrum
+#' this function returns the corresponding ramp of colors.
 #'
-#' @param col.name string color name
-#' @param light.dar character in ("f", "l", "d")
+#' @param col.name string color name. Must be one of "green", 
+#' "purple", "red", "orange", "blue", "brown", "yellow", "gray"
+#' @param light.dark character value. One of ("f", "l", "d").
+#' "l" indicates light colors, "d" indicates dark colors, and "f"
+#' indicates colors ranging from light to dark.
 #'
-#' @return hex color string
+#' @return a vector of length four containing the hex colors 
+#' indicated by the parameters
 #'
 #' @export
+
 get.color <- function(col.name = c("green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"), light.dark = c("f", "l", "d")){
   
   

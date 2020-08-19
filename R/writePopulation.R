@@ -1,9 +1,8 @@
-#' Save the cross data in a CSV file
+#' Save the cross data in R/qtl CSV format
 #' 
-#' This function writes out a cape cross
-#' in a csv format so you can modify a
-#' cross and write it out in a nice format
-#' Gets the geno object whether it is put in separately or with the data.obj
+#' This function writes out a cape object
+#' in a csv format readable both by \link{\code{read.population}}
+#' in Cape or by read.cross in R/qtl.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
@@ -11,7 +10,13 @@
 #' @param na either NA or a character used to represent a missing data value in the output
 #' @param filename absolute or relative path to the output file's destination
 #'
+#' @references Broman et al. (2003) R/qtl: QTL mapping in experimental crosses. 
+#' Bioinformatics 19:889-890 doi:10.1093/bioinformatics/btg112
+#' 
+#' @return Writes a file to the destination path
+#'
 #' @export
+
 writePopulation <- function(data.obj, geno.obj, ref.allele = "A", na = NA, 
 filename = "capeData.csv"){
   

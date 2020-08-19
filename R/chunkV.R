@@ -1,5 +1,18 @@
-#' This function bins a vector into a given number of chunks
+#' Bins a vector into chunks
 #' 
+#' This function is used to chunk a vector into 
+#' bins. It is primarily used to divide jobs 
+#' sent to a certain number of parallel clusters. 
+
+#' @param V The vector to be divided into chunks
+#' @param num.chunks The number of chunks in which
+#' to bin the vector.
+#'
+#' @return This function returns a list of length 
+#' num.chunks. Each element in the list contains
+#' the elements of the vector that were assigned 
+#' to that bin.
+
 chunkV <- function(V, num.chunks){
   
   v.list <- vector(mode = "list", length = num.chunks)

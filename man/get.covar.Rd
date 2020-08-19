@@ -2,7 +2,7 @@
 % Please edit documentation in R/get.covar.R
 \name{get.covar}
 \alias{get.covar}
-\title{Get the phenotype-genotype covariate table}
+\title{Get covariate information}
 \usage{
 get.covar(data.obj)
 }
@@ -10,10 +10,14 @@ get.covar(data.obj)
 \item{data.obj}{a \code{\link{Cape}} object}
 }
 \value{
-Returns a list with "covar.names", "covar.type", "covar.loc", "covar.table"
+Returns a list with the following elements:
+covar.names: a character vector holding the names of the covariates  
+covar.type: a character vector indicating whether each covariate
+derived from the phenotype matrix ("p") or the genotype matrix ("g")
+covar.loc: A numeric vector indicating the locations of each covaraite
+covar.table: A matrix holding the individual values for each covariate.
 }
 \description{
-This function returns a covariate table that combines
-the covariates specified from phenotypes and those
-specified from genotypes
+This function returns information about the covariates
+specified for the cape run.
 }

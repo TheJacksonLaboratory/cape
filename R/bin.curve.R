@@ -1,18 +1,31 @@
-#' Bins a singlescan curve automatically into peaks
+#' Bins a single scan curve into peaks automiatically
 #' 
-#' First it finds the difference between all consecutive
-#' points in the vector. It then looks for runs of all
-#' positive and all negative values
-#' it smooths the curve using a window size based on the
-#' runs of all positive and all negative values
-#' it then removes fluctuations in the curve that are 
-#' smaller than the sd of the smoothed curve values
+#' This is an internal function used to select markers
+#' for the pair scan based on single scan results. The 
+#' algorithm first finds the difference between all 
+#  consecutive points in the vector. It then looks for 
+#' runs of all positive and all negative values.
+#' It smooths the curve and identifies peaks exceeding
+#' the threshold defined by amp.min.
 #' 
 #' @param the.curve vector representing the curve to be binned into peaks
 #' @param plot.peaks default = FALSE
-#' @param window.size 
-#' @param amp.min minimum amplitude
-#' 
+#' @param window.size A numeric value setting how many markers 
+#' should be included in each window. If NULL, the window size is
+#' set to the maximum number of consecutive rises or falls in the 
+#' curve
+#' @param amp.min A numeric value indicating the minimum magnitude
+#' of a peak. All peaks below this magnitude will be removed. If 
+#' NULL amp.min is set to the sd of the curve/2.
+#'
+#' @return This function returns a list with the following elements:
+#' bins: a vector the same length as the input curve identifying which
+#' peak each position was assigned to. 
+#' smoothed.curve: A vector defining the smoothed curve
+#' window.size: The input window.size or the cacluated window.size if 
+#' window.size was NULL
+#' amp.min: the input amp.min or calculated amp.min if amp.min was NULL
+
 bin.curve <- function(the.curve, plot.peaks = FALSE, window.size = NULL, amp.min = NULL){
   
     if(all(is.na(the.curve))){

@@ -2,16 +2,21 @@
 % Please edit documentation in R/check.geno.R
 \name{check.geno}
 \alias{check.geno}
-\title{Check to see if the genotype matrix is one of the covariates}
+\title{Check to see if the any markers in the supplied
+genotype matrix is one of the covariates.}
 \usage{
 check.geno(genotype, covar.table)
 }
 \arguments{
-\item{covar.table}{}
+\item{genotype}{The vector of genotype values for
+a single marker}
+
+\item{covar.table}{The table of covariates}
 }
 \value{
 covariates indices that match the genotype
 }
 \description{
-Check to see if the genotype matrix is one of the covariates
+Check to see if the any markers in the supplied
+genotype matrix is one of the covariates.
 }

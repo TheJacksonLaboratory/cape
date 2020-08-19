@@ -1,20 +1,52 @@
-#' This function writes out the significant influences as an edge list
+#' Write significant cape interactions to a csv file
 #' 
-#' This function takes in the final data object and writes the variant 
-#' influences that are at or below the specified significance level to a 
-#' file in the current working directory.
+#' This function takes in the final data object and 
+#' writes the variant influences that are at or below 
+#' the specified significance level.
 #' 
+#' The columns of the output file are the following:
+#'  Source: The marker that is the source of the directed interaction
+#'  Chr: The chromosome on which the source marker lives
+#'  Position: The genomic position of the source marker
+#'  Target: If the effect is an interaction, this column 
+#'    lists the marker that is the target of the directed interaction.
+#'    If the effect is a main effect, this column lists the 
+#'    trait that is the target of the main effect.
+#'  Chr: The chomosome on which the target marker lives.
+#'    If the effect is a main effect, this is listed as 0.
+#'  Position: The genomic position of the target marker. If
+#'    the effect is a main effect, this is listed as 1.
+#'  Conditioning: If the effect is a main effect, this column identifies
+#'    the marker on which the main effect marker was conditioned when
+#'    it had it's largest main effect.
+#'  Chr: If the effect is a main effect, this column lists the chromosome
+#'    on which the conditioning marker lives
+#'  Position: If the effect is a main effect, this column lists the
+#'    genomic position of the conditioning marker.
+#'  Effect: The effect size of the effect, either main effect or interaction.
+#'  SE: The standard error of the effect, either main effect or interaction.
+#'  |Effect|/SE: The standardized effect
+#'  P_empirical: The empirical p value calculated from permutations
+#'  p.adjusted: The p value adjusted by the method specified in the parameter file.
 #' @param data.obj a \code{\link{Cape}} object
 #' @param p.or.q A threshold indicating the maximum adjusted p value considered 
-#' significant. If an fdr method has been used to correct for multiple testing, 
-#' this value specifies the maximum q value considered significant.
-#' @param include.main.effects default = TRUE
+#'   significant. If an FDR method has been used to correct for multiple testing, 
+#'   this value specifies the maximum q value considered significant.
+#' @param include.main.effects Whether to include main effects (TRUE) or only
+#'    interaction effects (FALSE) in the output table.
 #' @param filename A character vector specifying the name of the file.
 #' @param delim A character string indicating the delimeter in the data file. 
-#' The default indicates a comma-separated file (",").
+#'    The default indicates a comma-separated file (",").
 #' @param mark.covar A logical value. If TRUE, an asterisk is appended the 
-#' names of markers used as covariates in the pair scan.
-#' @param write.file A logical value indicating whether the table should be written to a file or simply returned.
+#'  names of markers used as covariates in the pair scan.
+#' @param write.file A logical value indicating whether the table should be 
+#'   written to a file or simply returned.
+#'
+#' @return If write.file is TRUE, this function writes the results table
+#' to a file and invisibly returns the table. If write.file is FALSE, the
+#' function returns the results table without writing to file.
+#' 
+#' @export
 #' 
 writeVariantInfluences <- function(data.obj, p.or.q = 0.05, include.main.effects = TRUE, 
                                    filename = "Variant.Influences.csv", delim = ",", 

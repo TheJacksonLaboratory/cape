@@ -1,24 +1,22 @@
 #' Generates a null distribution for the pairscan
 #' 
-#' This script generates a null distribution
+#' This function generates a null distribution
 #' for the pairscan. For each permutation,
-#' it runs a single scan and selects the top
-#' N markers. It then uses these markers to
-#' perform a permutation of the pairscan.
-#' the null distribution generated here uses
-#' a fixed number of the TOP ranking markers
-#' from the permuted single scan
-#' TODO 
-#' we need to update it to use select.markers.for.pairscan
-#' if marker.selection.method is netwas, you need to provide
-#' a list of genes from the netWAS analysis
-#' 
+#' it runs a single scan and selects markers
+#' in the same manner as for the true test.
+#'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
 #' @param kin.obj a kinship object
 #' @param scan.what A character string uniquely identifying whether eigentraits
 #'   or raw traits should be scanned. Options are "eigentraits", "raw.traits"
-#' @param pairscan.null.size
+#' @param pairscan.null.size The total size of the null distribution.
+#' This is DIFFERENT than the number of permutations to run. Each permutation
+#' generates n choose 2 elements for the pairscan. So for example, a permutation
+#' that tests 100 pairs of markers will generate a null distribution of size 4950.
+#' This process is repeated until the total null size is reached. If the null size
+#' is set to 5000, two permutations of 100 markers would be done to get to a null
+#' distribution size of 5000.
 #' @param max.pair.cor A numeric value between 0 and 1 indicating the maximum
 #'   Pearson correlation that two markers are allowed. If the correlation
 #'   between a pair of markers exceeds this threshold, the pair is not tested.
@@ -30,16 +28,19 @@
 #' @param model.family Indicates the model family of the phenotypes. This can be 
 #'   either "gaussian" or "binomial".
 #' @param marker.selection.method options are "top.effects", "uniform", "effects.dist", "by.gene"
-#' @param gene.list boolean, only required for "by.gene" marker selection method
-#' @param run.parallel
-#' @param n.cores
-#' @param verbose boolean, default = FALSE
+#' @param run.parallel Whether to run the analysis on multiple CPUs.
+#' @param n.cores The number of CPUs to use if run.parallel is TRUE.
+#' @param verbose Whether to print progress to the screen.
+#' 
+#' @return This function returns a list with two elements, one containing
+#' the results of the permutations, and the other containing the markers
+#' that were tested in the individual permutations.
 #' 
 pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL, 
   scan.what = c("eigentraits", "raw.traits"), pairscan.null.size = NULL, 
   max.pair.cor = NULL, min.per.geno = NULL, model.family = "gaussian", 
   marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
-  run.parallel = FALSE, n.cores = 4, verbose = FALSE, gene.list = NULL){
+  run.parallel = FALSE, n.cores = 4, verbose = FALSE){
   
   marker.selection.method <- data.obj$marker_selection_method
   
@@ -124,14 +125,14 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
       }
     }else{ 
       
-      if(marker.selection.method == "by.gene"){
-        #if we are using a gene-based method
-        #use a permuted gene list to select
-        #SNPs near genes
-        perm.data.obj <- select.markers.for.pairscan.by.gene(perm.data.obj, ref.allele = ref.allele, geno.obj = geno.obj, 
-                                                             gene.list = sample(gene.list), num.snps = ncol(data.obj$geno_for_pairscan), 
-                                                             organism = data.obj$organism)
-      }
+      # if(marker.selection.method == "by.gene"){
+        # #if we are using a gene-based method
+        # #use a permuted gene list to select
+        # #SNPs near genes
+        # perm.data.obj <- select.markers.for.pairscan.by.gene(perm.data.obj, ref.allele = ref.allele, geno.obj = geno.obj, 
+                                                             # gene.list = sample(gene.list), num.snps = ncol(data.obj$geno_for_pairscan), 
+                                                             # organism = data.obj$organism)
+      # }
       if(marker.selection.method == "from.list"){
         single.scan.result <- list("ref.allele" = ref.allele)
         specific.markers <- colnames(perm.data.obj$geno_for_pairscan)

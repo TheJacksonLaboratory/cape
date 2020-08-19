@@ -1,7 +1,15 @@
-#' This function takes in a vector of marker names and returns their number
-#' @param data.obj a \code{\link{Cape}} object
-#' @param markers covariate names
+#' Get numbers for markers
 #' 
+#' Given a vector of marker names or numbers, this 
+#' function returns the numeric index of each marker.
+#' 
+#' @param data.obj a \code{\link{Cape}} object
+#' @param markers A vector of marker names 
+#' 
+#' @return A vector the same length as the input markers vector
+#' indicating the number of each chromosome.
+#'
+
 get.marker.num <- function(data.obj, markers){
   
   if(is.null(markers)){

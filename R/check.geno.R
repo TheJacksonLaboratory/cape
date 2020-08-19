@@ -1,11 +1,12 @@
-#' Check to see if the genotype matrix is one of the covariates
+#' Check to see if the any markers in the supplied
+#' genotype matrix is one of the covariates.
 #'
-#' @param genotype
-#' @param covar.table
+#' @param genotype The vector of genotype values for
+#' a single marker
+#' @param covar.table The table of covariates
 #' 
 #' @return covariates indices that match the genotype
 #'
-#' @export
 check.geno <- function(genotype, covar.table){
   
   if(is.null(covar.table)){

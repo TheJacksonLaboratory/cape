@@ -1,15 +1,37 @@
-#' Calculate the kinship correction matrix
+#' Calculate the kinship matrix
 #' 
-#' This function produces a realized relationship matrix (kinship matrix)
-#' for use in adjusting for the effect of inbred relatedness 
-#' plot.adj.mat is used to plot the covariance matrices
-#' vs. the positive definite matrices
+#' This function produces a realized relationship matrix 
+#' (kinship matrix) for use in adjusting for the effect 
+#' of inbred relatedness. We use the R/qtl2 function
+#' calc_kinship.
+#' 
+#' Broman KW, Gatti DM, Simecek P, Furlotte NA, Prins P, 
+#' Sen Ś, Yandell BS, Churchill GA (2018) R/qtl2: software
+#' for mapping quantitative trait loci with high-dimensional 
+#' data and multi-parent populations. Genetics
+#' 211:495-502 doi:10.1534/genetics.118.301595
+#' 
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
-#' @param type correction type, one option available for now: "overall"
-#' @param pop population type, "MPP" (multi-parental population), "2PP" (2 parents), "RIL" (recombinant inbred line)
-#' @param n.cores integer, default 4
+#' @param pop population type, "MPP" (multi-parental population), 
+#' "2PP" (2 parents), "RIL" (recombinant inbred line)
+#' @param n.cores The number of cores. Defaults to 4.
+#' 
+#' @details This uses the function probs_doqtl_to_qtl2 
+#' from qtl2convert:
+#' Karl W Broman (2019). qtl2convert: Convert Data 
+#' among R/qtl2, R/qtl, and DOQTL. http://kbroman.org/qtl2,
+#' https://github.com/rqtl/qtl2convert.
+#' And genoprob_to_alleleprob from qtl2.
+#'
+#' @return This function returns an n by n matrix, where 
+#' n is the number of individuals in the test population. 
+#' The entries of the matrix represent the level of relatedness
+#' between pairs of individuals. For more information see
+#' Kang, H. M. et al. Efficient control of population 
+#' structure in model organism association mapping. Genetics 
+#' 178, 1709–1723 (2008).
 #'
 #' @export
 Kinship<-function(data.obj, geno.obj, type=c("overall"), n.cores=4, 
@@ -49,7 +71,7 @@ pop=c("MPP","2PP","RIL")){
     
     map$pos<-as.numeric(sapply(temp,"[",2)) #pulls second column and makes it a list
     
-    data.obj$save_rds(map,"map.RData")
+    #data.obj$save_rds(map,"map.RData")
     
     genoprobs<-qtl2convert::probs_doqtl_to_qtl2(geno.obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
@@ -75,7 +97,7 @@ pop=c("MPP","2PP","RIL")){
     
     map$pos <- as.list(data.obj$marker_location)
     
-    data.obj$save_rds(map,"map.RData")
+    #data.obj$save_rds(map,"map.RData")
     
     genoprobs<-qtl2convert::probs_doqtl_to_qtl2(geno.obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
@@ -95,7 +117,7 @@ pop=c("MPP","2PP","RIL")){
   if(!("calc_genoprob" %in% class(geno.obj)) & pop=="RIL"){
     writePopulation(data.obj, geno.obj, filename = file.path(qtl.path, qtl.file), na = "")
     cross<-qtl::read.cross(format="csv", dir = qtl.path, qtl.file, genotypes=c(0,.5,1))
-    unlink(qtl.file) #delete the file
+    unlink(file.path(qtl.path, qtl.file)) #delete the file
     cross<-qtl::convert2risib(cross)
     cross<-qtl::jittermap(cross)
     qtlprobs<-qtl::calc.genoprob(cross)
@@ -113,7 +135,7 @@ pop=c("MPP","2PP","RIL")){
     writePopulation(data.obj, geno.obj, filename = file.path(qtl.path, qtl.file), 
     na = "")
     cross<-qtl::read.cross(format="csv", dir = qtl.path, qtl.file, genotypes=c(0,.5,1))
-    unlink(qtl.file) #delete the file
+    unlink(file.path(qtl.path, qtl.file)) #delete the file
     qtlprobs<-qtl::calc.genoprob(cross)
     probs<-qtl2convert::probs_qtl_to_qtl2(qtlprobs)
     genoprobs<-probs$probs
@@ -138,7 +160,7 @@ pop=c("MPP","2PP","RIL")){
       
       map<-qtl2convert::map_df_to_list(map,pos_column = "pos")
       
-      data.obj$save_rds(map,"map.RData")
+      #data.obj$save_rds(map,"map.RData")
       
       K<-qtl2::calc_kinship(probs=genoprobs,type=type, cores=n.cores)}
     
@@ -229,6 +251,6 @@ pop=c("MPP","2PP","RIL")){
   if(length(K) == 1){
     K <- K[[1]]
   }
-  
+
   return(K)
 }

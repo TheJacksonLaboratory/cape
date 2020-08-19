@@ -1,15 +1,21 @@
 #' This function selects the phenotypes in a Cape object
 #' 
-#' Updates the pheno object to include only `pheno.which` columns, and optionally
-#' scales and/or normalizes them. This function is only applicable to numeric phenotypes.
+#' Updates the pheno object to include only `pheno.which` columns.
+#' Optionally scale and/or normalize traits.
 #'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param pheno.which array of covariate (phenotype) names from the parameters YAML file
-#' @param min.entries minimum number of data entries the phenotype needs to have for it to be valid
-#' @param scale.pheno if TRUE then phenotypes are mean centered and standardized
+#' @param pheno.which vector of names from the parameters YAML file.
+#' This vector should include both traits and covariates. The covariates
+#' are assigned after trait selection. 
+#' @param min.entries minimum number of data entries the phenotype needs 
+#' to have for it to be included. If any trait has fewer than min.entries,
+#' It will be removed with a warning.
+#' @param scale.pheno if TRUE then phenotypes are mean-centered and standardized
 #' @param rank.norm.pheno if TRUE then phenotypes are rank Z normalized
 #'
 #' @return updated \code{\link{Cape}} object
+#' 
+#' @export
 select.pheno <- function(data.obj, pheno.which, min.entries = 5, scale.pheno = FALSE, rank.norm.pheno = FALSE){
   check.underscore(data.obj)
   # check.bad.markers(data.obj)

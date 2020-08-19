@@ -1,22 +1,31 @@
-#' Makes effects plots for multi-allelic 1D scans.
+#' Plot results of single-locus scans
 #'
+#' This function plots the results of \link{\code{singlescan}}
+#' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param singlescan.obj a singlescan object
-#' @param chr an array of chromosome names to include in the plot
-#' @param traits an array of traits to include in the plot
-#' @param alpha the alpha significance level
-#' @param standardized boolean; singlescan.t.stats if TRUE, else singlescan.effects
-#' @param color.scheme "DO/CC" or "other"
-#' @param allele.labels an array of character labels
-#' @param include.covars boolean
-#' @param show.selected boolean; if TRUE, run select.markers.for.pairscan() first
-#' @param line.type 1-character string giving the type of plot desired. The following values are possible, for details, see plot: "p" for points, "l" for lines, "b" for both points and lines, "c" for empty points joined by lines, "o" for overplotted points and lines, "s" and "S" for stair steps and "h" for histogram-like vertical lines. Finally, "n" does not produce any points or lines.
+#' @param singlescan.obj a singlescan object from \link{\code{singlescan}}
+#' @param chr a vector of chromosome names to include in the plot. Defaults to all chromosomes.
+#' @param traits a vector of trait names to plot. Defaults to all traits.
+#' @param alpha the alpha significance level. Lines for significance values will only
+#' be plotted if n.perm > 0 when \link{\code{singlescan}} was run. And only alpha values
+#' specified in \link{\code{singlescan}} can be plotted.
+#' @param standardized If TRUE t statistics are plotted. If FALSE, effect sizes are plotted.
+#' @param color.scheme A character value of either "DO/CC" or other indicating the 
+#' color scheme of main effects. If "DO/CC" allele effects can be plotted with the
+#' DO/CC colors.
+#' @param allele.labels A vector of labels for the alleles if different thatn those
+#' stored in the data.object.
+#' @param include.covars Whether to include covariates in the plot.
+#' @param show.selected If TRUE will indicate which markers were selected for the pairscan.
+#' In order for these to be plotted, \link{\code{select.markers.for.pairscan}} must be run first.
+#' @param line.type as defined in plot
 #' @param lwd line width, default is 1
 #' @param pch see the "points()" R function. Default is 16 (a point).
 #' @param cex see the "points()" R function. Default is 1.
 #' @param covar.label.size default is 0.7
 #' 
 #' @export
+
 plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
   alpha = c(0.01, 0.05), standardized = TRUE, color.scheme = c("DO/CC","other"), 
   allele.labels = NULL, include.covars = TRUE, show.selected = FALSE, 

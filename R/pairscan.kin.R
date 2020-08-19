@@ -1,17 +1,31 @@
-#' This function runs a pairscan when the kinship correction is being used.
+#' Run the pairscan with a kinship correction
+#' 
+#' This function is called by \link{\code{pairscan}}
+#' when a kinship correction is requested. It adjusts 
+#' each variable according to the kinship matrix using
+#' \link{\code{kinship.on.the.fly}} and then fits linear
+#' pairwise models to the adjusted data.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
 #' @param scan.what A character string uniquely identifying whether eigentraits
 #'   or raw traits should be scanned. Options are "eigentraits", "raw.traits"
-#' @param marker.pairs all length-2 combinations of markers
+#' @param marker.pairs A two-column matrix containing the marker pairs
+#' to be tested.
 #' @param kin.obj a kinship object
-#' @param verbose show progress messages
-#' @param run.parallel to parallel, or not to parallel
-#' @param n.cores if parallel, how many cores?
+#' @param verbose A logical value indicating whether to 
+#' print progress to the screen
+#' @param run.parallel A logical value indicating 
+#' whether parallel processing should be used
+#' @param n.cores The number of cores to be used if run.parallel is TRUE
 #' 
-pairscan.kin <- function(data.obj, geno.obj = NULL, scan.what, marker.pairs, 
-kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
+#' @return This function returns a list with three elements. 
+#' The elements contain the marker pair effect sizes, the marker
+#' pair standard errors, and the covariance matrix for each test.
+#' The output is then further processed by \link{\code{pairscan}}.
+#' 
+pairscan.kin <- function(data.obj, geno.obj, scan.what, marker.pairs, 
+kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
   
   m = NULL #for appeasing R CMD check
   
@@ -42,17 +56,22 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
       new.covar <- kin.dat$corrected.covar
       err.cov <- kin.dat$err.cov
     }else{
-      marker.chr <- get.marker.chr(data.obj, m)
-      non.covar <- setdiff(marker.chr, 0)
-      if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
-      if(length(non.covar) == 1){kin.name = paste(rep(non.covar, 2), collapse = ",")}
-      if(length(non.covar) == 2){kin.name = paste(marker.chr, collapse = ",")}
-      kin.locale <- which(names(kin.obj) == kin.name)
+      #taking out the LTCO option for now, since it has weird behavior
+      new.pheno <- kin.dat[[1]]$corrected.pheno
+      new.geno <- kin.dat[[1]]$corrected.geno
+      new.covar <- kin.dat[[1]]$corrected.covar
+      err.cov <- kin.dat[[1]]$err.cov
+    #  marker.chr <- get.marker.chr(data.obj, m)
+    #  non.covar <- setdiff(marker.chr, 0)
+    #  if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
+    #  if(length(non.covar) == 1){kin.name = paste(rep(non.covar, 2), collapse = ",")}
+    #  if(length(non.covar) == 2){kin.name = paste(marker.chr, collapse = ",")}
+    #  kin.locale <- which(names(kin.obj) == kin.name)
       
-      new.pheno <- kin.dat[[kin.locale]]$corrected.pheno
-      new.geno <- kin.dat[[kin.locale]]$corrected.geno
-      new.covar <- kin.dat[[kin.locale]]$corrected.covar
-      err.cov <- kin.dat[[kin.locale]]$err.cov			
+    #  new.pheno <- kin.dat[[kin.locale]]$corrected.pheno
+    #  new.geno <- kin.dat[[kin.locale]]$corrected.geno
+    #  new.covar <- kin.dat[[kin.locale]]$corrected.covar
+    #  err.cov <- kin.dat[[kin.locale]]$err.cov			
     }
     
     int.term = matrix(solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]], ncol = 1)
@@ -81,29 +100,37 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
       new.geno <- kin.dat$corrected.geno
       new.covar <- kin.dat$corrected.covar
       err.cov <- kin.dat$err.cov
+      #taking out LTCO option for now, since it has werid results
     }else{
-      marker.chr <- get.marker.chr(data.obj, m)
-      non.covar <- setdiff(marker.chr, 0)
-      if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
-      if(length(non.covar) == 1){kin.name = paste(rep(non.covar, 2), collapse = ",")}
-      if(length(non.covar) == 2){kin.name = paste(marker.chr, collapse = ",")}
-      kin.locale <- which(names(kin.obj) == kin.name)
+      new.pheno <- kin.dat[[1]]$corrected.pheno
+      new.geno <- kin.dat[[1]]$corrected.geno
+      new.covar <- kin.dat[[1]]$corrected.covar
+      err.cov <- kin.dat[[1]]$err.cov
+    #  marker.chr <- get.marker.chr(data.obj, m)
+    #  non.covar <- setdiff(marker.chr, 0)
+    #  if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
+    #  if(length(non.covar) == 1){kin.name = paste(rep(non.covar, 2), collapse = ",")}
+    #  if(length(non.covar) == 2){kin.name = paste(marker.chr, collapse = ",")}
+    #  kin.locale <- which(names(kin.obj) == kin.name)
       
-      new.pheno <- kin.dat[[kin.locale]]$corrected.pheno
-      new.geno <- kin.dat[[kin.locale]]$corrected.geno
-      new.covar <- kin.dat[[kin.locale]]$corrected.covar
-      err.cov <- kin.dat[[kin.locale]]$err.cov			
+    #  new.pheno <- kin.dat[[kin.locale]]$corrected.pheno
+    #  new.geno <- kin.dat[[kin.locale]]$corrected.geno
+    #  new.covar <- kin.dat[[kin.locale]]$corrected.covar
+    #  err.cov <- kin.dat[[kin.locale]]$err.cov			
     }
     
     
     covar.locale <- which(covar.names %in% m)
+    if(length(covar.locale) > 0){
+      new.covar <- new.covar[,-covar.locale,drop=FALSE]
+    }
     int.term = solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]]
     
     pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno, 
     		genotype.matrix = new.geno, int = int.term, 
-    		covar.vector = new.covar[,-covar.locale,drop=FALSE], 
-    		paired.markers = matrix(m, ncol = 2), n.perm = 0, verbose = verbose, 
-    		run.parallel = run.parallel, n.cores = n.cores)
+    		covar.vector = new.covar, paired.markers = matrix(m, ncol = 2), 
+        n.perm = 0, verbose = verbose, run.parallel = run.parallel, 
+        n.cores = n.cores)
     
     if(is.null(pairscan.results[[1]])){
       marker.num <- get.marker.num(data.obj, m)
@@ -125,7 +152,6 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     covar.vector <- covar.info$covar.table
     pheno.vector <- pheno[,p,drop=FALSE]
     
-    
     #sink the warnings from regress about solutions close to zero to a file
     sink(file.path(data.obj$results_path,"regress.warnings"))
     if(class(kin.obj) == "matrix"){
@@ -135,7 +161,8 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     }else{
       #If we are using LTCO
       chr.pairs <- Reduce("rbind", strsplit(names(kin.obj), ","))
-      kin.dat <- apply(chr.pairs, 1, function(x) kinship.on.the.fly(kin.obj, geno, x[1], x[2], phenoV = pheno.vector, covarV = covar.vector))
+      kin.dat <- apply(chr.pairs, 1, function(x) kinship.on.the.fly(kin.obj, geno, 
+      x[1], x[2], phenoV = pheno.vector, covarV = covar.vector))
     }
     sink(NULL) #stop sinking output
     
@@ -225,7 +252,7 @@ kin.obj, verbose = TRUE, run.parallel = FALSE, n.cores = 2){
     results.list[[p]] <- pheno.results
   }	#end looping over phenotypes	
   
-  unlink("regress.warnings")
+  unlink(file.path(data.obj$results_path,"regress.warnings"))
   return(results.list)
   
   

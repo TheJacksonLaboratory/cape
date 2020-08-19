@@ -2,15 +2,20 @@
 % Please edit documentation in R/get.marker.name.R
 \name{get.marker.name}
 \alias{get.marker.name}
-\title{This function returns the marker names given the numbers}
+\title{Get marker names}
 \usage{
 get.marker.name(data.obj, markers)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{markers}{covariate names}
+\item{markers}{A vector of marker numbers}
+}
+\value{
+A vector the same length as the input 
+markers vector indicating the name of each marker
 }
 \description{
-This function returns the marker names given the numbers
+Given a vector of marker numbers, this function 
+returns the name of each marker.
 }

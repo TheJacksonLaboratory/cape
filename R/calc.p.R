@@ -1,16 +1,15 @@
 #' Calculate P Values for Interactions Based on Permutations
 #' 
-#' @param data.obj
+#' @param data.obj A \link{\code{Cape}} data object
 #' @param pval.correction One of "holm", "fdr", "lfdr" or "none", indicating 
 #' whether the p value correction method used should be the Holm step-down procedure, 
 #' false discovery rate, local false discovery, or no correction rate respectively.
 #' 
-#' @return The data object is returned with a new list with two elements. The elements 
-#' correspond to the two directions of influence: marker1 to marker2 and marker2 to 
-#' marker1. Each element contains a table with the source and target variants, the 
-#' empirical p values, and the adjusted p values, along with the effect size, standard 
-#' error and t statistic for each interaction.
+#' @return The data object is returned with a new table called var_to_var_p_val.
+#' This table is the same as var_to_var_influences, but with p value and adjusted
+#' p value columns appended. 
 #' 
+#' @export
 calc.p <- function(data.obj, pval.correction = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none")) {
   
   

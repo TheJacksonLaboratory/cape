@@ -3,7 +3,8 @@
 #================================================
 traits:
  - BW_24
- - LEP_24
+ - INS_24
+ - log_GLU_24
 covariates:
  - mom
 scan_what:
@@ -18,15 +19,15 @@ eig_which:
 pval_correction:
  - fdr 
 use_kinship:
- - true
-kinship_type:
- - overall
+ - false
 pop:
  - 2PP
 save_results:
  - true
 use_saved_results:
- - false
+ - true
+transform_to_phenospace:
+ - true
 
 #================================================
 # Single Scan Parameters 

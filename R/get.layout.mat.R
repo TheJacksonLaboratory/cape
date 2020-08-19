@@ -9,6 +9,10 @@
 #'   should have more columns than rows ("landscape"), or more rows than 
 #'   columns ("upright"), if the resulting matrix is not square.
 #'
+#' @return A layout matrix with positions for each element in num.panes
+#' and zeros filling the rest of the rectangle where nothing will be plotted.
+#' 
+
 get.layout.mat <- function(num.panes, type = c("landscape", "upright")){
     
     #first find the square root of the number of panes

@@ -1,21 +1,34 @@
-#' Allows users to change covariate assignments
+#' Creates a covariate from a genetic marker
 #' 
-#' This script allows users to change covariate assignments
-#' manually.
-#' markers <- rownames(covar.flags)[5:10]
-#' pheno <- "ET1"
-#' It adds the information to the data object
-#' only the output from singlescan and pairscan
-#' make separate objects.
+#' Occasionally, researchers may want to condition 
+#' marker effects on another genetic marker. For example,
+#' the HLA locus in humans has very strong effects on 
+#' immune phenotypes, and can swamp smaller effects from
+#' other markers. It can be helpful to condition on markers
+#' in the HLA region to find genetic modifiers of these 
+#' markers.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
-#' @param singlescan.obj a singlescan object is required if setting covariates by a t threshold.
-#' @param covar.thresh 
-#' @param markers
+#' @param singlescan.obj It is possible to automitically identify
+#' markers to use as covariates based on their large main effects.
+#' If this is desired, a singlescan object is required.
+#' @param covar.thresh If designating markers as covariates based
+#' on their main effect size is desired, the covar.thresh indicates
+#' the main effect size above which a marker is designated as a 
+#' covariate.
+#' @param markers Marker covariates can also be designated manually.
+#' markers takes in a vector of marker names or numbers and assigns
+#' the designated markers as covariates.
 #'
+#' @return This function returns the data object with additional 
+#' information specifying which markers are to be used as covariates.
+#' this information can be retrieved with \link{\code{get.covar}}.
+#' 
+#' @seealso \link{\code{get.covar}}
 #' @export
-marker2covar <- function(data.obj, geno.obj = NULL, singlescan.obj = NULL, covar.thresh = NULL, markers = NULL){
+
+marker2covar <- function(data.obj, geno.obj, singlescan.obj = NULL, covar.thresh = NULL, markers = NULL){
   
   if(!is.null(covar.thresh)){
     oneD <- singlescan.obj$singlescan.results
@@ -44,7 +57,7 @@ marker2covar <- function(data.obj, geno.obj = NULL, singlescan.obj = NULL, covar
     colnames(g.covar.info) <- data.obj$marker_num[new.covar.locale]
     rownames(g.covar.info) <- c("name", "chromosome", "position")
     
-    data.obj <- remove.markers(data.obj, markers.which = snp.names)
+    data.obj <- remove.markers(data.obj, markers.to.remove = snp.names)
     data.obj$g_covar_table <- new.covar
     data.obj$g_covar <- g.covar.info
     return(data.obj)		

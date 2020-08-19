@@ -1,4 +1,4 @@
-#' Select marker pairs for pairscan based on filters that are not over-correlated
+#' Select marker pairs for pairscan
 #' 
 #' This function selects which marker pairs can be tested in the pair scan.
 #' Even if all markers are linearly independent, some marker pairs may have
@@ -6,12 +6,12 @@
 #' combinations. Marker pairs for which genotype combinations have insufficient
 #' numbers of individuals are not tested. This function determines which marker
 #' pairs have sufficient representation in all genotype combinations. 
-#' 
-#' @seealso \code{\link{one.pairscan}}
-#' 
-#' @param geno A two dimensional genotype matrix with rows containing 
+#'  
+#' @param gene A two dimensional genotype matrix with rows containing 
 #'   individuals and columns containing markers. Each entry is a value between
 #'   0 and 1 indicating the genotype of each individual at each marker. 
+#' @param covar.names A character vector indicating which covariates should
+#' be tested.
 #' @param min.per.genotype The minimum number of individuals allowable per 
 #'   genotype. If for a given marker pair, one of the genotypes is 
 #'   underrepresented, the marker pair is not tested. If this value is NULL,
@@ -22,13 +22,18 @@
 #'   If this value is set to NULL, min.per.genotype must have a numeric value.
 #' @param verbose A logical value. If TRUE, the script prints a message to the
 #'   screen to indicate that it is running. If FALSE, no message is printed.
+#' 
 #' @return This function returns a two-column matrix of marker pairs. This
 #'   matrix is then used as an argument in \code{\link{one.pairscan}} to
 #'   specify which marker pairs should be tested.
+#' 
+#' @details One and only one of min.per.genotype or max.pair.cor should be specified.
+#' We recommend that if you have continuous genotype probabilities, you use max.pair.cor.
+#' If both values are specified, this function will preferrentially use max.pair.cor.
 #'   
 #' @export
 get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL, 
-	min.per.genotype = NULL, run.parallel = FALSE, n.cores = 4, verbose = TRUE){
+	min.per.genotype = NULL, run.parallel = FALSE, n.cores = 4, verbose = FALSE){
   
   if(!run.parallel){n.cores = 1}
   
@@ -37,6 +42,7 @@ get.pairs.for.pairscan <- function(gene, covar.names = NULL, max.pair.cor = NULL
   if(is.null(max.pair.cor) && is.null(min.per.genotype)){
     stop("One of max.pair.cor or min.per.genotype should be set.")
   }
+  
   if(!is.null(max.pair.cor) && !is.null(min.per.genotype)){
     cat("Only one of max.pair.cor or min.per.genotype should be set. Choosing only max.pair.cor.")
     min.per.genotype = NULL

@@ -9,13 +9,22 @@
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{traits.which}{integer or array of integers selecting the eigentrait column}
+\item{traits.which}{A vector of integers, of at least length two
+specifying which eigentraits should be analyzed.}
 }
 \value{
 updated \code{\link{Cape}} object
 }
 \description{
-This script is used to select individual eigentraits
-after viewing the results of the svd
-The script defaults to eigentraits 1 and 2
+This function is used to identify which eigentraits
+will be analyzed in the Cape run. After eigentrait 
+decomposition of n traits, there will be n eigentraits.
+If there are more than two eigentraits, the user may
+wish to analyze a subset of them. This function specifies
+which of the eigentraits will be analyzed by Cape. It does
+this by subsetting the ET matrix to only those eigentraits
+specified. The traits not selected are deleted from the object.
+}
+\seealso{
+\link{\code{plotSVD}}
 }

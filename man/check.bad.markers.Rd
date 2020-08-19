@@ -2,20 +2,21 @@
 % Please edit documentation in R/check.bad.markers.R
 \name{check.bad.markers}
 \alias{check.bad.markers}
-\title{Create a marker variable from a covariate phenotype}
+\title{This function checks for markers that aren't used
+in cape. For example, markers on sex chromosomes,
+or mitochonrdial markers. It also removes any 
+markers that are invariant across all individuals.}
 \usage{
-check.bad.markers(data.obj, geno.obj = NULL)
+check.bad.markers(data.obj, geno.obj)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{geno.obj}{an optional genotype object from \code{\link{cape2mpp}}}
+\item{geno.obj}{}
 }
 \description{
-This script takes a variable from the phenotype matrix
-for example, diet treament or sex and creates a marker
-variable that can be used as a covariate.
-It creates a marker that is numeric and assigns the 
-numeric value to each of the alleles at all loci for 
-the given individual.
+This function checks for markers that aren't used
+in cape. For example, markers on sex chromosomes,
+or mitochonrdial markers. It also removes any 
+markers that are invariant across all individuals.
 }

@@ -1,12 +1,8 @@
-#' Convert plink2 files to the QTL file format
-#'
-#' 1. Dowload the plink executable from: https://www.cog-genomics.org/plink2
-#' 2. Convert your plink file with: plink --bfile YOUR-PLINK-FILE --export ped --out PED-FILE
-#' 3. Run your PED-FILE through this script to get a file formated for R/qtl
+#' Convert plink2 files to cape format
 #'
 #' @param ped full path to the ped file
 #' @param map full path to the map file
-#' @param out full path to the rotated csvr file (see: http://www.rqtl.org/sampledata/). Default is out.csvr
+#' @param out full path to the output file
 #' @param missing.genotype default is "0"
 #' @param no.fid boolean, default is FALSE
 #' @param no.parents boolean, default is FALSE
@@ -15,8 +11,18 @@
 #' @param verbose boolean, default is FALSE, gives some happy little progress messages
 #' @param overwrite boolean, default is FALSE, will only remove the existing file if this is set to TRUE
 #'
-#' @return None
+#' @details For further information about PLINK and its file formats,
+#' see \url{http://zzz.bwh.harvard.edu/plink/}
+#' 
+#' @return A list with two elements: data.obj and geno.obj
+#' These objects are formatted for use in cape and must then
+#' be separated to use in \link{\code{run.cape}}.
 #'
+#' @references Purcell S, Neale B, Todd-Brown K, Thomas L, Ferreira MAR, 
+#' Bender D, Maller J, Sklar P, de Bakker PIW, Daly MJ & Sham PC (2007) 
+#' PLINK: a toolset for whole-genome association and population-based 
+#' linkage analysis. American Journal of Human Genetics, 81.
+#' 
 #' @export
 plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno", 
 	out = "out.csv", missing.genotype = "0", no.fid = FALSE, 

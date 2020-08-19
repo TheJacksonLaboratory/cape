@@ -1,19 +1,33 @@
 #' Sort a table by a list of columns
 #' 
-#' This script takes in a table and sorts by columns with each
-#' successive column in the sort.cols vector sorted within the
-#' factors of the previous column. Only the final column can 
-#' contain continuous variables. All others should be discrete.
-#' col.type defines whether each column contains a number ("n")
-#' or a character ("c")
+#' This internal function sorts a table first by one column,
+#' and then by a second column.
+#' Columns can contain numeric values or string values. These
+#' are specified for each column by col.type.
+#' The values of the second column are sorted by successive 
+#' values in the first column.
 #' if return order is TRUE, the function returns the order of
-#' each column instead of the ordered table
+#' each column instead of the ordered table. To order the original
+#' table, sort first by the order in the first column of the order
+#' matrix and then by the ofer in the second colum of the order
+#' matrix.
 #' 
-#' @param tableX a table object
-#' @param sort.cols integer, number of columns to sort on (can be either 1 or 2)
-#' @param col.type options are "c" (character) or "n" (number)
-#' @param decreasing default = FALSE
-#' @param retrun.order defualt = FALSE
+#' @param tableX a matrix
+#' @param sort.cols A vector of length two, indicating which
+#' columns in the matrix to sort by, and in which order. To
+#' sort first by column 1 and then by column 2, sort.cols should
+#' be c(1,2).
+#' @param col.type A vector of length two indicating whether each
+#' column contains character values ("c") or numeric values ("n").
+#' Specified in the same order as sort.cols.
+#' @param decreasing Whether values should be sorted in decreasing order
+#' @param return.order Whether to return the sorted table (FALSE) or to 
+#' return the order used to sort the table (TRUE). Defaults to FALSE.
+#' 
+#' @return If return.order is FALSE, this function returns tableX sorted by sort.cols.
+#' If return.order is TRUE, this function returns a two-column matrix indicating the order in which
+#' to put tableX to sort it by sort.cols. To sort a table to match the order, order first by the
+#' first column and then by the second column.
 #' 
 sortByThenBy <- function(tableX, sort.cols = c(1,2), col.type = c("c", "n"), decreasing = FALSE, return.order = FALSE){
   

@@ -1,15 +1,22 @@
-#' Makes an allele color table
+#' Get DO colors
 #' 
-#' @param color.scheme "DO/CC" or "other"
-#' @param alleles an array af alleles in the set "AJ", "B6", "129", "NOD", "NZO", "CAST", "PWK", "WSB"
+#' This function returns the official DO allele colors.
+#' as described here \url{https://compgen.unc.edu/wp/?page_id=577}
 #' 
+#' @param color.scheme "DO/CC" or "other" The default is "DO/CC"
+#' If set to "other", colors unrelated to the DO/CC are used. 
+#' @param alleles an vector af alleles in the set "AJ", "B6", "129", 
+#' "NOD", "NZO", "CAST", "PWK", "WSB". This argument can be used to 
+#' retrieve colors only for a subset of alleles.
+#' 
+#' @return A table with three columns corresponding to strain names,
+#' strain nicknames, and the assigned color values.
 #' @export
 get.allele.colors <-
   function(color.scheme = c("DO/CC", "other"), alleles = NULL){
     
-    if(length(color.scheme) > 1){
-      color.scheme = "DO/CC"
-    }
+    
+     color.scheme = color.scheme[1]
     
     if(color.scheme == "DO/CC"){
       aj <- rgb(240/256 ,240/256 ,0/256)

@@ -1,46 +1,45 @@
-#' Plots the restuls of the singular value decomposition on the phenotypes
+#' Plots eigentraits
 #' 
-#' This script plots the results of the singular value
-#' decomposition on the phenotypes. When a user has more
-#' than two phenotypes, they may wish to use fewer eigentraits
-#' than are returned by default. 
-#' It takes in the data object after the svd has been done
-#' It creates a raster plot of the contribution of each 
-#' eigentrait to each phenotype with a barplot on the 
-#' side of how much variance each eigentrait captures
-#' The script also plots the log10 of the singular values.
-#' The user can then use the script select.eigentraits to
-#' modify the data object to only carry the eigentraits of
-#' interest.
-#' orientation determines whether the plot is laid out 
-#' vertically or horizontally. The default is vertical.
+#' This function plots the results of the singular value
+#' decomposition (SVD) on the phenotypes. Gray bars indicate
+#' the amount of phenotypic variance accounted for by each
+#' eigentrait.
+#' 
+#' Below the bars is a heatmap indicating how each trait 
+#' contributes to each eigentrait. Colors can be adjusted
+#' to suit preferences.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param orientation string, ("vertical", "horizontal")
-#' @param neg.col (default: "blue")
-#' @param pos.col (default: "brown")
-#' @param light.dark (default: "f")
-#' @param pheno.labels array of strings
-#' @param cex.barplot.axis (default: 1.7)
-#' @param cex.barplot.labels (default: 2)
-#' @param cex.barplot.title (default: 1.7)
-#' @param main (default: "Eigentrait Contributions to Phenotypes")
-#' @param cex.main (default: 2)
-#' @param main.x (default: 0.5)
-#' @param main.y (default: 0.5)
-#' @param cex.ET (default: 1.7)
-#' @param ET.label.x (default: 0.5)
-#' @param ET.label.y (default: 0.5)
-#' @param pheno.label.pos (default: 0.5)
-#' @param cex.pheno (default: 1.7)
-#' @param pheno.srt (default: 90)
-#' @param percent.total.variance.x (default: 0.5)
-#' @param percent.total.variance.y (default: 0.5)
-#' @param cex.color.scale (default: 1) 
-#' @param cex.var.accounted (default: 2) 
-#' @param var.accounted.x (default: 0)
-#' @param var.accounted.y (default: 0)
-#' @param show.var.accounted boolean
+#' @param pos.col The color to use for positive main effects and interactions
+#' must be one of "green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"
+#' see \link{\code{get.color}}
+#' @param neg.col The color to use for negative main effects and interactions
+#' takes the same values as pos.col.
+#' @param light.dark Indicates whether pos.col, neg.col, and bg.col should be selected
+#' from light colors ("l"), dark colors ("d") or the full spectrum from light to dark ("f")
+#' @param pheno.labels Vector of phenotype names if other than what is stored in the
+#' data object
+#' @param cex.barplot.axis Size of axis for the bar plot
+#' @param cex.barplot.labels Size of labels for the bar plot
+#' @param cex.barplot.title Size of the barplot title
+#' @param main Title for the plot. Defaults to "Eigentrait Contributions to Phenotypes"
+#' @param cex.main Size of the overall title
+#' @param main.x x shift for the overall title
+#' @param main.y y shift for the overall title
+#' @param cex.ET Size of the eigentrait labels
+#' @param ET.label.x x shift for the eigentrait labels
+#' @param ET.label.y y shift for the eigentrait labels
+#' @param pheno.label.pos x shift for the trait labels
+#' @param cex.pheno size of the trait labels
+#' @param pheno.srt Rotation factor for the trait labels
+#' @param percent.total.variance.x x shift for the percent total variance labels
+#' @param percent.total.variance.y y shift for the percent total variance labels
+#' @param cex.color.scale label size for the color scal 
+#' @param cex.var.accounted size for the variance accounted for labels
+#' @param var.accounted.x x shift for the variance accounted axis label
+#' @param var.accounted.y x shift for the variance accounted axis label
+#' @param show.var.accounted logical
 #'
 #' @return \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
 #'

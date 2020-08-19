@@ -1,11 +1,12 @@
 #' Plot trait pairs against each other
 #' 
 #' This function plots pairs of traits against each other
-#' to check the correlations between traits.
+#' to visualize the correlations between traits.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
 #' @param pheno.which A vector of trait names to plot. The default is to plot all traits.
 #' @param color.by A character string indicating a value to color the traits by, for example sex or treatment.
+#' It must be one of the covariates. See \link{\code{pheno2covar}}.
 #' @param group.labels A vector of names for the legend indicating the groups for the colored dots.
 #' @param text.cex A numeric value indicating the size of the text
 #' @param pheno.labels A vector of names for traits to appear in the plot in case the column names are not very pretty.
@@ -40,15 +41,21 @@ plotPhenoCor <- function(data.obj, pheno.which = NULL, color.by = NULL, group.la
 
 
 	if(!is.null(color.by)){
-		covar.info <- get.covar(data.obj)
-		cols <- rep(NA, dim(sub.pheno)[1])
-		group.col <- which(covar.info$covar.names %in% color.by)
-			
-		if(length(group.col) == 0){
-			stop(paste("I couldn't find the", color.by, "column. Please check the case and the spelling."))
+		group.mem <- NULL
+		pheno.col <- which(colnames(data.obj$pheno) == color.by)
+		if(length(pheno.col) > 0){
+			group.mem <- data.obj$pheno[,pheno.col]
+		}else{
+			covar.info <- get.covar(data.obj)
+			covar.col <- which(covar.info$covar.names %in% color.by)
+			group.mem <- covar.info$covar.table[,covar.col]
+			}			
+
+		if(length(group.mem) == 0){
+			stop(paste0("I couldn't find ", color.by, ". Please check the case and the spelling."))
 			}
-			
-		group.mem <- covar.info$covar.table[,group.col]
+		
+		cols <- rep(NA, dim(sub.pheno)[1])
 		groups <- sort(unique(group.mem))
 		num.groups <- length(groups)
 		if(num.groups > 8){

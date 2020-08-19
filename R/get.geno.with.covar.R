@@ -1,3 +1,23 @@
+#' Return the genotype matrix with covariates 
+#' added. 
+#' 
+#' For pairwise testing, cape appends the covariates
+#' to the genotype matrix. This function performs
+#' that task.
+#' 
+#' @param data.obj The cape object. See \link{\code{Cape}}.
+#' @param geno.obj A genotype object.
+#' @param g.covar A logical value indicating whether to append
+#' genotype-derived covariates to the final matrix. Defaults to TRUE.
+#' @param p.covar A logical value indicating whether to append
+#' phenotype-derived covariates to the final matrix. Defaults to TRUE.
+#' @param for.pairscan If TRUE, the function returns the genotype matrix 
+#' already designated for the pairscan. Otherwise it returns the full
+#' genotype matrix as specified by data.obj$geno_names.
+#'
+#' @return Returns a genotype matrix with covariates appended.
+
+
 #This function puts covariates into the genotype
 #matrix for easier testing of all pairs
 

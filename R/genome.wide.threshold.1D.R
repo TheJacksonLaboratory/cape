@@ -1,20 +1,3 @@
-#This function does a permutation test on the 1D scan
-#to calculate the genome-wide significance threshold
-#of effect.
-#A threshold function must be specified for both the 
-#selection of alleles to use in the pair scan and for
-#the alleles to be used as covariates. Both thresholds
-#are added to the data object along with their function
-#call. To fit the p values to the extreme value distribution,
-#the previous default, use p.val.thresh() with your desired
-#alpha as the threshold parameter.
-#an additional option is the t.stat.thresh.sd in which the 
-#threshold is calculated based on standard deviations away
-#from the mean of the t statistic.
-#additional thresholding functions that use the permuted 
-#t statistics and a single parameter can easily be added
-#to the arsenal.
-
 #' Calculate a genome-wide significance threshold for the single-variant scan
 #' 
 #' This function uses permtuation testing to calculate a genome-wide significance
@@ -28,8 +11,7 @@
 #' determine thresholds for the user-defined alpha values.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param geno.obj a genotype object. If this is not supplied then it is 
-#' generated here.
+#' @param geno.obj a genotype object.
 #' @param n.perm The number of permutations to perform. The default is 100.
 #' @param scan.what A character value that uniquely specifies whether the 
 #' eigentraits or phenotypes should be scanned. Options are "eigentraits"
@@ -37,28 +19,31 @@
 #' @param ref.allele \code{\link{Cape}} requires that one of the alleles 
 #' in the population be selected as a reference allele. The effects of all 
 #' alleles are then reported as the effects relative to the reference allele. 
-#' In the DO population B represents the Black6 mouse. Because this strain is 
-#' considered a very standard strain, the default reference allele is B. 
+#' In the DO population B represents the C57BL/6J (B6) mouse. Because this strain is 
+#' considered the standard strain, the default reference allele is B. 
 #' If another allele has a positive effect, it means that it increases the given 
-#' phenotype relative to that in the Black6 mouse. Any other allele can be selected 
+#' phenotype relative to that in the B6 mouse. Any other allele can be selected 
 #' as the reference allele simply by specifying it with this argument. 
-#' @param alpha The alpha value used to calculate the threshold for which variants 
-#' will be used as covariates in the pairwise scan.
+#' @param alpha The alpha value(s) used to calculate significance levels. This should
+#' be a vector of any length of numerical values between 0 and 1. The default is
+#' a vector of length two: c(0.01, 0.05).
 #' @param model.family Indicates the model family of the phenotypes. This can be 
 #' either "gaussian" or "binomial".
-#' @param run.parallel boolean, default = TRUE
+#' @param run.parallel A logical value indicating whether the process should
+#' be run in parallel. Defaults to FALSE.
 #' @param n.cores integer number of cores to use if running in parallel
 #' 
-genome.wide.threshold.1D <- function(data.obj, geno.obj = NULL, n.perm = 100, 
+#' @return Returns a vector the same length as alpha indicating the
+#' thresholds for each value of alpha.
+
+genome.wide.threshold.1D <- function(data.obj, geno.obj, n.perm = 100, 
                                      scan.what = c("eigentraits", "raw.traits"), 
                                      ref.allele = NULL, alpha = c(0.01, 0.05), 
-                                     model.family, run.parallel = TRUE, n.cores = 4,
+                                     model.family, run.parallel = FALSE, n.cores = 4,
                                      verbose = verbose){
   
   if(!run.parallel){n.cores = 1}
-  
-  require("evd")
-  
+    
   if(n.perm < 2){
     stop("You must do more than one permutation.")
   }

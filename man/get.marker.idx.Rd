@@ -2,15 +2,21 @@
 % Please edit documentation in R/get.marker.idx.R
 \name{get.marker.idx}
 \alias{get.marker.idx}
-\title{This function returns the marker index for marker names or numbers}
+\title{Get original indices for markers}
 \usage{
 get.marker.idx(data.obj, markers)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{markers}{}
+\item{markers}{A vector of marker names}
+}
+\value{
+A vector the same length as the input markers vector
+indicating the index of each marker
 }
 \description{
-This function returns the marker index for marker names or numbers
+Given a vector of marker names or numbers, this 
+function returns the indices in the genotype 
+matrix for each marker.
 }

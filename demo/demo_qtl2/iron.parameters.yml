@@ -20,14 +20,14 @@ pval_correction:
  - fdr 
 use_kinship:
  - false
-kinship_type:
- - overall
 pop:
  - 2PP
 save_results:
  - true
 use_saved_results:
  - false
+transform_to_phenospace:
+ - true
 
 #================================================
 # Single Scan Parameters 

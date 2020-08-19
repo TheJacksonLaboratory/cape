@@ -2,23 +2,28 @@
 % Please edit documentation in R/pair.matrix.R
 \name{pair.matrix}
 \alias{pair.matrix}
-\title{get all 2-combinations of elements in a vector}
+\title{Get all pairs of elements in a vector}
 \usage{
 pair.matrix(elements, ordered = FALSE, self.pairs = FALSE)
 }
 \arguments{
-\item{elements}{a vector containing elements from which to draw all possible pairs}
+\item{elements}{a vector containing elements from 
+which to draw all possible pairs. Can be numeric or 
+strings}
 
-\item{ordered}{boolean, TRUE if the elements are ordered}
+\item{ordered}{A logical value indicating whether the order of the
+pairs is important. If TRUE both a,b and b,a will be returned.
+If FALSE, only a,b will be returned.}
 
-\item{self.pairs}{boolean, TRUE if we want to include self-pairs}
+\item{self.pairs}{A logical value indicating whether self pairs
+should be included. If TRUE, a,a will be returned. Otherwise it
+will be excluded.}
+}
+\value{
+A two-column matrix containing pairs of entries in elements.
 }
 \description{
-This script makes a matrix with two columns 
+This function makes a matrix with two columns 
 listing all pairwise combinations of the elements
 of the input vector.
-the input vector must have all elements you want
-pairs of. It can be numeric or character strings
-For example, to get all pairs of numbers between 
-1 and 5, markers = c(1,2,3,4,5)
 }

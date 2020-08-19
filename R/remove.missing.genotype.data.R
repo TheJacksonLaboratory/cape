@@ -1,27 +1,52 @@
-
-#data.obj = cross; geno.obj = geno; ind.missing.thresh = 0; marker.missing.thresh = 0; prioritize = c("ind", "marker", "fewer")
-
-#' Removes missing marker (column) or individual (row) data
+#' Removes individuals and/or markers with missing data
 #' 
-#' This function removes missing data and let you remove 
-#' individuals before markers, vice versa, or 
-#' decide based on which will remove fewer elements.
-#' because get.geno uses geno.names in data.obj to
-#' retrieve the genotype.object, nothing needs to be
-#' removed from the geno.obj
+#' Because there an be no missing data when calculating
+#' the kinship correction, we need a way to remove either
+#' individuals or markers with missing data. We also need
+#' a way to calculate which of these options will remove the
+#' least amount of data.
+#'
+#' For example, if there is one marker with no data at all,
+#' we would rather remove that one marker, than all individuals
+#' with missing data. Alternatively, if there is one individual
+#' with very sparse genotyping, we would prefer to remove that 
+#' single individual, rather than all markers with missing data.
+#' 
+#' This function provides a way to calculate whether individuals
+#' or markers should be prioritized when removing data. It then
+#' removes those individuals or markers.
 #'
 #' @param data.obj a \code{\link{Cape}} object
 #' @param geno.obj a genotype object
-#' @param ind.missing.thresh percent of individuals that are acceptible to remove, default = 0
-#' @param marker.missing.thresh percent of genotype markers that are acceptible to remove, default = 0
+#' @param ind.missing.thresh Allowable amount of missing information for an individual. 
+#' If 10%, only individuals missing more than 10% of markers will be removed. If 0%, the
+#' default, all individuals with any missing data at all will be removed.
+#' @param marker.missing.thresh Allowable amount of missing information for a marker. 
+#' If 10%, only markers missing more than 10% of of genotypes will be removed. If 0%, the
+#' default, all markers with any missing data at all will be removed.
 #' @param prioritize the basis prioritization is one of 
-#'        "fewer" = remove the fewest possible cells from the matrix
-#'        "ind" = remove the fewest possible individuals
-#'        "marker" = remove the fewest possible markers
+#'        "fewer" = calculate whether removing individuals or markers 
+#'           will remove fewer data points, and start with that.
+#'        "ind" = remove individuals with missing data before considering 
+#'           markers with missing data.
+#'        "marker" = remove markers with missing data before considering individuals.
 #'
-#' @return an updated cape object
-#'
+#' @return The cape object is returned with individuals and markers removed. After this step,
+#' the function \link{\code{get.geno}} should return an array with no missing data if ind.missing.thresh
+#' and marker.missing.thresh are both 0. If these numbers are higher, no individual or marker will
+#' be missing more than the set percentage of data.
+#' 
+#' details All missing genotype data must either be imputed or removed if using the kinship correction.
+#' Running \link{\code{impute.missing.geno}} prior to running \link{\code{remove.missing.genotype.data}}
+#' ensures that the least possible amount of data are removed before running cape. In some cases, there
+#' will be missing genotype data even after running \link{\code{impute.missing.geno}}, in which case,
+#' \code{remove.missing.genotype.data} still needs to be run. 
+#' The function \link{\code{run.cape}} automatically runs these steps when \code{use_kinship}
+#' is set to TRUE. 
+#' 
+#' @seealso \link{\code{get.geno}}, \link{\code{impute.missing.geno}}, \link{\code{run.cape}}
 #' @export
+#'
 remove.missing.genotype.data <- function(data.obj, geno.obj = NULL, ind.missing.thresh = 0,
                                          marker.missing.thresh = 0, prioritize = c("fewer", "ind", "marker")){
 	

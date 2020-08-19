@@ -10,5 +10,8 @@ check.underscore(data.obj)
 \item{data.obj}{a \code{\link{Cape}} object}
 }
 \description{
-Internal function.
+This function looks for underscores in 
+marker names. Beause cape uses underscores
+to separate marker from allele names, we
+cannot have any in the marker names
 }

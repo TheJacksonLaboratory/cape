@@ -1,21 +1,19 @@
-#' Gets the geno object whether it is put in separately or with the data.obj
+#' Gets the geno object
 #'
-#' This is an internal function that gets the geno 
-#' object whether it is put in separately or with 
-#' the data.obj it warns the user if it can't find 
-#' the genotypes. If the data object specifies that only a subset
-#' of loci, individuals, or alleles should be used
-#' the genotype object is subset before being returned
-#' This function essentially recreates the geno used
-#' in the original cape, so modifications to the code
-#' should be fairly minimal otherwise
+#' This is an internal function returns the 
+#' genotype matrix for scanning as defined by 
+#' the markers and individuals specified in 
+# data.obj$geno_names.
 #'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param geno.obj a genotype object. If this is not supplied then it is generated here.
+#' @param geno.obj a genotype object.
 #'
-#' @return \code{list("cape.obj" = cape.obj, "geno.obj" = geno.obj)}
+#' @return Returns the genotype array matching 
+#' the markers and individuals specified in 
+#' data.obj$geno_names
 #'
 #' @export
+
 get.geno <- function(data.obj, geno.obj){
     
   geno_names <- data.obj$geno_names

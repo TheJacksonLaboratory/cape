@@ -2,12 +2,25 @@
 % Please edit documentation in R/plot.trait.circ.R
 \name{plot.trait.circ}
 \alias{plot.trait.circ}
-\title{This function plots the trait circles which have gaps at
-the right-hand sice with labels}
+\title{Plot concentric trait circles}
 \usage{
 plot.trait.circ(trait.circ, label.gap, plot.dim, main.lwd)
 }
+\arguments{
+\item{trait.circ}{A list with one element for each cirlce giving
+the coordinates of the points to plot for each circle.}
+
+\item{label.gap}{The amount of space to leave between the circles
+and their labels}
+
+\item{plot.dim}{the dimensions of the plot}
+
+\item{main.lwd}{The line thickness for the circles}
+}
+\value{
+None
+}
 \description{
-This function plots the trait circles which have gaps at
-the right-hand sice with labels
+This internal function is called by \link{\code{PlotNetwork}}
+It plots one circle for each trait in the data object.
 }

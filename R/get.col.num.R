@@ -1,14 +1,19 @@
-#' Find the column number of a pheno type from it's name
+#' Find column numbers using column names
 #'
 #' This is an internal function to find the
 #' column numbers of phenotypes when names
-#' are put in instead of column numbers
+#' are put in instead of column numbers.
 #'
-#' @param data.mat a labeled matrix of phenotype with columns as phenotypes
-#' @param col.which a character string name of a phenotype column header
-#' @param dim.which in the absence of a column header, use an integer here to select a column
+#' @param data.mat a matrix with column names
+#' @param col.which a character string indicating which column should be identified
+#' If col.which is numeric the number is returned.
+#' @param dim.which A number indicating whether the algorithm should look
+#' in rows (1) or columns (2) for the name.
 #'
-#' @return None, output artifacts are saved to the results.dir directory
+#' @return A numeric value indicating the column number corresponding
+#' to the name given by col.which. If col.which was a number, col.which
+#' is returned.
+
 get.col.num <- function (data.mat, col.which = NULL, dim.which = 2) 
 {
   if (is.null(col.which)) {

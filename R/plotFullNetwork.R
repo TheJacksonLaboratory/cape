@@ -1,29 +1,82 @@
 #' Plot the final epistatic network in a traditional network view.
 #' 
-#' This function plots the final results in a layout different to
+#'  This function plots the final results in a layout different to
 #'  both \code{\link{plotVariantInfluences}} and \code{\link{plotNetwork}}. 
 #'  In this view, the network is plotted with a traditional network layout. 
-#'  The positional information in \code{\link{plotNetwork}} is lost, but 
+#'  The genomic position information in \code{\link{plotNetwork}} is lost, but 
 #'  in this view it is easier to see the structure of the overall network 
-#'  in terms of hub and peripheral nodes. In this view, each node is plotted 
+#'  in terms of hubs and peripheral nodes. In this view, each node is plotted 
 #'  as a pie-chart, and the main effects of the node are indicated as 
-#'  positive (green), negative (red), or not-significant (gray). Significant 
-#'  interactions are shown as green (positive) or red (negative) arrows between 
-#'  nodes. The function \code{\link{get.network}} must be run before plotting 
+#'  positive, negative, or not-significant (gray). Significant 
+#'  interactions are shown arrows between 
+#'  nodes and colored based on whether they are positive or negative interactions. 
+#'  Colors for positive and negative main effects and interactions are specified
+#' in the arguments. The function \code{\link{get.network}} must be run before plotting 
 #'  the network.
 #' 
+#' For most networks, the default options will be fine, but there is a lot of room
+#' for modification if changes are desired
 #' 
+#' @param data.obj A \link{\code{Cape}} object
+#' @param p.or.q The maximum p value (or q value if FDR was used) for significant 
+#' main effects and interactions.
+#' @param collapsed.net A logical value indicating whether to show the network
+#' condensed into linkage blocks (TRUE) or each individual marker (FALSE)
+#' @param main A title for the plot
+#' @param color.scheme either "DO/CC" or "other". "DO/CC" uses the official "DO/CC"
+#' colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
+#' "other" uses an unrelated color pallette for multiple alleles.
+#' @param pos.col The color to use for positive main effects and interactions
+#' must be one of "green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"
+#' see \link{\code{get.color}}
+#' @param neg.col The color to use for negative main effects and interactions
+#' takes the same values as pos.col.
+#' @param bg.col The color to be used in pie charts for non-significant main effects.
+#' Takes the same values as pos.col
+#' @param light.dark Indicates whether pos.col, neg.col, and bg.col should be selected
+#' from light colors ("l"), dark colors ("d") or the full spectrum from light to dark ("f")
+#' @param node.border.lwd The thickness of the lines around the pie charts
+#' @param layout.matrix Users have the option of providing their own layout matrix for the
+#' network. This should be a two column matrix indicating the x and y coordinates of each 
+#' node in the network.
+#' @param zoom Allows the user to zoom in and out on the image if the network is either 
+#' running off the edges of the plot or too small in the middle of the plot.
+#' @param xshift A constant by which to shift the x values of all nodes in the network.
+#' @param yshift A constant by which to shift the y values of all nodes in the network.
+#' @param node.radius The size of the pie chart for each node.
+#' @param label.nodes A logical value indicating whether the nodes should be labeled.
+#' Users may want to remove labels for large networks.
+#' @param label.offset The amount by which to offset the node labels from the center of
+#' the nodes.
+#' @param label.cex The size of the node labels
+#' @param legend.radius The size of the legend indicating which pie piece corresponds to which
+#' traits.
+#' @param legend.cex The size of the labels in the legend.
+#' @param legend.position The position of the legend on the plot
+#' @param arrow.offset The distance from the center of the node to the arrow head.
+#' @param arrow.length The length of the head of the arrow
+#' @param edge.lwd The thickness of the arrows showing the interactions.
+#'
+#' @return This function invisibly returns a list of length two. The first element
+#' contains the igraph network object. The second contains the layout matrix for the
+#' network. This can be passed in as an argument ("layout.matrix") which provides more
+#' control to the user in the layout. Other network layouts from igraph can also be passed 
+#' in here.
+#'
+#' @references Csardi G, Nepusz T: The igraph software package for complex network 
+#' research, InterJournal, Complex Systems 1695. 2006. http://igraph.org 
+#' 
+#' @export
+ 
 plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main = NULL, 
                          color.scheme = c("DO/CC", "other"), pos.col = "brown", neg.col = "blue", 
-                         bg.col = "gray", light.dark = "l", node.border.lwd = 1, layout.matrix = NULL, 
+                         bg.col = "gray", light.dark = "f", node.border.lwd = 1, layout.matrix = NULL, 
                          zoom = 1, xshift = 0, yshift = 0, node.radius = 1, label.nodes = TRUE, 
                          label.offset = 0, label.cex = 1, legend.radius = 1, legend.cex = 1, 
                          legend.position = "topleft", arrow.offset = node.radius, arrow.length = 0.2, 
                          edge.lwd = 2){
   
-  
-  require(igraph)
-  
+    
   pheno.tables <- data.obj$max_var_to_pheno_influence
   phenotypes <- names(pheno.tables)	
   
@@ -63,9 +116,12 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
   #is subdivided into polygons each with a different color
   #This is for adding information to nodes about which phenotypes they
   #have main effects on
-  plot.net.point <- function(x, y, node.radius = node.radius, cols = c("green", "green", "red"), node.label = NULL, label.offset = 0, label.cex = 1, border.col){
+  plot.net.point <- function(x, y, node.radius = node.radius, 
+  cols = c("green", "green", "red"), node.label = NULL, label.offset = 0, 
+  label.cex = 1, border.col){
     
-    draw.pieDO(x = x, y = y, radius = node.radius, cols = cols, add = TRUE, node.border.lwd = node.border.lwd, border.col = border.col)
+    draw.pie(x = x, y = y, radius = node.radius, cols = cols, add = TRUE, 
+    node.border.lwd = node.border.lwd, border.col = border.col)
     
     
     if(!is.null(node.label)){
@@ -173,8 +229,7 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
   }else{	
     
     edgelist <- matrix(c(as.vector(interactions[,1]), as.vector(interactions[,2])), ncol = 2, byrow = FALSE)
-    
-    
+        
     net <- graph.edgelist(edgelist)
     vertex.names <- V(net)$name
     
@@ -226,10 +281,15 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
     plot.new()
     plot.window(xlim = c(minx, maxx), ylim = c(miny, maxy))
     par(xpd = TRUE)
-    plot.net.edges(net = net, net.layout = zoomed.coord, lwd = edge.lwd, edge.col = edge.col, arrow.offset = arrow.offset)
+    plot.net.edges(net = net, net.layout = zoomed.coord, lwd = edge.lwd, 
+    edge.col = edge.col, arrow.offset = arrow.offset)
     
     for(i in 1:length(V(net)$name)){
-      plot.net.point(x = zoomed.coord[i,1], y = zoomed.coord[i,2], node.radius = node.radius, cols = get.node.cols(node.name = V(net)$name[i], phenotypes = phenotypes, main.effects = main.effects), node.label = vertex.names[i], label.offset = label.offset, label.cex = label.cex, border.col = block.cols[i])
+      plot.net.point(x = zoomed.coord[i,1], y = zoomed.coord[i,2], 
+      node.radius = node.radius, 
+      cols = get.node.cols(node.name = V(net)$name[i], phenotypes = phenotypes, main.effects = main.effects), 
+      node.label = vertex.names[i], label.offset = label.offset, 
+      label.cex = label.cex, border.col = block.cols[i])
     }
     
     if(legend.position == "topleft"){
@@ -246,7 +306,7 @@ plotFullNetwork <- function(data.obj, p.or.q = 0.05,  collapsed.net = TRUE, main
     }
     
     
-    draw.pieDO(x = l.x, y = l.y, radius = legend.radius, cols = rep(bg.col, length(phenotypes)), labels = phenotypes, label.cex = legend.cex, node.border.lwd = node.border.lwd, border.col = "black")
+    draw.pie(x = l.x, y = l.y, radius = legend.radius, cols = rep(bg.col, length(phenotypes)), labels = phenotypes, label.cex = legend.cex, node.border.lwd = node.border.lwd, border.col = "black")
     
     if(!is.null(main)){
       text(x = mean(c(maxx, minx)), y = maxy, labels = main)

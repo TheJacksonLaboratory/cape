@@ -1,22 +1,31 @@
-#' Add eigentraits, singular values, and right singular vectors to the Cape object
+#' Calculate eigentraits
 #' 
-#' This script takes in the data object and returns 
-#' the it with eigentraits added to the data object
+#' This function uses singular value decomposition
+#' (SVD) to calculate eigentraits from the phenotype 
+#' matrix in the cape data object. It
+#' adds the eigentrait matrix to the data object
 #' along with the singular values and the right
-#' singular values.
-#' if scale.pheno is TRUE, the phenotypes are mean
-#' centered and standardized before the svd is run
-#' The user also has the option to rank normalize 
-#' the phenotypes. This argument defaults to false
-#' because many users will do their own normalization.
+#' singular vectors.
+#' 
+#' If scale.pheno is TRUE, the phenotypes are 
+#' mean-centered and standardized before running
+#' the svd.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param scale.pheno boolean, default: TRUE
-#' @param normalize.pheno boolean, default: TRUE
+#' @param scale.pheno A logical value indicating whether to 
+#' mean-center and standardiase the traits.
+#' @param normalize.pheno A logical value indicating whether to 
+#' rankZ normalize the phenotypes.
 #'
-#' @return updated \code{\link{Cape}} object
+#' @details Because we use SVD in this step, there can be
+#' no missing values in the phenotype matrix. Any individuals
+#' with missing values are removed with a message. 
+
+#' @return Returns the data object with the eigentraits,
+#' singular values, and right singular vectors added.
 #'
 #' @export
+
 get.eigentraits <- function(data.obj, scale.pheno = TRUE, normalize.pheno = TRUE){
   
   

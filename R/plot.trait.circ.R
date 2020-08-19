@@ -1,5 +1,17 @@
-#' This function plots the trait circles which have gaps at
-#' the right-hand sice with labels
+#' Plot concentric trait circles
+#'
+#' This internal function is called by \link{\code{PlotNetwork}}
+#' It plots one circle for each trait in the data object.
+#'
+#' @param trait.circ A list with one element for each cirlce giving
+#' the coordinates of the points to plot for each circle.
+#' @param label.gap The amount of space to leave between the circles
+#' and their labels
+#' @param plot.dim the dimensions of the plot
+#' @param main.lwd The line thickness for the circles
+#'
+#' @return None
+
 plot.trait.circ <- function(trait.circ, label.gap, plot.dim, main.lwd){
   
   num.pheno = length(trait.circ)

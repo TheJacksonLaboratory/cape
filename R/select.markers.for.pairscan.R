@@ -1,33 +1,76 @@
-#' This function takes in a singlescan object and bins the markers into bins based on the  either the LOD score, or the curve formed by the maximum allele t score at each point
+#' Select markers for the pairwise scan.
+#'
+#' This function selects markers for the pairwise scan.
+#' Beause Cape is computationally intensive, pairscans 
+#' should not be run on large numbers of markers. 
+#' As a rule of thumb, 1500 markers in a population of 
+#' 500 individuals takes about 24 hours to run without the
+#' kinship correction. The kinship correction increases the
+#' time of the analysis, and users may wish to reduce the number
+#' of markers scanned even further to accommodate the extra
+#' computational burden of the kinship correction.
+#'
+#' This function can select markers either from a pre-defined list
+#' input as the argument \code{specific.markers}, or can select
+#' markers based on their main effect size.
 #' 
-#' This function takes in a singlescan object
-#' and bins the markers into bins based on the 
-#' either the LOD score, or the curve formed by 
-#' the maximum allele t score at each point
-#' num.alleles is the total number of alleles desired
-#' peak.density is the density at which alleles will
-#' be sampled within a peak. A value of 0.2 means about
-#' 20% of the alleles will be selected, while a value of 
-#' 0.5 means that 50% of alleles will be selected.
-#' they are sampled uniformly at random
-#' This function sets a cutoff such that you get the 
-#' if you are specifying markers, you do not need to 
-#' include a singlescan object.
-#' Makes effects plots for multi-allelic 1D scans.
+#' To select markers based on main effect size, this function 
+#' first identifies effect score peaks using an automated
+#' peak detection algorithm. It finds the peaks rising 
+#' above a starting threshold and samples markers within each
+#' peak based on the user-defined sampling density \code{peak.density}.
+#' Setting \code{peak.density} to 0.5 will result in 50\% of the markers
+#' in a given peak being sampled uniformly at random. Sampling
+#' reduces the redundancy among linked markers tested in the pairscan.
+#' If LD is relatively low in the population, this density can be
+#' increased to 1 to include all markers under a peak. If LD is high,
+#' the density can be decreased to reduce redundancy further. 
+#' 
+#' The algorithm compares the number of markers sampled to the target
+#' defined by the user in the argument \code{num.alleles}. If fewer
+#' than the target have been selected, the threshold is lowered, and 
+#' the process is repeated until the target number of alleles have
+#' been selected (plus or minus the number set in \code{tolerance}).
+#' 
+#' If the number of target alleles exceeds the number of markers
+#' genotyped, all alleles will be selected automatically. 
+#' 
 #'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param singlescan.obj a singlescan object
+#' @param singlescan.obj a singlescan object from \link{\code{singlescan}}.
 #' @param geno.obj a genotype object
-#' @param specific.markers
-#' @param num.alleles
-#' @param peak.density default = 0.5
-#' @param window.size
-#' @param tolerance
-#' @param plot.peaks
-#' @param verbose
-#' @param pdf.filename default = "Peak.Plots.pdf"
+#' @param specific.markers A vector of marker names specifying which
+#' markers should be selected. If NULL, the function uses main effect
+#' size to select markers.
+#' @param num.alleles The target number of markers to select if using
+#' main effect size
+#' @param peak.density The fraction of markers to select under each 
+#' peak exceeding the current threshold. Should be set higher for populations
+#' with low LD. And should be set lower for populations with high LD. Defaults 
+#' to 0.5, corresponding to 50\% of markers selected under each peak.
+#' @param window.size The number of markers to use in a smoothing window when
+#' calculating main effect peaks. If NULL, the window size is selected automatically
+#' based on the number of markers with consecutive rises and falls of main effect
+#' size.
+#' @param tolerance The allowable deviation from the target marker number in
+#' number of markers. For example, If you ask the function to select 100 markers,
+#' an set the tolerance to 5, the algorithm will stop when it has selected between
+#' 95 and 105 markers.
+#' @param plot.peaks Whether to plot the singlescan peaks identified by \link{\code{bin.curve}}.
+#' This can be helpful in determining whether the window.size and peak.density parameters 
+#' are optimal for the population.
+#' @param verbose Whether progress should be printed to the screen
+#' @param pdf.filename If plot.peaks is TRUE, this argument specifies the filename
+#' to which the peaks are plotted.
 #' 
-#' @return updated \code{\link{Cape}} object
+#' @seealso \link{\code{bin.curve}}, \link{\code{singlescan}}
+#' 
+#' @return Returns the \code{\link{Cape}} object with a new matrix called
+#' \code{geno_for_pairscan} containing the genotypes of the selected markers
+#' for each individual.
+#'
+#' @export
+
 select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj, 
   specific.markers = NULL, num.alleles = 50, peak.density = 0.5, window.size = NULL, 
   tolerance = 5, plot.peaks = FALSE, verbose = FALSE, pdf.filename = "Peak.Plots.pdf"){
@@ -60,7 +103,6 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj,
     #just take all of them.
     if (num.alleles >= dim(geno)[3]*(dim(geno)[2]-1))  {
       num.alleles = dim(geno)[3]
-      data.obj$marker_selection_method <- "from.list"	
       alt.alleles <- setdiff(dimnames(geno)[[2]], ref.allele)
       specific.markers <- paste(dimnames(geno)[[3]], alt.alleles, sep = "_")
     }
@@ -359,7 +401,7 @@ select.markers.for.pairscan <- function(data.obj, singlescan.obj, geno.obj,
     cat(length(geno.ind[[2]]), "allele(s) rejected.\n")
     cat("Final alleles selected:", "\t", ncol(geno.ind$independent.markers), "\n")
   }
-  data.obj$marker_selection_method = "top.effects"
+
   if(plot.peaks){
     dev.off()
   }

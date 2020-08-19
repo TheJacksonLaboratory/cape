@@ -1,41 +1,48 @@
-#This function runs a cape analysis from a parameter file
-#The input is the initial cape data object and a parameter
-#file name
-#
-#and functions loaded 
-#if using gene.based marker selection, there must be a file in
-#the working directory called gene.list.txt with an ordered list
-#of genes in a column
-# parameter.file = "cape.parameters.txt"; p.or.q = 0.05; results.file = "cross.RData"; n.cores = 4; run.singlescan = TRUE; run.pairscan = TRUE; error.prop.coef = TRUE; error.prop.perm = TRUE; initialize.only = FALSE; verbose = TRUE; run.parallel = TRUE
-#' Runs the CAPE algorithm
+#' Runs CAPE
 #'
-#' This function assumes you already have all required libraries and functions loaded.
+#' This function takes in a data object and genotype object that
+#' have been formatted for cape, as well as a string identifying
+#' a parameter file. It runs cape on the data using the parameters
+#' specified in the file.
+#' 
+#' This function assumes you already have all required libraries 
+#' and functions loaded.
 #'
-#' @param pheno.obj the phenotype object
+#' @param pheno.obj the cape object holding the phenotype data returned by 
 #' @param geno.obj the genotype object
-#' @param results.file the name of the saved data.obj RData file. The base name is used as the base name for all saved RData files.
-#' @param p.or.q A threshold indicating the maximum adjusted p value considered 
-#' @param n.cores integer, default is 4
-#' @param run.singlescan boolean, defaul: TRUE
-#' @param run.pairscan boolean, default: TRUE
-#' @param error.prop.coef, boolean, default: TRUE
-#' @param error.prop.perm, boolean, default: TRUE
-#' @param initialize.only, boolean, default: FALSE
-#' @param verbose boolean, output goes to stdout
+#' @param results.file the name of the saved data.obj RData file. The base 
+#' name is used as the base name for all saved RData files.
+#' @param p.or.q A threshold indicating the maximum adjusted p value 
+#' considered significant. Or, if FDR p value correction is used, the
+#' the maximum q value considered significant.
+#' @param n.cores The number of CPUs to use if run_parallel is set to TRUE
+#' @param run.singlescan A logical value indicating whether to re-run the
+#' singlescan even if previously run.
+#' @param run.pairscan A logical value indicating whether to re-run the
+#' pairscan even if previously run.
+#' @param error.prop.coef, A logical value indicating whether to re-run the
+#' error propagation on the cape coefficients even if previously run.
+#' @param error.prop.perm, A logical value indicating whether to re-run the
+#' error propagation on the permuted cape coefficients even if previously run.
+#' @param initialize.only, If TRUE, cape will not be run. Instead an initialized
+#' data object will be returned. This data object will contain normalized and mean-centered
+#' trait values, and eigentraits, and will have covariates specified. However, the 
+#' singlescan, pairscan, etc. will not be run.
+#' @param verbose Whether progress should be printed to the screen
 #' @param run.parallel boolean, if TRUE runs certain parts of the code as parallel blocks
-#' @param param.file yaml parameter file full path
-#' @param yaml.params yaml string containing the parameters. Either the param.file or yaml.params can be null.
-#' @param results.path paths of the results
+#' @param param.file yaml full path to the parameter file
+#' @param yaml.params yaml string containing the parameters. Either the param.file or 
+#' yaml.params can be null.
+#' @param results.path path that results should be written to.
 #'
-#' @return None, output artifacts are saved to the data.obj$results_path directory
+#' @return This function invisibly returns the data object with all final 
+#' data included. In addition, data saved to the data.obj$results_path directory
 #'
 #' @export
 run.cape <- function(pheno.obj, geno.obj, 
-  results.file = "cross.RData", p.or.q = 0.05, n.cores = 4,
-  run.singlescan = TRUE, run.pairscan = TRUE, error.prop.coef = TRUE,
-  error.prop.perm = TRUE, initialize.only = FALSE, verbose = TRUE,
-  run.parallel = FALSE, param.file = NULL, yaml.params = NULL,
-  results.path = NULL){
+  results.file = "cross.RData", p.or.q = 0.05, n.cores = 4, 
+  initialize.only = FALSE, verbose = TRUE, run.parallel = FALSE, 
+  param.file = NULL, yaml.params = NULL, results.path = NULL){
   
   # Instantiate the Cape R6 object
   data.obj <- Cape$new(
@@ -47,8 +54,7 @@ run.cape <- function(pheno.obj, geno.obj,
   		marker_num = pheno.obj$marker_num,
   		marker_location = pheno.obj$marker_location,
   		geno_names = pheno.obj$geno_names,
-  		geno = geno.obj,
-  		use_kinship = TRUE
+  		geno = geno.obj
   )
   
   results.base.name <- gsub(".RData", "", results.file)
@@ -77,7 +83,7 @@ run.cape <- function(pheno.obj, geno.obj,
     kin.file.name <- paste0(results.base.name, "_kinship.RData")
     kin.obj <- data.obj$read_rds(kin.file.name)
     
-    if (isFALSE(kin.obj)) {
+    if (isFALSE(kin.obj)){
       #if there isn't a kinship object already, we need to make one
       kin.obj <- Kinship(data.obj, geno.obj, type = "overall", 
       pop = data.obj$pop)
@@ -119,8 +125,8 @@ run.cape <- function(pheno.obj, geno.obj,
         data.obj$save_rds(geno.obj, imp.geno.file)
       
         # recalculate the kinship matrix with the updated objects
-        kin.obj <- Kinship(data.obj, geno.obj, type = "overall", pop = data.obj$pop)
-        data.obj$save_rds(kin.obj, kin.file.name)
+        #kin.obj <- Kinship(data.obj, geno.obj, type = "overall", pop = data.obj$pop)
+        #data.obj$save_rds(kin.obj, kin.file.name)
 
       } #end case for when there are missing values but no imputed genotypes
 
@@ -132,7 +138,7 @@ run.cape <- function(pheno.obj, geno.obj,
   }
     
   if(verbose){cat("Removing unused markers...\n")}
-  data.obj <- remove.unused.markers(data.obj, geno.obj)
+  data.obj <- remove.unused.markers(data.obj, geno.obj, verbose = verbose)
   combined.data.obj <- delete_underscore(data.obj, geno.obj)
 
   data.obj <- combined.data.obj$data.obj
@@ -182,13 +188,11 @@ run.cape <- function(pheno.obj, geno.obj,
   
   singlescan.obj <- data.obj$read_rds(singlescan.results.file)
   
-  if (!exists("kin.obj")) {
+  if(!data.obj$use_kinship) {
     kin.obj <- NULL
   }
   
   if (isFALSE(singlescan.obj)) {
-    
-    if (run.singlescan) {
       
       singlescan.obj <- singlescan(
         data.obj, geno.obj, kin.obj = kin.obj, n.perm = data.obj$singlescan_perm,
@@ -212,7 +216,6 @@ run.cape <- function(pheno.obj, geno.obj,
           standardized = FALSE, allele.labels = NULL, alpha = data.obj$alpha, include.covars = TRUE,
           line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan.obj$singlescan.effects)[ph])
       }
-    }
   }
   
   #===============================================================
@@ -223,8 +226,6 @@ run.cape <- function(pheno.obj, geno.obj,
   pairscan.obj <- data.obj$read_rds(pairscan.file)
   
   if (isFALSE(pairscan.obj) | is.null(data.obj$geno_for_pairscan)) {
-    
-    if (run.pairscan) {
       
       marker.selection.method <- data.obj$marker_selection_method
       num.alleles.in.pairscan <- data.obj$num_alleles_in_pairscan
@@ -240,7 +241,9 @@ run.cape <- function(pheno.obj, geno.obj,
       }
       
       if(marker.selection.method == "from.list"){
+        if(is.null(data.obj$snp_file)){stop("Please specify a marker list in the parameter file.\n")}
         snp.file <- file.path(results.path, data.obj$snp_file)
+        if(!file.exists(snp.file)){stop("Can't fine the specified marker list.\n")}
         specific.markers <- as.matrix(read.table(snp.file, sep = "\t", stringsAsFactors = FALSE))
         data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj,
           specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
@@ -251,14 +254,14 @@ run.cape <- function(pheno.obj, geno.obj,
         required.markers = NULL, num.alleles = num.alleles.in.pairscan, verbose = verbose)
       }
       
-      if(marker.selection.method == "by.gene"){
-        gene.list.mat <- read.table("gene.list.txt", sep = "\t", stringsAsFactors = FALSE)		
-        gene.list <- gene.list.mat[,1]
-        data.obj <- select.markers.for.pairscan.by.gene(data.obj, geno.obj, gene.list = gene.list, 
-                                                        bp.buffer = data.obj$bp_buffer, organism = data.obj$organism)
-      } else {
-        gene.list <- NULL
-      }
+      # if(marker.selection.method == "by.gene"){
+        # gene.list.mat <- read.table("gene.list.txt", sep = "\t", stringsAsFactors = FALSE)		
+        # gene.list <- gene.list.mat[,1]
+        # data.obj <- select.markers.for.pairscan.by.gene(data.obj, geno.obj, gene.list = gene.list, 
+                                                        # bp.buffer = data.obj$bp_buffer, organism = data.obj$organism)
+      # } else {
+        # gene.list <- NULL
+      # }
       
       data.obj$save_rds(data.obj, results.file)
       
@@ -266,7 +269,7 @@ run.cape <- function(pheno.obj, geno.obj,
         pairscan.null.size = pairscan.null.size, min.per.genotype = min.per.genotype, 
         max.pair.cor = max.pair.cor, verbose = verbose, num.pairs.limit = Inf, 
         overwrite.alert = FALSE, run.parallel = run.parallel, n.cores = n.cores, 
-        gene.list = gene.list, kin.obj = kin.obj)
+        kin.obj = kin.obj)
       
       data.obj$save_rds(pairscan.obj, pairscan.file)
       
@@ -275,38 +278,44 @@ run.cape <- function(pheno.obj, geno.obj,
       data.obj$plot_pairscan("Pairscan.Regression.jpg", pairscan.obj, 
         phenotype = NULL, show.marker.labels = TRUE, show.alleles = FALSE)
       data.obj$save_rds(data.obj, results.file)
-    } 
+
   }
   
   #===============================================================
-  # run reprametrization
+  # run reparametrization
   #===============================================================
   
-  if(error.prop.coef){
+
+  if(!data.obj$use_saved_results || is.null(data.obj$var_to_var_influences)){
     data.obj <- error.prop(data.obj, pairscan.obj, perm = FALSE, verbose = verbose,
       n.cores = n.cores, run.parallel = run.parallel)
     data.obj$save_rds(data.obj, results.file)
   }
   
-  if(error.prop.perm){	
+  if(!data.obj$use_saved_results || is.null(data.obj$var_to_var_influences_perm)){	
     data.obj <- error.prop(data.obj, pairscan.obj, perm = TRUE, verbose = verbose,
       n.cores = n.cores, run.parallel = run.parallel)
-    data.obj$save_rds(data.obj, results.file)
+     data.obj$save_rds(data.obj, results.file)
   }
   
-  data.obj <- calc.p(data.obj, pval.correction = data.obj$pval_correction)
-  
-  if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
-    transform.to.phenospace <- TRUE
-  }else{
-    transform.to.phenospace <- FALSE	
+  if(!data.obj$use_saved_results || is.null(data.obj$var_to_var_p_val)){
+    data.obj <- calc.p(data.obj, pval.correction = data.obj$pval_correction)
   }
   
-  data.obj <- direct.influence(data.obj, pairscan.obj, 
-    transform.to.phenospace = transform.to.phenospace, verbose = TRUE, 
-    pval.correction = data.obj$pval_correction, save.permutations = TRUE, n.cores = n.cores)
+  #if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
+  #  transform.to.phenospace <- TRUE
+  #}else{
+  #  transform.to.phenospace <- FALSE	
+  #}
   
-  data.obj$save_rds(data.obj, results.file)
+  if(!data.obj$use_saved_results || is.null(data.obj$max_var_to_pheno_influence)){
+    data.obj <- direct.influence(data.obj, pairscan.obj, 
+      transform.to.phenospace = data.obj$transform_to_phenospace, verbose = verbose, 
+      pval.correction = data.obj$pval_correction, save.permutations = TRUE, 
+      n.cores = n.cores)
+      data.obj$save_rds(data.obj, results.file)
+  }
+  
   
   data.obj$write_variant_influences("Variant.Influences.csv", p.or.q = max(c(p.or.q, 0.2)))
 
@@ -321,18 +330,24 @@ run.cape <- function(pheno.obj, geno.obj,
     p.or.q = p.or.q, standardize = FALSE, not.tested.col = "lightgray", 
     covar.width = NULL, pheno.width = NULL)
 
-  data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, collapse.linked.markers = FALSE)
-  data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, threshold.power = 1, 
+  if(!data.obj$use_saved_results || is.null(data.obj$full_net)){
+    data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, 
+    collapse.linked.markers = FALSE)
+  }
+  
+  if(!data.obj$use_saved_results || is.null(data.obj$collapsed_net)){
+    data.obj <- get.network(data.obj, geno.obj, p.or.q = p.or.q, threshold.power = 1, 
     collapse.linked.markers = TRUE, plot.linkage.blocks = FALSE)
+  }
   
   data.obj$save_rds(data.obj, results.file)
   
-  data.obj$plot_network_do("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
-  data.obj$plot_network_do("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
+  data.obj$plot_network("Network.Circular.pdf", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
+  data.obj$plot_network("Network.Circular.jpg", label.gap = 10, label.cex = 1.5, show.alleles = FALSE)
 
   if(dim(geno.obj)[2] == 8){
-    data.obj$plot_network_do("Network.Circular.DO.pdf", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
-    data.obj$plot_network_do("Network.Circular.DO.jpg", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
+    data.obj$plot_network("Network.Circular.DO.pdf", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
+    data.obj$plot_network("Network.Circular.DO.jpg", label.gap = 10, label.cex = 1.5, show.alleles = TRUE)
   }	
   
   data.obj$plot_full_network("Network.View.pdf", zoom = 1.2, node.radius = 0.3, 

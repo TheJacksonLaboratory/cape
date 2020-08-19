@@ -1,8 +1,18 @@
-#' This function returns the marker chromosome number with covariates 
-#' returning Chr 0
+#' Get chromosome numbers for markers
+#' 
+#' Given a vector of marker names or numbers, this 
+#' function returns the chromosome on which each 
+#' marker lives.Covariates are assigned to chromsome 0.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param markers covariate names
+#' @param markers A vector of marker names 
+#' @param character.names A logical value indicating whether
+#' the marker names are characters (TRUE) or numbers (FALSE)
+#' 
+#' @return A vector the same length as the input markers vector
+#' indicating which chromosome each marker in markers lives on.
+#'
+#' @export 
 #' 
 get.marker.chr <- function(data.obj, markers, character.names = TRUE){
   

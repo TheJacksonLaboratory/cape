@@ -1,39 +1,64 @@
-#' This function plots m12 and m21 using myImagePlot
+#' Plot cape coefficients
 #' 
-#' This function plots the reparameterized influences of variants on each other. 
-#' The epistatic interactions from the pairwise scan are reparameteriezed to 
-#' the terms \eqn{m_{12}} and \eqn{m_{21}}, where the subscripts indicate the 
-#' source and target variants respectively. These terms are interpreted as the 
-#' effect that the source variant exerts on the target variant when both are 
-#' present. Negative influences represent suppression while positive influences 
-#' represent enhancement.
+#' This function plots the the cape coefficients between
+#' pairs of markers as a heat map.
+#' The interactions are shown in the main part of the heatmap
+#' while the main effects are shown on the right hand side.
+#' Directed interactions are read from the y axis to the x axis.
+#' For example an interaction from marker1 to marker2 will be shown
+#' in the row corresponding to marker1 and the column corresponding
+#' to marker2. 
+#' Similarly, if marker1 has a main effect on any traits, these
+#' will be shown in the row for marker1 and the trait columns.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param p.or.q A threshold indicating the maximum adjusted p value considered 
-#' significant. If an fdr method has been used to correct for multiple testing, 
-#' this value specifies the maximum q value considered significant.
-#' @param min.std.effect 
-#' @param plot.all.vals 
-#' @param all.markers
-#' @param standardize
-#' @param color.scheme
-#' @param pos.col 
-#' @param neg.col 
-#' @param not.tested.col 
-#' @param show.marker.labels 
-#' @param show.chr 
-#' @param label.chr 
-#' @param show.alleles 
-#' @param scale.effects 
-#' @param pheno.width width of the phenotype text on the plot, in pixels
-#' @param covar.width width of the covariate text on the plot, in pixels
-#' @param covar.labels 
-#' @param phenotype.labels 
-#' @param show.not.tested 
+#' @param p.or.q A threshold indicating the maximum p value (or q value
+#' if FDR was used) of significant interactions and main effects
+#' @param min.std.effect An optional filter. The plot will exclude
+#' all pairs with standardized effects below the number set here.
+#' @param plot.all.vals If TRUE will plot all values regardless of 
+#' significant
+#' @param all.markers if TRUE will plot all markers in the genotype
+#' object, not just those that were tested. Not recommended for large
+#' genotype object.
+#' @param standardize Whether to plot effect sizes (FALSE) or standardized
+#' effect sizes (TRUE)
+#' @param color.scheme A character value of either "DO/CC" or other indicating the 
+#' color scheme of main effects. If "DO/CC" allele effects can be plotted with the
+#' DO/CC colors.
+#' @param pos.col The color to use for positive main effects and interactions
+#' must be one of "green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"
+#' see \link{\code{get.color}}
+#' @param neg.col The color to use for negative main effects and interactions
+#' takes the same values as pos.col.
+#' @param not.tested.col The color to use for marker pairs not tested. Takes
+#' the same values as pos.col and neg.col
+#' @param show.marker.labels Whether to write the marker labels on the plot
+#' @param show.chr Whether to show chromosome boundaries
+#' @param label.chr Whether to label chromosomes if plotted
+#' @param show.alleles If TRUE, the allele of each marker is indicated by color.
+#' @param scale.effects One of "log10", "sqrt", "none." If some effects are
+#' very large, scaling them can help show contrasts between smaller values.
+#' The default is no scaling.
+#' @param pheno.width Each marker and trait gets one column in the matrix. 
+#' If there are many markers, this makes the effects on the traits difficult 
+#' to see. pheno.width increases the number of columns given to the phenotypes.
+#' For example, if pheno.width = 11, the phenotypes will be shown 11 times wider
+#' than individual markers.
+#' @param covar.width See pheno.width. This is the same effect for covariates.
+#' @param covar.labels Labels for covariates if different from those stored in 
+#' the data object.
+#' @param phenotype.labels Labels for traits if different from those stored in 
+#' the data object
+#' @param show.not.tested Whether to color the marker pairs that were not
+#' tested. If FALSE, they will not be colored in.
+#' 
+#' @return This function invisibly returns the variant influences matrix.
+#' shown in the heat map.
 #' 
 #' @export
 plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0, 
-  plot.all.vals = FALSE, all.markers = FALSE, standardize = TRUE, 
+  plot.all.vals = FALSE, all.markers = FALSE, standardize = FALSE, 
   color.scheme = c("DO/CC", "other"), pos.col = "brown", neg.col = "blue", 
   not.tested.col = "lightgray", show.marker.labels = FALSE, show.chr = TRUE, 
   label.chr = TRUE, show.alleles = TRUE, scale.effects = c("log10", "sqrt", "none"), 
@@ -84,6 +109,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   #This function expands the given rows or columns of 
   #a matrix by a given amount
   expand.matrix <- function(mat, row.col.num, row.or.col, expansion.factor){
+    if(expansion.factor == 1){
+      return(mat)
+      }
     if(row.or.col == "row"){
       row.labels <- 1:nrow(mat)
       for(i in 1:length(row.col.num)){
@@ -150,6 +178,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   covar.names <- covar.info$covar.names
   if(is.null(covar.width)){
     covar.width <- round((length(sorted.markers)+length(covar.names))/20)
+    if(covar.width < 1){
+      covar.width = 1
+    }
   }
   
   
@@ -220,6 +251,11 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   var.influence.mat <- as.matrix(as_adjacency_matrix(var.influence.net, attr = "weight"))
   var.pval.mat <- as.matrix(as_adjacency_matrix(var.pval.net, attr = "weight"))
   
+  #put in marker order
+  mat.order <- match(sorted.markers, rownames(var.influence.mat))
+  var.influence.mat <- var.influence.mat[mat.order,mat.order]
+  var.pval.mat <- var.pval.mat[mat.order,mat.order]
+
   #turn the not-tested elements to NA
   var.influence.mat[which(var.influence.mat == 0)] <- NA
   var.pval.mat[which(var.pval.mat == 0)] <- NA
@@ -234,7 +270,9 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   if(length(covar.names) > 0){
     covar.locale <- which(sorted.markers %in% covar.names)
     
-    new.var.inf <- expand.matrix(mat = var.influence.mat, row.col.num = covar.locale, row.or.col = "row", expansion.factor = covar.width)
+    new.var.inf <- expand.matrix(mat = var.influence.mat, 
+      row.col.num = covar.locale, row.or.col = "row", 
+      expansion.factor = covar.width)
     new.var.inf <- expand.matrix(new.var.inf, covar.locale, "col", covar.width)
     
     new.var.pval <- expand.matrix(var.pval.mat, covar.locale, "row", covar.width)
@@ -269,9 +307,12 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   
   if(is.null(pheno.width)){
     pheno.width <- round((length(sorted.markers)+length(covar.names))/15)
+    if(pheno.width < 1){
+      pheno.width <- 1
+      }
   }
   #expand the phenotype influence matrix to give it more visual weight in the plot
-  expanded.pheno.mat <- expand.matrix(pheno.influence.mat, 1:ncol(pheno.influence.mat), "col", pheno.width)
+  expanded.pheno.mat <- expand.matrix(mat = pheno.influence.mat, 1:ncol(pheno.influence.mat), "col", pheno.width)
   expanded.pheno.pval.mat <- expand.matrix(pheno.pval.mat, 1:ncol(pheno.pval.mat), "col", pheno.width)
   
   #also expand the regions where the covariates are if there are covariates
@@ -289,8 +330,8 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
   colnames(full.inf.mat.num) <- colnames(full.inf.mat)
   
   full.pval.mat.num <- apply(full.pval.mat, 2, as.numeric)
-  rownames(full.pval.mat.num) <- rownames(full.pval.mat)
-  colnames(full.pval.mat.num) <- colnames(full.pval.mat)
+  dimnames(full.pval.mat.num) <- dimnames(full.pval.mat)
+
   
   
   #get the coordinates for all pairs not tested
@@ -350,13 +391,19 @@ plotVariantInfluences <- function(data.obj, p.or.q = 0.05, min.std.effect = 0,
     text(0.5, 0.5, "No Significant Interactions")
   }else{
     
-    myImagePlot(x = full.inf.mat.num, min.x = min(full.inf.mat.num, na.rm = TRUE), 
-      max.x = max(full.inf.mat.num, na.rm = TRUE), main = main, xlab = "Target", 
-      ylab = "Source", mark.coords = not.tested.locale, mark.col = not.tested.col, 
+    min.val <- min(full.inf.mat.num, na.rm = TRUE)
+    max.val <- max(full.inf.mat.num, na.rm = TRUE)
+    if(min.val == max.val){
+      if(min.val < 0){max.val <- 0}
+      if(min.val > 0){min.val <- 0}
+    }
+    myImagePlot(x = full.inf.mat.num, min.x = min.val, max.x = max.val, 
+      main = main, xlab = "Target", ylab = "Source", 
+      mark.coords = not.tested.locale, mark.col = not.tested.col, 
       show.labels = show.marker.labels, chromosome.coordinates = chr.boundaries, 
       chr.names = chr.names, chr.labels = chr.labels, 
-      show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, allele.cols = allele.cols)
-    
+      show.pheno.labels = TRUE, extra.col.mat = extra.col.mat, 
+      allele.cols = allele.cols)
     
     #add phenotype names
     if(!is.null(not.tested.locale)){

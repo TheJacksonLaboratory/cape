@@ -1,41 +1,43 @@
-#' This function uses the genotype correlations, but
-#' finds blocks within the correlation matrix 
+#' Identify linkage blocks
 #' 
+#' This function identifies linkage blocks among markers
+#' using pairwise correlation between genotypes. 
+#' The algorithm clusters adjacent, correlated markers
+#' using the fastgreedy community detection algorithm from 
+#' R/igraph
+#' 
+#' Csardi G, Nepusz T: The igraph software package for 
+#' complex network research, InterJournal, Complex Systems
+#' 1695. 2006. http://igraph.org
+#' 
+#' The correlation network can be optionally soft thresholded
+#' to increase or decrease resolution. 
+#'
 #' @param data.obj a \code{\link{Cape}} object
+#' @param geno.obj a genotype object
 #' @param collapse.linked.markers A logical value. If TRUE markers are combined 
 #' into linkage blocks based on correlation. If FALSE, each marker is treated as 
 #' an independent observation.
-#' @param threshold.power 
-#' @param plot.blocks default = TRUE
-#' @param lookup.marker.position default = TRUE
+#' @param threshold.power A soft threshold power. The marker
+#' correlation matrix is raised to this power to increase or
+#' decrease the number of linkage blocks detected. Increasing 
+#' the power makes more linkage blocks, and decreasing the power
+#' makes fewer linkage blocks. The default power is 1, which uses
+#' the correlation matrix as is.
+#' @param plot.blocks logical. If TRUE, the marker correlation 
+#' matrices are plotted and the boundaries of the blocks are shown.
 #' 
-#' @param p.or.q A threshold indicating the maximum adjusted p value considered 
-#' significant. If an fdr method has been used to correct for multiple testing, 
-#' this value specifies the maximum q value considered significant.
-#' @param min.std.effect 
-#' @param standardize A logical value. If FALSE, the interaction terms are stored 
-#' as marker to marker influence coefficients. If TRUE, the coefficients are 
-#' standardized by their standard errors.
-#' @param verbose default = FALSE
-#' @param plot.linkage.blocks 
+#' @return The data object is returned with a new list called
+#' linkage_blocks_collapsed if collapse.linked.markers is TRUE 
+#' and linkage_blocks_full if collapse.linked.markers is FALSE
+#' Each element of the list is one linkage block and contains
+#' a vector naming the markers in that block. Blocks are named
+#' with a chromosome number and an index.
 #' 
+#' @export
+
 linkage.blocks.network <- function(data.obj, geno.obj, collapse.linked.markers = TRUE, 
-threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
-  
-  if(lookup.marker.position){
-    require(biomaRt)
-    if(data.obj$organism == "mouse"){		
-      # lib <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
-      lib <- biomaRt::useMart("ENSEMBL_MART_ENSEMBL", dataset = "mmusculus_gene_ensembl", host = "may2017.archive.ensembl.org")
-      snp.db = biomaRt::useMart(biomart="ENSEMBL_MART_SNP", dataset="mmusculus_snp", host = "may2017.archive.ensembl.org")	
-    }else{
-      # lib <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")	
-      lib <- biomaRt::useMart("ENSEMBL_MART_ENSEMBL", dataset = "hsapiens_gene_ensembl", host = "may2017.archive.ensembl.org")
-      snp.db = biomaRt::useMart(biomart="ENSEMBL_MART_SNP", dataset="hsapiens_snp", host = "may2017.archive.ensembl.org")
-    }
-  }
-  
-  
+threshold.power = 1, plot.blocks = TRUE){
   
   geno.names <- data.obj$geno_names
   marker.names <- geno.names[[3]]
@@ -142,18 +144,18 @@ threshold.power = 1, plot.blocks = TRUE, lookup.marker.position = FALSE){
     chr.alleles <- sapply(split.markers, function(x) x[2])
     chr.marker.names <- sapply(split.markers, function(x) x[1])
     
-    if(lookup.marker.position){
-      cat("looking up SNP positions...\n")
-      snp.info <- lapply(chr.marker.names, function(x) as.matrix(biomaRt::getBM(c("refsnp_id","allele","chr_name","chrom_start"), filters = "snp_filter", values = x, mart = snp.db)))
-      block.bp <- lapply(snp.info, function(x) as.numeric(x[,4]))
-      names(block.bp) <- chr.marker.names
-      no.info <- which(unlist(lapply(block.bp, length)) == 0)
-      block.bp[no.info] <- NA
-      block.bp <- unlist(block.bp)	
-    }else{
+    # if(lookup.marker.position){
+      # cat("looking up SNP positions...\n")
+      # snp.info <- lapply(chr.marker.names, function(x) as.matrix(biomaRt::getBM(c("refsnp_id","allele","chr_name","chrom_start"), filters = "snp_filter", values = x, mart = snp.db)))
+      # block.bp <- lapply(snp.info, function(x) as.numeric(x[,4]))
+      # names(block.bp) <- chr.marker.names
+      # no.info <- which(unlist(lapply(block.bp, length)) == 0)
+      # block.bp[no.info] <- NA
+      # block.bp <- unlist(block.bp)	
+    # }else{
       #otherwise get positions from the data object
       block.bp <- get.marker.location(data.obj, chr.markers)
-    }
+    # }
     
     if(!collapse.linked.markers || length(chr.markers) == 1 || ch == 0){
       link.blocks <- add.ind.markers(link.blocks, ch, chr.markers)

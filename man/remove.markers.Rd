@@ -2,15 +2,15 @@
 % Please edit documentation in R/remove.markers.R
 \name{remove.markers}
 \alias{remove.markers}
-\title{Removes unwanted markers}
+\title{Removes genetic markers}
 \usage{
 remove.markers(data.obj, markers.to.remove)
 }
 \arguments{
 \item{data.obj}{a \code{\link{Cape}} object}
 
-\item{markers.to.remove}{}
+\item{markers.to.remove}{A vector of marker names to be removed.}
 }
 \description{
-Removes unwanted markers
+Removes genetic markers
 }

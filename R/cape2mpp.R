@@ -1,13 +1,16 @@
 #' converts a \code{\link{read.population}} object to a DO-enabled object
 #'
-#' This function converts an old cape object to
-#' capeDO objects. The genotype object should ideally
-#' be separate from the rest of the data
+#' This function converts an object formatted for cape 1.0
+#' to an object formatted for cape 2.0
 #'
-#' @param data.obj a \code{\link{read.population}} object
-#' @param geno.obj a genotype object. If this is not supplied then it is generated here.
+#' @param data.obj a data.obj formatted for cape 1.0
+#' @param geno.obj a genotype object. If geno.obj is NULL
+#' the genotype object is generated from data.obj$geno.
 #'
-#' @return \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
+#' @return This function returns a list with two objects:
+#' \code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
+#' These two objects must be separated again to run through 
+#' cape.
 #'
 #' @export
 cape2mpp <- function(data.obj, geno.obj = NULL){

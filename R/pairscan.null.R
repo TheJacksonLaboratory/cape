@@ -15,7 +15,13 @@
 #' @param geno.obj a genotype object
 #' @param scan.what A character string uniquely identifying whether eigentraits
 #'   or raw traits should be scanned. Options are "eigentraits", "raw.traits"
-#' @param pairscan.null.size
+#' @param pairscan.null.size The total size of the null distribution.
+#' This is DIFFERENT than the number of permutations to run. Each permutation
+#' generates n choose 2 elements for the pairscan. So for example, a permutation
+#' that tests 100 pairs of markers will generate a null distribution of size 4950.
+#' This process is repeated until the total null size is reached. If the null size
+#' is set to 5000, two permutations of 100 markers would be done to get to a null
+#' distribution size of 5000.
 #' @param max.pair.cor A numeric value between 0 and 1 indicating the maximum
 #'   Pearson correlation that two markers are allowed. If the correlation
 #'   between a pair of markers exceeds this threshold, the pair is not tested.
@@ -27,16 +33,15 @@
 #' @param model.family Indicates the model family of the phenotypes. This can be 
 #'   either "gaussian" or "binomial".
 #' @param marker.selection.method options are "top.effects", "uniform", "effects.dist", "by.gene"
-#' @param run.parallel
-#' @param n.cores
-#' @param gene.list boolean, only required for "by.gene" marker selection method
-#' @param verbose boolean, default = FALSE
+#' @param run.parallel Whether to run the analysis on multiple CPUs
+#' @param n.cores The number of CPUs to use if run.parallel is TRUE
+#' @param verbose Whether to write progress to the screen
 #' 
 pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits", "raw.traits"), 
   pairscan.null.size = NULL, max.pair.cor = NULL, min.per.geno = NULL, 
   model.family = "gaussian", 
   marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
-  run.parallel = FALSE, gene.list = NULL, n.cores = 4, verbose = FALSE){
+  run.parallel = FALSE, n.cores = 4, verbose = FALSE){
   
   marker.selection.method <- data.obj$marker_selection_method
   ref.allele <- data.obj$ref_allele
@@ -114,26 +119,26 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
         perm.data.obj <- select.markers.for.pairscan(data.obj, 
           singlescan.obj = single.scan.result, geno.obj, num.alleles = n.top.markers, 
           peak.density = data.obj$peak_density, window.size = data.obj$window_size, 
-          tolerance = data.obj$tolerance, plot.peaks = FALSE, verbose = TRUE)
+          tolerance = data.obj$tolerance, plot.peaks = FALSE, verbose = verbose)
       }
       if(marker.selection.method == "uniform"){
         perm.data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, 
-        num.alleles = ncol(data.obj$geno_for_pairscan), verbose = FALSE)	
+        num.alleles = ncol(data.obj$geno_for_pairscan), verbose = verbose)	
       }
       if(marker.selection.method == "effects.dist"){
         perm.data.obj <- select.markers.for.pairscan.dist(data.obj, 
-        singlescan.obj = single.scan.result, geno.obj, verbose = FALSE)		
+        singlescan.obj = single.scan.result, geno.obj, verbose = verbose)		
       }
     }else{ 
       
-      if(marker.selection.method == "by.gene"){
-        #if we are using a gene-based method
-        #use a permuted gene list to select
-        #SNPs near genes
-        perm.data.obj <- select.markers.for.pairscan.by.gene(data.obj, ref.allele = ref.allele, 
-          geno.obj = geno.obj, gene.list = sample(gene.list), 
-          num.snps = ncol(data.obj$geno_for_pairscan), organism = data.obj$organism)
-      }
+      # if(marker.selection.method == "by.gene"){
+        # #if we are using a gene-based method
+        # #use a permuted gene list to select
+        # #SNPs near genes
+        # perm.data.obj <- select.markers.for.pairscan.by.gene(data.obj, ref.allele = ref.allele, 
+          # geno.obj = geno.obj, gene.list = sample(gene.list), 
+          # num.snps = ncol(data.obj$geno_for_pairscan), organism = data.obj$organism)
+      # }
       if(marker.selection.method == "from.list"){
         single.scan.result <- list("ref.allele" = ref.allele)
         specific.markers <- colnames(data.obj$geno_for_pairscan)
@@ -146,7 +151,7 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
     if(verbose){cat("\tGetting markers for permuted pairscan...\n")}
     top.marker.pairs <- get.pairs.for.pairscan(gene = perm.data.obj$geno_for_pairscan, 
       max.pair.cor = max.pair.cor, min.per.genotype = min.per.geno, 
-      run.parallel = run.parallel, n.cores = n.cores, verbose = FALSE)
+      run.parallel = run.parallel, n.cores = n.cores, verbose = verbose)
     total.pairs <- nrow(top.marker.pairs)
     num.to.add <- 10
     #we don't need to do extra permutations
@@ -158,7 +163,8 @@ pairscan.null <- function(data.obj, geno.obj = NULL, scan.what = c("eigentraits"
       num.needed <- pairscan.null.size - final.perm
       #testing just one pair was messing this up, so 
       #always test at least two pairs
-      top.marker.pairs <- top.marker.pairs[1:(num.needed+(min(c(num.to.add, total.pairs)))),,drop=FALSE]
+      rows.to.take <- min(c(nrow(top.marker.pairs), (num.needed+(min(c(num.to.add, total.pairs))))))
+      top.marker.pairs <- top.marker.pairs[1:rows.to.take,,drop=FALSE]
     }
     
     if(verbose){cat("\tTesting", dim(top.marker.pairs)[1], "pairs...\n")}
