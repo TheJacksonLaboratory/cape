@@ -135,6 +135,7 @@
 #' @slot full_net An adjacency matrix holding significant cape interactions between
 #'  individual markers. See \link{\code{plotNetwork}} and \link{\code{get.network}}.
 #' @slot use_kinship Whether to use a kinship correction in the analysis.
+#' @slot transform_to_phenospace whether to transform to phenospace or not.
 #'
 #' 
 #' @export
@@ -231,6 +232,7 @@ Cape <- R6::R6Class(
     max_var_to_pheno_influence = NULL,
     full_net = NULL,
     use_kinship = NULL,
+    transform_to_phenospace = NULL,
     
     # this function assigns variables from the parameter file
     # to attributes in the Cape object
@@ -292,7 +294,8 @@ Cape <- R6::R6Class(
       var_to_var_p_val = NULL,
       max_var_to_pheno_influence = NULL,
       full_net = NULL,
-      use_kinship = NULL
+      use_kinship = NULL,
+      transform_to_phenospace = NULL
     ) {
       self$parameter_file <- parameter_file
       self$yaml_parameters <- yaml_parameters
@@ -352,6 +355,7 @@ Cape <- R6::R6Class(
       self$max_var_to_pheno_influence <- max_var_to_pheno_influence
       self$full_net <- full_net
       self$use_kinship <- use_kinship
+      self$transform_to_phenospace <- transform_to_phenospace
       # assign parameters from the parameter_file
       self$assign_parameters()
       self$check_inputs()

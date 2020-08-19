@@ -22,7 +22,7 @@ read.parameters <- function(filename = "cape.parameters.yml", yaml_parameters = 
   #================================================
   # general parameters
   #================================================
-  gen.param <- c("traits", "covariates", "marker_covariates", "traits_scaled", "traits_normalized", "scan_what", "eig_which", "use_kinship", "kinship_type", "locus", "pop", "pval_correction")
+  gen.param <- c("traits", "covariates", "marker_covariates", "traits_scaled", "traits_normalized", "scan_what", "eig_which", "use_kinship", "kinship_type", "locus", "pop", "pval_correction", "transform_to_phenospace")
   
   #================================================
   #single scan parameters

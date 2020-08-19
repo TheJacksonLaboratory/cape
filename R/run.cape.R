@@ -38,13 +38,11 @@
 #' @return This function invisibly returns the data object with all final 
 #' data included. In addition, data saved to the data.obj$results_path directory
 #'
-#' @details TODO add transform.to.phenospace to cape parameter file.
 #' @export
 run.cape <- function(pheno.obj, geno.obj, 
   results.file = "cross.RData", p.or.q = 0.05, n.cores = 4, 
   initialize.only = FALSE, verbose = TRUE, run.parallel = FALSE, 
-  param.file = NULL, yaml.params = NULL, results.path = NULL, 
-  transform.to.phenospace = TRUE){
+  param.file = NULL, yaml.params = NULL, results.path = NULL){
   
   # Instantiate the Cape R6 object
   data.obj <- Cape$new(
@@ -284,7 +282,7 @@ run.cape <- function(pheno.obj, geno.obj,
   }
   
   #===============================================================
-  # run reprametrization
+  # run reparametrization
   #===============================================================
   
 
@@ -312,7 +310,7 @@ run.cape <- function(pheno.obj, geno.obj,
   
   if(!data.obj$use_saved_results || is.null(data.obj$max_var_to_pheno_influence)){
     data.obj <- direct.influence(data.obj, pairscan.obj, 
-      transform.to.phenospace = transform.to.phenospace, verbose = verbose, 
+      transform.to.phenospace = data.obj$transform_to_phenospace, verbose = verbose, 
       pval.correction = data.obj$pval_correction, save.permutations = TRUE, 
       n.cores = n.cores)
       data.obj$save_rds(data.obj, results.file)

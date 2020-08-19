@@ -26,6 +26,8 @@ save_results:
  - true
 use_saved_results:
  - false
+transform_to_phenospace:
+ - true
 
 #================================================
 # Single Scan Parameters 
