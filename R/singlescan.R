@@ -53,7 +53,8 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0,
   
   ref.allele <- data.obj$ref_allele
   scan.what <- data.obj$scan_what
-  use.kinship <- data.obj$use_kinship
+  #use.kinship <- data.obj$use_kinship
+  use.kinship <- as.logical(length(kin.obj))
 
   if(!run.parallel){n.cores = 1}
   
@@ -298,7 +299,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0,
       names(results.by.chr) <- dimnames(c.geno)[[locus.dim]]	
       
       t.stat.array <- add.results.to.array(result.array = t.stat.array, results.list = results.by.chr, stat.name = "t.stat")
-      effect.array <- add.results.to.array(effect.array, results.by.chr, "slope")
+      effect.array <- add.results.to.array(result.array = effect.array, results.list = results.by.chr, stat.name = "slope")
       locus.score.scores[chr.locale,i] <- unlist(lapply(results.by.chr, function(x) x$score))
       
     } #end looping through data corrected by chromosome (loco)

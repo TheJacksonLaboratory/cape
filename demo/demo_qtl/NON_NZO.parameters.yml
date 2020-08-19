@@ -6,7 +6,7 @@ traits:
  - INS_24
  - log_GLU_24
 covariates:
- - mom
+ - pgm
 scan_what:
  - eigentraits 
 traits_scaled:

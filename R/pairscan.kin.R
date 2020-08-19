@@ -154,16 +154,16 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     
     #sink the warnings from regress about solutions close to zero to a file
     sink(file.path(data.obj$results_path,"regress.warnings"))
-    if(class(kin.obj) == "matrix"){
+    #if(class(kin.obj) == "matrix"){
       #if we are using an overall kinship matrix
       kin.dat <- kinship.on.the.fly(kin.obj, geno, chr1 = NULL, chr2 = NULL, 
       phenoV = pheno.vector, covarV = covar.vector)
-    }else{
-      #If we are using LTCO
-      chr.pairs <- Reduce("rbind", strsplit(names(kin.obj), ","))
-      kin.dat <- apply(chr.pairs, 1, function(x) kinship.on.the.fly(kin.obj, geno, 
-      x[1], x[2], phenoV = pheno.vector, covarV = covar.vector))
-    }
+    #}else{
+      #If we are using LTCO (taking this out for now)
+    #  chr.pairs <- Reduce("rbind", strsplit(names(kin.obj), ","))
+    #  kin.dat <- apply(chr.pairs, 1, function(x) kinship.on.the.fly(kin.obj, geno, 
+    #  x[1], x[2], phenoV = pheno.vector, covarV = covar.vector))
+    #}
     sink(NULL) #stop sinking output
     
     if (run.parallel) {
