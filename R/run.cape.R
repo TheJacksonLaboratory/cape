@@ -16,14 +16,6 @@
 #' considered significant. Or, if FDR p value correction is used, the
 #' the maximum q value considered significant.
 #' @param n.cores The number of CPUs to use if run_parallel is set to TRUE
-#' @param run.singlescan A logical value indicating whether to re-run the
-#' singlescan even if previously run.
-#' @param run.pairscan A logical value indicating whether to re-run the
-#' pairscan even if previously run.
-#' @param error.prop.coef, A logical value indicating whether to re-run the
-#' error propagation on the cape coefficients even if previously run.
-#' @param error.prop.perm, A logical value indicating whether to re-run the
-#' error propagation on the permuted cape coefficients even if previously run.
 #' @param initialize.only, If TRUE, cape will not be run. Instead an initialized
 #' data object will be returned. This data object will contain normalized and mean-centered
 #' trait values, and eigentraits, and will have covariates specified. However, the 
