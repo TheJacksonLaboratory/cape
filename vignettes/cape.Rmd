@@ -16,13 +16,8 @@ bibliography: cape.bib
 
 ## Abstract
 
-<<<<<<< Updated upstream
-Here we present an R package for the Combined Analysis of Epistasis and 
-Pleiotropy, or `cape`. This package implements a method, originally described
-=======
 Here we present an update of the R package for the Combined Analysis of Epistasis 
 and Pleiotropy, or `cape`. This package implements a method, originally described
->>>>>>> Stashed changes
 in @Carter:2012fd, that infers directed interaction networks between genetic 
 variants for predicting the influence of genetic perturbations on phenotypes. This 
 method takes advantage of complementary information in partially pleiotropic genetic 
