@@ -47,11 +47,7 @@ qnormPheno(obesity.cross, pheno.which = c("BW_24", "INS_24", "log_GLU_24"))
 
 ## ----pheno_cor, fig.width = 5, fig.height = 5---------------------------------
 plotPhenoCor(obesity.cross, pheno.which = c("BW_24", "INS_24", "log_GLU_24"),
-<<<<<<< Updated upstream
-color.by = "mom", group.labels = c("Non-obese", "Obese"))
-=======
 color.by = "pgm", group.labels = c("Non-obese", "Obese"))
->>>>>>> Stashed changes
 
 ## ----run_cape-----------------------------------------------------------------
 final.cross <- run.cape(obesity.cross, obesity.geno, 

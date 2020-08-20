@@ -50,17 +50,17 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
   #============================================================================
   
   get.marker.pair.stats <- function(m, kin.dat){
-    if(class(kin.obj) == "matrix"){
+    #if(class(kin.obj) == "matrix"){
       new.pheno <- kin.dat$corrected.pheno
       new.geno <- kin.dat$corrected.geno
       new.covar <- kin.dat$corrected.covar
       err.cov <- kin.dat$err.cov
-    }else{
+    #}else{
       #taking out the LTCO option for now, since it has weird behavior
-      new.pheno <- kin.dat[[1]]$corrected.pheno
-      new.geno <- kin.dat[[1]]$corrected.geno
-      new.covar <- kin.dat[[1]]$corrected.covar
-      err.cov <- kin.dat[[1]]$err.cov
+     # new.pheno <- kin.dat[[1]]$corrected.pheno
+     # new.geno <- kin.dat[[1]]$corrected.geno
+     # new.covar <- kin.dat[[1]]$corrected.covar
+     # err.cov <- kin.dat[[1]]$err.cov
     #  marker.chr <- get.marker.chr(data.obj, m)
     #  non.covar <- setdiff(marker.chr, 0)
     #  if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
@@ -72,7 +72,7 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     #  new.geno <- kin.dat[[kin.locale]]$corrected.geno
     #  new.covar <- kin.dat[[kin.locale]]$corrected.covar
     #  err.cov <- kin.dat[[kin.locale]]$err.cov			
-    }
+    #}
     
     int.term = matrix(solve(err.cov) %*% new.geno[,m[1]]*new.geno[,m[2]], ncol = 1)
     pairscan.results <- one.pairscan.parallel(data.obj, phenotype.vector = new.pheno,
@@ -95,17 +95,17 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
   
   get.covar.stats <- function(m, kin.dat){
     
-    if(class(kin.obj) == "matrix"){
+    #if(class(kin.obj) == "matrix"){
       new.pheno <- kin.dat$corrected.pheno
       new.geno <- kin.dat$corrected.geno
       new.covar <- kin.dat$corrected.covar
       err.cov <- kin.dat$err.cov
       #taking out LTCO option for now, since it has werid results
-    }else{
-      new.pheno <- kin.dat[[1]]$corrected.pheno
-      new.geno <- kin.dat[[1]]$corrected.geno
-      new.covar <- kin.dat[[1]]$corrected.covar
-      err.cov <- kin.dat[[1]]$err.cov
+    #}else{
+     # new.pheno <- kin.dat[[1]]$corrected.pheno
+     # new.geno <- kin.dat[[1]]$corrected.geno
+     # new.covar <- kin.dat[[1]]$corrected.covar
+     # err.cov <- kin.dat[[1]]$err.cov
     #  marker.chr <- get.marker.chr(data.obj, m)
     #  non.covar <- setdiff(marker.chr, 0)
     #  if(length(non.covar) == 0){kin.name = "overall"}#if both markers are covariates
@@ -117,7 +117,7 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     #  new.geno <- kin.dat[[kin.locale]]$corrected.geno
     #  new.covar <- kin.dat[[kin.locale]]$corrected.covar
     #  err.cov <- kin.dat[[kin.locale]]$err.cov			
-    }
+    #}
     
     
     covar.locale <- which(covar.names %in% m)
@@ -192,7 +192,6 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     colnames(se.mat) <- c("marker1", "marker2", "marker1", "marker2", "marker1:marker2")
     
     cov.mat <- matrix(unlist(lapply(pairscan.results, function(x) x$cov)), nrow = nrow(marker.pairs), byrow = TRUE)
-    
     
     #if there are covariates to test explicitly	
     if(num.p.covar > 0){
