@@ -18,7 +18,7 @@
 #' @param geno.obj a genotype object.
 #' @param kin.obj a kinship object. If NULL, the kinship correction is not performed.
 #' @param n.perm integer number of permutations. Permutation results are only
-#' used in \link{\code{plotSinglescan}}. They are not used for any other piece
+#' used in \code{\link{plotSinglescan}}. They are not used for any other piece
 #' of the Cape analysis and may be safely omitted. The default number of permutations
 #' is 0.
 #' @param alpha significance level if permtuations are being run. If permutations are
@@ -44,7 +44,7 @@
 #'    locus.p.vals: Marker-level p values
 #'    locus.score.scores: Marker-level test statistics.
 #'
-#' @seealso \link{\code{plotSinglescan}}
+#' @seealso \code{\link{plotSinglescan}}
 #' @export
 #' 
 singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0, 

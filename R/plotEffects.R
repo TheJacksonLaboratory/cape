@@ -2,12 +2,12 @@
 #'
 #' This function plots phenotypic effects of 
 #' individual cape interactions. It serves as
-#' a wrapper for the functions \link{\code{plotLines}}
-#' \link{\code{plotBars}} \link{\code{plotPoints}},
-#' and \link{\code{IntHeat}}. Each of those functions
+#' a wrapper for the functions \code{\link{plotLines}}
+#' \code{\link{plotBars}} \code{\link{plotPoints}},
+#' and \code{\link{IntHeat}}. Each of those functions
 #' plots individual cape interactions in different forms.
 #' 
-#' @param data.obj A \link{\code{Cape}} object
+#' @param data.obj A \code{\link{Cape}} object
 #' @param geno.obj A genotype object
 #' @param marker1 A string indicating the name 
 #' of the source marker in the interaction. This can
@@ -70,7 +70,7 @@
 #' @param bins.marker2 The same as bins.marker1, but for
 #' marker2.
 #' 
-#' @details The "h" option calls \link{\code{IntHeat}}, which
+#' @details The "h" option calls \code{\link{IntHeat}}, which
 #' fits linear models to each trait and both markers specified.
 #' It uses those models to predict phenotype values along continuously
 #' valued genotype bins and plots the predicted values as a heatmap.

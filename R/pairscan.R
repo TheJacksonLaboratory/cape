@@ -23,7 +23,7 @@
 #'   genotype combination. If for a given marker pair, one of the genotype combinations is
 #'   underrepresented, the marker pair is not tested. If this value is NULL,
 #'   max.pair.cor must have a numeric value.
-#' @param kin.obj a kinship object calculated by \link{\code{Kinship}}.
+#' @param kin.obj a kinship object calculated by \code{\link{Kinship}}.
 #' @param num.pairs.limit A number indicating the maximum number of pairs to
 #'   scan. If the number of pairs exceeds this threshold, the function asks for
 #'   confirmation before proceeding with the pairwise scan.
@@ -47,7 +47,7 @@
 #'   combinations.
 #'
 #' @return This function returns an object assigned to pairscan.obj in 
-#' \link{\code{run.cape}}.
+#' \code{\link{run.cape}}.
 #'
 #' The results object is a list of five elements:
 #' ref.allele: The allele used as the reference for the tests.

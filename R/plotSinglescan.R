@@ -1,14 +1,14 @@
 #' Plot results of single-locus scans
 #'
-#' This function plots the results of \link{\code{singlescan}}
+#' This function plots the results of \code{\link{singlescan}}
 #' 
 #' @param data.obj a \code{\link{Cape}} object
-#' @param singlescan.obj a singlescan object from \link{\code{singlescan}}
+#' @param singlescan.obj a singlescan object from \code{\link{singlescan}}
 #' @param chr a vector of chromosome names to include in the plot. Defaults to all chromosomes.
 #' @param traits a vector of trait names to plot. Defaults to all traits.
 #' @param alpha the alpha significance level. Lines for significance values will only
-#' be plotted if n.perm > 0 when \link{\code{singlescan}} was run. And only alpha values
-#' specified in \link{\code{singlescan}} can be plotted.
+#' be plotted if n.perm > 0 when \code{\link{singlescan}} was run. And only alpha values
+#' specified in \code{\link{singlescan}} can be plotted.
 #' @param standardized If TRUE t statistics are plotted. If FALSE, effect sizes are plotted.
 #' @param color.scheme A character value of either "DO/CC" or other indicating the 
 #' color scheme of main effects. If "DO/CC" allele effects can be plotted with the
@@ -17,7 +17,7 @@
 #' stored in the data.object.
 #' @param include.covars Whether to include covariates in the plot.
 #' @param show.selected If TRUE will indicate which markers were selected for the pairscan.
-#' In order for these to be plotted, \link{\code{select.markers.for.pairscan}} must be run first.
+#' In order for these to be plotted, \code{\link{select.markers.for.pairscan}} must be run first.
 #' @param line.type as defined in plot
 #' @param lwd line width, default is 1
 #' @param pch see the "points()" R function. Default is 16 (a point).

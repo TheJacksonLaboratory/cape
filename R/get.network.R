@@ -3,7 +3,7 @@
 #' 
 #' This function converts the significant cape 
 #' interactions to an adjacency matrix, which 
-#' is then used by \link{\code{plotNetwork}}
+#' is then used by \code{\link{plotNetwork}}
 #' 
 #' @param data.obj a \code{\link{Cape}} object
 #' @param p.or.q A threshold indicating the maximum adjusted p value considered 
@@ -20,7 +20,7 @@
 #' an independent observation.
 #' @param threshold.power A numerical value indicating the power to which to 
 #' raise the marker correlation matrix. This parameter is used in 
-#' \link{\code{linkage.blocks.network}} to determine soft thresholding
+#' \code{\link{linkage.blocks.network}} to determine soft thresholding
 #' in determining linkage block structure. 
 #' Larger values result in more splitting of linkage blocks. Smaller values 
 #' result in less splitting. The default value of 1 uses the unmodified
@@ -34,7 +34,7 @@
 #' @return This function returns the data object with an adjacency matrix defining
 #' the final cape network based on the above parameters. The network is put into 
 #' the slot collapsed_net if collapse.linked.markers is set to TRUE, and full_net
-#' if collapse.linked.markers is set to FALSE. \link{\code{run.cape}} automatically
+#' if collapse.linked.markers is set to FALSE. \code{\link{run.cape}} automatically
 #' requests both networks be generated.
 #' 
 #' @export

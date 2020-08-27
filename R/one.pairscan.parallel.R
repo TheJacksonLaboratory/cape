@@ -1,21 +1,21 @@
 #' This is an internal function to run a single pairscan
 #' It is used both to do the actual pairscan 
-#' (\link{\code{pairscan.kin}} and \link{\code{pairscan.noKin}}), 
+#' (\code{\link{pairscan.kin}} and \code{\link{pairscan.noKin}}), 
 #' as well as to do the permutations of the pairscan
-#' \link{\code{pairscan.null}}).
+#' \code{\link{pairscan.null}}).
 #'
-#' @param data.obj a \link{\code{Cape}} object
+#' @param data.obj a \code{\link{Cape}} object
 #' @param phenotype.vector A vector of trait values
 #' @param genotype.matrix A matrix of genotypes for markers to
 #' be tested
 #' @param int the interaction term added to the linear model
 #' when the kinship correction is being used. This term is
-#' calculated in \link{\code{pairscan.kin}}.
+#' calculated in \code{\link{pairscan.kin}}.
 #' @param covar.vector a vector or matrix of covariates to
 #' be used.
 #' @param paired.markers a two-column matrix indicating which
 #' marker pairs should be tested. The pairs are assigned in
-#' \link{\code{pairscan}} by \link{\code{get.pairs.for.pairscan}}.
+#' \code{\link{pairscan}} by \code{\link{get.pairs.for.pairscan}}.
 #' They are checked for pairwise correlations before being sent
 #' to the pairscan.
 #' @param n.perm the number of permutations to be performed.

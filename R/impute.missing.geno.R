@@ -5,7 +5,7 @@
 #' the user can prioritize whether to remove individuals, markers, or whichever
 #' has fewer missing values.
 #' 
-#' This function is run by \link{\code{run.cape}} and runs automatically if
+#' This function is run by \code{\link{run.cape}} and runs automatically if
 #' a kinship correction is specified and there are missing values in the 
 #' genotype object.
 #'

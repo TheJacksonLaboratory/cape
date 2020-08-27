@@ -37,7 +37,7 @@
 #' 
 #'
 #' @param data.obj a \code{\link{Cape}} object
-#' @param singlescan.obj a singlescan object from \link{\code{singlescan}}.
+#' @param singlescan.obj a singlescan object from \code{\link{singlescan}}.
 #' @param geno.obj a genotype object
 #' @param specific.markers A vector of marker names specifying which
 #' markers should be selected. If NULL, the function uses main effect
@@ -56,14 +56,14 @@
 #' number of markers. For example, If you ask the function to select 100 markers,
 #' an set the tolerance to 5, the algorithm will stop when it has selected between
 #' 95 and 105 markers.
-#' @param plot.peaks Whether to plot the singlescan peaks identified by \link{\code{bin.curve}}.
+#' @param plot.peaks Whether to plot the singlescan peaks identified by \code{\link{bin.curve}}.
 #' This can be helpful in determining whether the window.size and peak.density parameters 
 #' are optimal for the population.
 #' @param verbose Whether progress should be printed to the screen
 #' @param pdf.filename If plot.peaks is TRUE, this argument specifies the filename
 #' to which the peaks are plotted.
 #' 
-#' @seealso \link{\code{bin.curve}}, \link{\code{singlescan}}
+#' @seealso \code{\link{bin.curve}}, \code{\link{singlescan}}
 #' 
 #' @return Returns the \code{\link{Cape}} object with a new matrix called
 #' \code{geno_for_pairscan} containing the genotypes of the selected markers

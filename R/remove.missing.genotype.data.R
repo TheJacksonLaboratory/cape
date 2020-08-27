@@ -32,19 +32,19 @@
 #'        "marker" = remove markers with missing data before considering individuals.
 #'
 #' @return The cape object is returned with individuals and markers removed. After this step,
-#' the function \link{\code{get.geno}} should return an array with no missing data if ind.missing.thresh
+#' the function \code{\link{get.geno}} should return an array with no missing data if ind.missing.thresh
 #' and marker.missing.thresh are both 0. If these numbers are higher, no individual or marker will
 #' be missing more than the set percentage of data.
 #' 
 #' details All missing genotype data must either be imputed or removed if using the kinship correction.
-#' Running \link{\code{impute.missing.geno}} prior to running \link{\code{remove.missing.genotype.data}}
+#' Running \code{\link{impute.missing.geno}} prior to running \code{\link{remove.missing.genotype.data}}
 #' ensures that the least possible amount of data are removed before running cape. In some cases, there
-#' will be missing genotype data even after running \link{\code{impute.missing.geno}}, in which case,
+#' will be missing genotype data even after running \code{\link{impute.missing.geno}}, in which case,
 #' \code{remove.missing.genotype.data} still needs to be run. 
-#' The function \link{\code{run.cape}} automatically runs these steps when \code{use_kinship}
+#' The function \code{\link{run.cape}} automatically runs these steps when \code{use_kinship}
 #' is set to TRUE. 
 #' 
-#' @seealso \link{\code{get.geno}}, \link{\code{impute.missing.geno}}, \link{\code{run.cape}}
+#' @seealso \code{\link{get.geno}}, \code{\link{impute.missing.geno}}, \code{\link{run.cape}}
 #' @export
 #'
 remove.missing.genotype.data <- function(data.obj, geno.obj = NULL, ind.missing.thresh = 0,

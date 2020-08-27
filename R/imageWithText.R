@@ -13,13 +13,13 @@
 #' for the rows of the matrix. Defaults to existing row
 #' names.
 #' @param row.text.adj adjustment value for row text indicating
-#' the centering. See \link{\code{text}}.
+#' the centering. See \code{\link{text}}.
 #' @param row.text.shift numeric value for shifting the row labels
 #' toward or away from the matrix.
 #' @param row.text.rotation Rotation value in degrees for the row labels
 #' @param col.text.rotation Rotation value in degrees for the column labels
 #' @param col.text.adj adjustment value for column text indicating
-#' the centering. See \link{\code{text}}.
+#' the centering. See \code{\link{text}}.
 #' @param col.text.shift numeric value for shifting the column labels
 #' toward or away from the matrix.
 #' @param show.text Whether to write the numerical value of each cell 
@@ -38,7 +38,7 @@
 #' "brown", "gray") to indicate the color scale to be used. Defaults
 #' to gray.
 #' @param color.spread A numerical value used as input to 
-#' \link{\code{get.color2}} indicating the numeric distance
+#' \code{\link{get.color2}} indicating the numeric distance
 #' between colors in a ramp. Smaller values produce a smaller
 #' difference between adjacent colors in the ramp.
 #' @param light.dark One of "l", "d", or "f" indicating whether

@@ -1,8 +1,8 @@
 #' Perform linear regression on multi-allele markers.
 #' 
 #' This function performs the multi-allele version of 
-#' linear regression. It is used in \link{\code{singlescan}}
-#' and \link{\code{one.singlescan}}. It performs marker-by-marker
+#' linear regression. It is used in \code{\link{singlescan}}
+#' and \code{\link{one.singlescan}}. It performs marker-by-marker
 #' linear regressions for each trait and adjusts for covariates.
 #' It collects parameters from the linear models and returns
 #' for downstream use.

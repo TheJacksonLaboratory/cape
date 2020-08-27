@@ -1,7 +1,7 @@
 #' Save the cross data in R/qtl CSV format
 #' 
 #' This function writes out a cape object
-#' in a csv format readable both by \link{\code{read.population}}
+#' in a csv format readable both by \code{\link{read.population}}
 #' in Cape or by read.cross in R/qtl.
 #'
 #' @param data.obj a \code{\link{Cape}} object
