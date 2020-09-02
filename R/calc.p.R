@@ -1,6 +1,6 @@
 #' Calculate P Values for Interactions Based on Permutations
 #' 
-#' @param data.obj A \link{\code{Cape}} data object
+#' @param data.obj A \code{\link{Cape}} data object
 #' @param pval.correction One of "holm", "fdr", "lfdr" or "none", indicating 
 #' whether the p value correction method used should be the Holm step-down procedure, 
 #' false discovery rate, local false discovery, or no correction rate respectively.

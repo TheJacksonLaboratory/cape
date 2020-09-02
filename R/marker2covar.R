@@ -23,9 +23,9 @@
 #'
 #' @return This function returns the data object with additional 
 #' information specifying which markers are to be used as covariates.
-#' this information can be retrieved with \link{\code{get.covar}}.
+#' this information can be retrieved with \code{\link{get.covar}}.
 #' 
-#' @seealso \link{\code{get.covar}}
+#' @seealso \code{\link{get.covar}}
 #' @export
 
 marker2covar <- function(data.obj, geno.obj, singlescan.obj = NULL, covar.thresh = NULL, markers = NULL){

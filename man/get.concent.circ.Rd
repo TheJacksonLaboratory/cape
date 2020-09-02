@@ -16,11 +16,11 @@ There will be one circle generated for each element in list.names.}
 }
 \value{
 A list of x,y coordinates as generated
-by the function \link{\code{get.circle}} and named with 
+by the function \code{\link{get.circle}} and named with 
 list.names
 }
 \description{
-This is an internal function used by \link{\code{PlotNetwork}}
+This is an internal function used by \code{\link{PlotNetwork}}
 and calling get.circle to generate concentric circles starting
 at a specified radius and with a specified gap between them.
 These circles are used for plotting traits and chromosomes

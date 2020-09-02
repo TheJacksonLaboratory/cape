@@ -16,7 +16,7 @@
 #' 
 #' @return A list with two elements: data.obj and geno.obj
 #' These objects are formatted for use in cape and must then
-#' be separated to use in \link{\code{run.cape}}.
+#' be separated to use in \code{\link{run.cape}}.
 #'
 #' @references Purcell S, Neale B, Todd-Brown K, Thomas L, Ferreira MAR, 
 #' Bender D, Maller J, Sklar P, de Bakker PIW, Daly MJ & Sham PC (2007) 

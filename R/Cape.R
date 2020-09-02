@@ -31,10 +31,10 @@
 #'   selected for the pairscan. Options are "top.effects" or "from.list."
 #'   If "top.effects," markers are selected using main effect sizes. 
 #'   If "from.list," markers are specified using a vector of marker names. 
-#'   See \link{\code{select.markers.for.pairscan}}.
+#'   See \code{\link{select.markers.for.pairscan}}.
 #' @slot geno_names The dimnames of the genotype array. The genotype array is a three-dimensional
 #'   array in which rows are individuals, columns are alleles, and the third dimension houses
-#'   the markers. Genotypes are pulled for analysis using \link{\code{get.geno}} based on
+#'   the markers. Genotypes are pulled for analysis using \code{\link{get.geno}} based on
 #'   geno_names. Only the individuals, alleles, and markers listed in geno_names are
 #'   taken from the genotype matrix. Functions that remove markers and individuals from
 #'   analysis always operate on geno_names in addition to other relevant slots.
@@ -46,14 +46,14 @@
 #' @slot geno_for_pairscan A two-dimensional matrix holding the genotypes that will be analyzed
 #'   in the pairscan. Alleles are in columns and individuals are in rows. As in the geno array, 
 #'   values are continuous probabilities ranging from 0 to 1.
-#' @slot peak_density The density parameter for \link{\code{select.markers.for.pairscan}}.
+#' @slot peak_density The density parameter for \code{\link{select.markers.for.pairscan}}.
 #'   Determines how densely markers under an individual effect size peak are selected 
 #'   for the pairscan if marker_selection_method is TRUE. Defaults to 0.5.
-#' @slot window_size The window size used by \link{\code{select.markers.for.pairscan}}.
+#' @slot window_size The window size used by \code{\link{select.markers.for.pairscan}}.
 #'   It specifies how many markers are used to smooth effect size curves for automatic peak
 #'   identification. If set to NULL, window_size is determined automatically. Used when 
 #'   marker_selection_method is TRUE.
-#' @slot tolerance The wiggle room afforded to \link{\code{select.markers.for.pairscan}} in 
+#' @slot tolerance The wiggle room afforded to \code{\link{select.markers.for.pairscan}} in 
 #'   finding a target number of markers. If num_alleles_in_pairscan is 100 and the tolerance 
 #'   is 5, the algorithm will stop when it identifies anywhere between 95 and 105 markers 
 #'   for the pairscan.
@@ -62,7 +62,7 @@
 #'   B as the reference allele. B is the allele from the C57Bl6/J mouse, which is often used as
 #'   a reference strain.
 #' @slot alpha The significance level for calculating effect size thresholds in the 
-#'   \link{\code{singlescan}}. If singlescan_perm is 0, this parameter is ignored.
+#'   \code{\link{singlescan}}. If singlescan_perm is 0, this parameter is ignored.
 #' @slot covar_table A matrix of covariates with covariates in columns and individuals
 #'   in rows. Must be numeric.
 #' @slot num_alleles_in_pairscan The number of alleles to test in the pairwise scan. 
@@ -86,32 +86,32 @@
 #'   is set to 5000, two permutations of 100 markers would be done to get to a null
 #'   distribution size of 5000.
 #' @slot p_covar A vector of strings specifying the names of covariates derived
-#'   from traits. See \link{\code{pheno2covar}}.
+#'   from traits. See \code{\link{pheno2covar}}.
 #' @slot g_covar A vector of strings specifying the names of covariates derived 
-#'   from genetic markers. See \link{\code{marker2covar}}.
+#'   from genetic markers. See \code{\link{marker2covar}}.
 #' @slot p_covar_table A matrix holding the individual values for each
-#'   trait-derived covariate. See \link{\code{pheno2covar}}.
+#'   trait-derived covariate. See \code{\link{pheno2covar}}.
 #' @slot g_covar_table A matrix holding the individual values for each 
-#'   marker-derived covariate. See \link{\code{marker2covar}}.
+#'   marker-derived covariate. See \code{\link{marker2covar}}.
 #' @slot model_family Indicates the model family of the phenotypes
 #'   This can be either "gaussian" or "binomial". If this argument
 #'   is length 1, all phenotypes will be assigned to the same
 #'   family. Phenotypes can be assigned different model families by
 #'   providing a vector of the same length as the number of phenotypes,
-#'   indicating how each phenotype should be modeled. See \link{\code{singlescan}}.
+#'   indicating how each phenotype should be modeled. See \code{\link{singlescan}}.
 #' @slot scan_what A string indicating whether "eigentraits", "normalized.traits", or 
-#'   "raw.traits" should be analyzed. See \link{\code{get.pheno}}.
+#'   "raw.traits" should be analyzed. See \code{\link{get.pheno}}.
 #' @slot ET A matrix holding the eigentraits to be analyzed.
-#' @slot singular_values Added by \link{\code{get.eigentraits}}. A vector holding 
+#' @slot singular_values Added by \code{\link{get.eigentraits}}. A vector holding 
 #'   the singular values from the singular
 #'   value decomposition of the trait matrix. They are used in rotating the 
 #'   final direct influences back to trait space from eigentrait space. See
-#'   \link{\code{get.eigentraits}} and \link{\code{direct.influence}}.
-#' @slot right_singular_vectors Added by \link{\code{get.eigentraits}}. A matrix 
+#'   \code{\link{get.eigentraits}} and \code{\link{direct.influence}}.
+#' @slot right_singular_vectors Added by \code{\link{get.eigentraits}}. A matrix 
 #'   containing the right singular vectors from the singular
 #'   value decomposition of the trait matrix. They are used in rotating the 
 #'   final direct influences back to trait space from eigentrait space. See
-#'   \link{\code{get.eigentraits}} and \link{\code{direct.influence}}.
+#'   \code{\link{get.eigentraits}} and \code{\link{direct.influence}}.
 #' @slot traits_scaled Whether the traits should be mean-centered and standardized
 #'   before analyzing.
 #' @slot traits_normalized Whether the traits should be rank Z normalized before
@@ -127,13 +127,13 @@
 #' @slot linkage_blocks_full A list containing assignments of markers to linkage blocks 
 #'  when no linkage blocks are calculated. In this list there can only be one marker
 #'  per "linkage block". See \code{\link{linkage.blocks.network}} and \code{\link{plotNetwork}}.
-#' @slot var_to_var_p_val The final table of cape interaction results calculated by \link{\code{error.prop}}.
+#' @slot var_to_var_p_val The final table of cape interaction results calculated by \code{\link{error.prop}}.
 #' @slot max_var_to_pheno_influence The final table of cape direct influences of markers to traits
-#'  calculated by \link{\code{direct.influence}}.
+#'  calculated by \code{\link{direct.influence}}.
 #' @slot collapsed_net An adjacency matrix holding significant cape interactions between
-#'  linkage blocks. See \link{\code{plotNetwork}} and \link{\code{get.network}}.
+#'  linkage blocks. See \code{\link{plotNetwork}} and \code{\link{get.network}}.
 #' @slot full_net An adjacency matrix holding significant cape interactions between
-#'  individual markers. See \link{\code{plotNetwork}} and \link{\code{get.network}}.
+#'  individual markers. See \code{\link{plotNetwork}} and \code{\link{get.network}}.
 #' @slot use_kinship Whether to use a kinship correction in the analysis.
 #' @slot transform_to_phenospace whether to transform to phenospace or not.
 #'

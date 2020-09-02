@@ -25,7 +25,7 @@
 #' Bioinformatics 19:889-890 doi:10.1093/bioinformatics/btg112
 #'
 #' @return This function returns a cape object in a former cape format.
-#' It must be updated using \link{\code{cape2mpp}}
+#' It must be updated using \code{\link{cape2mpp}}
 #'
 #' @export
 read.population <- function(filename = NULL, pheno.col = NULL, geno.col = NULL, id.col = NULL, 

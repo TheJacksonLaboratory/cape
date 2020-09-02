@@ -13,7 +13,7 @@
 #' @param traits.which A vector of integers, of at least length two
 #'  specifying which eigentraits should be analyzed.
 #'
-#' @seealso \link{\code{plotSVD}}
+#' @seealso \code{\link{plotSVD}}
 #'
 #' @return updated \code{\link{Cape}} object
 #'

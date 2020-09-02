@@ -15,7 +15,7 @@ pheno2covar(data.obj, pheno.which)
 Returns the data object with the specified traits removed
 from the phenotype matrix and transferred where they will be used
 as covariates. Information about assigned covariates can be retrieved
-with \link{\code{get.covar}}.
+with \code{\link{get.covar}}.
 }
 \description{
 This function takes a variable from the phenotype matrix

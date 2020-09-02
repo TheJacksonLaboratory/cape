@@ -19,5 +19,5 @@ indicating the genomic coordinate of each marker.
 Given a vector of marker names or numers, this 
 function returns the genomic coordinates for
 each marker, not including the chromosome number,
-which is retrieved using \link{\code{get.marker.chr}}.
+which is retrieved using \code{\link{get.marker.chr}}.
 }
