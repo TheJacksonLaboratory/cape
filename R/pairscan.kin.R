@@ -156,7 +156,19 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     sink(file.path(data.obj$results_path,"regress.warnings"))
     #if(class(kin.obj) == "matrix"){
       #if we are using an overall kinship matrix
-      kin.dat <- kinship.on.the.fly(kin.obj, geno, chr1 = NULL, chr2 = NULL, 
+      #convert to epistatic kinship matrix
+      if(class(kin.obj) == "matrix"){
+        kin.mat <- kin.obj
+      }else{
+        epi.locale <- which(names(kin.obj) == "emat")
+        if(length(epi.locale) > 0){
+          kin.mat <- kin.obj[[epi.locale]]
+        }else{
+          kin.mat <- kin.obj[[1]]
+        }
+      }
+      
+      kin.dat <- kinship.on.the.fly(kin.mat, geno, chr1 = NULL, chr2 = NULL, 
       phenoV = pheno.vector, covarV = covar.vector)
     #}else{
       #If we are using LTCO (taking this out for now)

@@ -40,7 +40,7 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
   scan.what = c("eigentraits", "raw.traits"), pairscan.null.size = NULL, 
   max.pair.cor = NULL, min.per.geno = NULL, model.family = "gaussian", 
   marker.selection.method = c("top.effects", "uniform", "effects.dist", "by.gene"), 
-  run.parallel = FALSE, n.cores = 4, verbose = FALSE){
+  run.parallel = FALSE, n.cores = 4, verbose = verbose){
   
   marker.selection.method <- data.obj$marker_selection_method
   
@@ -124,11 +124,11 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
       }
       if(marker.selection.method == "uniform"){
         perm.data.obj <- select.markers.for.pairscan.uniform(perm.data.obj, geno.obj, 
-        num.alleles = ncol(data.obj$geno_for_pairscan), verbose = FALSE)	
+        num.alleles = ncol(data.obj$geno_for_pairscan), verbose = verbose)	
       }
       if(marker.selection.method == "effects.dist"){
         perm.data.obj <- select.markers.for.pairscan.dist(perm.data.obj, singlescan.obj = single.scan.result, 
-        geno.obj, verbose = FALSE)		
+        geno.obj, verbose = verbose)		
       }
     }else{ 
       
@@ -149,7 +149,9 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
     
     
     if(verbose){cat("\tGetting markers for permuted pairscan...\n")}
-    top.marker.pairs <- get.pairs.for.pairscan(gene = perm.data.obj$geno_for_pairscan, max.pair.cor = max.pair.cor, min.per.genotype = min.per.geno, run.parallel = run.parallel, n.cores = n.cores, verbose = FALSE)
+    top.marker.pairs <- get.pairs.for.pairscan(gene = perm.data.obj$geno_for_pairscan, 
+    max.pair.cor = max.pair.cor, min.per.genotype = min.per.geno, 
+    run.parallel = run.parallel, n.cores = n.cores, verbose = verbose)
     total.pairs <- nrow(top.marker.pairs)
     num.to.add <- 10
     #we don't want to do more permutations than specified
@@ -174,7 +176,7 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
     #run a pairscan on these markers and each permuted phenotype
     pairscan.results <- pairscan.kin(perm.data.obj, geno.obj, scan.what = scan.what, 
     marker.pairs = top.marker.pairs, kin.obj, run.parallel = run.parallel, 
-    n.cores = n.cores, verbose = FALSE)
+    n.cores = n.cores, verbose = verbose)
     
     #integrate the results into the permutation object
     one.perm <- pairscan.results[[1]]
