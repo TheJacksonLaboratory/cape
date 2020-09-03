@@ -1,7 +1,7 @@
 #' Retrieve colors based on numeric values
 #' 
 #' This function gets colors for numeric values
-#' It can use one the function \link{\code{get.color}},
+#' It can use one the function \code{\link{get.color}},
 #' which accepts any of c("green", "purple", "orange", 
 #' "blue", "brown", "gray"), or it can use pheatmap
 #' colors.

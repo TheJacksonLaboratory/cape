@@ -28,7 +28,7 @@
 #' DO/CC colors.
 #' @param pos.col The color to use for positive main effects and interactions
 #' must be one of "green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"
-#' see \link{\code{get.color}}
+#' see \code{\link{get.color}}
 #' @param neg.col The color to use for negative main effects and interactions
 #' takes the same values as pos.col.
 #' @param not.tested.col The color to use for marker pairs not tested. Takes

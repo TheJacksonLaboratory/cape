@@ -1,6 +1,6 @@
 #' Performs marker regression
 #' 
-#' This is an internal function called by \link{\code{pairscan.null}}
+#' This is an internal function called by \code{\link{pairscan.null}}
 #' when generating the null distribution for significance testing. 
 #' To perform permutations, we permute trait values, and then re-do
 #' the singlescan, marker selection, and the pair scan on the permuted

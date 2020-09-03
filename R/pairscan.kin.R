@@ -1,9 +1,9 @@
 #' Run the pairscan with a kinship correction
 #' 
-#' This function is called by \link{\code{pairscan}}
+#' This function is called by \code{\link{pairscan}}
 #' when a kinship correction is requested. It adjusts 
 #' each variable according to the kinship matrix using
-#' \link{\code{kinship.on.the.fly}} and then fits linear
+#' \code{\link{kinship.on.the.fly}} and then fits linear
 #' pairwise models to the adjusted data.
 #' 
 #' @param data.obj a \code{\link{Cape}} object
@@ -22,7 +22,7 @@
 #' @return This function returns a list with three elements. 
 #' The elements contain the marker pair effect sizes, the marker
 #' pair standard errors, and the covariance matrix for each test.
-#' The output is then further processed by \link{\code{pairscan}}.
+#' The output is then further processed by \code{\link{pairscan}}.
 #' 
 pairscan.kin <- function(data.obj, geno.obj, scan.what, marker.pairs, 
 kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){

@@ -1,6 +1,6 @@
 #' Plot concentric trait circles
 #'
-#' This internal function is called by \link{\code{PlotNetwork}}
+#' This internal function is called by \code{\link{PlotNetwork}}
 #' It plots one circle for each trait in the data object.
 #'
 #' @param trait.circ A list with one element for each cirlce giving

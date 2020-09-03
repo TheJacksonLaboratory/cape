@@ -21,6 +21,6 @@ and their labels}
 None
 }
 \description{
-This internal function is called by \link{\code{PlotNetwork}}
+This internal function is called by \code{\link{PlotNetwork}}
 It plots one circle for each trait in the data object.
 }

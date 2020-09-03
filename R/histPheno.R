@@ -3,7 +3,7 @@
 #' This function plots histograms of the traits held in 
 #' the pheno slot of the data object.
 #'
-#' @param data.obj A \link{\code{Cape}} object
+#' @param data.obj A \code{\link{Cape}} object
 #' @param pheno.which A vector of strings indicating which 
 #' traits to plot. Defaults to all traits.
 #' @param pheno.labels A vector of strings providing alternate

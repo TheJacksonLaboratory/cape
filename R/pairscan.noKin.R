@@ -1,8 +1,8 @@
 #' Perform pairscan without a kinship correction
 #' 
-#' This internal function is called by \link{\code{pairscan}}
+#' This internal function is called by \code{\link{pairscan}}
 #' when no kinship correction is requested. It can be
-#' compared to \link{\code{pairscan.kin}}. 
+#' compared to \code{\link{pairscan.kin}}. 
 #' It fits pairwise linear models to estimate the effects of 
 #' marker pairs on each trait. 
 #'
@@ -20,7 +20,7 @@
 #' whether parallel processing should be used
 #' @param n.cores The number of cores to be used if run.parallel is TRUE
 #' 
-#' @return This function calls \link{\code{one.pairscan.parallel}} and
+#' @return This function calls \code{\link{one.pairscan.parallel}} and
 #' returns results for each trait as an element in a list.
 #' 
 pairscan.noKin <- function(data.obj, pheno.mat, geno.mat, covar.table, marker.pairs, n.perm, verbose = FALSE, run.parallel = FALSE, n.cores = NULL){

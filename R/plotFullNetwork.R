@@ -17,7 +17,7 @@
 #' For most networks, the default options will be fine, but there is a lot of room
 #' for modification if changes are desired
 #' 
-#' @param data.obj A \link{\code{Cape}} object
+#' @param data.obj A \code{\link{Cape}} object
 #' @param p.or.q The maximum p value (or q value if FDR was used) for significant 
 #' main effects and interactions.
 #' @param collapsed.net A logical value indicating whether to show the network
@@ -28,7 +28,7 @@
 #' "other" uses an unrelated color pallette for multiple alleles.
 #' @param pos.col The color to use for positive main effects and interactions
 #' must be one of "green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"
-#' see \link{\code{get.color}}
+#' see \code{\link{get.color}}
 #' @param neg.col The color to use for negative main effects and interactions
 #' takes the same values as pos.col.
 #' @param bg.col The color to be used in pie charts for non-significant main effects.

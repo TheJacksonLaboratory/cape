@@ -11,7 +11,7 @@
 #' matrix and in covariate tables to find those
 #' values.
 #' 
-#' @param data.obj A \link{\code{Cape}} object
+#' @param data.obj A \code{\link{Cape}} object
 #' @param geno.obj A genotype object
 #' @param marker.covar.names A vector of strings 
 #' which can contain marker names with alleles appended

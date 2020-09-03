@@ -4,7 +4,7 @@
 #' normalizing and standardizing the trait matrix.
 #' in a data.obj.
 #'
-#' @param data.obj a \link{\code{Cape}} object
+#' @param data.obj a \code{\link{Cape}} object
 #' mean.center a logical value indicating whether the
 #' traits should be mean centered. If FALSE, the traits
 #' are only normalized.

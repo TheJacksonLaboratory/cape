@@ -5,7 +5,7 @@
 #' to the genotype matrix. This function performs
 #' that task.
 #' 
-#' @param data.obj The cape object. See \link{\code{Cape}}.
+#' @param data.obj The cape object. See \code{\link{Cape}}.
 #' @param geno.obj A genotype object.
 #' @param g.covar A logical value indicating whether to append
 #' genotype-derived covariates to the final matrix. Defaults to TRUE.

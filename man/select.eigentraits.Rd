@@ -26,5 +26,5 @@ this by subsetting the ET matrix to only those eigentraits
 specified. The traits not selected are deleted from the object.
 }
 \seealso{
-\link{\code{plotSVD}}
+\code{\link{plotSVD}}
 }

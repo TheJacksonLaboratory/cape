@@ -4,9 +4,9 @@
 #' This function uses linear mixed models to adjust the
 #' genotype matrix, phenotype matrix, and covariate matrix
 #' for kinship based on the kinship matrix calculated 
-#' by \link{\code{Kinship}}.
+#' by \code{\link{Kinship}}.
 #'
-#' @param kin.obj The kinship object calculated by \link{\code{Kinship}}
+#' @param kin.obj The kinship object calculated by \code{\link{Kinship}}
 #' @param geno a genotype object.
 #' @param chr1 The first of two chromomsomes to leave out of the calculation, if any.
 #' @param chr2 The second of two chromomsomes to leave out of the calculation, if any.
@@ -20,8 +20,8 @@
 #' be NULL, their default values.
 
 #' @return This function returns a list with the corrected phenotype,
-#' genotypes, and covariates. These are used in \link{\code{singlescan}}
-#' and \link{\code{pairscan.kin}}.
+#' genotypes, and covariates. These are used in \code{\link{singlescan}}
+#' and \code{\link{pairscan.kin}}.
 #'
 
 kinship.on.the.fly <- function(kin.obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
