@@ -52,6 +52,7 @@ writeVariantInfluences <- function(data.obj, p.or.q = 0.05, include.main.effects
                                    filename = "Variant.Influences.csv", delim = ",", 
                                    mark.covar = FALSE, write.file = TRUE){
   
+  
   var.influences <- data.obj$var_to_var_p_val
   pheno.results <- data.obj$max_var_to_pheno_influence
   pheno.names <- names(pheno.results)
@@ -120,8 +121,11 @@ writeVariantInfluences <- function(data.obj, p.or.q = 0.05, include.main.effects
   }
   
   if(is.null(final.table)){
-    final.table <- "No significant influences."
-  }else{
+    full.table <- final.table <- matrix(NA, nrow = 1, ncol = 14)
+    colnames(full.table) <- c("Source",	"Chr",	"Position",	"Target",	"Chr",	
+    "Position",	"Conditioning.Marker",	"Chr",	"Position",	"Effect",	"SE",
+    "|Effect|/SE",	"P_empirical", "p.adjusted")
+    }else{
     final.table <- final.table[order(as.numeric(final.table[,"|Effect|/SE"]), decreasing = TRUE),,drop=FALSE]
     
     source.chr <- get.marker.chr(data.obj, final.table[,1])
