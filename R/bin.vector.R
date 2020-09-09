@@ -2,9 +2,9 @@
 #' 
 #' This function bins a continuously valued vector
 #' based on user-defined bins.
-#' It is useful for binning continuously valued genotypes
-#' each value in the matrix gets shifted to the nearest
-#' provided in the argument bins
+#' It is useful for binning continuously valued genotypes.
+#' Each value in the matrix gets shifted to the nearest
+#' provided in the argument bins.
 #' 
 #' @param vectorX A vector of numeric values to bin
 #' @param bins A vector of values to snap the values in vectorX to.
