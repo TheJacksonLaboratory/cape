@@ -16,22 +16,25 @@ bibliography: cape.bib
 
 ## Abstract
 
-Here we present an R package for the Combined Analysis of Epistasis and 
-Pleiotropy, or `cape`. This package implements a method, originally described
+Here we present an update of the R package for the Combined Analysis of Epistasis 
+and Pleiotropy, or `cape`. This package implements a method, originally described
 in @Carter:2012fd, that infers directed interaction networks between genetic 
-variants for predicting the influence of genetic perturbations on phenotypes. This 
-method takes advantage of complementary information in partially pleiotropic genetic 
-variants to resolve directional influences between variants that interact 
-epistatically. `cape` can be applied to a variety of genetic variants, such as 
-single nucleotide polymorphisms (SNPs), copy number variations (CNVs) or structural
-variations (SVs). Here we demonstrate the functionality of `cape` by inferring a 
-predictive network between quantitative trait loci (QTL) in a cross between the 
-non-obese, non-diabetic (NON) mouse and the New Zealand obese (NZO) mouse 
-(@Reifsnyder:2000is).
+variants for predicting the influence of genetic perturbations on quantitative
+traits. This method takes advantage of complementary information in partially 
+pleiotropic genetic variants to resolve directional influences between variants 
+that interact epistatically. `cape` can be applied to a variety of genetic variants, 
+such as single nucleotide polymorphisms (SNPs), copy number variations (CNVs) 
+or structural variations (SVs). Here we demonstrate the functionality of `cape` 
+by inferring a predictive network between quantitative trait loci (QTL) in a 
+cross between the non-obese, non-diabetic (NON) mouse and the New Zealand obese 
+(NZO) mouse [@Reifsnyder:2000is].
 
 ## Installing and Loading cape
-CAPE is housed at (github website).
-To install...
+To install cape use:
+
+```{r, install_cape, eval = FALSE}
+install.packages("cape")
+```
 
 After installation load cape with the following command:
 
@@ -48,10 +51,10 @@ R/qtl2, and PLINK.
 In addition to supporting the newer R/qtl2 (@broman2019r) format, we also support 
 the R/qtl (@rqtl) csv format for cape. You can learn more about this format
 at the [R/qtl website](https://rqtl.org). Briefly, this format 
-contains all traits and genotypes in the same comma-delimited file.
+contains all traits and genotypes in one comma-delimited file.
 The first few columns contain traits, covariates, and indvidual identifiers,
-and the remaining contain. Please see the qtl demo data included with cape 
-for an example. Also see `?read.population` for more details. 
+and the remaining contain genotypes. Please see the qtl demo data included 
+with cape for an example. Also see `?read.population` for more details. 
 
 To read in data with this format, we use `read.population`, followed
 by `cape2mpp`, which updates the object to the newer cape format.
@@ -71,11 +74,11 @@ obesity.geno <- cross.obj$geno.obj$geno
 ```
 
 ### Loading data formatted for qtl2
-Many genetic mappers are now using the updated [R/qtl2](https://kbroman.org/qtl2/)
+Many researchers are now using the updated [R/qtl2](https://kbroman.org/qtl2/)
 (@broman2019r), and we also provide ways to handle data in this format. If you are 
 not familiar with qtl2, we highly recommend reading about it and testing it out. 
-R/qtl2 is the definitive genetic mapping package, and the 
-outstanding documentation can answer many basic questions about genetic mapping.  
+R/qtl2 is the definitive genetic mapping package, and the outstanding 
+documentation can answer many basic questions about genetic mapping.  
 
 The following code shows how to access remote example data provided by Karl Broman
 for the qtl2 package. For both accessing remote data, or local data, we use 
@@ -99,9 +102,9 @@ We have provided example data with the cape demo_plink. Please see the
 [PLINK website](https://zzz.bwh.harvard.edu/plink/index.shtml) for more
 information about PLINK and formatting data for PLINK.
 
-For cape, we need a ped file, a map file, and a phenotype file. PLINK 
+For cape, we require a ped file, a map file, and a phenotype file. PLINK 
 standard format includes only one trait, and cape requires at least two
-traits. We therefore require the phenotype file in the pheno.txt format
+traits. We therefore need the phenotype file in the pheno.txt format
 as described [here](https://zzz.bwh.harvard.edu/plink/data.shtml#pheno).
 
 To generate the data for the demo included in cape, we downloaded 
@@ -137,10 +140,10 @@ geno.obj <- cross.obj$geno.obj$geno
 
 ### Getting started with an example
 
-In this vignette, we will reanalyze a data set described in (@Reifsnyder:2000is). 
-This data set was established to find quantitative trait loci (QTL) for 
+In this vignette, we will reanalyze a data set described in @Reifsnyder:2000is. 
+This experiment was performed to identify quantitative trait loci (QTL) for 
 obesity and other risk factors of type II diabetes in a reciprocal 
-back-cross of non-obese non-diabetic NON/Lt mice and diabetes-prone, New 
+back-cross of non-obese non-diabetic NON/Lt mice and the diabetes-prone, New 
 Zealand obese (NZO/HILt) mice. The study found multiple main-effect QTL 
 influencing phenotypes associated with diabetes and obesity as well as multiple 
 epistatic interactions. In addition, maternal environment (i.e. whether the mother 
@@ -149,18 +152,17 @@ to influence the risk of obesity and diabetes of the offspring. The complex natu
 of diabetes and obesity, along with their complex and polygenic inheritance 
 patterns, make this data set ideal for an analysis of epistasis and pleiotropy.
 
-Included in this dataset are 204 male mice genotyped at 85 markers
+Included in this dataset are 204 male mice genotyped at 85 MIT markers
 across the genome. The phenotypes included are the body weight (g), 
 insulin levels (ng/mL), and the log of plasma glucose levels (mg/dL), 
 all measured at age 24 weeks. In addition, there is a variable 
-called ``mom'' indicating whether the mother of each mouse was normal 
+called ``pgm'' indicating whether the mother of each mouse was normal 
 weight (0) or obese (1). 
 
-These data can be accessed either through the demo_qtl demonstration code 
-or by typing `data(obesity.cross)`
+These data can be accessed through the demo_qtl demonstration code.
 
 ## Data visualization
-Before proceeding with an analysis we recommend taking a good look at your data.
+Before proceeding with an analysis we recommend exploring the data visually.
 cape provides a few basic functions for looking at distributions of traits and
 the correlations between traits.  
 
@@ -182,10 +184,10 @@ looking at the Qnorm plots for each trait using `qnormPheno.'
 qnormPheno(obesity.cross, pheno.which = c("BW_24", "INS_24", "log_GLU_24"))
 ```
 
-In general we recommend mean centering and normalizing all phenotypes before
-proceeding with the analysis. Phenotype normalization can be achieved through log 
-transformation, quantile normalization, or another method before the analysis. The 
-function `norm.pheno` uses quantile normalization to fit the 
+In general we recommend mean centering and normalizing all traits before
+proceeding with the analysis. Trait normalization can be achieved through log 
+transformation, quantile normalization, or another method before the analysis. 
+The function `norm.pheno` uses quantile normalization to fit the 
 phenotypes to a normal distribution. Briefly, this process ranks the trait
 values and divides by n-1. It then returns the quantiles of the normal 
 distribution using `qnorm.` Mean centering subtracts the mean value 
@@ -204,9 +206,9 @@ be determined among equal values.
 qnormPheno(obesity.cross, pheno.which = c("BW_24", "INS_24", "log_GLU_24"))
 ```
 
-## A Note on Phenotype Selection
+## A Note on Trait Selection
 
-Cape relies on the selection of two or more phenotypes that have common 
+Cape relies on the selection of two or more traits that have common 
 genetic factors but are not identical across all individuals. One indirect
 way at getting at this is through trait correlation. Traits that are modestly
 correlated may have both common and divergent contributing genetic factors.
@@ -216,7 +218,7 @@ and likely have divergent genetic influences.
 
 We can look at the correlation of the traits in our data set using `plotPhenoCor.`
 The figure below shows the correlations between all pairs of traits. Here,
-we have also colored the points by the covariate "mom" to look for some
+we have also colored the points by the covariate "pgm" to look for some
 initial trends. You can see that mice with obese mothers tended to have
 higher body weight, insulin levels, and glucose levels.
 
@@ -230,7 +232,7 @@ as well as correlations for each group in `color.by.`
 
 ```{r pheno_cor, fig.width = 5, fig.height = 5}
 plotPhenoCor(obesity.cross, pheno.which = c("BW_24", "INS_24", "log_GLU_24"),
-color.by = "mom", group.labels = c("Non-obese", "Obese"))
+color.by = "pgm", group.labels = c("Non-obese", "Obese"))
 ```
 
 The traits in this data set are all modestly correlated, which is ideal for cape.
@@ -244,7 +246,7 @@ for a single gene pair in the context of different phenotypes represent
 multiple manifestations of a single underlying gene network. By measuring 
 the interactions between genetic variants in different contexts we can gain 
 a clearer picture of the network underlying statistical epistasis 
-(@Carter:2012fd).
+[@Carter:2012fd].
 
 ## Specifying cape parameters
 
@@ -252,7 +254,7 @@ Before starting a cape run, we need to specify all the parameters for
 the run in a parameter file. We use a .yml file for these parameters. 
 A .yml file holds information easily readable to both humans and computers.
 We have multiple examples of cape parameter files in the demo folder associated
-with the cape package. It it probably easiest to start with one of these and
+with the cape package. It is probably easiest to start with one of these and
 modify it to fit your data. The following sections describe each cape parameter
 in the yml file.
 
@@ -272,7 +274,7 @@ trait is entered on its own line preceded by a dash.
 **covariates:** Any covariates are entered here. These are originally part
 of the trait matrix and are designated by cape as covariates. Each covariate
 specified is included as an additive covariate in each model, and also tested
-as an interactive covariate. Here we specify "mom" as our covariate.
+as an interactive covariate. Here we specify "pgm" as our covariate.
 
 **scan.what:** This parameter refers to whether we will scan individual traits
 or composite traits called eigentraits. Eigentraits are calculated by factoring 
@@ -286,12 +288,12 @@ than phenotypes, the $U$ matrix has the same dimensions as Y with each column
 containing one eigentrait. $V$ contains the singular values, and $W^{T}$ contains 
 the right singular vectors in rows. See @Carter:2012fd for more details.
 
-The SVD de-correlates the phenotypes concentrating phenotypic features into 
+The SVD de-correlates the traits concentrating phenotypic features into 
 individual eigentraits. One benefit of this process is that variants that are 
-weakly correlated to several phenotypes due to common underlying processes may 
+weakly correlated to several traits due to common underlying processes may 
 be strongly correlated to one of the eigentraits. This eigentrait captures the 
 information of the underlying process, making strong main effects distributed 
-between phenotypes easier to detect and identify as potential interaction loci 
+between traits easier to detect and identify as potential interaction loci 
 and/or covariates.
 
 To specify using individual traits, set `scan.what` to raw.traits.
@@ -304,7 +306,7 @@ whether cape should mean center and standardize the traits.
 cape should normalize the traits. 
 
 **eig_which:** After performing the SVD to create orthogonal eigentraits, you
-may which to analyze only a subset of them in cape. For example, if the first 
+may whish to analyze only a subset of them in cape. For example, if the first 
 two eigentraits capture more than 90\% of the trait variance, you may wish
 to discard the last eigentrait. This results in a loss of some information, 
 but may increase power to detect important trait-related signals.
@@ -333,7 +335,7 @@ written to files.
 **use_saved_results** A logical value indicating whether cape should use
 data already written to file. This can be helpful if a job aborts partway
 through. You can use everything that has been calculated already and save 
-time on the next run. If use_saved_results is true only results that don't
+time on the next run. If use_saved_results is true, only results that don't
 already exist will be calculated. This can cause problems if there has been
 a parameter change between two runs, and there is a mismatch between previously
 calculated results and new results. We recommend setting this to false for
@@ -350,7 +352,7 @@ select markers for the pairwise scan.
 usually be allele A (major allele). In multi-parent populations, this may
 be a different allele. For example, the C57B6/J mouse is often used as a
 reference strain in mouse studies. It is also one of the founders of the
-Diversity Outbred (DO) and Collaborative Cross (CC) mice (@chesler2008collaborative), 
+Diversity Outbred (DO) and Collaborative Cross (CC) mice [@chesler2008collaborative], 
 and serves as a reasonable reference. To specify the B6 mouse as the reference,
 use its letter code "B" as the reference allele. All alleles in cape are stored
 as individual letters, A through the number of alleles that are present. For
@@ -362,7 +364,7 @@ in the single-locus scan. It is perfectly okay to set this to 0. The
 permutations are not used for anything in cape. They simply allow you to 
 make a first-pass glance at identifying markers with main effects in your 
 data. However, if you are interested in doing the main effect scan properly, 
-we recommend using R/qtl2 (@broman2019r).
+we recommend using R/qtl2 [@broman2019r].
 
 **alpha:** If "singlescan_perm" is a number greater than 0, you can also 
 specify a significance threshold alpha. If alpha is specified, cape will 
@@ -395,10 +397,10 @@ main effects.
 be tested in the pairwise scan. Cape is relatively computationally intensive,
 and we cannot do exhaustive pairwise testing in densely genotyped populations.
 We suggest limiting this number to around 1500 markers. These can be tested
-in roughly 24 hours using 2 or 3 traits/eigentraits and 1.5 million permuted tests.
-Increasing the number of traits/eigentraits analyzed substantially increases 
-the time of a run, and it might be necessary to lower the number of markers tested
-further if there are many traits/eigentraits in the analysis.
+in roughly 24 hours using 2 or 3 traits/eigentraits and 1.5 million permuted 
+tests. Increasing the number of traits/eigentraits analyzed substantially 
+increases the time of a run, and it might be necessary to lower the number 
+of markers tested further if there are many traits/eigentraits in the analysis.
 
 **tolerance:** In selecting markers by their main effect size, cape starts
 at a high effect size, and gradually lowers it until it has collected the 
@@ -413,9 +415,9 @@ to be tested in the pairscan. This can get a little tricky for multi-parent
 crosses. Because cape tests individual alleles and not markers in the pair scan, 
 the markers must also have the allele name appended with an underscore ("_"). 
 This is relatively simple for a two-parent cross: If the reference allele
-is A, all markers will just have an "_B" appended to their name. If, however, 
-this is a multi-parent population, the allele has a real effect. Any of the 
-alleles other than the reference can be specified for each marker. 
+is A, all markers will just have a "_B" appended to their name. If, however, 
+this is a multi-parent population, specifying the correct allele is important.
+Any of the alleles other than the reference can be specified for each marker. 
 The underscore introduces another little complication, which is that no
 underscores are allowed in marker names except to separate the marker name
 from the allele. If there are underscores in marker names, cape deletes these.
@@ -428,9 +430,9 @@ the allele. This is a bit cumbersome, but can be completely avoided by setting
 The pairwise scan has a few additional parameters to set. Because testing
 genetic markers in LD can lead to false positives, we refrain from testing
 marker pairs that are highly correlated. This (Pearson) correlation is set
-by the user as "max_pair_cor". We generally use a value of 0.5 in our own work, but this can
-be raised or lowered depending on your own assessment of the influence of
-LD in your population.
+by the user as "max_pair_cor". We generally use a value of 0.5 in our own 
+work, but this can be raised or lowered depending on your own assessment 
+of the influence of LD in your population.
 
 **max_pair_cor:** A numeric value between 0 and 1 indicating the maximum
    Pearson correlation that two markers are allowed in pairwise testing. 
@@ -447,7 +449,7 @@ LD in your population.
    will be too high. If this value is NULL, max.pair.cor must have a numeric 
    value.
 
-**pairscan_null_size:** This parameter is a little confusing, as it is 
+**pairscan_null_size:** This parameter can be a little confusing, as it is 
    different from the number of permutations to run in the the pairwise scan. 
    @Carter:2012fd showed that multiple tests from a single permutation can
    be combined to create the null distribution for cape statistics. This 
@@ -462,10 +464,10 @@ LD in your population.
 ## Running cape
 Unlike previous versions of cape, which required the user to perform many 
 individual steps, this version of cape can be run with a single command 
-`run.cape()`. Now that we've done the hard work of reading in our data
+`run.cape`. Now that we've done the hard work of reading in our data
 and specifying our parameters, we can sit back and let the computer take 
 care of the rest. The line below runs the complete cape pipeline for the 
-demo NON/NZO mouse backcross. If you run this line interactive, set verbose
+demo NON/NZO mouse backcross. If you run this line interactively, set verbose
 to TRUE to see the progress printed to your screen. When verbose is set
 to FALSE, important messages are still printed, but printing of progress 
 is suppressed.
@@ -478,14 +480,15 @@ final.cross <- run.cape(obesity.cross, obesity.geno,
 
 The benefit to this new function is obvious: cape is now much easier to run. 
 However, it comes with a sizeable reduction in flexibility. For most users the 
-benefit of the increased ease of use will far outweigh the decrease in flexibility.
+benefit of the increased ease of use will far outweigh the decrease in 
+flexibility.
 
-If you are in need of more flexibility, all functions in the function 
+If you do need of more flexibility, all functions in the function 
 `run.cape` are exported, so the entire analysis can be run step-by-step 
-as it was before. All plotting functions are also exported to allow 
-greater flexibility in plotting. Although `run.cape` does some plotting 
-automatically, you may wish to re-run some plotting functions with your 
-own settings. 
+as it was in earlier versions. All plotting functions are also exported 
+to allow greater flexibility in plotting. Although `run.cape` does some 
+plotting automatically, you may wish to re-run some plotting functions 
+with your own settings. 
 
 However you choose to run cape, the cape team is very happy to answer 
 any questions and to help with running or interpreting any cape analysis.
@@ -505,22 +508,22 @@ associated with the common components of groups of traits.
 Cape uses the function `plotSVD` to plot the results of the SVD. The 
 plot for the NON/NZO data set are shown below.
 
-```{r eigentraits, results = "asis", echo = FALSE, out.width = '100%'}
+```{r eigentraits, results = "asis", echo = FALSE, out.width = 4, out.height = 4}
 svd.file <- here("demo", "demo_qtl", "svd.jpg")
-knitr::include_graphics(svd.file)
+cat(paste0("![](", svd.file, ")\n"))
 ```
 
 In the example illustrated here, the first eigentrait captures 75\% of the 
 total trait variance. This eigentrait describes the processes by which body 
 weight, glucose levels, and insulin levels all vary together. The correlations 
 between obesity and risk factors for obesity, such as elevated insulin and 
-fasting glucose levels are well known (@Permutt:2005ir, @Das:2006bo, @Haffner:2003kb). 
+fasting glucose levels are well known [@Permutt:2005ir; @Das:2006bo; @Haffner:2003kb]. 
 The second eigentrait captures 14\% of the variance in the phenotypes. It captures 
 the processes through which glucose and body weight vary in opposite directions. 
 This eigentrait may be important in distinguishing the genetic discordance between 
 obesity and diabetes. While obesity is a strong risk factor for diabetes, not 
 all those who are obese have diabetes, and not all those with diabetes are obese 
-(@Permutt:2005ir, @Burcelin:2002co).
+[@Permutt:2005ir; @Burcelin:2002co].
 
 The third eigentrait is less interpretable biologically, as it describes the 
 divergence of blood glucose and insulin levels. It may represent a genetic 
@@ -539,12 +542,13 @@ the eigentraits contribute to the original phenotypes and how much variance
 in the data they capture.
 
 ### Single-locus scan
-Cape then goes on to perform marker regression on all individual markers:
+After computing eigentraits, we go on to perform marker regression on all 
+individual markers:
 
 $$U_{i}^{j} = \beta_{0}^{j} + x_{i}\beta^{j} + \epsilon_{i}^{j}$$
 
 The index $i$ runs from 1 to the number of individuals, and $j$ runs from 
-1 to the number of eigentraits or phenotypes. $x_{i}$ is the probability 
+1 to the number of eigentraits or traits. $x_{i}$ is the probability 
 of the presence of the reference allele for individual $i$ at locus $j$. 
 The primary purpose of this scan is is to select markers for the pairwise
 scan if there are too many to test exhautively.
@@ -564,11 +568,11 @@ covar.label.size = 1)
 ### Pairwise Testing
 
 The purpose of the pairwise scan is to find interactions, or epistasis, 
-between variants. The epistatic models are then combined across phenotypes or 
-eigentraits to infer a parsimonious network that takes data from all eigentraits 
-into account.
+between variants. The epistatic models are then combined across traits or 
+eigentraits to infer a parsimonious model that takes data from all 
+traits or eigentraits into account.
 
-To find epistatic interactions wentests the following regression model for each 
+To find epistatic interactions we test the following regression model for each 
 variant 1 and 2:
 
 $$
@@ -584,22 +588,22 @@ between the two variants being tested.
 ### Kinship Correction 
 
 To reduce the incidence of false positives arising from genetic relatedness,
-cape can implement a kinship correction (@Kang:2008bx).
+cape can implement a kinship correction [@Kang:2008bx].
 
 The relatedness matrix ($K$) is calculated 
 using the markers on the remaining chromosomes as follows:
 
 $$ K = \frac{G \times G^T}{n},$$
 
-where $G$ and n is the number of markers in $G$. This matrix is then used to 
+where $G$ and $n$ is the number of markers in $G$. This matrix is then used to 
 correct the genotype and phenotype matrices for kinship using hierarchical 
-linear models (@Kang:2008bx, @gelman2006data).
+linear models [@Kang:2008bx; @gelman2006data].
 
 Currently cape only implements an overall kinship correction. Anecdotally,
 we have tested leave-two-chromosomes-out methods as an extension of the
-leave-one-chromosome-out method already commonly used, but our results 
-suggested that the pairwise additive assumption in this model was not 
-appropriate for correcting for kinship effects in an epistatic model.
+leave-one-chromosome-out method already commonly used 
+[@cheng2013practical; @gonzales2018genome], but our results 
+were inconsistent suggesting we need to do more research into this area.
 More appropriate corrections are currently a topic of research in our 
 group and will be implemented in later iterations of cape.
 
@@ -610,7 +614,7 @@ the $\beta$ coefficients from the pairwise linear regressions across all
 traits/eigentraits in terms of directed influence coefficients. These 
 directed influence coefficients are consistent across all traits, and are
 therefore trait-independent. Cape identifies one set of genetic interactions 
-that explains all traits simultaneously (@Carter:2012fd).
+that explains all traits simultaneously [@Carter:2012fd].
 
 From the pair scan, each pair of markers 1 and 2 receives a set of $\beta$ 
 coefficients describing the main effect of each marker on each eigentrait 
@@ -620,9 +624,9 @@ idea of `cape` is that these coefficients can be combined across eigentraits
 and reparameterized to calculate how each pair of markers influences each 
 other directly and independently of eigentrait.
 
-```{r reparam_fig, results = "asis", echo = FALSE, out.width='100%'}
+```{r reparam_fig, results = "asis", echo = FALSE, fig.width = 3, fig.height = 3}
 reparam.file <- here("vignettes", "reparam.png")
-knitr::include_graphics(reparam.file)
+cat(paste0("![](", reparam.file, ")\n"))
 ```
 
 The first step in this reparameterization is to define two new parameters 
@@ -655,8 +659,9 @@ $$
 \end{bmatrix}
 $$
 
-In multiplying out this equation, it can be seen how the $\delta$ terms influence
-each main effect term to give rise to the interaction terms independent of phenotype. 
+In multiplying out this equation, it can be seen how the $\delta$ terms 
+influence each main effect term to give rise to the interaction terms 
+independent of phenotype. 
 
 $$
 \label{eqn:delta_def}
@@ -666,7 +671,7 @@ $$
 If $\delta_1 = 0$ and $\delta_2 = 0$, there are no addition effects exerted by the 
 markers when both are present. Substitution into the equations above shows that 
 the interaction terms $\beta^j_{12}$ are $0$ and thus the interaction terms have 
-no effect on the phenotype.\\
+no effect on the phenotype.
  
 Alternatively, consider the situation when $\delta_1 = 1$ and $\delta_2 = 0$. 
 The positive $\delta_1$ indicates that marker 1 should exert an additional effect 
@@ -701,16 +706,18 @@ $$
 \end{bmatrix}
 $$
 
-This inversion is exact for two eigentraits, and `cape` implements pseudo-inversion 
-for up to 12 eigentraits. We have observed that maximum power to detect interactions
-is achieved with three to five eigentraits (@tyler2017epistatic). 
+This inversion is exact for two eigentraits, and `cape` implements 
+pseudo-inversion for up to 12 eigentraits. We have observed that maximum 
+power to detect interactions is achieved with three to five eigentraits 
+[@tyler2017epistatic]. 
 
 The $\delta$ terms are then translated into directed variables defining the 
-marker-to-marker influences $m_{12}$ and $m_{21}$. Whereas $\delta_2$ described the
-change in activity of marker 2 in the presence of marker 1, $m_{12}$ can be thought 
-of as the direct influence of marker 2 on marker 1, with negative values indicating 
-repression and positive values indicating enhancement. The terms $m_{12}$ and 
-$m_{21}$ are self-consistent and defined in terms of $\delta_1$ and $\delta_2$:
+marker-to-marker influences $m_{12}$ and $m_{21}$. Whereas $\delta_2$ 
+described the change in activity of marker 2 in the presence of marker 1, 
+$m_{12}$ can be thought of as the direct influence of marker 2 on marker 1, 
+with negative values indicating repression and positive values indicating 
+enhancement. The terms $m_{12}$ and $m_{21}$ are self-consistent and 
+defined in terms of $\delta_1$ and $\delta_2$:
 
 $$
 \delta_1 = m_{12}(1 + \delta_2),\;\delta_2 = m_{21}(1 + \delta_1)
@@ -722,11 +729,11 @@ $$
 m_{12} = \frac{\delta_1}{1 + \delta_2},\;m_{21} = \frac{\delta_2}{1 + \delta_1}.
 $$
  
-These directed influence variables provide a map of how each marker influences each
-other marker independent of phenotype. The significance of these influences is 
-determined through standard error analysis on the regression parameters 
-(@bevington1994data, @Carter:2012fd). This step is particularly important as matrix 
-inversion can lead to large values but larger standard errors, yielding 
+These directed influence variables provide a map of how each marker influences 
+each other marker independent of phenotype. The significance of these influences 
+is determined through standard error analysis on the regression parameters 
+[@bevington1994data; @Carter:2012fd]. This step is particularly important as 
+matrix inversion can lead to large values but larger standard errors, yielding 
 insignificant results. As an example, the variance of $m_{12}$ is calculated by 
 differentiating with respect to all model parameters:
 
@@ -734,7 +741,7 @@ $$
 \sigma^{2}_{m_{12}} \cong \sum_{ij} \sigma^2_{\beta_{i}^{j}} \Bigg(\frac{\partial m_{12}}
 {\partial \beta_{i}^{j}}\Bigg)^2 + 2 \sum_{i<k, j < l} \sigma^2_{\beta^{j}_{i}\beta^{l}_{k}} \Bigg(\frac{\partial m_{12}}
 {\partial \beta^{j}_{i}} \Bigg) \Bigg(\frac{\partial m_{12}}{\partial \beta^{l}_{k}} \Bigg)
-$$
+ $$
  
 In this equation, the indices $i$ and $k$ run over regression parameters and $j$ 
 and $l$ run from 1 to the number of traits. 
@@ -824,7 +831,7 @@ effects on plasma insulin and glucose levels as well as on body weight.
 
 We can plot individual interactions from the Variant Influences table
 to get a more detailed look at some of these interactions. There is a
-new plotting function in cape called `plot.effects` that can be used
+new plotting function in cape called `plotEffects` that can be used
 to plot the phenotypic effects of individual interactions in multiple
 different styles. 
 
@@ -833,7 +840,7 @@ in which the presence of the NZO allele on Chr 2 enhances the positive
 influence of the NZO allele on all traits.
 
 We can look at both the main effects and the interaction effects using 
-`ploEffects`. First to verify the positive effect of the marker on Chr 15,
+`plotEffects`. First to verify the positive effect of the marker on Chr 15,
 we can plot it by itself. Here we use `plot.type = l` which generates a line
 plot.
 
@@ -871,15 +878,15 @@ marker2.label = "Chr15", plot.type = "b", error.bars = "se")
 ```
 
 There are several other plotting types that are worth exploring when looking
-at different types of interactions, including heat maps, and points for individual
-values. 
+at different types of interactions, including heat maps, and points for 
+individual values. 
 
 These findings illustrate how `cape` is designed to find interactions that 
 simultaneously model all phenotypes under the assumption that interactions 
 between variants across multiple contexts represent a single underlying 
 interaction network. Thus we recommend users assess single-phenotype epistasis 
 using functions in `cape` or in parallel analyses using tools such as R/qtl2
-and R/qtlbim (@rqtlbim).
+and R/qtlbim [@rqtlbim].
 
 ## List of Plotting Functions
 The following list describes the plotting functions available in cape.
@@ -940,7 +947,7 @@ function plotVariantInfluences can also return these tables invisibly
 without writing to a file. 
 
 ## List of Output Files
-The following list describes each output file produced by `run.cape()`.
+The following list describes each output file produced by `run.cape`.
 Where we use `cross` below, this stands in for the user-defined 
 experiment name. The default experiment name in cape is "cross."
 
