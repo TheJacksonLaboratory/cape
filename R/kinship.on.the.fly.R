@@ -114,6 +114,9 @@ covarV = NULL, verbose = FALSE){
   }
   
   #only use LOCO, LTCO gives weird results  
+  cat("Chromosome1:", chr1, "\n")
+  cat("Chromosome2:", chr2, "\n")
+  
   use.loco <- TRUE
   check.na <- is.na(chr1) || is.na(chr2)
   check.null <- is.null(chr1) || is.null(chr2)

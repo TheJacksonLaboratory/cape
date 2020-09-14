@@ -1,4 +1,4 @@
-#' Bins a single scan curve into peaks automiatically
+#' Bins a single scan curve into peaks automatically
 #' 
 #' This is an internal function used to select markers
 #' for the pair scan based on single scan results. The 

@@ -157,8 +157,8 @@ pop=c("MPP","2PP","RIL")){
       }
       else if(type=="loco"){
         stop("Must be type overall")}
-      
-      map<-qtl2convert::map_df_to_list(map,pos_column = "pos")
+
+        map<-qtl2convert::map_df_to_list(map,pos_column = "pos")
       
       #data.obj$save_rds(map,"map.RData")
       
@@ -183,6 +183,8 @@ pop=c("MPP","2PP","RIL")){
       rownames(kinship) <- colnames(kinship) <- rownames(data.obj$pheno)
       K <- list(kinship)
       names(K)[1] <- "overall"
+
+      
       
     } 
     

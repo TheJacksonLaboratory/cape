@@ -1,3 +1,5 @@
+#' Checks for unused markers
+#' 
 #' This function checks for markers that aren't used
 #' in cape. For example, markers on sex chromosomes,
 #' or mitochonrdial markers. It also removes any 
