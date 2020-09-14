@@ -2,7 +2,7 @@
 % Please edit documentation in R/cape2mpp.R
 \name{cape2mpp}
 \alias{cape2mpp}
-\title{converts a \code{\link{read.population}} object to a DO-enabled object}
+\title{Converts a \code{\link{read.population}} object to a multi-parent object}
 \usage{
 cape2mpp(data.obj, geno.obj = NULL)
 }

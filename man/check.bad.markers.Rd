@@ -2,10 +2,7 @@
 % Please edit documentation in R/check.bad.markers.R
 \name{check.bad.markers}
 \alias{check.bad.markers}
-\title{This function checks for markers that aren't used
-in cape. For example, markers on sex chromosomes,
-or mitochonrdial markers. It also removes any 
-markers that are invariant across all individuals.}
+\title{Checks for unused markers}
 \usage{
 check.bad.markers(data.obj, geno.obj)
 }

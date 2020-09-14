@@ -1,3 +1,6 @@
+## ---- install_cape, eval = FALSE----------------------------------------------
+#  install.packages("cape")
+
 ## ----load_cape, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE----
 set.seed(1234)
 library(cape)

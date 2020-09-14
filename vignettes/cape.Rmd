@@ -341,6 +341,11 @@ a parameter change between two runs, and there is a mismatch between previously
 calculated results and new results. We recommend setting this to false for
 most cases.
  
+**transform_to_phenospace** A logical value indicating that is required 
+scanning eigentraits. If true, all effects are rotate back to trait space 
+after calculation, such that the final networks show marker influences on 
+traits. If false, all effects will be kept in terms of eigentriats, and all
+final tables and plots will show marker effects on eigentraits. 
 
 ### Single scan parameters
 Cape performs marker regression on individual markers before running the

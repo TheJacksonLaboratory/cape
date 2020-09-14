@@ -4,7 +4,7 @@
 \alias{plot.trait.circ}
 \title{Plot concentric trait circles}
 \usage{
-plot.trait.circ(trait.circ, label.gap, plot.dim, main.lwd)
+\method{plot}{trait.circ}(trait.circ, label.gap, plot.dim, main.lwd)
 }
 \arguments{
 \item{trait.circ}{A list with one element for each cirlce giving
