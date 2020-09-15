@@ -30,13 +30,44 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends:
-  R6, here, tools, yaml, evd, Matrix, fdrtool, shape, MASS, corpcor, RColorBrewer,
-    parallel, doParallel, foreach, caTools, stringr, abind, propagate, testthat, utils,
-    qtl2, tidyr, qtl2convert, devtools, yaml, jsonlite, data.table, RcppEigen, RSQLite,
-    qtl, tools, BiocManager, igraph, regress
+  abind (>= 1.4.5),
+  BiocManager (>= 1.30.10),
+  caTools (>= 1.18.0),
+  corpcor (>= 1.6.9),
+  data.table (>= 1.13.0),
+  devtools (>= 2.3.1),
+  doParallel (>= 1.0.15),
+  evd (>= 2.3.3),
+  fdrtool (>= 1.2.15),
+  foreach (>= 1.5.0),
+  here (>= 0.1),
+  igraph (>= 1.2.5),
+  jsonlite (>= 1.7.1),
+  MASS (>= 7.3.53),
+  Matrix (>= 1.2.18),
+  parallel (>= 3.6.2),
+  propagate (>= 1.0.6),
+  qtl (>= 1.46.2),
+  qtl2 (>= 0.22.11),
+  qtl2convert (>= 0.22.7),
+  R (>= 3.6.3),
+  R6 (>= 2.4.1),
+  RcppEigen (>= 0.3.3.7.0),
+  RColorBrewer (>= 1.1.2),
+  regress (>= 1.3.21),
+  RSQLite (>= 2.2.0),
+  shape (>= 1.4.5),
+  stringr (>= 1.4.0),
+  testthat (>= 2.3.2),
+  tidyr (>= 1.1.2),
+  tools (>= 3.6.2),
+  utils (>= 3.6.2),
+  yaml (>= 2.2.1)
 Imports:
-  biomaRt
+  biomaRt (>= 2.42.1)
 Suggests: 
-  testthat, knitr, rmarkdown
+  testthat (>= 2.3.2),
+  knitr (>= 1.29), 
+  rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
