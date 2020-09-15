@@ -135,6 +135,8 @@
 #' @slot full_net An adjacency matrix holding significant cape interactions between
 #'  individual markers. See \code{\link{plotNetwork}} and \code{\link{get.network}}.
 #' @slot use_kinship Whether to use a kinship correction in the analysis.
+#' @slot kinship_type Which type of kinship matrix to use. Either "overall" 
+#' for the overall kinship matrix or "ltco" for leave-two-chromosomes-out.
 #' @slot transform_to_phenospace whether to transform to phenospace or not.
 #'
 #' 
@@ -318,6 +320,8 @@ Cape <- R6::R6Class(
     full_net = NULL,
     #' @field use_kinship Whether to use a kinship correction in the analysis.
     use_kinship = NULL,
+    #' @field kinship_type which type of kinship matrix to use
+    kinship_type = NULL,
     #' @field transform_to_phenospace whether to transform to phenospace or not.
     transform_to_phenospace = NULL,
     #' @description
@@ -460,6 +464,7 @@ Cape <- R6::R6Class(
     #' @param full_net An adjacency matrix holding significant cape interactions between
     #'  individual markers. See \code{\link{plotNetwork}} and \code{\link{get.network}}.
     #' @param use_kinship Whether to use a kinship correction in the analysis.
+    #' @param kinship_type Which type of kinship matrix to use. Either "overall" or "ltco."
     #' @param transform_to_phenospace whether to transform to phenospace or not.
     initialize = function(
       parameter_file = NULL,
@@ -502,6 +507,7 @@ Cape <- R6::R6Class(
       max_var_to_pheno_influence = NULL,
       full_net = NULL,
       use_kinship = NULL,
+      kinship_type = NULL,
       transform_to_phenospace = NULL
     ) {
       self$parameter_file <- parameter_file
@@ -562,6 +568,7 @@ Cape <- R6::R6Class(
       self$max_var_to_pheno_influence <- max_var_to_pheno_influence
       self$full_net <- full_net
       self$use_kinship <- use_kinship
+      self$kinship_type <- kinship_type
       self$transform_to_phenospace <- transform_to_phenospace
       # assign parameters from the parameter_file
       self$assign_parameters()
