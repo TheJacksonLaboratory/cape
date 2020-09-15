@@ -16,7 +16,7 @@
 #' This is particularly useful if the network is very dense. The default value, NULL, plots
 #' all marker pairs.
 #' @param collapse.net A logical value indicating whether to plot all individual SNPs
-#' or linkage blocks calculated by \code{\link{linkage.block.network}}.
+#' or linkage blocks calculated by \code{\link{linkage.blocks.network}}.
 #' @param trait A character vector indicating which traits to plot. The default NULL
 #' value plots all traits.
 #' @param trait.labels A character vector indicating the names of the traits in case

@@ -24,8 +24,9 @@
 #'   screen to indicate that it is running. If FALSE, no message is printed.
 #' 
 #' @return This function returns a two-column matrix of marker pairs. This
-#'   matrix is then used as an argument in \code{\link{one.pairscan}} to
-#'   specify which marker pairs should be tested.
+#'   matrix is then used as an argument in \code{\link{one.pairscan.parallel}}, 
+#'   \code{\link{pairscan.null.kin}}, \code{\link{pairscan.null}} and 
+#'   \code{\link{pairscan}} to specify which marker pairs should be tested.
 #' 
 #' @details One and only one of min.per.genotype or max.pair.cor should be specified.
 #' We recommend that if you have continuous genotype probabilities, you use max.pair.cor.

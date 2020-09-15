@@ -151,7 +151,7 @@ Cape <- R6::R6Class(
     .collapsed_net = NULL
   ),
   active = list(
-    #' @field geno_for_pairscan Set \code{\link{.geno_for_pairscan}}.
+    #' @field geno_for_pairscan geno for pairscan
     geno_for_pairscan = function(value) {
       if (missing(value)) {
         private$.geno_for_pairscan
@@ -160,7 +160,7 @@ Cape <- R6::R6Class(
         self
       }
     },
-    #' @field marker_selection_method Set \code{\link{.marker_selection_method}}.
+    #' @field marker_selection_method marker selection method
     marker_selection_method = function(value) {
       if (missing(value)) {
         private$.marker_selection_method
@@ -169,7 +169,7 @@ Cape <- R6::R6Class(
         self
       }
     },
-    #' @field linkage_blocks_collapsed Set \code{\link{.linkage_blocks_collapsed}}.
+    #' @field linkage_blocks_collapsed linkage blocks collapsed
     linkage_blocks_collapsed = function(value) {
       if (missing(value)) {
         private$.linkage_blocks_collapsed
@@ -178,7 +178,7 @@ Cape <- R6::R6Class(
         self
       }
     },
-    #' @field linkage_blocks_full Set \code{\link{.linkage_blocks_full}}.
+    #' @field linkage_blocks_full linkage blocks full
     linkage_blocks_full = function(value) {
       if (missing(value)) {
         private$.linkage_blocks_full
@@ -187,7 +187,7 @@ Cape <- R6::R6Class(
         self
       }
     },
-    #' @field collapsed_net Set \code{\link{.collapsed_net}}.
+    #' @field collapsed_net collapsed net
     collapsed_net = function(value) {
       if (missing(value)) {
         private$.collapsed_net
