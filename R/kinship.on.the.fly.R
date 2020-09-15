@@ -39,7 +39,7 @@ covarV = NULL, verbose = FALSE){
     
     if(verbose){cat("Chromosomes:", pair.name, "\n")}
     
-    if(class(kin.obj) == "matrix"){
+    if(class(kin.obj)[1] == "matrix"){
       full.kin <- kin.obj
     }else{
       kin.mat.locale <- which(names(kin.obj) == pair.name)
@@ -116,7 +116,7 @@ covarV = NULL, verbose = FALSE){
   #only use LOCO, LTCO gives weird results  
   cat("Chromosome1:", chr1, "\n")
   cat("Chromosome2:", chr2, "\n")
-
+  chr.pair <- c(chr1, chr2)
   result <- get.g(pair = chr.pair, phenotype = phenoV, covarV = covarV)
   
   

@@ -247,9 +247,15 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0,
     if(use.kinship){
       sink(file.path(data.obj$results_path,"regress.warnings")) #create a temporary output file for the regress warnings
       # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
-      cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, 
-      chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
-      names(cor.data) <- chr.which
+      if(data.obj$kinship_type == "ltco"){
+        cor.data <- lapply(chr.which, function(x) kinship.on.the.fly(kin.obj, gene, 
+        chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
+        names(cor.data) <- chr.which
+      }else{
+        cor.data <- vector(mode = "list", length = 1)
+        cor.data[[1]] <- kinship.on.the.fly(kin.obj, gene, phenoV = phenotype, 
+        covarV = covar.table)
+      }
       sink(NULL)
     }else{
       cor.data <- vector(mode = "list", length = 1)

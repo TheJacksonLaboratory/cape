@@ -34,8 +34,6 @@ Depends:
     parallel, doParallel, foreach, caTools, stringr, abind, propagate, testthat, utils,
     qtl2, tidyr, qtl2convert, devtools, yaml, jsonlite, data.table, RcppEigen, RSQLite,
     qtl, tools, BiocManager, igraph, regress
-Imports:
-  biomaRt
 Suggests: 
   testthat, knitr, rmarkdown
 VignetteBuilder: knitr
