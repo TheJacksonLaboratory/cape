@@ -58,7 +58,6 @@ Depends:
   RSQLite (>= 2.2.0),
   shape (>= 1.4.5),
   stringr (>= 1.4.0),
-  testthat (>= 2.3.2),
   tidyr (>= 1.1.2),
   tools (>= 3.6.2),
   utils (>= 3.6.2),
