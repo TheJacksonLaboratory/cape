@@ -4,5 +4,5 @@
 ^config$
 ^doc$
 ^Meta$
-^packrad$
+^packrat$
 ^cran-comments\.md$

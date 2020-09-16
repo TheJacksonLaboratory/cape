@@ -118,16 +118,16 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
       #use this singlescan to select markers for a permuted pairscan
       
       if(marker.selection.method == "top.effects"){
-        perm.data.obj <- select.markers.for.pairscan(perm.data.obj, singlescan.obj = single.scan.result, geno.obj, 
+        perm.data.obj <- select_markers_for_pairscan(perm.data.obj, singlescan.obj = single.scan.result, geno.obj, 
           num.alleles = n.top.markers, peak.density = data.obj$peak_density, window.size = data.obj$window_size, 
           tolerance = data.obj$tolerance, plot.peaks = FALSE, verbose = verbose)
       }
       if(marker.selection.method == "uniform"){
-        perm.data.obj <- select.markers.for.pairscan.uniform(perm.data.obj, geno.obj, 
+        perm.data.obj <- select_markers_for_pairscan.uniform(perm.data.obj, geno.obj, 
         num.alleles = ncol(data.obj$geno_for_pairscan), verbose = verbose)	
       }
       if(marker.selection.method == "effects.dist"){
-        perm.data.obj <- select.markers.for.pairscan.dist(perm.data.obj, singlescan.obj = single.scan.result, 
+        perm.data.obj <- select_markers_for_pairscan.dist(perm.data.obj, singlescan.obj = single.scan.result, 
         geno.obj, verbose = verbose)		
       }
     }else{ 
@@ -136,14 +136,14 @@ pairscan.null.kin <- function(data.obj, geno.obj = NULL, kin.obj = NULL,
         # #if we are using a gene-based method
         # #use a permuted gene list to select
         # #SNPs near genes
-        # perm.data.obj <- select.markers.for.pairscan.by.gene(perm.data.obj, ref.allele = ref.allele, geno.obj = geno.obj, 
+        # perm.data.obj <- select_markers_for_pairscan.by.gene(perm.data.obj, ref.allele = ref.allele, geno.obj = geno.obj, 
                                                              # gene.list = sample(gene.list), num.snps = ncol(data.obj$geno_for_pairscan), 
                                                              # organism = data.obj$organism)
       # }
       if(marker.selection.method == "from.list"){
         single.scan.result <- list("ref.allele" = ref.allele)
         specific.markers <- colnames(perm.data.obj$geno_for_pairscan)
-        perm.data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj = single.scan.result, geno.obj, specific.markers = specific.markers)
+        perm.data.obj <- select_markers_for_pairscan(data.obj, singlescan.obj = single.scan.result, geno.obj, specific.markers = specific.markers)
       }
     }
     
