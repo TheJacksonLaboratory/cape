@@ -1,7 +1,7 @@
 #' Plot phenotypic effect for two markers as a bar plot
 #' 
 #' This internal function is called by 
-#' \code{\link{plot.effects}} to generate a 
+#' \code{\link{plotEffects}} to generate a 
 #' bar plot showing mean trait values for all
 #' combinations of genotypes for two markers.
 #' This function also indicates the predicted
