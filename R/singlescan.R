@@ -72,7 +72,7 @@ singlescan <- function(data.obj, geno.obj, kin.obj = NULL, n.perm = 0,
   
   #===============================================================
   gene <- get.geno(data.obj, geno.obj)
-  pheno <- get.pheno(data.obj)	
+  pheno <- get.pheno(data.obj, scan.what = scan.what)	
   n.phe = dim(pheno)[2]
   chr.which <- unique(data.obj$chromosome)
   

@@ -18,7 +18,8 @@
 #' The values correspond to the argument settings described above.
 #' 
 #' @export
-get.pheno <- function(data.obj, scan.what = c("eigentraits", "normalized.traits", "raw.traits"), covar = NULL){
+get.pheno <- function(data.obj, 
+scan.what = c("eigentraits", "normalized.traits", "raw.traits"), covar = NULL){
   
 
 	scan.what <- scan.what[1] #default to eigentraits
