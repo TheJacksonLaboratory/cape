@@ -55,7 +55,7 @@ run.cape <- function(pheno.obj, geno.obj,
   #check for the file first
   prior.data.obj <- data.obj$read_rds(results.file)
   if (isFALSE(prior.data.obj)) {
-    data.obj <- compareMarkers(data.obj, geno.obj)
+    data.obj <- compare_markers(data.obj, geno.obj)
   } else {
     # things can get pretty confusing if these values don't match between 
     #the parameter file and the old data.obj
@@ -151,7 +151,7 @@ run.cape <- function(pheno.obj, geno.obj,
     data.obj <- marker2covar(data.obj, geno.obj, markers = data.obj$marker_covariates)
   }
   
-  data.obj <- selectPheno(data.obj, pheno.which = data.obj$traits)	
+  data.obj <- select_pheno(data.obj, pheno.which = data.obj$traits)	
   
   if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
     data.obj <- get.eigentraits(
@@ -164,7 +164,7 @@ run.cape <- function(pheno.obj, geno.obj,
     data.obj$plot_svd("svd.jpg")
     
     # TODO update select.eigentraits
-    data.obj <- selectEigentraits(data.obj, traits.which = data.obj$eig_which)
+    data.obj <- select_eigentraits(data.obj, traits.which = data.obj$eig_which)
   }
   
   data.obj$save_rds(data.obj, results.file)

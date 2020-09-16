@@ -7,7 +7,7 @@
 #' not present in geno.obj are removed from data.obj$geno_names
 #'
 #' @export
-compareMarkers <- function(data.obj, geno.obj){	
+compare_markers <- function(data.obj, geno.obj){	
   geno <- get.geno(data.obj, geno.obj)
   missing.markers <- setdiff(data.obj$geno_names[[3]], dimnames(geno)[[3]])
   if(length(missing.markers) > 0){
