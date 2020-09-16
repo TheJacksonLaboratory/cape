@@ -18,8 +18,7 @@
 #' @return updated \code{\link{Cape}} object
 #'
 #' @export
-#' 
-select.eigentraits <- function(data.obj, traits.which = c(1,2)){
+selectEigentraits <- function(data.obj, traits.which = c(1,2)){
   
   check.underscore(data.obj)
   # check.bad.markers(data.obj)
