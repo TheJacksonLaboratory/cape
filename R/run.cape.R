@@ -153,7 +153,7 @@ run.cape <- function(pheno.obj, geno.obj,
   
   data.obj <- select.pheno(data.obj, pheno.which = data.obj$traits)	
   
-  if(length(grep("e", data.obj$scan_what, ignore.case = TRUE)) > 0){
+  if(length(grep("eig", data.obj$scan_what, ignore.case = TRUE)) > 0){
     data.obj <- get.eigentraits(
       data.obj, 
       scale.pheno = as.logical(data.obj$traits_scaled), 
