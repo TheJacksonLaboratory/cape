@@ -8,13 +8,13 @@
 #' in the HLA region to find genetic modifiers of these 
 #' markers.
 #'
-#' @param data.obj a \code{\link{Cape}} object
-#' @param geno.obj a genotype object
-#' @param singlescan.obj It is possible to automitically identify
+#' @param data_obj a \code{\link{Cape}} object
+#' @param geno_obj a genotype object
+#' @param singlescan_obj It is possible to automitically identify
 #' markers to use as covariates based on their large main effects.
 #' If this is desired, a singlescan object is required.
-#' @param covar.thresh If designating markers as covariates based
-#' on their main effect size is desired, the covar.thresh indicates
+#' @param covar_thresh If designating markers as covariates based
+#' on their main effect size is desired, the covar_thresh indicates
 #' the main effect size above which a marker is designated as a 
 #' covariate.
 #' @param markers Marker covariates can also be designated manually.
@@ -23,66 +23,65 @@
 #'
 #' @return This function returns the data object with additional 
 #' information specifying which markers are to be used as covariates.
-#' this information can be retrieved with \code{\link{get.covar}}.
+#' this information can be retrieved with \code{\link{get_covar}}.
 #' 
-#' @seealso \code{\link{get.covar}}
+#' @seealso \code{\link{get_covar}}
 #' @export
 
-marker2covar <- function(data.obj, geno.obj, singlescan.obj = NULL, covar.thresh = NULL, markers = NULL){
+marker2covar <- function(data_obj, geno_obj, singlescan_obj = NULL, covar_thresh = NULL, markers = NULL){
   
-  if(!is.null(covar.thresh)){
-    oneD <- singlescan.obj$singlescan.results
-    if(is.null(oneD)){stop("singlescan.obj is required if setting covariates by a t threshold.\n")}
+  if(!is.null(covar_thresh)){
+    oneD <- singlescan_obj$singlescan.results
+    if(is.null(oneD)){stop("singlescan_obj is required if setting covariates by a t threshold.\n")}
   }
   
-  
-  geno.mat <- get.geno(data.obj, geno.obj)
+  geno_mat <- get_geno(data_obj, geno_obj)
   
   #if the user has specified a t threshold for covariate specification
-  if(!is.null(covar.thresh)){
+  if(!is.null(covar_thresh)){
     
-    marker.names <- data.obj$geno_names[[3]]
+    marker_names <- data_obj$geno_names[[3]]
     
-    singlescan.obj$covar_thresh <- covar.thresh
+    singlescan_obj$covar_thresh <- covar_thresh
     
-    covar.which <- lapply(oneD, function(x) which(x[,"t.stat"] >= covar.thresh))
-    covar.names <- unique(unlist(lapply(covar.which, function(x) names(x))))
-    new.covar.locale <- get.marker.idx(data.obj, covar.names)
-    new.covar <- geno.mat[,new.covar.locale,drop=FALSE]
-    dimnames(new.covar)[[3]] <- covar.names
+    covar_which <- lapply(oneD, function(x) which(x[,"t.stat"] >= covar_thresh))
+    covar_names <- unique(unlist(lapply(covar_which, function(x) names(x))))
+    new_covar_locale <- get_marker_idx(data_obj, covar_names)
+    new_covar <- geno_mat[,new_covar_locale,drop=FALSE]
+    dimnames(new_covar)[[3]] <- covar_names
     
-    snp.names <- get.marker.name(data.obj, covar.names)
+    snp_names <- get_marker_name(data_obj, covar_names)
     
-    g.covar.info <- rbind(snp.names, data.obj$chromosome[new.covar.locale], data.obj$marker_location[new.covar.locale])
-    colnames(g.covar.info) <- data.obj$marker_num[new.covar.locale]
-    rownames(g.covar.info) <- c("name", "chromosome", "position")
+    g_covar_info <- rbind(snp_names, data_obj$chromosome[new_covar_locale], data_obj$marker_location[new_covar_locale])
+    colnames(g_covar_info) <- data_obj$marker_num[new_covar_locale]
+    rownames(g_covar_info) <- c("name", "chromosome", "position")
     
-    data.obj <- remove.markers(data.obj, markers.to.remove = snp.names)
-    data.obj$g_covar_table <- new.covar
-    data.obj$g_covar <- g.covar.info
-    return(data.obj)		
+    data_obj <- remove_markers(data_obj, markers_to_remove = snp_names)
+    data_obj$g_covar_table <- new_covar
+    data_obj$g_covar <- g_covar_info
+    return(data_obj)		
   } #end case for setting covariates by a threshold
   
   
   if(!is.null(markers)){
-    marker.names <- data.obj$geno_names[[3]]
+    marker_names <- data_obj$geno_names[[3]]
     
-    marker.locale <- get.marker.idx(data.obj, markers)		
-    new.covar <- geno.mat[,,marker.locale,drop=FALSE]
-    ref.locale <- which(dimnames(new.covar)[[2]] == data.obj$ref_allele)
-    the.rest <- setdiff(1:dim(new.covar)[[2]], ref.locale)
-    covar.mat <- new.covar[,the.rest,]
-    data.obj$g_covar_table <- covar.mat
+    marker_locale <- get_marker_idx(data_obj, markers)		
+    new_covar <- geno_mat[,,marker_locale,drop=FALSE]
+    ref_locale <- which(dimnames(new_covar)[[2]] == data_obj$ref_allele)
+    the_rest <- setdiff(1:dim(new_covar)[[2]], ref_locale)
+    covar_mat <- new_covar[,the_rest,]
+    data_obj$g_covar_table <- covar_mat
     
-    g.covar.info <- rbind(marker.names[marker.locale], data.obj$chromosome[marker.locale], data.obj$marker_location[marker.locale])
-    colnames(g.covar.info) <- data.obj$marker_num[marker.locale]
-    rownames(g.covar.info) <- c("name", "chromosome", "position")
+    g_covar_info <- rbind(marker_names[marker_locale], data_obj$chromosome[marker_locale], data_obj$marker_location[marker_locale])
+    colnames(g_covar_info) <- data_obj$marker_num[marker_locale]
+    rownames(g_covar_info) <- c("name", "chromosome", "position")
     
-    data.obj$g_covar <- g.covar.info
-    data.obj <- remove.markers(data.obj, markers)
+    data_obj$g_covar <- g_covar_info
+    data_obj <- remove_markers(data_obj, markers)
     
   }
   
-  return(data.obj)
+  return(data_obj)
   
 }

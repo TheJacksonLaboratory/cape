@@ -4,24 +4,24 @@
 #' individual cape interactions. It serves as
 #' a wrapper for the functions \code{\link{plotLines}}
 #' \code{\link{plotBars}} \code{\link{plotPoints}},
-#' and \code{\link{IntHeat}}. Each of those functions
+#' and \code{\link{plotIntHeat}}. Each of those functions
 #' plots individual cape interactions in different forms.
 #' 
-#' @param data.obj A \code{\link{Cape}} object
-#' @param geno.obj A genotype object
+#' @param data_obj A \code{\link{Cape}} object
+#' @param geno_obj A genotype object
 #' @param marker1 A string indicating the name 
 #' of the source marker in the interaction. This can
 #' also be the name of a covariate.
 #' @param A string indicating the name of the target 
 #' marker in the interaction. This can also be the name
 #' of a covariate.
-#' @param pheno.type One of "eigentraits", 
-#' "normalized.traits", or "raw.traits", indicating which
+#' @param pheno_type One of "eigentraits", 
+#' "normalized_traits", or "raw_traits", indicating which
 #' traits to plot.
-#' @param plot.type A letter referring to the desired style 
+#' @param plot_type A letter referring to the desired style 
 #' of the plot. The choices are the following: "l" - line plots,
 #' "p" = points, "b" - bar plots, "h" - heat map.
-#' @param error.bars The type of error bars to plot. Choices
+#' @param error_bars The type of error bars to plot. Choices
 #' are "none" (the default), "se" for standard error, or 
 #' "sd" for standard deviation.
 #' @param ymin A minimum value for the y axes across all plots.
@@ -30,24 +30,24 @@
 #' If NULL, each y axis will be dertermined independently
 #' @param covar A vector of strings indicating which covariates,
 #' if any, the traits should be adjusted for. If NULL, the 
-#' covariates specified in the data.obj are used as default.
+#' covariates specified in the data_obj are used as default.
 #' To prevent adjusting for covariates, use "none". 
-#' @param marker1.label A string to use as the label for marker1
+#' @param marker1_label A string to use as the label for marker1
 #' If NULL, the string used for marker1 will be used.
-#' @param marker2.label A string to use as the label for marker2
+#' @param marker2_label A string to use as the label for marker2
 #' If NULL, the string used for marker2 will be used.
-#' @param bin.continuous.genotypes If TRUE, genotypes (and covariate)
+#' @param bin_continuous_genotypes If TRUE, genotypes (and covariate)
 #' values will be binned into 0, 0.5, and 1 values. This 
 #' reduces the number of bins that traits need to be divided 
 #' into, especially if there are only one or two individuals
 #' with a 0.49 genotype, for example. Binning may not be
 #' desirable when using the heatmap.
-#' @param ref.centered A logical value indicating whether 
+#' @param ref_centered A logical value indicating whether 
 #' to center the values on the reference allele. Defaults 
 #' to TRUE.
 #' @param pheno A vector of strings to indicate which traits
 #' to plot. If NULL, all traits are plotted.
-#' @param gen.model One of "Additive", "Dominant", or "Recessive"
+#' @param gen_model One of "Additive", "Dominant", or "Recessive"
 #' indicating how the genotypes should be coded. If Additive,
 #' genotypes are coded as 0 for homozygous reference allele,
 #' 1 for homozygous alternate allele, and 0.5 for heterozygous.
@@ -61,16 +61,16 @@
 #' homozygous reference genotypes: (0, 0.5) vs. 1. This shows
 #' the effect of having two copies of the alternate allele 
 #' vs. having fewer than two copies.
-#' @param bins.marker1 Only used for heatmap plotting. The 
+#' @param bins_marker1 Only used for heatmap plotting. The 
 #' number of bins for marker1 if it is a continuously valued 
 #' marker or covariate. The bins are used to fit a linear 
 #' model and predict outcomes for a 2D grid of marker1 and
 #' marker2 values. This argument can also be a vector of
 #' bin values for binning at specific values.
-#' @param bins.marker2 The same as bins.marker1, but for
+#' @param bins_marker2 The same as bins_marker1, but for
 #' marker2.
 #' 
-#' @details The "h" option calls \code{\link{IntHeat}}, which
+#' @details The "h" option calls \code{\link{plotIntHeat}}, which
 #' fits linear models to each trait and both markers specified.
 #' It uses those models to predict phenotype values along continuously
 #' valued genotype bins and plots the predicted values as a heatmap.
@@ -79,31 +79,31 @@
 #'
 #' @export
 
-plotEffects <- function(data.obj, geno.obj, marker1, marker2 = NULL, 
-pheno.type = "normalized", plot.type = c("l", "p", "b", "h"),
-error.bars = "none", ymin = NULL, ymax = NULL, covar = NULL, 
-marker1.label = NULL, marker2.label = NULL, bin.continuous.genotypes = TRUE, 
-ref.centered = TRUE, gen.model = "Additive", bins.marker1 = 50, 
-bins.marker2 = 50){
+plotEffects <- function(data_obj, geno_obj, marker1, marker2 = NULL, 
+	pheno_type = "normalized", plot_type = c("l", "p", "b", "h"),
+	error_bars = "none", ymin = NULL, ymax = NULL, covar = NULL, 
+	marker1_label = NULL, marker2_label = NULL, bin_continuous_genotypes = TRUE, 
+	ref_centered = TRUE, gen_model = "Additive", bins_marker1 = 50, 
+	bins_marker2 = 50){
 
-	plot.type = plot.type[1]
+	plot_type = plot_type[1]
 		
 	#==========================================
 	# get traits for plotting
 	#==========================================
-	covar.info <- get.covar(data.obj)		
+	covar_info <- get_covar(data_obj)		
 	
 	if(is.null(covar)){
-		covar.names <- covar.info$covar.names
-		}else{
+		covar_names <- covar_info$covar_names
+	}else{
 		if(covar == "none"){
-			covar.names = NULL
+			covar_names = NULL
 		}else{
-			covar.names = covar
+			covar_names = covar
 		}
 	}
 	
-    pheno <- get.pheno(data.obj, pheno.type, covar.names)
+    pheno <- get_pheno(data_obj, pheno_type, covar_names)
 	#==========================================
 
 
@@ -111,27 +111,27 @@ bins.marker2 = 50){
 	# get marker genotypes or covariate values 
 	# for plotting
 	#==========================================
-	marker.vals <- get.marker.covar(data.obj, geno.obj, c(marker1, marker2))
+	marker_vals <- get_marker_covar(data_obj, geno_obj, c(marker1, marker2))
 
 
    	#==========================================
 	# line up genotypes and phenotypes
 	#==========================================
-    common.ind <- intersect(rownames(marker.vals), rownames(pheno))
-    ind.pheno.locale <- match(common.ind, rownames(pheno))
-    ind.geno.locale <- match(common.ind, rownames(marker.vals))
+    common_ind <- intersect(rownames(marker_vals), rownames(pheno))
+    ind_pheno_locale <- match(common_ind, rownames(pheno))
+    ind_geno_locale <- match(common_ind, rownames(marker_vals))
     
-    pheno.to.plot <- pheno[ind.pheno.locale,,drop=FALSE]
-    geno.to.plot <- marker.vals[ind.geno.locale,,drop=FALSE]
+    pheno_to_plot <- pheno[ind_pheno_locale,,drop=FALSE]
+    geno_to_plot <- marker_vals[ind_geno_locale,,drop=FALSE]
  	#==========================================
 
 
 	#============================================================
 	#bin the genotypes if necessary
 	#============================================================
-	if(bin.continuous.genotypes){
-		geno.to.plot <- apply(geno.to.plot, 2, function(x) bin.vector(x, c(0, 0.5, 1)))
-		}
+	if(bin_continuous_genotypes){
+		geno_to_plot <- apply(geno_to_plot, 2, function(x) bin_vector(x, c(0, 0.5, 1)))
+	}
 	#============================================================
 
 
@@ -139,59 +139,59 @@ bins.marker2 = 50){
 	# Recode if specified
 	#============================================================
 		
-	if(gen.model == "Dominant"){
-		geno.to.plot[which(geno.to.plot >= 0.5)] <- 1
-		geno.to.plot[which(geno.to.plot < 0.5)] <- 0
-		}
-	if(gen.model == "Recessive"){
-		geno.to.plot[which(geno.to.plot <= 0.5)] <- 0			
-		}
+	if(gen_model == "Dominant"){
+		geno_to_plot[which(geno_to_plot >= 0.5)] <- 1
+		geno_to_plot[which(geno_to_plot < 0.5)] <- 0
+	}
+	if(gen_model == "Recessive"){
+		geno_to_plot[which(geno_to_plot <= 0.5)] <- 0			
+	}
 	#============================================================		
 
 
 	#============================================================
 	# assign the marker names
 	#============================================================
-	if(is.null(marker1.label)){marker1.label = marker1}
-	if(is.null(marker2.label)){marker2.label = marker2}
-	marker.names <- c(marker1.label, marker2.label)
+	if(is.null(marker1_label)){marker1_label = marker1}
+	if(is.null(marker2_label)){marker2_label = marker2}
+	marker_names <- c(marker1_label, marker2_label)
 	#============================================================
 
 	
 	#============================================================
 	#figure out the layout for the plots
 	#============================================================
-	layout.mat <- get.layout.mat(ncol(pheno))
-	layout(layout.mat)
+	layout_mat <- get_layout_mat(ncol(pheno))
+	layout(layout_mat)
 	#============================================================
 	
 
-	for(ph in 1:ncol(pheno.to.plot)){
-		phenoV = pheno.to.plot[,ph]
-		pheno.name = colnames(pheno)[ph]
-		marker1.vals <- geno.to.plot[,1]
+	for(ph in 1:ncol(pheno_to_plot)){
+		phenoV = pheno_to_plot[,ph]
+		pheno_name = colnames(pheno)[ph]
+		marker1_vals <- geno_to_plot[,1]
 		if(!is.null(marker2)){
-			marker2.vals <- geno.to.plot[,2]
+			marker2_vals <- geno_to_plot[,2]
 		}else{
-			marker2.vals <- NULL
+			marker2_vals <- NULL
 		}
 		
-		if(plot.type == "h"){
-			if(is.null(marker2.vals)){stop("Two markers are required for the heat map.")}
-			IntHeat(phenoV, marker1.vals, marker2.vals, pheno.name,
-			marker1.label, marker2.label, bins1 = bins.marker1, bins2 = bins.marker2)
+		if(plot_type == "h"){
+			if(is.null(marker2_vals)){stop("Two markers are required for the heat map.")}
+		  plotIntHeat(phenoV, marker1_vals, marker2_vals, pheno_name,
+			marker1_label, marker2_label, bins1 = bins_marker1, bins2 = bins_marker2)
 		}
-		if(plot.type == "l"){
-			plotLines(phenoV, marker1.vals, marker2.vals, pheno.name, 
-			marker1.label, marker2.label, ymin, ymax, error.bars)
-			}
-		if(plot.type == "p"){
-			plotPoints(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
-			marker2.label, ymin, ymax)
-			}
-		if(plot.type == "b"){
-			plotBars(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
-			marker2.label, ymin, ymax, error.bars, ref.centered)
+		if(plot_type == "l"){
+		  plotLines(phenoV, marker1_vals, marker2_vals, pheno_name, 
+			marker1_label, marker2_label, ymin, ymax, error_bars)
+		}
+		if(plot_type == "p"){
+		  plotPoints(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
+			marker2_label, ymin, ymax)
+		}
+		if(plot_type == "b"){
+		  plotBars(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
+			marker2_label, ymin, ymax, error_bars, ref_centered)
 		}
 		
 	} #end looping through phenotypes

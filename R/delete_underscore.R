@@ -5,34 +5,34 @@
 #' were present in the original marker names. This function
 #' does that. 
 #'
-#' @param data.obj a \code{\link{Cape}} object
-#' @param geno.obj a genotype object
+#' @param data_obj a \code{\link{Cape}} object
+#' @param geno_obj a genotype object
 #' 
-#' @return lists containing data.obj and geno.obj
-#' with underscores removed from data.obj$geno_names
-#' and dimnames(geno.obj). These two elements must be
-#' entered separately into \code{link{run.cape}}.
+#' @return lists containing data_obj and geno_obj
+#' with underscores removed from data_obj$geno_names
+#' and dimnames(geno_obj). These two elements must be
+#' entered separately into \code{link{run_cape}}.
 #'
 #' @export
 
-delete_underscore <- function(data.obj, geno.obj = NULL){
+delete_underscore <- function(data_obj, geno_obj = NULL){
   
-  geno <- get.geno(data.obj, geno.obj)
+  geno <- get_geno(data_obj, geno_obj)
   
-  marker.names <- data.obj$geno_names[[3]]
-  under.locale <- grep("_", marker.names)
+  marker_names <- data_obj$geno_names[[3]]
+  under_locale <- grep("_", marker_names)
   
-  if(length(under.locale) > 0){
-    bad.names <- marker.names[under.locale]
-    new.names <- unlist(lapply(strsplit(bad.names, "_"), function(x) paste(x[1:length(x)], collapse = "")))
+  if(length(under_locale) > 0){
+    bad_names <- marker_names[under_locale]
+    new_names <- unlist(lapply(strsplit(bad_names, "_"), function(x) paste(x[1:length(x)], collapse = "")))
     
-    data.obj$geno_names[[3]][under.locale] <- new.names
-    dimnames(geno)[[3]][under.locale] <- new.names
+    data_obj$geno_names[[3]][under_locale] <- new_names
+    dimnames(geno)[[3]][under_locale] <- new_names
     cat("Removing underscores from marker names\n")
   }	
   
-  results <- list(data.obj, geno)
-  names(results) <- c("data.obj", "geno.obj")
+  results <- list(data_obj, geno)
+  names(results) <- c("data_obj", "geno_obj")
   
   return(results)
   

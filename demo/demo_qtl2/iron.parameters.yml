@@ -44,7 +44,7 @@ alpha:
 # Marker Selection Parameters 
 #================================================
 marker_selection_method:
- - top.effects
+ - top_effects
 peak_density:
  - 0.5 
 tolerance:

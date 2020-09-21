@@ -1,18 +1,18 @@
-#' Removes markers from data.obj that are not present in the geno.obj
+#' Removes markers from data_obj that are not present in the geno_obj
 #'
-#' @param data.obj a \code{\link{Cape}} object
-#' @param geno.obj a genotype object
+#' @param data_obj a \code{\link{Cape}} object
+#' @param geno_obj a genotype object
 #'
-#' @return The data.obj is returned, and any markers that were
-#' not present in geno.obj are removed from data.obj$geno_names
+#' @return The data_obj is returned, and any markers that were
+#' not present in geno_obj are removed from data_obj$geno_names
 #'
 #' @export
-compare_markers <- function(data.obj, geno.obj){	
-  geno <- get.geno(data.obj, geno.obj)
-  missing.markers <- setdiff(data.obj$geno_names[[3]], dimnames(geno)[[3]])
-  if(length(missing.markers) > 0){
-    cat("Removing markers from data.obj that are not present in the geno.obj\n")
-    data.obj <- remove.markers(data.obj, missing.markers)
+compare_markers <- function(data_obj, geno_obj){	
+  geno <- get_geno(data_obj, geno_obj)
+  missing_markers <- setdiff(data_obj$geno_names[[3]], dimnames(geno)[[3]])
+  if(length(missing_markers) > 0){
+    cat("Removing markers from data_obj that are not present in the geno_obj\n")
+    data_obj <- remove_markers(data_obj, missing_markers)
   }
-  return(data.obj)	
+  return(data_obj)	
 }
