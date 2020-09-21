@@ -51,7 +51,7 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
   
   get.marker.pair.stats <- function(m, kin.dat){
     
-    if(class(kin.obj) == "matrix"){
+    if(data.obj$kinship_type == "overall"){
       new.pheno <- kin.dat$corrected.pheno
       new.geno <- kin.dat$corrected.geno
       new.covar <- kin.dat$corrected.covar
@@ -93,7 +93,7 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
   
   get.covar.stats <- function(m, kin.dat){
     
-    if(class(kin.obj) == "matrix"){
+    if(data.obj$kinship_type == "overall"){
       new.pheno <- kin.dat$corrected.pheno
       new.geno <- kin.dat$corrected.geno
       new.covar <- kin.dat$corrected.covar
@@ -145,9 +145,9 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     pheno.vector <- pheno[,p,drop=FALSE]
     
     #sink the warnings from regress about solutions close to zero to a file
-    sink(file.path(data.obj$results_path,"regress.warnings"))
+    sink(file.path(data.obj$results_path,"regress.warnings.pairscan"))
     
-    if(class(kin.obj) == "matrix"){
+    if(data.obj$kinship_type == "overall"){
       #if we are using an overall kinship matrix
         kin.mat <- kin.obj
         kin.dat <- kinship.on.the.fly(kin.mat, geno, chr1 = NULL, chr2 = NULL, 
@@ -246,7 +246,7 @@ kin.obj, verbose = FALSE, run.parallel = FALSE, n.cores = 2){
     results.list[[p]] <- pheno.results
   }	#end looping over phenotypes	
   
-  unlink(file.path(data.obj$results_path,"regress.warnings"))
+  #unlink(file.path(data.obj$results_path,"regress.warnings"))
   return(results.list)
   
   

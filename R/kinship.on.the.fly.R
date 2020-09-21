@@ -41,9 +41,11 @@ covarV = NULL, verbose = FALSE){
     
     if(class(kin.obj)[1] == "matrix"){
       full.kin <- kin.obj
+      cat("\tUsing overall matrix\n")
     }else{
       kin.mat.locale <- which(names(kin.obj) == pair.name)
       full.kin <- kin.obj[[kin.mat.locale]]
+      cat("\tUsing", pair.name, "kinship matrix\n")
     }
     
     #remove individuals with NAs
@@ -113,9 +115,8 @@ covarV = NULL, verbose = FALSE){
     return(results)
   }
   
-  #only use LOCO, LTCO gives weird results  
-  cat("Chromosome1:", chr1, "\n")
-  cat("Chromosome2:", chr2, "\n")
+  cat("Chromosomes", chr1, chr2, "\n")
+
   chr.pair <- c(chr1, chr2)
   result <- get.g(pair = chr.pair, phenotype = phenoV, covarV = covarV)
   
