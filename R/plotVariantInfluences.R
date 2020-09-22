@@ -293,7 +293,7 @@ plotVariantInfluences <- function(data_obj, p_or_q = 0.05, min_std_effect = 0,
       marker_locale <- which(pheno_inf[[j]][,1] == unique_markers[i])
       if(length(marker_locale) > 0){
         if(standardize){	
-          pheno_influence_mat[as.character(unique_markers[i]), pheno_names[j]] <- pheno_inf[[j]][marker_locale, "t.stat"]
+          pheno_influence_mat[as.character(unique_markers[i]), pheno_names[j]] <- pheno_inf[[j]][marker_locale, "t_stat"]
         }else{
           pheno_influence_mat[as.character(unique_markers[i]), pheno_names[j]] <- pheno_inf[[j]][marker_locale, "coef"]
         }

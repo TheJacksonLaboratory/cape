@@ -146,7 +146,7 @@ get_stats_multiallele <- function(phenotype, genotype, covar_table, ph_family, r
   #we keep the slope, the t statistic, and the 
   results_table <- matrix(c(slopes, t_stats), byrow = TRUE, nrow = 2)
   colnames(results_table) <- colnames(geno_mat)
-  rownames(results_table) <- c("slope", "t.stat")
+  rownames(results_table) <- c("slope", "t_stat")
   results <- list(results_table, locus_pval, locus_score); names(results) <- c("stats", "pval", "score")
   return(results)
 }

@@ -105,10 +105,10 @@ bin_curve <- function(the_curve, plot_peaks = FALSE, window_size = NULL, amp_min
     all_diff <- diff(the_curve)
     pos_slope <- which(all_diff > 0)
     neg_slope <- which(all_diff < 0)
-    pos_slope.runs <- diff(pos_slope)
-    neg_slope.runs <- diff(neg_slope)
-    max_pos <- max(pos_slope.runs)
-    max_neg <- max(neg_slope.runs)
+    pos_slope_runs <- diff(pos_slope)
+    neg_slope_runs <- diff(neg_slope)
+    max_pos <- max(pos_slope_runs)
+    max_neg <- max(neg_slope_runs)
     window_size = min(c(max_pos, max_neg))
   }
   

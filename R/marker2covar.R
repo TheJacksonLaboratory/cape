@@ -44,7 +44,7 @@ marker2covar <- function(data_obj, geno_obj, singlescan_obj = NULL, covar_thresh
     
     singlescan_obj$covar_thresh <- covar_thresh
     
-    covar_which <- lapply(oneD, function(x) which(x[,"t.stat"] >= covar_thresh))
+    covar_which <- lapply(oneD, function(x) which(x[,"t_stat"] >= covar_thresh))
     covar_names <- unique(unlist(lapply(covar_which, function(x) names(x))))
     new_covar_locale <- get_marker_idx(data_obj, covar_names)
     new_covar <- geno_mat[,new_covar_locale,drop=FALSE]

@@ -37,9 +37,9 @@
 #' maximum main effect of marker.   
 #' coef: the direct influence coefficient.
 #' se: the standard error of the direct influence coefficient 
-#' t.stat: the t statistic for the direct influence coefficient
-#' |t.stat|: the absolute value of the t statistic
-#' emp.p: the empirical p value of the direct influence coefficient
+#' t_stat: the t statistic for the direct influence coefficient
+#' |t_stat|: the absolute value of the t statistic
+#' emp_p: the empirical p value of the direct influence coefficient
 #' p_adjusted: the adjusted p value of the direct influence coefficient.
 #'
 #' @export
@@ -105,7 +105,7 @@ direct_influence <- function(data_obj, pairscan_obj, transform_to_phenospace = T
     # there is one of these for each phenotype
     #=========================================================
     stats_mat <- matrix(NA, ncol = 6, nrow = n_pairs)
-    colnames(stats_mat) <- c("marker1", "marker2", "marker1.coef", "marker2.coef", "marker1.se", "marker2.se")
+    colnames(stats_mat) <- c("marker1", "marker2", "marker1_coef", "marker2_coef", "marker1_se", "marker2_se")
     stats_list <- vector(mode = "list", length = num_pheno)
     
     
@@ -252,14 +252,14 @@ direct_influence <- function(data_obj, pairscan_obj, transform_to_phenospace = T
     pheno_names <- names(pair_stats)
     
     #preallocate a matrix that will hold the statistics for each marker
-    #in each pair context. The columns are marker, coef, se, t.stat
-    #|t.stat|, emp.p (6 columns)
+    #in each pair context. The columns are marker, coef, se, t_stat
+    #|t_stat|, emp.p (6 columns)
     if(perm){
       stats_mat <- matrix(NA, nrow = dim(pair_stats[[1]])[1]*2, ncol = 6)
-      colnames(stats_mat) <- c("marker", "conditioning_marker", "coef", "se", "t.stat", "|t.stat|")
+      colnames(stats_mat) <- c("marker", "conditioning_marker", "coef", "se", "t_stat", "|t_stat|")
     }else{
       stats_mat <- matrix(NA, nrow = dim(pair_stats[[1]])[1]*2, ncol = 7)
-      colnames(stats_mat) <- c("marker", "conditioning_marker", "coef", "se", "t.stat", "|t.stat|", "emp.p")			
+      colnames(stats_mat) <- c("marker", "conditioning_marker", "coef", "se", "t_stat", "|t_stat|", "emp_p")			
     }
     
     ind_stats_list <- vector(mode = "list", length = length(pheno_names))
@@ -280,9 +280,9 @@ direct_influence <- function(data_obj, pairscan_obj, transform_to_phenospace = T
         m1_locale <- which(pair_stats[[ph]][,1] == m)
         
         if(length(m1_locale) > 0){
-          beta_coef1 <- as.numeric(pair_stats[[ph]][m1_locale, "marker1.coef"])
+          beta_coef1 <- as.numeric(pair_stats[[ph]][m1_locale, "marker1_coef"])
           other_m <- pair_stats[[ph]][m1_locale, "marker2"]
-          se1 <- as.numeric(pair_stats[[ph]][m1_locale, "marker1.se"])
+          se1 <- as.numeric(pair_stats[[ph]][m1_locale, "marker1_se"])
           t_stat1 <- beta_coef1/se1
           stat_section1 <- matrix(c(rep(m, length(beta_coef1)), other_m, beta_coef1, se1, t_stat1, abs(t_stat1)), ncol = 6)
           
@@ -294,9 +294,9 @@ direct_influence <- function(data_obj, pairscan_obj, transform_to_phenospace = T
         m2_locale <- which(pair_stats[[ph]][,2] == m)
         
         if(length(m2_locale) > 0){
-          beta_coef2 <- as.numeric(pair_stats[[ph]][m2_locale, "marker2.coef"])
+          beta_coef2 <- as.numeric(pair_stats[[ph]][m2_locale, "marker2_coef"])
           other_m <- pair_stats[[ph]][m2_locale, "marker1"]
-          se2 <- as.numeric(pair_stats[[ph]][m2_locale, "marker2.se"])
+          se2 <- as.numeric(pair_stats[[ph]][m2_locale, "marker2_se"])
           t_stat2 <- beta_coef2/se2
           stat_section2 <- matrix(c(rep(m, length(beta_coef2)), other_m, beta_coef2, se2, t_stat2, abs(t_stat2)), ncol = 6)
           
@@ -337,11 +337,11 @@ direct_influence <- function(data_obj, pairscan_obj, transform_to_phenospace = T
     #caclualte an empirical p value for each entry in stat
     for(ph in 1:length(stat)){
       if(verbose){cat(names(stat)[ph], "\n")}
-      comp_dist <- as.numeric(perm_test_stat[[ph]][,"|t.stat|"]) #compare each calculated value to the permuted distribution
-      obs_dist <- as.numeric(stat[[ph]][,"|t.stat|"])
+      comp_dist <- as.numeric(perm_test_stat[[ph]][,"|t_stat|"]) #compare each calculated value to the permuted distribution
+      obs_dist <- as.numeric(stat[[ph]][,"|t_stat|"])
       
       all_emp_p <- calc_emp_p(obs_dist, comp_dist)
-      stat[[ph]][,"emp.p"] <- all_emp_p
+      stat[[ph]][,"emp_p"] <- all_emp_p
     }
     
     return(stat)
@@ -376,7 +376,7 @@ direct_influence <- function(data_obj, pairscan_obj, transform_to_phenospace = T
         marker_locale <- which(stat[[ph]][,1] == markers[m])
         temp_table <- stat[[ph]][marker_locale,,drop=FALSE]
         colnames(temp_table) <- colnames(stat[[ph]])
-        max_stat_locale <- which(as.numeric(temp_table[,"|t.stat|"]) == max(as.numeric(temp_table[,"|t.stat|"]), na.rm = TRUE))
+        max_stat_locale <- which(as.numeric(temp_table[,"|t_stat|"]) == max(as.numeric(temp_table[,"|t_stat|"]), na.rm = TRUE))
         max_stat_table[m,] <- temp_table[max_stat_locale[1],,drop=FALSE]
       }
       ordered_table <- max_stat_table[order(max_stat_table[,5], decreasing = TRUE),]
@@ -392,7 +392,7 @@ direct_influence <- function(data_obj, pairscan_obj, transform_to_phenospace = T
   }	
   
   
-  all_p <- as.numeric(unlist(lapply(emp_p_table, function(x) x[,"emp.p"])))
+  all_p <- as.numeric(unlist(lapply(emp_p_table, function(x) x[,"emp_p"])))
   p_adjusted <- p.adjust(all_p, pval_correction)
   chunkp <- chunkV(p_adjusted, length(emp_p_table))		
   for(p in 1:length(chunkp)){

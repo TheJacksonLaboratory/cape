@@ -175,7 +175,7 @@ plotFullNetwork <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, main
     
     #add any edges from the phenotype direct influences
     for(ph in 1:length(phenotypes)){
-      pheno_stats <- pheno_tables[[ph]][,which(colnames(pheno_tables[[ph]]) != "t.stat")]
+      pheno_stats <- pheno_tables[[ph]][,which(colnames(pheno_tables[[ph]]) != "t_stat")]
       p_adj_locale <- as.vector(na.omit(match(c("qval", "lfdr", "p_adjusted"), colnames(pheno_stats))))
       sig_ph_edges <- which(as.numeric(pheno_stats[,p_adj_locale]) <= p_or_q)
       if(length(sig_ph_edges) > 0){

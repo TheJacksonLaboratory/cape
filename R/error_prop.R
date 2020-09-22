@@ -38,7 +38,7 @@ error_prop <- function (data_obj, pairscan_obj, perm = FALSE, verbose = FALSE,
   p = NULL #for appeasing R CMD check
   
   results_obj <- vector(mode = "list", length = 2)
-  names(results_obj) <- c("var.to.var_influences_perm")
+  names(results_obj) <- c("var_to_var_influences_perm")
   
   if(verbose){
     if(perm){
@@ -172,7 +172,7 @@ error_prop <- function (data_obj, pairscan_obj, perm = FALSE, verbose = FALSE,
   }
   
   if(!just_m){
-    colnames(influence_coeffs) <- c("marker1","marker2","m12","m12.std.dev","m21","m21.std.dev")
+    colnames(influence_coeffs) <- c("marker1","marker2","m12","m12_std_dev","m21","m21_std_dev")
   }else{
     colnames(influence_coeffs) <- c("marker1","marker2","m12","m21")	
   }

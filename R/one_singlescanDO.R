@@ -18,7 +18,7 @@
 #' processors should be used
 #' @param n_cores The number of processors to use if run_parallel is TRUE.
 #' 
-#' @return This function returns the t.statistics for all linear models 
+#' @return This function returns the t_statistics for all linear models 
 #' testing the effects of each marker on the phenotype.
 #' 
 one_singlescanDO <- function(phenotype_vector, genotype_mat, model_family, ref_allele = "A", 
@@ -65,7 +65,7 @@ covar_table = NULL, run_parallel = FALSE, n_cores = 4){
       covar_table, model_family, ref_col))    
   }
   
-  t_stat_array <- matrix(unlist(lapply(results, function(x) x[[1]]["t.stat",])), 
+  t_stat_array <- matrix(unlist(lapply(results, function(x) x[[1]]["t_stat",])), 
   ncol = length(new_allele_names), byrow = TRUE)
   colnames(t_stat_array) <- new_allele_names
   

@@ -298,7 +298,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
       }
       names(results_by_chr) <- dimnames(c_geno)[[locus_dim]]	
       
-      t_stat_array <- add_results_to_array(result_array = t_stat_array, results_list = results_by_chr, stat_name = "t.stat")
+      t_stat_array <- add_results_to_array(result_array = t_stat_array, results_list = results_by_chr, stat_name = "t_stat")
       effect_array <- add_results_to_array(result_array = effect_array, results_list = results_by_chr, stat_name = "slope")
       locus_score_scores[chr_locale,i] <- unlist(lapply(results_by_chr, function(x) x$score))
       
@@ -322,7 +322,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
       c_covar <- cor_data$corrected_covar 
       covar_results <- apply(c_covar, 2, function(x) get_stats_multiallele(c_pheno, x, c_covar, ph_family, ref_col))
       names(covar_results) <- data_obj$p_covar
-      t_stat_array <- add_results_to_array(result_array = t_stat_array, results_list = covar_results, stat_name = "t.stat", is_covar = TRUE)
+      t_stat_array <- add_results_to_array(result_array = t_stat_array, results_list = covar_results, stat_name = "t_stat", is_covar = TRUE)
       effect_array <- add_results_to_array(effect_array, covar_results, "slope", is_covar = TRUE)
       first_na <- min(which(is.na(locus_score_scores[,i])))
       locus_score_scores[(first_na):(first_na+n_covar-1),i] <- unlist(lapply(covar_results, function(x) x$score))

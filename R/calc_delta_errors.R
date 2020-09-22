@@ -120,7 +120,7 @@ calc_delta_errors <- function(markers,beta_m,se,beta_cov) {
   m12_errors <- propagate::propagate(expr = EXPR1, data = full_matrix, second.order = TRUE, cov=beta_cov, do.sim=FALSE)
   m21_errors <- propagate::propagate(expr = EXPR2, data = full_matrix, second.order = TRUE, cov=beta_cov, do.sim=FALSE)
   results <- cbind(markers[1],markers[2],m12,m12_errors$prop[[4]],m21,m21_errors$prop[[4]])
-  colnames(results) <- c("marker 1","marker 2","m12","m12.std.dev","m21","m21.std.dev")
+  colnames(results) <- c("marker 1","marker 2","m12","m12_std_dev","m21","m21_std_dev")
   rownames(results)  <- NULL
   return(results)
 }

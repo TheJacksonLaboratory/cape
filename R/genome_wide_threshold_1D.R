@@ -70,8 +70,8 @@ genome_wide_threshold_1D <- function(data_obj, geno_obj, n_perm = 100,
   
   #calculate the numbers of markers, phenotypes and samples
   # TODO remove the lines below if not needed
-  # n.gene <- dim(gene)[locus_dim]
-  # n.allele <- dim(gene)[allele_dim]-1 #find the number of alleles we will be regressing on
+  # n_gene <- dim(gene)[locus_dim]
+  # n_allele <- dim(gene)[allele_dim]-1 #find the number of alleles we will be regressing on
   
   #pull out genotype and phenotype data for
   #clarity of code later.

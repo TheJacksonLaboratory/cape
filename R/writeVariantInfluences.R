@@ -99,7 +99,7 @@ writeVariantInfluences <- function(data_obj, p_or_q = 0.05, include_main_effects
     colnames(pheno_table) <- new_names
     
     #take out the raw t statistic column
-    remove_col <- which(colnames(pheno_table) == "t.stat")
+    remove_col <- which(colnames(pheno_table) == "t_stat")
     pheno_table <- pheno_table[,-remove_col,drop=FALSE]
     colnames(pheno_table) <- c("Source", "Target", "conditioning_marker", "Effect", "SE", "|Effect|/SE", "P_empirical", "p_adjusted")
     

@@ -62,7 +62,7 @@ plotSinglescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL,
     plot_type_label <- "beta"
   }else{
     results <- singlescan_obj$singlescan_t_stats
-    plot_type_label <- "t.stat"
+    plot_type_label <- "t_stat"
   }
   
   
@@ -164,13 +164,13 @@ plotSinglescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL,
   
   for(i in results_el){
     # dev.new(width = 15, height = 5)
-    if(plot_type_label == "t.stat"){
+    if(plot_type_label == "t_stat"){
       layout(t_layout_mat, heights = c(0.85, 0.15))
     }else{
       layout(eff_layout_mat, heights = c(0.45, 0.4, 0.15))	
     }
     
-    if(plot_type_label == "t.stat"){
+    if(plot_type_label == "t_stat"){
       if(show_selected){par(mar = c(5,5,7,2))}else{par(mar = c(4,5,7,2))}
       plot.new()
       plot.window(xlim = c(1,max_x), ylim = ylim)
@@ -197,7 +197,7 @@ plotSinglescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL,
     
     if(length(covar_locale) > 0){
       covar_effects <- as.vector(sub_results[covar_locale,i,1])
-      if(plot_type_label == "t.stat"){
+      if(plot_type_label == "t_stat"){
         points(covar_x, abs(covar_effects), col = "black", type = "h", lwd = lwd)
         par(xpd = TRUE)
         text(covar_x, ylim[2]*-0.05, labels = covar_names, srt = 90, adj = 1, cex = covar_label_size)
@@ -215,13 +215,13 @@ plotSinglescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL,
       #pull out the effects of the presence of
       #allele j on phenotype i
       allele_effects <- as.vector(sub_results[non_covar_locale,i,j])
-      if(plot_type_label == "t.stat"){ #plot the absolute value of the t.statistics
+      if(plot_type_label == "t_stat"){ #plot the absolute value of the t_statistics
         points(non_covar_locale, abs(allele_effects), col = allele_colors[j,3], type = line_type, lwd = lwd, pch = pch, cex = cex)
       }else{
         points(non_covar_locale, allele_effects, col = allele_colors[j,3], type = line_type, lwd = lwd, pch = pch, cex = cex)	
       }
       
-      if(plot_type_label == "t.stat"){
+      if(plot_type_label == "t_stat"){
         lines(x = c(1,num_loci), y = rep(data_obj$pairscan_thresh, 2), lty = 1, col = "darkgray")
         lines(x = c(1,num_loci), y = rep(data_obj$covar_thresh, 2), lty = 2, col = "darkgray")
         par(xpd = TRUE)
@@ -242,7 +242,7 @@ plotSinglescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL,
     mtext(paste("Effect Relative to Allele", ref_allele), side = 2, line = 2.5)
     mtext(phenos_scanned[i], outer = TRUE, line = -3, cex = 2)
     
-    if(plot_type_label == "t.stat"){
+    if(plot_type_label == "t_stat"){
       legend(x = 0, y = ylim[2]+yrange*0.15, legend = used_alleles, col = allele_colors[,3], lty = 1, lwd = 3, xpd = TRUE, horiz = TRUE)
     }
     
