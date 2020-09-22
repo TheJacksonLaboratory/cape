@@ -1,3 +1,3 @@
-# library(testthat)
-# library(cape)
+library(testthat)
+library(cape)
 # test_check("cape")

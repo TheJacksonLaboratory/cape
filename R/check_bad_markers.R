@@ -6,7 +6,7 @@
 #' markers that are invariant across all individuals.
 #'
 #' @param data_obj a \code{\link{Cape}} object
-#' @param geno_obj
+#' @param geno_obj a genotype object
 #'
 
 
