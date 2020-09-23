@@ -68,7 +68,7 @@
 pairscan <- function(data_obj, geno_obj = NULL,
   scan_what = c("eigentraits", "raw_traits"), pairscan_null_size = NULL, 
   max_pair_cor = NULL, min_per_genotype = NULL, kin_obj = NULL, 
-  num_pairs_limit = 1e6, num.perm.limit = 1e7, overwrite_alert = TRUE, 
+  num_pairs_limit = 1e6, num_perm_limit = 1e7, overwrite_alert = TRUE, 
   run_parallel = FALSE, n_cores = 4, verbose = FALSE) {
   
   marker_selection_method <- data_obj$marker_selection_method
@@ -137,8 +137,8 @@ pairscan <- function(data_obj, geno_obj = NULL,
   
   if(!is.null(num_pairs_limit) && num_pairs > num_pairs_limit){
     cat("\nThe number of pairs (",num_pairs,") exceeds ", num_pairs_limit, ".\n", sep = "")
-    go.on <- readline(prompt = "Do you want to continue (y/n)?\n")
-    if(length(grep("n", go.on))){
+    go_on <- readline(prompt = "Do you want to continue (y/n)?\n")
+    if(length(grep("n", go_on))){
       cat("Stopping pairwise scan...\n")
       return(pairscan_obj)
     }else{
@@ -147,7 +147,7 @@ pairscan <- function(data_obj, geno_obj = NULL,
   }
   
   if(verbose){cat("Performing pairwise tests...\n")}
-  #run one.pairscan for each phenotype with results in scanone.result
+  #run one_pairscan for each phenotype with results in scanone_result
   if(!use_kinship){
     pairscan_results <- pairscan_noKin(data_obj, pheno_mat = pheno, 
       geno_mat = gene, covar_table = covar_table, marker_pairs = pared_marker_mat, 

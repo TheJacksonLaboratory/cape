@@ -4,9 +4,9 @@
 #' This function uses linear mixed models to adjust the
 #' genotype matrix, phenotype matrix, and covariate matrix
 #' for kinship based on the kinship matrix calculated 
-#' by \code{\link{kinship}}.
+#' by \code{\link{Kinship}}.
 #'
-#' @param kin_obj The kinship object calculated by \code{\link{kinship}}
+#' @param kin_obj The kinship object calculated by \code{\link{Kinship}}
 #' @param geno a genotype object.
 #' @param chr1 The first of two chromomsomes to leave out of the calculation, if any.
 #' @param chr2 The second of two chromomsomes to leave out of the calculation, if any.
@@ -25,7 +25,7 @@
 #'
 
 kinship_on_the_fly <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
-  covarV = NULL, verbose = FALSE){
+covarV = NULL, verbose = FALSE){
   
   get_g=function(pair = NULL, phenotype, covarV){
 
@@ -34,16 +34,18 @@ kinship_on_the_fly <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     if(is.null(pair)){
       pair_name <- "overall"
     }else{
-      pair_name <- paste(unique(pair), collapse = ",")
+      pair_name <- paste(pair, collapse = ",")
     }
     
     if(verbose){cat("Chromosomes:", pair_name, "\n")}
     
-    if(class(kin_obj) == "matrix"){
+    if(class(kin_obj)[1] == "matrix"){
       full_kin <- kin_obj
+      cat("\tUsing overall matrix\n")
     }else{
       kin_mat_locale <- which(names(kin_obj) == pair_name)
       full_kin <- kin_obj[[kin_mat_locale]]
+      cat("\tUsing", pair_name, "kinship matrix\n")
     }
     
     #remove individuals with NAs
@@ -113,32 +115,11 @@ kinship_on_the_fly <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV =
     return(results)
   }
   
-  #only use LOCO, LTCO gives weird results  
-  cat("Chromosome1:", chr1, "\n")
-  cat("Chromosome2:", chr2, "\n")
-  
-  use_loco <- TRUE
-  check_na <- is.na(chr1) || is.na(chr2)
-  check_null <- is.null(chr1) || is.null(chr2)
-  
-  if(any(c(check_na, check_null))){
-    use_loco = FALSE
-  }else{
-      if(chr1 != chr2){
-        use_loco <- FALSE
-      }
-    }
+  cat("Chromosomes", chr1, chr2, "\n")
 
-
-  if(use_loco){
-    chr_pair <- c(chr1, chr2)
-  }else{
-    chr_pair <- NULL
-  }
-
-  if(use_loco){cat("Using LOCO.\n")}else{cat("Using Overall kinship Matrix.\n")}
-
+  chr_pair <- c(chr1, chr2)
   result <- get_g(pair = chr_pair, phenotype = phenoV, covarV = covarV)
+  
   
   return(result)
   
