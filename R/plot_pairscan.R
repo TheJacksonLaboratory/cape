@@ -30,7 +30,7 @@
 #' @return Plots to a pdf
 #' 
 #' @export
-plotPairscan <- function(data_obj, pairscan_obj, phenotype = NULL, standardized = FALSE,
+plot_pairscan <- function(data_obj, pairscan_obj, phenotype = NULL, standardized = FALSE,
 	show_marker_labels = FALSE, show_chr = TRUE, label_chr = TRUE, show_alleles = TRUE,
 	allele_labels = NULL, pos_col = "brown", neg_col = "blue", 
 	color_scheme = c("DO/CC", "other"), pdf_label = "Pairscan.Regression.pdf") {
@@ -78,7 +78,7 @@ plotPairscan <- function(data_obj, pairscan_obj, phenotype = NULL, standardized 
   pairscan_result <- pairscan_obj$pairscan_results
   
   if(is.null(pairscan_result)){
-    stop("pairscan() must be run before plotPairscan()")
+    stop("pairscan() must be run before plot_pairscan()")
   }
   
   if(is.null(phenotype)){

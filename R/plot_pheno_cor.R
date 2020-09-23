@@ -14,7 +14,7 @@
 #' 
 #' @export
 
-plotPhenoCor <- function(data_obj, pheno_which = NULL, color_by = NULL, group_labels = NULL,
+plot_pheno_cor <- function(data_obj, pheno_which = NULL, color_by = NULL, group_labels = NULL,
   text_cex = 1, pheno_labels = NULL, pt_cex = 1){
 			
 	all_pheno <- data_obj$pheno

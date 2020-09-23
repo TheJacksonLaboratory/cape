@@ -2,9 +2,9 @@
 #'
 #' This function plots phenotypic effects of 
 #' individual cape interactions. It serves as
-#' a wrapper for the functions \code{\link{plotLines}}
-#' \code{\link{plotBars}} \code{\link{plotPoints}},
-#' and \code{\link{plotIntHeat}}. Each of those functions
+#' a wrapper for the functions \code{\link{plot_lines}}
+#' \code{\link{plot_bars}} \code{\link{plot_points}},
+#' and \code{\link{plot_int_heat}}. Each of those functions
 #' plots individual cape interactions in different forms.
 #' 
 #' @param data_obj A \code{\link{Cape}} object
@@ -68,7 +68,7 @@
 #' @param bins_marker2 The same as bins_marker1, but for
 #' marker2.
 #' 
-#' @details The "h" option calls \code{\link{plotIntHeat}}, which
+#' @details The "h" option calls \code{\link{plot_int_heat}}, which
 #' fits linear models to each trait and both markers specified.
 #' It uses those models to predict phenotype values along continuously
 #' valued genotype bins and plots the predicted values as a heatmap.
@@ -77,7 +77,7 @@
 #'
 #' @export
 
-plotEffects <- function(data_obj, geno_obj, marker1, marker2 = NULL, 
+plot_effects <- function(data_obj, geno_obj, marker1, marker2 = NULL, 
 	pheno_type = "normalized", plot_type = c("l", "p", "b", "h"),
 	error_bars = "none", ymin = NULL, ymax = NULL, covar = NULL, 
 	marker1_label = NULL, marker2_label = NULL, bin_continuous_genotypes = TRUE, 
@@ -176,19 +176,19 @@ plotEffects <- function(data_obj, geno_obj, marker1, marker2 = NULL,
 		
 		if(plot_type == "h"){
 			if(is.null(marker2_vals)){stop("Two markers are required for the heat map.")}
-		  plotIntHeat(phenoV, marker1_vals, marker2_vals, pheno_name,
+		  plot_int_heat(phenoV, marker1_vals, marker2_vals, pheno_name,
 			marker1_label, marker2_label, bins1 = bins_marker1, bins2 = bins_marker2)
 		}
 		if(plot_type == "l"){
-		  plotLines(phenoV, marker1_vals, marker2_vals, pheno_name, 
+		  plot_lines(phenoV, marker1_vals, marker2_vals, pheno_name, 
 			marker1_label, marker2_label, ymin, ymax, error_bars)
 		}
 		if(plot_type == "p"){
-		  plotPoints(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
+		  plot_points(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
 			marker2_label, ymin, ymax)
 		}
 		if(plot_type == "b"){
-		  plotBars(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
+		  plot_bars(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
 			marker2_label, ymin, ymax, error_bars, ref_centered)
 		}
 		

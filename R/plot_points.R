@@ -1,7 +1,7 @@
 #' Plot phenotypic effect for two markers as points
 #' 
 #' This internal function is called by 
-#' \code{\link{plotEffects}} to generate a 
+#' \code{\link{plot_effects}} to generate a 
 #' plot showing trait the effects of genotype
 #' on phenotype. If marker2_vals is NULL, this
 #' plot shows the main effect of marker1. 
@@ -32,7 +32,7 @@
 #'
 #' @return None
 
-plotPoints <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label, marker2_label, ymin = NULL, ymax = NULL){
+plot_points <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label, marker2_label, ymin = NULL, ymax = NULL){
 	
 	
 	mean_bar_width = 0.15

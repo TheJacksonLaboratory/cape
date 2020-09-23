@@ -1,9 +1,9 @@
 #' Plot the final epistatic network in a traditional network view.
 #' 
 #'  This function plots the final results in a layout different to
-#'  both \code{\link{plotVariantInfluences}} and \code{\link{plotNetwork}}. 
+#'  both \code{\link{plot_variant_influences}} and \code{\link{plot_network}}. 
 #'  In this view, the network is plotted with a traditional network layout. 
-#'  The genomic position information in \code{\link{plotNetwork}} is lost, but 
+#'  The genomic position information in \code{\link{plot_network}} is lost, but 
 #'  in this view it is easier to see the structure of the overall network 
 #'  in terms of hubs and peripheral nodes. In this view, each node is plotted 
 #'  as a pie-chart, and the main effects of the node are indicated as 
@@ -68,7 +68,7 @@
 #' 
 #' @export
  
-plotFullNetwork <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, main = NULL, 
+plot_full_network <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, main = NULL, 
                          color_scheme = c("DO/CC", "other"), pos_col = "brown", neg_col = "blue", 
                          bg_col = "gray", light_dark = "f", node_border_lwd = 1, layout_matrix = NULL, 
                          zoom = 1, xshift = 0, yshift = 0, node_radius = 1, label_nodes = TRUE, 

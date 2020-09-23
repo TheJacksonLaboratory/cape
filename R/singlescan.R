@@ -18,7 +18,7 @@
 #' @param geno_obj a genotype object.
 #' @param kin_obj a kinship object. If NULL, the kinship correction is not performed.
 #' @param n_perm integer number of permutations. Permutation results are only
-#' used in \code{\link{plotSinglescan}}. They are not used for any other piece
+#' used in \code{\link{plot_singlescan}}. They are not used for any other piece
 #' of the Cape analysis and may be safely omitted. The default number of permutations
 #' is 0.
 #' @param alpha significance level if permtuations are being run. If permutations are
@@ -44,7 +44,7 @@
 #'    locus.p_vals: Marker-level p values
 #'    locus_score_scores: Marker-level test statistics.
 #'
-#' @seealso \code{\link{plotSinglescan}}
+#' @seealso \code{\link{plot_singlescan}}
 #' @export
 #' 
 singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0, 
@@ -247,7 +247,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
     if(use_kinship){
       sink(file.path(data_obj$results_path,"regress.warnings")) #create a temporary output file for the regress warnings
       # TODO check if dim(kin_obj)[1] == length(phenoV) == length(covarV) when using covariates
-      cor_data <- lapply(chr_which, function(x) kinship_on_the_fly(kin_obj, gene, 
+      cor_data <- lapply(chr_which, function(x) kinship_adjust(kin_obj, gene, 
       chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar_table))
       names(cor_data) <- chr_which
       sink(NULL)
@@ -311,7 +311,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
       if(use_kinship){
         sink(file.path(data_obj$results_path,"regress.warnings"))
         # TODO check if dim(kin_obj)[1] == length(phenoV) == length(covarV) when using covariates
-        cor_data <- kinship_on_the_fly(kin_obj, gene, phenoV = phenotype, covarV = covar_table, 
+        cor_data <- kinship_adjust(kin_obj, gene, phenoV = phenotype, covarV = covar_table, 
         verbose = verbose)
         sink(NULL) #stop sinking to the file
       }else{

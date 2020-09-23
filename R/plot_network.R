@@ -41,7 +41,7 @@
 #' 
 #' @export
 
-plotNetwork <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE, 
+plot_network <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE, 
                         trait = NULL, trait_labels = NULL, color_scheme = c("DO/CC", "other"), 
                         main_lwd = 4, inter_lwd = 3, label_cex = 1.5, percent_bend = 15, 
                         chr_gap = 1, label_gap = 5, positive_col = "brown", 
@@ -180,7 +180,7 @@ plotNetwork <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE,
     if(length(not_tested) > 0){
       not_tested_locale <- match(not_tested, names(blocks))
       blocks <- blocks[-not_tested_locale]
-      # TODO which line below is correct? The commented out line causes a bug in plotFullNetwork.R
+      # TODO which line below is correct? The commented out line causes a bug in plot_full_network.R
       # TODO if the collapsed_net line is correct, then the setdiff on line 140 should be reversed
       # TODO and the collapsed_net object built again like it is in get_network line 152 .. 172
       #data_obj$collapsed_net <- blocks
@@ -266,7 +266,7 @@ plotNetwork <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE,
   #label sticks and gaps
   
   #add trait circles		
-  plotTraitCirc(trait_circ, label_gap, plot_dim, main_lwd)
+  plot_trait_circ(trait_circ, label_gap, plot_dim, main_lwd)
   
   
   start = label_gap

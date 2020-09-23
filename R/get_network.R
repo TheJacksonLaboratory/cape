@@ -3,7 +3,7 @@
 #' 
 #' This function converts the significant cape 
 #' interactions to an adjacency matrix, which 
-#' is then used by \code{\link{plotNetwork}}
+#' is then used by \code{\link{plot_network}}
 #' 
 #' @param data_obj a \code{\link{Cape}} object
 #' @param geno_obj a genotype object

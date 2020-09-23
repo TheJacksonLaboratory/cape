@@ -57,7 +57,7 @@
 #' shown in the heat map.
 #' 
 #' @export
-plotVariantInfluences <- function(data_obj, p_or_q = 0.05, min_std_effect = 0, 
+plot_variant_influences <- function(data_obj, p_or_q = 0.05, min_std_effect = 0, 
   plot_all_vals = FALSE, all_markers = FALSE, standardize = FALSE, 
   color_scheme = c("DO/CC", "other"), pos_col = "brown", neg_col = "blue", 
   not_tested_col = "lightgray", show_marker_labels = FALSE, show_chr = TRUE, 

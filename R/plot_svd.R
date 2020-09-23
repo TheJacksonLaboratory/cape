@@ -44,7 +44,7 @@
 #' @return \code{list("data_obj" = data_obj, "geno_obj" = geno_obj)}
 #'
 #' @export
-plotSVD <- function(data_obj, orientation = c("vertical", "horizontal"), neg_col = "blue", 
+plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_col = "blue", 
                     pos_col =  "brown", light_dark = "f", pheno_labels = NULL, cex_barplot_axis = 1.7, 
                     cex_barplot_labels = 2, cex_barplot_title = 1.7, 
                     main = "Eigentrait Contributions to Phenotypes", 
@@ -76,7 +76,7 @@ plotSVD <- function(data_obj, orientation = c("vertical", "horizontal"), neg_col
   singular_vals <- data_obj$singular_values[1:dim(data_obj$ET)[2]]
   
   if(is.null(singular_vals)){
-    stop("get_eigentraits() must be run before plotSVD()")
+    stop("get_eigentraits() must be run before plot_svd()")
   }
   
   eigen_vals <- singular_vals^2
