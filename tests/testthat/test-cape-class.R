@@ -6,9 +6,11 @@ for (f in list.files(pkg_path)) {
   source(file.path(pkg_path, f))
 }
 
-test_data_path <- here("tests/testthat/testdata")
+test_data_path <- here("tests/testthat/testdata/demo_qtl_data")
+params_data_path <- here("demo/demo_qtl")
+
 file_name <- file.path(test_data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
-param_file <- file.path(test_data_path, "cape.parameters.yml")
+param_file <- file.path(params_data_path, "NON_NZO.parameters.yml")
 results_path <- file.path("results")
 dir.create(results_path, showWarnings = FALSE)
 
