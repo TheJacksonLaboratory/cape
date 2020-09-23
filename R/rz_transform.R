@@ -5,6 +5,9 @@
 #' distribution using qnorm. This transformation is also 
 #' called an inverse normal transformation.
 #' 
+#' @param x data
+#' @param jitter boolean, default is FALSE.  
+#' 
 #' @return Returns a numeric vector with a normal distribution
 #'
 #' @export

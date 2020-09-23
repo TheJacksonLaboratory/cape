@@ -15,7 +15,7 @@
 #' @param marker_pairs a two-column matrix identifying which marker pairs should be plotted.
 #' This is particularly useful if the network is very dense. The default value, NULL, plots
 #' all marker pairs.
-#' @param collapse_net A logical value indicating whether to plot all individual SNPs
+#' @param collapsed_net A logical value indicating whether to plot all individual SNPs
 #' or linkage blocks calculated by \code{\link{linkage_blocks_network}}.
 #' @param trait A character vector indicating which traits to plot. The default NULL
 #' value plots all traits.
@@ -37,14 +37,15 @@
 #' indicating the color for negative interactions.
 #' show_alleles A logical value indicating whether to color main effects by their allele values (TRUE)
 #' or by whether they are positive or negative (FALSE)
+#' @param show_alleles boolean, default is TRUE
 #' 
 #' @export
 
 plotNetwork <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE, 
-  trait = NULL, trait_labels = NULL, color_scheme = c("DO/CC", "other"), 
-  main_lwd = 4, inter_lwd = 3, label_cex = 1.5, 
-  percent_bend = 15, chr_gap = 1, label_gap = 5, positive_col = "brown", 
-  negative_col = "blue", show_alleles = TRUE){
+                        trait = NULL, trait_labels = NULL, color_scheme = c("DO/CC", "other"), 
+                        main_lwd = 4, inter_lwd = 3, label_cex = 1.5, percent_bend = 15, 
+                        chr_gap = 1, label_gap = 5, positive_col = "brown", 
+                        negative_col = "blue", show_alleles = TRUE){
   
   if(collapsed_net){
     adj_mat <- data_obj$collapsed_net

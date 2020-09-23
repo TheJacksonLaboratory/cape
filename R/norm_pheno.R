@@ -8,6 +8,7 @@
 #' mean_center a logical value indicating whether the
 #' traits should be mean centered. If FALSE, the traits
 #' are only normalized.
+#' @param mean_center mean center
 #'
 #' @return the data object is returned. The pheno slot of
 #' the data object will have normalized and/or mean-centered

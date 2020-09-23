@@ -1,4 +1,5 @@
-#'
+#' Loads input and run CAPE
+#' 
 #' This function loads the input file path and runs cape
 #' It is used to run CAPE from a non R script (python)
 #'
@@ -9,7 +10,7 @@
 #' @param results_file the name of the saved data_obj RData file. The base name is used as the base name for all saved RData files.
 #' @param p_or_q A threshold indicating the maximum adjusted p value considered 
 #' @param n_cores integer, default is 4
-#' @param initialize_only, boolean, default: FALSE
+#' @param initialize_only boolean, default: FALSE
 #' @param verbose boolean, output goes to stdout
 #'
 #' @export
@@ -34,8 +35,8 @@ load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, resul
 	  data_obj <- cross_obj$data_obj
     geno_obj <- cross_obj$geno_obj$geno
   }
-  
+
   final_cross <- run_cape(data_obj, geno_obj, results_file = results_file, p_or_q = p_or_q, 
                           n_cores = n_cores, initialize_only = initialize_only, verbose = verbose, run_parallel = run_parallel,
-                          yaml_params = yaml_params, results_paths = results_path)
+                          yaml_params = yaml_params, results_path = results_path)
 }

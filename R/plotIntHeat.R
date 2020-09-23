@@ -21,12 +21,6 @@
 #' of marker1
 #' @param marker2_label A string indicating the name
 #' of marker2
-#' @param ymin A numeric value indicating the minimum 
-#' y value for the plot. If NULL, it will be calculated
-#' based on phenoV and error bars.
-#' @param ymax A numeric value indicating the maximum
-#' y value for the plot. If NULL, it will be calculated
-#' based on phenoV and error bars.
 #' @param bins1 The number of bins for marker1 over 
 #' which to predict values of the trait. This can also 
 #' be a vector specifying those bins.
@@ -36,7 +30,8 @@
 #'
 #' @return None
 
-plotIntHeat <- function(phenoV, marker1_vals, marker2_vals, pheno_name = NULL, marker1_label = NULL, marker2_label = NULL, bins1 = 50, bins2 = 50){
+plotIntHeat <- function(phenoV, marker1_vals, marker2_vals, pheno_name = NULL, 
+                        marker1_label = NULL, marker2_label = NULL, bins1 = 50, bins2 = 50){
 
     if(length(bins1) == 1){
 	    min_marker1 <- min(signif(marker1_vals, 2), na.rm = TRUE)
