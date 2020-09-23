@@ -62,7 +62,7 @@
 #' pairs.tested.perm: A matrix of the marker pairs used in the permutation
 #' tests.
 #'   
-#' @seealso \code{\link{select.markers.for.pairscan}}, \code{\link{plotPairscan}}
+#' @seealso \code{\link{select_markers_for_pairscan}}, \code{\link{plotPairscan}}
 #'
 #' @export
 pairscan <- function(data.obj, geno.obj = NULL,
@@ -106,7 +106,7 @@ pairscan <- function(data.obj, geno.obj = NULL,
   #chromosome
   
   if(is.null(data.obj$geno_for_pairscan)){
-    stop("select.markers.for.pairscan() must be run before pairscan()")
+    stop("select_markers_for_pairscan() must be run before pairscan()")
   }
   
   

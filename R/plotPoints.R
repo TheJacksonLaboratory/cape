@@ -1,7 +1,7 @@
 #' Plot phenotypic effect for two markers as points
 #' 
 #' This internal function is called by 
-#' \code{\link{plot.effects}} to generate a 
+#' \code{\link{plotEffects}} to generate a 
 #' plot showing trait the effects of genotype
 #' on phenotype. If marker2.vals is NULL, this
 #' plot shows the main effect of marker1. 

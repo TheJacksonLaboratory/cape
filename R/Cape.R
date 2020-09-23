@@ -31,7 +31,7 @@
 #'   selected for the pairscan. Options are "top.effects" or "from.list."
 #'   If "top.effects," markers are selected using main effect sizes. 
 #'   If "from.list," markers are specified using a vector of marker names. 
-#'   See \code{\link{select.markers.for.pairscan}}.
+#'   See \code{\link{select_markers_for_pairscan}}.
 #' @slot geno_names The dimnames of the genotype array. The genotype array is a three-dimensional
 #'   array in which rows are individuals, columns are alleles, and the third dimension houses
 #'   the markers. Genotypes are pulled for analysis using \code{\link{get.geno}} based on
@@ -46,14 +46,14 @@
 #' @slot geno_for_pairscan A two-dimensional matrix holding the genotypes that will be analyzed
 #'   in the pairscan. Alleles are in columns and individuals are in rows. As in the geno array, 
 #'   values are continuous probabilities ranging from 0 to 1.
-#' @slot peak_density The density parameter for \code{\link{select.markers.for.pairscan}}.
+#' @slot peak_density The density parameter for \code{\link{select_markers_for_pairscan}}.
 #'   Determines how densely markers under an individual effect size peak are selected 
 #'   for the pairscan if marker_selection_method is TRUE. Defaults to 0.5.
-#' @slot window_size The window size used by \code{\link{select.markers.for.pairscan}}.
+#' @slot window_size The window size used by \code{\link{select_markers_for_pairscan}}.
 #'   It specifies how many markers are used to smooth effect size curves for automatic peak
 #'   identification. If set to NULL, window_size is determined automatically. Used when 
 #'   marker_selection_method is TRUE.
-#' @slot tolerance The wiggle room afforded to \code{\link{select.markers.for.pairscan}} in 
+#' @slot tolerance The wiggle room afforded to \code{\link{select_markers_for_pairscan}} in 
 #'   finding a target number of markers. If num_alleles_in_pairscan is 100 and the tolerance 
 #'   is 5, the algorithm will stop when it identifies anywhere between 95 and 105 markers 
 #'   for the pairscan.
@@ -153,7 +153,7 @@ Cape <- R6::R6Class(
     .collapsed_net = NULL
   ),
   active = list(
-    #' @field geno_for_pairscan Set \code{\link{.geno_for_pairscan}}.
+    #' @field geno_for_pairscan geno for pairscan
     geno_for_pairscan = function(value) {
       if (missing(value)) {
         private$.geno_for_pairscan
@@ -162,7 +162,7 @@ Cape <- R6::R6Class(
         self
       }
     },
-    #' @field marker_selection_method Set \code{\link{.marker_selection_method}}.
+    #' @field marker_selection_method marker selection method
     marker_selection_method = function(value) {
       if (missing(value)) {
         private$.marker_selection_method
@@ -171,7 +171,7 @@ Cape <- R6::R6Class(
         self
       }
     },
-    #' @field linkage_blocks_collapsed Set \code{\link{.linkage_blocks_collapsed}}.
+    #' @field linkage_blocks_collapsed linkage blocks collapsed
     linkage_blocks_collapsed = function(value) {
       if (missing(value)) {
         private$.linkage_blocks_collapsed
@@ -180,7 +180,7 @@ Cape <- R6::R6Class(
         self
       }
     },
-    #' @field linkage_blocks_full Set \code{\link{.linkage_blocks_full}}.
+    #' @field linkage_blocks_full linkage blocks full
     linkage_blocks_full = function(value) {
       if (missing(value)) {
         private$.linkage_blocks_full
@@ -189,7 +189,7 @@ Cape <- R6::R6Class(
         self
       }
     },
-    #' @field collapsed_net Set \code{\link{.collapsed_net}}.
+    #' @field collapsed_net collapsed net
     collapsed_net = function(value) {
       if (missing(value)) {
         private$.collapsed_net
@@ -233,15 +233,15 @@ Cape <- R6::R6Class(
     #' are continuously valued probabilities ranging from 0 to 1. The dimnames of geno must be "mouse", "allele", and "locus,"
     #' even if the individuals are not mice.
     geno = NULL,
-    #' @field peak_density The density parameter for \code{\link{select.markers.for.pairscan}}.  Determines how densely
+    #' @field peak_density The density parameter for \code{\link{select_markers_for_pairscan}}.  Determines how densely
     #' markers under an individual effect size peak are selected for the pairscan if marker_selection_method is TRUE.
     #' Defaults to 0.5.
     peak_density = NULL,
-    #' @field window_size The window size used by \code{\link{select.markers.for.pairscan}}. It specifies how many markers
+    #' @field window_size The window size used by \code{\link{select_markers_for_pairscan}}. It specifies how many markers
     #' are used to smooth effect size curves for automatic peak identification. If set to NULL, window_size is determined
     #' automatically. Used when marker_selection_method is TRUE.
     window_size = NULL,
-    #' @field tolerance The wiggle room afforded to \code{\link{select.markers.for.pairscan}} in finding a target number
+    #' @field tolerance The wiggle room afforded to \code{\link{select_markers_for_pairscan}} in finding a target number
     #' of markers. If num_alleles_in_pairscan is 100 and the tolerance is 5, the algorithm will stop when it identifies
     #' anywhere between 95 and 105 markers for the pairscan.
     tolerance = NULL,
@@ -383,14 +383,14 @@ Cape <- R6::R6Class(
     #' @param .geno_for_pairscan A two-dimensional matrix holding the genotypes that will be analyzed
     #'   in the pairscan. Alleles are in columns and individuals are in rows. As in the geno array, 
     #'   values are continuous probabilities ranging from 0 to 1.
-    #' @param peak_density The density parameter for \code{\link{select.markers.for.pairscan}}.
+    #' @param peak_density The density parameter for \code{\link{select_markers_for_pairscan}}.
     #'   Determines how densely markers under an individual effect size peak are selected 
     #'   for the pairscan if marker_selection_method is TRUE. Defaults to 0.5.
-    #' @param window_size The window size used by \code{\link{select.markers.for.pairscan}}.
+    #' @param window_size The window size used by \code{\link{select_markers_for_pairscan}}.
     #'   It specifies how many markers are used to smooth effect size curves for automatic peak
     #'   identification. If set to NULL, window_size is determined automatically. Used when 
     #'   marker_selection_method is TRUE.
-    #' @param tolerance The wiggle room afforded to \code{\link{select.markers.for.pairscan}} in 
+    #' @param tolerance The wiggle room afforded to \code{\link{select_markers_for_pairscan}} in 
     #'   finding a target number of markers. If num_alleles_in_pairscan is 100 and the tolerance 
     #'   is 5, the algorithm will stop when it identifies anywhere between 95 and 105 markers 
     #'   for the pairscan.

@@ -55,7 +55,7 @@ run.cape <- function(pheno.obj, geno.obj,
   #check for the file first
   prior.data.obj <- data.obj$read_rds(results.file)
   if (isFALSE(prior.data.obj)) {
-    data.obj <- compare.markers(data.obj, geno.obj)
+    data.obj <- compare_markers(data.obj, geno.obj)
   } else {
     # things can get pretty confusing if these values don't match between 
     #the parameter file and the old data.obj
@@ -151,7 +151,7 @@ run.cape <- function(pheno.obj, geno.obj,
     data.obj <- marker2covar(data.obj, geno.obj, markers = data.obj$marker_covariates)
   }
   
-  data.obj <- select.pheno(data.obj, pheno.which = data.obj$traits)	
+  data.obj <- select_pheno(data.obj, pheno.which = data.obj$traits)	
   
   if(length(grep("eig", data.obj$scan_what, ignore.case = TRUE)) > 0){
     data.obj <- get.eigentraits(
@@ -164,7 +164,7 @@ run.cape <- function(pheno.obj, geno.obj,
     data.obj$plot_svd("svd.jpg")
     
     # TODO update select.eigentraits
-    data.obj <- select.eigentraits(data.obj, traits.which = data.obj$eig_which)
+    data.obj <- select_eigentraits(data.obj, traits.which = data.obj$eig_which)
   }
   
   data.obj$save_rds(data.obj, results.file)
@@ -227,7 +227,7 @@ run.cape <- function(pheno.obj, geno.obj,
       pairscan.null.size <- data.obj$pairscan_null_size
       scan.what <- data.obj$scan_what
       if(marker.selection.method == "top.effects"){
-        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj,
+        data.obj <- select_markers_for_pairscan(data.obj, singlescan.obj, geno.obj,
           num.alleles = num.alleles.in.pairscan, peak.density = peak.density,
           verbose = verbose, plot.peaks = FALSE)
       }
@@ -237,19 +237,19 @@ run.cape <- function(pheno.obj, geno.obj,
         snp.file <- file.path(results.path, data.obj$snp_file)
         if(!file.exists(snp.file)){stop("Can't fine the specified marker list.\n")}
         specific.markers <- as.matrix(read.table(snp.file, sep = "\t", stringsAsFactors = FALSE))
-        data.obj <- select.markers.for.pairscan(data.obj, singlescan.obj, geno.obj,
+        data.obj <- select_markers_for_pairscan(data.obj, singlescan.obj, geno.obj,
           specific.markers = specific.markers[,1], verbose = verbose, plot.peaks = FALSE)
       }
       
       if(marker.selection.method == "uniform"){
-        data.obj <- select.markers.for.pairscan.uniform(data.obj, geno.obj, 
+        data.obj <- select_markers_for_pairscan.uniform(data.obj, geno.obj, 
         required.markers = NULL, num.alleles = num.alleles.in.pairscan, verbose = verbose)
       }
       
       # if(marker.selection.method == "by.gene"){
         # gene.list.mat <- read.table("gene.list.txt", sep = "\t", stringsAsFactors = FALSE)		
         # gene.list <- gene.list.mat[,1]
-        # data.obj <- select.markers.for.pairscan.by.gene(data.obj, geno.obj, gene.list = gene.list, 
+        # data.obj <- select_markers_for_pairscan.by.gene(data.obj, geno.obj, gene.list = gene.list, 
                                                         # bp.buffer = data.obj$bp_buffer, organism = data.obj$organism)
       # } else {
         # gene.list <- NULL

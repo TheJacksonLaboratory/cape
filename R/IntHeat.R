@@ -1,7 +1,7 @@
 #' Plot phenotypic effects for two markers as a heat map
 #' 
 #' This internal function is called by 
-#' \code{\link{plot.effects}} to generate a 
+#' \code{\link{plotEffects}} to generate a 
 #' heat map showing the effects of genotype on
 #' phenotype. This function fits linear models
 #' to the markers and traits. It then uses

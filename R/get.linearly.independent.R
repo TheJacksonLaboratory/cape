@@ -1,7 +1,7 @@
 #' Check selected markers for linear independence.
 #' 
 #' This function checks a marker matrix selected by
-#' \code{\link{select.markers.for.pairscan}} for linear
+#' \code{\link{select_markers_for_pairscan}} for linear
 #' independence by checking the correlation between
 #' pairs of markers. If any are perfectly correlated,
 #' only one marker from the block of perfect correlation

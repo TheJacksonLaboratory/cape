@@ -1,5 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^cape_pkg
+^config$
 ^doc$
 ^Meta$
-^cape_pkg
+^packrat$
+^cran-comments\.md$
