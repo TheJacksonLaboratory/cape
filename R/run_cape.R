@@ -99,7 +99,7 @@ run_cape <- function(pheno_obj, geno_obj,
 
     if (isFALSE(geno)) {  #if the imputation hasn't been done already
       geno <- get_geno(data_obj, geno_obj)
-      missing_vals <- which(is_na(geno))
+      missing_vals <- which(is.na(geno))
 
       if (length(missing_vals) > 0) { #if there are missing values, impute them
         cat("There are missing values in geno_obj. Running impute_missing_geno...\n")
@@ -156,8 +156,8 @@ run_cape <- function(pheno_obj, geno_obj,
   if(length(grep("eig", data_obj$scan_what, ignore.case = TRUE)) > 0){
     data_obj <- get_eigentraits(
       data_obj, 
-      scale_pheno = as_logical(data_obj$traits_scaled), 
-      normalize_pheno = as_logical(data_obj$traits_normalized)
+      scale_pheno = as.logical(data_obj$traits_scaled), 
+      normalize_pheno = as.logical(data_obj$traits_normalized)
     )
     
     data_obj$plot_svd("svd.pdf")
@@ -312,7 +312,7 @@ run_cape <- function(pheno_obj, geno_obj,
   data_obj$write_variant_influences("Variant_Influences.csv", p_or_q = max(c(p_or_q, 0.2)))
 
   data_obj$write_variant_influences("Variant_Influences_Interactions.csv", 
-    include_main_effects = FALSE, p_or_q = max(c(p_or.q, 0.2)))
+    include_main_effects = FALSE, p_or_q = max(c(p_or_q, 0.2)))
   
   data_obj$plot_variant_influences("variant_influences.pdf", width = 10, height = 7,
     p_or_q = p_or_q, standardize = FALSE, not_tested_col = "lightgray", 

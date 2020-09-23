@@ -244,12 +244,12 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
     phenotype <- pheno[,i,drop=FALSE]
     ph_family = model_family[i]
     #get corrected genotype and phenotype values for each phenotype-chromosome pair
-    if(use.kinship){
-      sink(file.path(data.obj$results_path,"regress.warnings.singlescan")) #create a temporary output file for the regress warnings
+    if(use_kinship){
+      sink(file.path(data_obj$results_path,"regress.warnings.singlescan")) #create a temporary output file for the regress warnings
       # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
-      if(data.obj$kinship_type == "ltco"){
+      if(data_obj$kinship_type == "ltco"){
         cor_data <- lapply(chr_which, function(x) kinship_on_the_fly(kin_obj, gene, 
-        chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar.table))
+        chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar_table))
         names(cor_data) <- chr_which
       }else{
         cor_data <- vector(mode = "list", length = 1)
@@ -314,8 +314,8 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
     if(!is.null(covar_table)){
       if(verbose){cat("\nTesting covariates \n")}
       #get corrected genotype and phenotype values for the overall kinship matrix
-      if(use.kinship){
-        sink(file.path(data.obj$results_path,"regress.warnings.covar"))
+      if(use_kinship){
+        sink(file.path(data_obj$results_path,"regress.warnings.covar"))
         # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
         cor_data <- kinship_on_the_fly(kin_obj, gene, phenoV = phenotype, covarV = covar_table, 
         verbose = verbose)

@@ -37,7 +37,7 @@ kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
   
   covar_info <- get_covar(data_obj)
   is_char <- as.logical(is.na(suppressWarnings(as.numeric(marker_pairs[1,1]))))
-  if(is.char){
+  if(is_char){
     covar_names <- get_marker_name(data_obj, covar_info$covar_names)
   }else{
     covar_names <- get_marker_num(data_obj, covar_info$covar_names)	
