@@ -247,7 +247,7 @@ kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
   }	#end looping over phenotypes	
   
   #unlink(file_path(data_obj$results_path,"regress_warnings"))
-  return(results.list)
+  return(results_list)
   
   
 }
