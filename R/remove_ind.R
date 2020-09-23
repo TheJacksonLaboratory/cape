@@ -1,6 +1,6 @@
 #' Remove individuals
 #'
-#' @param cape.obj a \code{\link{Cape}} object
+#' @param data_obj a \code{\link{Cape}} object
 #' @param ind_to_remove Indices of individuals to remove
 #' @param names_to_remove Names of individuals to remove
 #' Only one of ind_to_remove or names_to_remove should be specified.

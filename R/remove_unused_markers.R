@@ -7,6 +7,8 @@
 #'
 #' @param data_obj a \code{\link{Cape}} object
 #' @param geno_obj a genotype object
+#' @param verbose A logical value indicating whether to print progress 
+#' to the screen. Default is FALSE
 #' 
 #' @return an updated \code{\link{Cape}} object (data_obj)
 #'

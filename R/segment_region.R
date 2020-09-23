@@ -8,7 +8,7 @@
 #' @param region_min A numerical value indicating the minimum value of the region.
 #' @param region_max A numerical value indicating the maximum value of the region.
 #' @param num_points The number of points to place in the region.
-#' @param alignmnet A character element indicating whether the points should be 
+#' @param alignment A character element indicating whether the points should be 
 #' centered within the region or whether they should extend to the ends of the region.
 #' 
 #' @return Returns n points spaced evenly across the defined region

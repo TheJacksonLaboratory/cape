@@ -13,7 +13,7 @@
 #' @param covar_table The matrix of covariates with individuals in rows.
 #' @param marker_pairs A two-column matrix containing the marker pairs
 #' to be tested.
-#' n_perm The number of permutations to be run
+#' @param n_perm The number of permutations to be run
 #' @param verbose A logical value indicating whether to 
 #' print progress to the screen
 #' @param run_parallel A logical value indicating 
@@ -23,7 +23,9 @@
 #' @return This function calls \code{\link{one_pairscan_parallel}} and
 #' returns results for each trait as an element in a list.
 #' 
-pairscan_noKin <- function(data_obj, pheno_mat, geno_mat, covar_table, marker_pairs, n_perm, verbose = FALSE, run_parallel = FALSE, n_cores = NULL){
+pairscan_noKin <- function(data_obj, pheno_mat, geno_mat, covar_table, 
+                           marker_pairs, n_perm, verbose = FALSE, run_parallel = FALSE, 
+                           n_cores = NULL){
   
   num_pheno <- dim(pheno_mat)[2]
   # cat("num_pheno:", num_pheno, "\n")

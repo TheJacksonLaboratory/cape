@@ -8,7 +8,7 @@
 #' for downstream use.
 #' 
 #' @param phenotype A phenotype vector
-#' @param Individual genotypes of the marker being tested. 
+#' @param genotype genotypes of the marker being tested. 
 #' If this is a vector, it will be converted into a one-column 
 #' matrix. If it is a matrix, each column represents an allele,
 #' and each row represents an individual.
@@ -28,6 +28,7 @@
 #' pval holds the p value for the marker overall
 #' and score holds the test statistic for the marker overall.
 #'
+#' @export
 get_stats_multiallele <- function(phenotype, genotype, covar_table, ph_family, ref_col){
   
   if(is.null(dim(genotype))){

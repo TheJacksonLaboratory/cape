@@ -12,6 +12,7 @@
 #' @param chr2 The second of two chromomsomes to leave out of the calculation, if any.
 #' @param phenoV The phenotype vector
 #' @param covarV The covariate vector or matrix
+#' @param verbose A logical value indicating whether to print progress to the screen
 #'
 #' @details If using leave-one-chromosome-out (LOCO), chr1 and chr2 should have the same value.
 #' If chr1 and chr2 are different, both specified, leave-two-chromosomes-out (LTCO) will be

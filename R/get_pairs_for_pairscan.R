@@ -20,6 +20,9 @@
 #'   Pearson correlation that two markers are allowed. If the correlation
 #'   between a pair of markers exceeds this threshold, the pair is not tested.
 #'   If this value is set to NULL, min_per_genotype must have a numeric value.
+#' @param run_parallel A logical value indicating whether multiple 
+#'   processors should be used.
+#' @param n_cores The number of cores to be used if run_parallel is TRUE
 #' @param verbose A logical value. If TRUE, the script prints a message to the
 #'   screen to indicate that it is running. If FALSE, no message is printed.
 #' 

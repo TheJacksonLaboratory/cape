@@ -12,9 +12,9 @@
 #' @param marker1 A string indicating the name 
 #' of the source marker in the interaction. This can
 #' also be the name of a covariate.
-#' @param A string indicating the name of the target 
-#' marker in the interaction. This can also be the name
-#' of a covariate.
+#' @param marker2 Another string indicating the name 
+#' of the source marker in the interaction. This can
+#' also be the name of a covariate. Optional.
 #' @param pheno_type One of "eigentraits", 
 #' "normalized_traits", or "raw_traits", indicating which
 #' traits to plot.
@@ -45,8 +45,6 @@
 #' @param ref_centered A logical value indicating whether 
 #' to center the values on the reference allele. Defaults 
 #' to TRUE.
-#' @param pheno A vector of strings to indicate which traits
-#' to plot. If NULL, all traits are plotted.
 #' @param gen_model One of "Additive", "Dominant", or "Recessive"
 #' indicating how the genotypes should be coded. If Additive,
 #' genotypes are coded as 0 for homozygous reference allele,
