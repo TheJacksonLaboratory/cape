@@ -1,40 +1,40 @@
 context("test CAPE class")
 library(here)
 
-pkg.path <- here("R")
-for (f in list.files(pkg.path)) {
-  source(file.path(pkg.path, f))
+pkg_path <- here("R")
+for (f in list.files(pkg_path)) {
+  source(file.path(pkg_path, f))
 }
 
-test.data.path <- here("tests/testthat/testdata")
-file.name <- file.path(test.data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
-param.file <- file.path(test.data.path, "cape.parameters.yml")
-results.path <- file.path("results")
-dir.create(results.path, showWarnings = FALSE)
+test_data_path <- here("tests/testthat/testdata")
+file_name <- file.path(test_data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
+param_file <- file.path(test_data_path, "cape.parameters.yml")
+results_path <- file.path("results")
+dir.create(results_path, showWarnings = FALSE)
 
-cross <- read.population(file.name)
-cross.obj <- cape2mpp(cross)
-geno.obj <- cross.obj$geno.obj$geno
+cross <- read_population(file_name)
+cross_obj <- cape2mpp(cross)
+geno_obj <- cross_obj$geno_obj$geno
 
-data.obj <- Cape$new(
-  parameter_file = param.file,
-  results_path = results.path,
-  pheno = cross.obj$data.obj$pheno,
-  chromosome = cross.obj$data.obj$chromosome,
-  marker_num = cross.obj$data.obj$marker_num,
-  marker_location = cross.obj$data.obj$marker_location,
-  geno_names = dimnames(geno.obj),
-  geno = geno.obj
+data_obj <- Cape$new(
+  parameter_file = param_file,
+  results_path = results_path,
+  pheno = cross_obj$data_obj$pheno,
+  chromosome = cross_obj$data_obj$chromosome,
+  marker_num = cross_obj$data_obj$marker_num,
+  marker_location = cross_obj$data_obj$marker_location,
+  geno_names = dimnames(geno_obj),
+  geno = geno_obj
 )
 
 test_that("test that the pheno matrix is right", {
-  expect_equal(208, dim(data.obj$pheno)[1])
+  expect_equal(208, dim(data_obj$pheno)[1])
 })
 
 # change the reference allele, and check the change
 test_that("check setting the ref_allele", {
-  data.obj$ref_allele <- "B"
-  expect_equal("B", data.obj$ref_allele)
+  data_obj$ref_allele <- "B"
+  expect_equal("B", data_obj$ref_allele)
 })
 
 # check that setting the wrong type throws and error

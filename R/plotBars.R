@@ -15,15 +15,15 @@
 #' each allele and allele combination.
 #' 
 #' @param phenoV A vector of trait values 
-#' @param marker1.vals A vector of genotype values 
+#' @param marker1_vals A vector of genotype values 
 #' for marker1
-#' @param marker2.vals A vector of genotype values
+#' @param marker2_vals A vector of genotype values
 #' for marker2.
-#' @param pheno.name A string indicating the name of
+#' @param pheno_name A string indicating the name of
 #' the trait being plotted.
-#' @param marker1.label A string indicating the name
+#' @param marker1_label A string indicating the name
 #' of marker1
-#' @param marker2.label A string indicating the name
+#' @param marker2_label A string indicating the name
 #' of marker2
 #' @param ymin A numeric value indicating the minimum 
 #' y value for the plot. If NULL, it will be calculated
@@ -31,129 +31,123 @@
 #' @param ymax A numeric value indicating the maximum
 #' y value for the plot. If NULL, it will be calculated
 #' based on phenoV and error bars.
-#' @param error.bars A string indicating the type of error
+#' @param error_bars A string indicating the type of error
 #' bars to draw. Can be "sd" for standard deviation, "se"
 #' for standard error, or "none".
-#' @param ref.centered Whether to center the effects
+#' @param ref_centered Whether to center the effects
 #' on the reference genotype.
 #' @return None
 
-plotBars <- function(phenoV, marker1.vals, marker2.vals, pheno.name, marker1.label,
-marker2.label, ymin = NULL, ymax = NULL, error.bars, ref.centered){
+plotBars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
+	marker2_label, ymin = NULL, ymax = NULL, error_bars, ref_centered){
 
-		error.bar.width = 0.1
-		addline.width = 0.5
-		addline.offset = 0.55
-		error.bar.lwd = 2
-		text.offset = 0.1
+		error_bar_width = 0.1
+		addline_width = 0.5
+		addline_offset = 0.55
+		error_bar_lwd = 2
+		text_offset = 0.1
 		
-		if(is.null(marker2.vals)){
-			genotypes <- sort(unique(marker1.vals[which(!is.na(marker1.vals))]))
-			pheno.vals <- lapply(genotypes, function(x) phenoV[which(marker1.vals == x)])
-			pheno.means <- sapply(pheno.vals, function(x) mean(x, na.rm = TRUE))
-			if(error.bars == "sd"){
-				pheno.error <- sapply(pheno.vals, function(x) sd(x, na.rm = TRUE))
-				}
-			if(error.bars == "se"){
-				pheno.error <- sapply(pheno.vals, function(x) sd(x, na.rm = TRUE)/sqrt(length(x)))
-				}
-			if(error.bars == "none"){
-				pheno.error <- rep(0, length(pheno.vals))
-				}
-			# pheno.error[which(is.na(pheno.error))] <- 0
-			if(is.null(ymin)){ymin <- min(c(pheno.means - pheno.error, 0))}
-			if(is.null(ymax)){ymax <- max(pheno.means + pheno.error)}
-			plot.height = ymax - ymin
+		if(is.null(marker2_vals)){
+			genotypes <- sort(unique(marker1_vals[which(!is.na(marker1_vals))]))
+			pheno_vals <- lapply(genotypes, function(x) phenoV[which(marker1_vals == x)])
+			pheno_means <- sapply(pheno_vals, function(x) mean(x, na.rm = TRUE))
+			if(error_bars == "sd"){
+				pheno_error <- sapply(pheno_vals, function(x) sd(x, na.rm = TRUE))
+			}
+			if(error_bars == "se"){
+				pheno_error <- sapply(pheno_vals, function(x) sd(x, na.rm = TRUE)/sqrt(length(x)))
+			}
+			if(error_bars == "none"){
+				pheno_error <- rep(0, length(pheno_vals))
+			}
+			# pheno_error[which(is.na(pheno_error))] <- 0
+			if(is.null(ymin)){ymin <- min(c(pheno_means - pheno_error, 0))}
+			if(is.null(ymax)){ymax <- max(pheno_means + pheno_error)}
+			plot_height = ymax - ymin
 				
-			a <- barplot(pheno.means, ylim = c(ymin, ymax*1.1))
-			segments(a, pheno.means-pheno.error, a, pheno.means+pheno.error, lwd = error.bar.lwd)
+			a <- barplot(pheno_means, ylim = c(ymin, ymax*1.1))
+			segments(a, pheno_means-pheno_error, a, pheno_means+pheno_error, lwd = error_bar_lwd)
 			abline(h = 0)
 			#lower bar
-			segments((a+error.bar.width), (pheno.means-pheno.error), (a-error.bar.width), pheno.means-pheno.error, lwd = error.bar.lwd)	
+			segments((a+error_bar_width), (pheno_means-pheno_error), (a-error_bar_width), pheno_means-pheno_error, lwd = error_bar_lwd)	
 			#upper bar
-			segments(a+error.bar.width, pheno.means+pheno.error, a-error.bar.width, pheno.means+pheno.error, lwd = error.bar.lwd)	
-			text(x = genotypes, y = ymin-(plot.height*0.1), labels = genotypes)
-			mtext(pheno.name, side = 3, line = 1.5)
+			segments(a+error_bar_width, pheno_means+pheno_error, a-error_bar_width, pheno_means+pheno_error, lwd = error_bar_lwd)	
+			text(x = genotypes, y = ymin-(plot_height*0.1), labels = genotypes)
+			mtext(pheno_name, side = 3, line = 1.5)
 
-			}else{ #instead if there are two markers
+		} else { #instead if there are two markers
 
 		
-	#========================================================================
-	# internal functions
-	#========================================================================
+			#========================================================================
+			# internal functions
+			#========================================================================
 	
-	plot.bars.int <- function(pheno.vals, pheno.error, pheno.name, marker1, marker2, geno.n){
+			plot_bars_int <- function(pheno_vals, pheno_error, pheno_name, marker1, marker2, geno_n){
 			
-			
-			if(length(pheno.vals) == 4){
-				base.val = pheno.vals[1]
+				if(length(pheno_vals) == 4){
+					base_val = pheno_vals[1]
 				}else{
-				base.val = 0	
+					base_val = 0	
 				}
-				
-			pred.add <- base.val + ((pheno.vals[2]-base.val) + (pheno.vals[3]-base.val))
-			if(is.na(pred.add)){pred.add <- 0}
-			pred.error <- pheno.error[2] + pheno.error[3]
-	
-			if(is.null(ymin)){
-				if(error.bars != "none"){
-					ymin <- min(c((pheno.vals-pheno.error), pred.add, 0), na.rm = TRUE)
+					
+				pred_add <- base_val + ((pheno_vals[2]-base_val) + (pheno_vals[3]-base_val))
+				if(is.na(pred_add)){pred_add <- 0}
+				pred_error <- pheno_error[2] + pheno_error[3]
+		
+				if(is.null(ymin)){
+					if(error_bars != "none"){
+						ymin <- min(c((pheno_vals-pheno_error), pred_add, 0), na.rm = TRUE)
 					}else{
-					ymin <- min(c(pheno.vals, pred.add, 0), na.rm = TRUE)	
+						ymin <- min(c(pheno_vals, pred_add, 0), na.rm = TRUE)	
 					}
 				}
-			if(is.null(ymax)){
-				if(error.bars != "none"){
-					ymax <- max(c((pheno.vals+pheno.error), pred.add), na.rm = TRUE)
+				if(is.null(ymax)){
+					if(error_bars != "none"){
+						ymax <- max(c((pheno_vals+pheno_error), pred_add), na.rm = TRUE)
 					}else{
-					ymax <- max(c(pheno.vals, pred.add), na.rm = TRUE)	
+						ymax <- max(c(pheno_vals, pred_add), na.rm = TRUE)	
 					}
 				}		
-			
-			
-			full.range = ymax-ymin
-			geno.n.y <- ymax*1.1
-			ymax <- ymax*1.1
-			
-			label.y <- min(pheno.vals)-full.range*0.1
-			a <- barplot(pheno.vals, ylim = c(ymin, ymax), axes = FALSE, 
-			xlim = c(0, length(pheno.vals)*1.5), cex.names = 1.5, 
-			main = pheno.name, names.arg = NA)
-			axis(2, cex.axis = 1.5)
-			abline(h = 0)
-			par(xpd = TRUE)
-			text.cex = 1.5
-			text(x = 0, y = ymin-(full.range*0.1), labels = marker1.label, adj = 1, 
-			cex = text.cex)
-			text(x = 0, y = ymin-(full.range*0.22), labels = marker2.label, adj = 1, 
-			cex = text.cex)
-			text(x = c(a), y = ymin-(full.range*0.1), labels = c(min.geno, max.geno, 
-			min.geno, max.geno), cex = text.cex)
-			text(x = c(a), y = ymin-(full.range*0.22), labels = c(min.geno, min.geno, 
-			max.geno, max.geno), cex = text.cex)
-			if(error.bars != "none"){
-				segments(a, pheno.vals-pheno.error, a, pheno.vals+pheno.error, 
-				lwd = error.bar.lwd)
-				#lower bar
-				segments((a+error.bar.width), (pheno.vals-pheno.error), 
-				(a-error.bar.width), pheno.vals-pheno.error, lwd = error.bar.lwd)	
-				#upper bar
-				segments(a+error.bar.width, pheno.vals+pheno.error, a-error.bar.width,
-				pheno.vals+pheno.error, lwd = error.bar.lwd)	
+				
+				
+				full_range = ymax-ymin
+				geno_n_y <- ymax*1.1
+				ymax <- ymax*1.1
+				
+				label_y <- min(pheno_vals)-full_range*0.1
+				a <- barplot(pheno_vals, ylim = c(ymin, ymax), axes = FALSE, 
+				xlim = c(0, length(pheno_vals)*1.5), cex.names = 1.5, main = pheno_name, names.arg = NA)
+				axis(2, cex.axis = 1.5)
+				abline(h = 0)
+				par(xpd = TRUE)
+				text_cex = 1.5
+				text(x = 0, y = ymin-(full_range*0.1), labels = marker1_label, adj = 1, cex = text_cex)
+				text(x = 0, y = ymin-(full_range*0.22), labels = marker2_label, adj = 1, cex = text_cex)
+				text(x = c(a), y = ymin-(full_range*0.1), labels = c(min_geno, max_geno, min_geno, max_geno), cex = text_cex)
+				text(x = c(a), y = ymin-(full_range*0.22), labels = c(min_geno, min_geno, max_geno, max_geno), cex = text_cex)
+				if(error_bars != "none"){
+					segments(a, pheno_vals-pheno_error, a, pheno_vals+pheno_error, 
+					lwd = error_bar_lwd)
+					#lower bar
+					segments((a+error_bar_width), (pheno_vals-pheno_error), 
+					(a-error_bar_width), pheno_vals-pheno_error, lwd = error_bar_lwd)	
+					#upper bar
+					segments(a+error_bar_width, pheno_vals+pheno_error, a-error_bar_width,
+					pheno_vals+pheno_error, lwd = error_bar_lwd)	
 				}
-			segments(a[length(a)]+addline.width, pred.add, a[length(a)]-addline.width, 
-			pred.add, lty = 2, lwd = 2)
-			poly.x <- c(a[length(a)]-addline.width, a[length(a)]+addline.width)
-			poly.y <- c(pred.add-pred.error, pred.add+pred.error)
-			polygon(x = c(poly.x, rev(poly.x)), y = rep(poly.y, each = 2), 
-			col = rgb(253/256,192/256,134/256, alpha = 0.5))
-			arrows(a[length(a)]+addline.width+addline.offset, pred.add, 
-			a[length(a)]+addline.offset, pred.add, lty = 1, lwd = 2, length = 0.1)
-			text(x = a[length(a)]+addline.width+addline.offset+text.offset, y = pred.add, 
-			labels = "Additive\nPrediction", adj = 0)
-			text(x = a[,1], y = rep(geno.n.y, length(a[,1])), labels = geno.n)
-			par(xpd = FALSE)
-			mtext(pheno.name, side = 2, line = 2.5)
+				segments(a[length(a)]+addline_width, pred_add, a[length(a)]-addline_width, 
+				pred_add, lty = 2, lwd = 2)
+				poly_x <- c(a[length(a)]-addline_width, a[length(a)]+addline_width)
+				poly_y <- c(pred_add-pred_error, pred_add+pred_error)
+				polygon(x = c(poly_x, rev(poly_x)), y = rep(poly_y, each = 2), 
+				col = rgb(253/256,192/256,134/256, alpha = 0.5))
+				arrows(a[length(a)]+addline_width+addline_offset, pred_add, 
+				a[length(a)]+addline_offset, pred_add, lty = 1, lwd = 2, length = 0.1)
+				text(x = a[length(a)]+addline_width+addline_offset+text_offset, y = pred_add, 
+				labels = "Additive\nPrediction", adj = 0)
+				text(x = a[,1], y = rep(geno_n_y, length(a[,1])), labels = geno_n)
+				par(xpd = FALSE)
+				mtext(pheno_name, side = 2, line = 2.5)
 			}			
 
 		#========================================================================
@@ -162,48 +156,48 @@ marker2.label, ymin = NULL, ymax = NULL, error.bars, ref.centered){
 		#the genotype combinations used are based on the
 		#maximum genotype present. We want to show the 
 		#maximum effect for the "mutant" phenotype.
-		min.geno <- min(c(marker1.vals, marker2.vals), na.rm = TRUE)
-		max.geno <- max(c(marker1.vals, marker2.vals), na.rm = TRUE)
+		min_geno <- min(c(marker1_vals, marker2_vals), na.rm = TRUE)
+		max_geno <- max(c(marker1_vals, marker2_vals), na.rm = TRUE)
 				
 				
-		w.w <- intersect(which(marker1.vals == min.geno), which(marker2.vals == min.geno))
-		w.m <- intersect(which(marker1.vals == max.geno), which(marker2.vals == min.geno))
-		m.w <- intersect(which(marker1.vals == min.geno), which(marker2.vals == max.geno))
-		m.m <- intersect(which(marker1.vals == max.geno), which(marker2.vals == max.geno))
+		w_w <- intersect(which(marker1_vals == min_geno), which(marker2_vals == min_geno))
+		w_m <- intersect(which(marker1_vals == max_geno), which(marker2_vals == min_geno))
+		m_w <- intersect(which(marker1_vals == min_geno), which(marker2_vals == max_geno))
+		m_m <- intersect(which(marker1_vals == max_geno), which(marker2_vals == max_geno))
 				
-		pheno.list <- vector(mode = "list", length = 4)
-		names(pheno.list) <- c(paste(min.geno, min.geno, sep = "/"), 
-				paste(min.geno, max.geno, sep = "/"), 
-				paste(max.geno, min.geno, sep = "/"), 
-				paste(max.geno, max.geno, sep = "/"))
+		pheno_list <- vector(mode = "list", length = 4)
+		names(pheno_list) <- c(paste(min_geno, min_geno, sep = "/"), 
+				paste(min_geno, max_geno, sep = "/"), 
+				paste(max_geno, min_geno, sep = "/"), 
+				paste(max_geno, max_geno, sep = "/"))
 	
-		pheno.list[[1]] <- phenoV[w.w]
-		pheno.list[[2]] <- phenoV[w.m]
-		pheno.list[[3]] <- phenoV[m.w]
-		pheno.list[[4]] <- phenoV[m.m]
+		pheno_list[[1]] <- phenoV[w_w]
+		pheno_list[[2]] <- phenoV[w_m]
+		pheno_list[[3]] <- phenoV[m_w]
+		pheno_list[[4]] <- phenoV[m_m]
 											
-		geno.n <- sapply(pheno.list, length)
-		pheno.means <- sapply(pheno.list, function(x) mean(x, na.rm = TRUE))
+		geno_n <- sapply(pheno_list, length)
+		pheno_means <- sapply(pheno_list, function(x) mean(x, na.rm = TRUE))
 
-		if(error.bars == "se"){
-			pheno.error <- sapply(pheno.list, function(x) sd(x, na.rm = TRUE)/sqrt(length(x)))
-			}
-		if(error.bars == "sd"){
-			pheno.error <- sapply(pheno.list, function(x) sd(x, na.rm = TRUE))
-			}
-		if(error.bars == "none"){
-			pheno.error <- rep(0, length(pheno.list))
+		if(error_bars == "se"){
+			pheno_error <- sapply(pheno_list, function(x) sd(x, na.rm = TRUE)/sqrt(length(x)))
+		}
+		if(error_bars == "sd"){
+			pheno_error <- sapply(pheno_list, function(x) sd(x, na.rm = TRUE))
+		}
+		if(error_bars == "none"){
+			pheno_error <- rep(0, length(pheno_list))
 		}
 
 
-		if(!ref.centered){
-			plot.bars.int(pheno.vals = pheno.means, pheno.error = pheno.error, pheno.name = pheno.name, marker1 = marker1.vals, marker2 = marker2.vals, geno.n = geno.n)
-			}else{
+		if(!ref_centered){
+			plot_bars_int(pheno_vals = pheno_means, pheno_error = pheno_error, pheno_name = pheno_name, marker1 = marker1_vals, marker2 = marker2_vals, geno_n = geno_n)
+		}else{
 			#also make a plot using B6 as the reference point
 			#center on B6 genotype
-			ref.pheno <- pheno.means-pheno.means[1]
-			plot.bars.int(pheno.vals = ref.pheno, pheno.error, pheno.name = pheno.name, 
-			marker1 = marker1, marker2 = marker2, geno.n = geno.n)
-			}		
-		}
-	} #end case for two markers
+			ref_pheno <- pheno_means-pheno_means[1]
+			plot_bars_int(pheno_vals = ref_pheno, pheno_error, pheno_name = pheno_name, 
+			marker1 = marker1, marker2 = marker2, geno_n = geno_n)
+		}		
+	}
+} #end case for two markers

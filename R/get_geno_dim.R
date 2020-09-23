@@ -13,7 +13,7 @@
 
 get_geno_dim <- function(){
 	
-	geno.dim <- c("mouse" = 1, "allele" = 2, "locus" = 3)
-	return(geno.dim)
+	geno_dim <- c("mouse" = 1, "allele" = 2, "locus" = 3)
+	return(geno_dim)
 	
 }

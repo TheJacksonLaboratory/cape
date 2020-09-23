@@ -11,15 +11,15 @@
 #' computational burden of the kinship correction.
 #'
 #' This function can select markers either from a pre-defined list
-#' input as the argument \code{specific.markers}, or can select
+#' input as the argument \code{specific_markers}, or can select
 #' markers based on their main effect size.
 #' 
 #' To select markers based on main effect size, this function 
 #' first identifies effect score peaks using an automated
 #' peak detection algorithm. It finds the peaks rising 
 #' above a starting threshold and samples markers within each
-#' peak based on the user-defined sampling density \code{peak.density}.
-#' Setting \code{peak.density} to 0.5 will result in 50\% of the markers
+#' peak based on the user-defined sampling density \code{peak_density}.
+#' Setting \code{peak_density} to 0.5 will result in 50\% of the markers
 #' in a given peak being sampled uniformly at random. Sampling
 #' reduces the redundancy among linked markers tested in the pairscan.
 #' If LD is relatively low in the population, this density can be
@@ -27,7 +27,7 @@
 #' the density can be decreased to reduce redundancy further. 
 #' 
 #' The algorithm compares the number of markers sampled to the target
-#' defined by the user in the argument \code{num.alleles}. If fewer
+#' defined by the user in the argument \code{num_alleles}. If fewer
 #' than the target have been selected, the threshold is lowered, and 
 #' the process is repeated until the target number of alleles have
 #' been selected (plus or minus the number set in \code{tolerance}).
@@ -36,19 +36,19 @@
 #' genotyped, all alleles will be selected automatically. 
 #' 
 #'
-#' @param data.obj a \code{\link{Cape}} object
-#' @param singlescan.obj a singlescan object from \code{\link{singlescan}}.
-#' @param geno.obj a genotype object
-#' @param specific.markers A vector of marker names specifying which
+#' @param data_obj a \code{\link{Cape}} object
+#' @param singlescan_obj a singlescan object from \code{\link{singlescan}}.
+#' @param geno_obj a genotype object
+#' @param specific_markers A vector of marker names specifying which
 #' markers should be selected. If NULL, the function uses main effect
 #' size to select markers.
-#' @param num.alleles The target number of markers to select if using
+#' @param num_alleles The target number of markers to select if using
 #' main effect size
-#' @param peak.density The fraction of markers to select under each 
+#' @param peak_density The fraction of markers to select under each 
 #' peak exceeding the current threshold. Should be set higher for populations
 #' with low LD. And should be set lower for populations with high LD. Defaults 
 #' to 0.5, corresponding to 50\% of markers selected under each peak.
-#' @param window.size The number of markers to use in a smoothing window when
+#' @param window_size The number of markers to use in a smoothing window when
 #' calculating main effect peaks. If NULL, the window size is selected automatically
 #' based on the number of markers with consecutive rises and falls of main effect
 #' size.
@@ -56,185 +56,185 @@
 #' number of markers. For example, If you ask the function to select 100 markers,
 #' an set the tolerance to 5, the algorithm will stop when it has selected between
 #' 95 and 105 markers.
-#' @param plot.peaks Whether to plot the singlescan peaks identified by \code{\link{bin.curve}}.
-#' This can be helpful in determining whether the window.size and peak.density parameters 
+#' @param plot_peaks Whether to plot the singlescan peaks identified by \code{\link{bin_curve}}.
+#' This can be helpful in determining whether the window_size and peak_density parameters 
 #' are optimal for the population.
 #' @param verbose Whether progress should be printed to the screen
-#' @param pdf.filename If plot.peaks is TRUE, this argument specifies the filename
+#' @param pdf_filename If plot_peaks is TRUE, this argument specifies the filename
 #' to which the peaks are plotted.
 #' 
-#' @seealso \code{\link{bin.curve}}, \code{\link{singlescan}}
+#' @seealso \code{\link{bin_curve}}, \code{\link{singlescan}}
 #' 
 #' @return Returns the \code{\link{Cape}} object with a new matrix called
 #' \code{geno_for_pairscan} containing the genotypes of the selected markers
 #' for each individual.
 #'
 #' @export
-select_markers_for_pairscan <- function(data.obj, singlescan.obj, geno.obj, 
-  specific.markers = NULL, num.alleles = 50, peak.density = 0.5, window.size = NULL, 
-  tolerance = 5, plot.peaks = FALSE, verbose = FALSE, pdf.filename = "Peak.Plots.pdf"){
+select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj, 
+  specific_markers = NULL, num_alleles = 50, peak_density = 0.5, window_size = NULL, 
+  tolerance = 5, plot_peaks = FALSE, verbose = FALSE, pdf_filename = "Peak.Plots.pdf"){
   
-  chr <- unique(data.obj$chromosome)
+  chr <- unique(data_obj$chromosome)
   
-  geno <- get.geno(data.obj, geno.obj)
+  geno <- get_geno(data_obj, geno_obj)
   alleles <- dimnames(geno)[[2]]
-  n.alleles <- length(alleles)
+  n_alleles <- length(alleles)
   
-  if(class(singlescan.obj) == "list"){
-    ref.allele <- singlescan.obj$ref.allele
-    data.obj$ref_allele <- ref.allele
+  if(class(singlescan_obj) == "list"){
+    ref_allele <- singlescan_obj$ref_allele
+    data_obj$ref_allele <- ref_allele
   }else{
-    ref.allele <- data.obj$ref_allele
+    ref_allele <- data_obj$ref_allele
   }
   
-  if(is.null(ref.allele)){
-    allele.text <- paste(alleles, collapse = ", ")
-    ref.allele <- readline(prompt = paste("Which allele do you want to use as the reference?\n", allele.text, "\n"))
-    data.obj$ref_allele <- ref.allele
+  if(is.null(ref_allele)){
+    allele_text <- paste(alleles, collapse = ", ")
+    ref_allele <- readline(prompt = paste("Which allele do you want to use as the reference?\n", allele_text, "\n"))
+    data_obj$ref_allele <- ref_allele
   }
   
-  # if both num.alleles is defined and the number is > the number of markers in the geno 
+  # if both num_alleles is defined and the number is > the number of markers in the geno 
   # data, then ALL the markers are selected. However, we only want to allow this if
-  # specific.markers is undefined. 
+  # specific_markers is undefined. 
   
-  if(is.null(specific.markers)) {
+  if(is.null(specific_markers)) {
     #if we are asking for more markers than there are in the dataset
     #just take all of them.
-    if (num.alleles >= dim(geno)[3]*(dim(geno)[2]-1))  {
-      num.alleles = dim(geno)[3]
-      alt.alleles <- setdiff(dimnames(geno)[[2]], ref.allele)
-      specific.markers <- paste(dimnames(geno)[[3]], alt.alleles, sep = "_")
+    if (num_alleles >= dim(geno)[3]*(dim(geno)[2]-1))  {
+      num_alleles = dim(geno)[3]
+      alt_alleles <- setdiff(dimnames(geno)[[2]], ref_allele)
+      specific_markers <- paste(dimnames(geno)[[3]], alt_alleles, sep = "_")
     }
   }
   
-  if(!is.null(specific.markers)) {
-    if(n.alleles == 2){
-      ref.allele.locale <- which(data.obj$geno_names[[2]] == ref.allele)
-      other.allele <- setdiff(1:2, ref.allele.locale)
-      split.markers <- strsplit(as.character(specific.markers), "_")
-      just.markers <- sapply(split.markers, function(x) x[1])
-      just.marker.locale <- match(just.markers, dimnames(geno)[[3]])
-      just.marker.locale <- just.marker.locale[which(!is.na(just.marker.locale))]
-      geno.for.pairscan <- geno[,other.allele,just.marker.locale]
-      colnames(geno.for.pairscan) <- paste(colnames(geno.for.pairscan), data.obj$geno_names[[2]][other.allele], sep = "_")
+  if(!is.null(specific_markers)) {
+    if(n_alleles == 2){
+      ref_allele_locale <- which(data_obj$geno_names[[2]] == ref_allele)
+      other_allele <- setdiff(1:2, ref_allele_locale)
+      split_markers <- strsplit(as.character(specific_markers), "_")
+      just_markers <- sapply(split_markers, function(x) x[1])
+      just_marker_locale <- match(just_markers, dimnames(geno)[[3]])
+      just_marker_locale <- just_marker_locale[which(!is.na(just_marker_locale))]
+      geno_for_pairscan <- geno[,other_allele,just_marker_locale]
+      colnames(geno_for_pairscan) <- paste(colnames(geno_for_pairscan), data_obj$geno_names[[2]][other_allele], sep = "_")
     }else{
-      split.markers <- strsplit(specific.markers, "_")
-      just.markers <- sapply(split.markers, function(x) x[1])
-      just.alleles <- sapply(split.markers, function(x) x[2])
-      geno.for.pairscan <- matrix(nrow = nrow(data.obj$pheno), ncol = length(just.markers))
-      colnames(geno.for.pairscan) <- specific.markers
-      for(i in 1:length(just.markers)){
-        geno.for.pairscan[,i] <- geno[,just.alleles[i], just.markers[i]]
+      split_markers <- strsplit(specific_markers, "_")
+      just_markers <- sapply(split_markers, function(x) x[1])
+      just_alleles <- sapply(split_markers, function(x) x[2])
+      geno_for_pairscan <- matrix(nrow = nrow(data_obj$pheno), ncol = length(just_markers))
+      colnames(geno_for_pairscan) <- specific_markers
+      for(i in 1:length(just_markers)){
+        geno_for_pairscan[,i] <- geno[,just_alleles[i], just_markers[i]]
       }
     }
     
     if(verbose){cat("Removing markers that are not linearly independent...\n")}
-    data.obj$geno_for_pairscan <- geno.for.pairscan
-    geno.ind <- get.linearly.independent(data.obj)
+    data_obj$geno_for_pairscan <- geno_for_pairscan
+    geno_ind <- get_linearly_independent(data_obj)
     if(verbose){
-      cat(length(geno.ind[[2]]), "allele(s) rejected.\n")
-      cat("Final alleles selected:", "\t", ncol(geno.ind$independent.markers), "\n")
+      cat(length(geno_ind[[2]]), "allele(s) rejected.\n")
+      cat("Final alleles selected:", "\t", ncol(geno_ind$independent_markers), "\n")
     }
     #we still need to specify values for selecting markers for the pairscan null distribution
     #so just use default value
-    # cat("Generating the null distribution for the pairscan requires values for peak.density, window.size, and tolerance.\nSetting default values...")
-    # data.obj$peak.density <- peak.density
-    # data.obj$window.size <- window.size
-    # data.obj$tolerance <- tolerance
-    return(data.obj)
+    # cat("Generating the null distribution for the pairscan requires values for peak_density, window_size, and tolerance.\nSetting default values...")
+    # data_obj$peak_density <- peak_density
+    # data_obj$window_size <- window_size
+    # data_obj$tolerance <- tolerance
+    return(data_obj)
   }
   
-  if(class(singlescan.obj) == "list"){ 
-    results <- abs(singlescan.obj$singlescan.t.stats) #an actual singlescan object
+  if(class(singlescan_obj) == "list"){ 
+    results <- abs(singlescan_obj$singlescan_t_stats) #an actual singlescan object
   }else{
-    results <- abs(singlescan.obj) #a singlescan matrix for calculating pairscan null distribution
+    results <- abs(singlescan_obj) #a singlescan matrix for calculating pairscan null distribution
   }
   
   
-  filtered.results <- results
+  filtered_results <- results
   
-  covar.info <- get.covar(data.obj)
-  results.no.covar <- results[which(!rownames(results) %in% covar.info$covar.names),,,drop=FALSE]
-  result.chr <- get.marker.chr(data.obj, markers = rownames(results.no.covar), character.names = TRUE)  
+  covar_info <- get_covar(data_obj)
+  results_no_covar <- results[which(!rownames(results) %in% covar_info$covar_names),,,drop=FALSE]
+  result_chr <- get_marker_chr(data_obj, markers = rownames(results_no_covar), character_names = TRUE)  
   
-  sorted.results <- sort(abs(as.vector(results.no.covar)))
+  sorted_results <- sort(abs(as.vector(results_no_covar)))
   #start with a cutoff that might be near the number of 
   #alleles desired
-  guess.point <- num.alleles
-  min.effect.size = min(tail(sorted.results, guess.point))
+  guess_point <- num_alleles
+  min_effect_size = min(tail(sorted_results, guess_point))
   
   #===============================================================
   #internal functions
   #===============================================================
   
   #how may peaks are above a given cutoff?
-  num.peaks <- function(allele.curves, bins, cutoff){
-    filtered.bins <- bins
-    filtered.bins[which(abs(allele.curves) < cutoff)] <- NA
-    num.peaks <- apply(filtered.bins, 2, function(x) length(unique(x))-1)
-    return(num.peaks)
+  num_peaks <- function(allele_curves, bins, cutoff){
+    filtered_bins <- bins
+    filtered_bins[which(abs(allele_curves) < cutoff)] <- NA
+    num_peaks <- apply(filtered_bins, 2, function(x) length(unique(x))-1)
+    return(num_peaks)
   }
   
   #how many alleles are above a given t stat cutoff
-  num.markers <- function(allele.curves, cutoff){
-    filtered.curves <- allele.curves
-    filtered.curves[which(abs(allele.curves) < cutoff)] <- NA
-    num.markers <- apply(filtered.curves, 2, function(x) length(which(!is.na(x))))
-    return(num.markers)
+  num_markers <- function(allele_curves, cutoff){
+    filtered_curves <- allele_curves
+    filtered_curves[which(abs(allele_curves) < cutoff)] <- NA
+    num_markers <- apply(filtered_curves, 2, function(x) length(which(!is.na(x))))
+    return(num_markers)
   }
   
   #how many markers are in each peak at a given cutoff?
-  markers.per.peak <- function(allele.curves, bins, cutoff){
+  markers_per_peak <- function(allele_curves, bins, cutoff){
     #make a results mat with enough columns for each allele
     #and enough rows for each bin. Each cell will count the
     #number of markers in the bin at the designated cutoff
-    result.mat <- matrix(0, ncol = dim(allele.curves)[[3]], nrow = max(bins, na.rm = TRUE))
-    rownames(result.mat) <- 1:nrow(result.mat)
-    colnames(result.mat) <- dimnames(allele.curves)[[3]]
+    result_mat <- matrix(0, ncol = dim(allele_curves)[[3]], nrow = max(bins, na.rm = TRUE))
+    rownames(result_mat) <- 1:nrow(result_mat)
+    colnames(result_mat) <- dimnames(allele_curves)[[3]]
     
     #delete all effects that are less than the cutoff
-    filtered.bins <- bins
-    filtered.bins[which(abs(allele.curves) < cutoff)] <- NA
-    #image(filtered.bins)
+    filtered_bins <- bins
+    filtered_bins[which(abs(allele_curves) < cutoff)] <- NA
+    #image(filtered_bins)
     #count the number of markers in each bin for each allele
-    for(i in 1:ncol(filtered.bins)){
-      counts <- table(filtered.bins[,i])
-      result.mat[names(counts),i] <- counts
+    for(i in 1:ncol(filtered_bins)){
+      counts <- table(filtered_bins[,i])
+      result_mat[names(counts),i] <- counts
     }
-    return(result.mat)
+    return(result_mat)
   }
   
-  sample.peaks <- function(pheno.results, num.per.peak, bins){
+  sample_peaks <- function(pheno_results, num_per_peak, bins){
     #sample markers based on peaks across all alleles
-    sampled.markers <- vector(mode = "list", length = ncol(pheno.results))
-    names(sampled.markers) <- colnames(pheno.results)
-    for(i in 1:ncol(pheno.results)){
+    sampled_markers <- vector(mode = "list", length = ncol(pheno_results))
+    names(sampled_markers) <- colnames(pheno_results)
+    for(i in 1:ncol(pheno_results)){
       #figure out which peaks we will sample from
-      allele.markers <- NULL
-      peaks.which <- which(num.per.peak[,i] > 0)
-      if(length(peaks.which) > 0){
-        for(j in 1:length(peaks.which)){
+      allele_markers <- NULL
+      peaks_which <- which(num_per_peak[,i] > 0)
+      if(length(peaks_which) > 0){
+        for(j in 1:length(peaks_which)){
           #in each peak, pick the max, and sample the rest
-          marker.locale <- which(bins[,i] == peaks.which[j])
-          allele.markers <- c(allele.markers, marker.locale[which.max(abs(pheno.results[marker.locale,i]))])
-          num.to.sample <- num.per.peak[peaks.which[j],i] - 1 #take off the maximum marker
-          if(num.to.sample > 0){ #if there are still markers to get after grabbing the max
-            unif.markers <- round(runif(num.to.sample, min = min(marker.locale), max = max(marker.locale)))
-            allele.markers <- c(allele.markers, unif.markers)
+          marker_locale <- which(bins[,i] == peaks_which[j])
+          allele_markers <- c(allele_markers, marker_locale[which.max(abs(pheno_results[marker_locale,i]))])
+          num_to_sample <- num_per_peak[peaks_which[j],i] - 1 #take off the maximum marker
+          if(num_to_sample > 0){ #if there are still markers to get after grabbing the max
+            unif_markers <- round(runif(num_to_sample, min = min(marker_locale), max = max(marker_locale)))
+            allele_markers <- c(allele_markers, unif_markers)
           }#end case for sampling peak uniformly
         }#end looping through peaks for one allele
-        sampled.markers[[i]] <- rownames(pheno.results)[sort(allele.markers)]
+        sampled_markers[[i]] <- rownames(pheno_results)[sort(allele_markers)]
       }#end looping through alleles
     }
-    return(sampled.markers)
+    return(sampled_markers)
   }
   
-  allele.coin.flip <- function(alleles.per.bin, peak.density){
-    one.locale <- which(alleles.per.bin == 1)
-    coin.flip <- runif(length(one.locale), 0, 1)
-    alleles.per.bin[which(coin.flip < peak.density)] <- 0
-    alleles.per.bin[which(coin.flip >= peak.density)] <- 1/peak.density
-    return(alleles.per.bin)
+  allele_coin_flip <- function(alleles_per_bin, peak_density){
+    one_locale <- which(alleles_per_bin == 1)
+    coin_flip <- runif(length(one_locale), 0, 1)
+    alleles_per_bin[which(coin_flip < peak_density)] <- 0
+    alleles_per_bin[which(coin_flip >= peak_density)] <- 1/peak_density
+    return(alleles_per_bin)
   }
   
   #===============================================================
@@ -242,40 +242,40 @@ select_markers_for_pairscan <- function(data.obj, singlescan.obj, geno.obj,
   #===============================================================
   #group markers into bins based on their effect size profiles
   #===============================================================	
-  num.pheno <- dim(results)[[2]]
-  allele.bins <- vector(mode = "list", length = num.pheno)
-  for(ph in 1:num.pheno){
-    if(verbose){cat("\nBinning markers for", colnames(filtered.results)[ph], "\n")}
-    pheno.results <- results.no.covar[,ph,,drop=FALSE]
+  num_pheno <- dim(results)[[2]]
+  allele_bins <- vector(mode = "list", length = num_pheno)
+  for(ph in 1:num_pheno){
+    if(verbose){cat("\nBinning markers for", colnames(filtered_results)[ph], "\n")}
+    pheno_results <- results_no_covar[,ph,,drop=FALSE]
     
-    if(plot.peaks){				
-      pdf(pdf.filename, width = nrow(results.no.covar)*0.5, height = 15)
-      layout.mat <- get.layout.mat(ncol(pheno.results), "upright")
+    if(plot_peaks){				
+      pdf(pdf_filename, width = nrow(results_no_covar)*0.5, height = 15)
+      layout_mat <- get_layout_mat(ncol(pheno_results), "upright")
       # quartz(width = 15, height = 15)
-      layout(layout.mat)
+      layout(layout_mat)
       par(mar = c(2,2,2,2))
     }
     
     #bin markers by chromosome
     for(ch in 1:length(chr)){
       if(verbose){
-        report.progress(ch, length(chr))
+        report_progress(ch, length(chr))
       }
-      chr.locale <- which(result.chr == chr[ch])
-      chr.results <- pheno.results[chr.locale,,,drop=FALSE]
+      chr_locale <- which(result_chr == chr[ch])
+      chr_results <- pheno_results[chr_locale,,,drop=FALSE]
       
       #bin each allele curve by chromosome, so we don't have bins overlapping 
       #chromosome breaks. Make sure the first bin on one chromosome is 1+ the max
       #bin on the last chromosome
-      chr.bins <- apply(chr.results, 3, function(x) bin.curve(x, plot.peaks = plot.peaks, window.size = window.size)$bins)
-      if(!is.null(allele.bins[[ph]])){ 
-        max.bin <- apply(allele.bins[[ph]], 2, max)
+      chr_bins <- apply(chr_results, 3, function(x) bin_curve(x, plot_peaks = plot_peaks, window_size = window_size)$bins)
+      if(!is.null(allele_bins[[ph]])){ 
+        max_bin <- apply(allele_bins[[ph]], 2, max)
       }else{
-        max.bin <- rep(0, ncol(chr.bins))#if we don't have any bins yet, initialize at 0
+        max_bin <- rep(0, ncol(chr_bins))#if we don't have any bins yet, initialize at 0
       }
-      total.bins <- Reduce("cbind", lapply(1:ncol(chr.bins), function(x) chr.bins[,x]+max.bin[x]))
-      total.bins <- matrix(total.bins, ncol = ncol(chr.bins))
-      allele.bins[[ph]] <- rbind(allele.bins[[ph]], total.bins)
+      total_bins <- Reduce("cbind", lapply(1:ncol(chr_bins), function(x) chr_bins[,x]+max_bin[x]))
+      total_bins <- matrix(total_bins, ncol = ncol(chr_bins))
+      allele_bins[[ph]] <- rbind(allele_bins[[ph]], total_bins)
     }
   }
   #===============================================================
@@ -287,125 +287,125 @@ select_markers_for_pairscan <- function(data.obj, singlescan.obj, geno.obj,
   #===============================================================
   if(verbose){cat("\nFinding effect size threshold...\n")}
   
-  total.alleles <- 0
-  alleles.checked <- NULL
+  total_alleles <- 0
+  alleles_checked <- NULL
   repeats <- 0 #This checks for bouncing around the same numbers over
   #and over. If we start to see repeat numbers without 
   #getting close to the desired, exit the loop anyway.
   #This prevents infinite loops when the tolerance is 
   #set too small.
-  while((total.alleles < (num.alleles - tolerance) || total.alleles > (num.alleles + tolerance)) && repeats == 0){
-    ph.alleles <- vector(mode = "list", length = num.pheno)
+  while((total_alleles < (num_alleles - tolerance) || total_alleles > (num_alleles + tolerance)) && repeats == 0){
+    ph_alleles <- vector(mode = "list", length = num_pheno)
     
     #adjust the guess point based on how much we need to shift
-    #if we have many fewer than we need lower the min.effect.size
+    #if we have many fewer than we need lower the min_effect_size
     #a lot, if we need only a few more, don't lower it too much
-    guess.point <- round(guess.point + num.alleles - total.alleles)
-    min.effect.size = min(tail(sorted.results, guess.point))
+    guess_point <- round(guess_point + num_alleles - total_alleles)
+    min_effect_size = min(tail(sorted_results, guess_point))
     
-    for(ph in 1:num.pheno){
-      pheno.results <- results.no.covar[,ph,,drop=FALSE]
-      ph.alleles[[ph]] <- markers.per.peak(allele.curves = pheno.results, 
-      bins = allele.bins[[ph]], cutoff = min.effect.size)
-      total.alleles <- round(sum(unlist(ph.alleles))*peak.density)
+    for(ph in 1:num_pheno){
+      pheno_results <- results_no_covar[,ph,,drop=FALSE]
+      ph_alleles[[ph]] <- markers_per_peak(allele_curves = pheno_results, 
+      bins = allele_bins[[ph]], cutoff = min_effect_size)
+      total_alleles <- round(sum(unlist(ph_alleles))*peak_density)
     }
     if(verbose){
-      cat(signif(min.effect.size,3), "\t\t", total.alleles, "\n")
+      cat(signif(min_effect_size,3), "\t\t", total_alleles, "\n")
     }
     
-    already.seen <- which(alleles.checked == total.alleles)
+    already.seen <- which(alleles_checked == total_alleles)
     if(length(already.seen) > 0){
       repeats = 1
     }
     
-    alleles.checked <- c(alleles.checked, total.alleles)
+    alleles_checked <- c(alleles_checked, total_alleles)
   }
   
   
-  if(plot.peaks){
-    for(ph in 1:dim(results.no.covar)[[2]]){
+  if(plot_peaks){
+    for(ph in 1:dim(results_no_covar)[[2]]){
       # quartz(width = 11, height = 7)
-      pheno.results <- results.no.covar[,ph,,drop=FALSE]
+      pheno_results <- results_no_covar[,ph,,drop=FALSE]
     }
   }
   
   
   #for each bin that has only 1 allele, flip a biased coin
   #to decide whether to take it.
-  ph.alleles <- lapply(ph.alleles, function(x) allele.coin.flip(x, peak.density))
+  ph_alleles <- lapply(ph_alleles, function(x) allele_coin_flip(x, peak_density))
   
-  #sample the peaks that reach above the min.effect.size
+  #sample the peaks that reach above the min_effect_size
   #multiply the number of markers from each bin by the peak density
   #to determine how many markers from each bin we should take
-  alleles.per.peak <- lapply(ph.alleles, function(x) round(x*peak.density))
-  sampled.markers <- vector(mode = "list", length = num.pheno)
-  for(ph in 1:num.pheno){	
+  alleles.per.peak <- lapply(ph_alleles, function(x) round(x*peak_density))
+  sampled_markers <- vector(mode = "list", length = num_pheno)
+  for(ph in 1:num_pheno){	
     #phenotype results across all alleles
     #should be a matrix in two dimensions with 
     #individuals in rows and alleles in columns
-    pheno.results <- results.no.covar[,ph,,drop=FALSE]
-    pheno.results <- adrop(pheno.results, drop = 2)
-    sampled.markers[[ph]] <- sample.peaks(pheno.results = pheno.results, num.per.peak = alleles.per.peak[[ph]], bins = allele.bins[[ph]])			
+    pheno_results <- results_no_covar[,ph,,drop=FALSE]
+    pheno_results <- adrop(pheno_results, drop = 2)
+    sampled_markers[[ph]] <- sample_peaks(pheno_results = pheno_results, num_per_peak = alleles.per.peak[[ph]], bins = allele_bins[[ph]])			
   }
   
   #pull out the sampled alleled for all phenotypes and build a genotype matrix
-  num.parents <- ncol(pheno.results)
-  markers.by.parent <- vector(mode = "list", length = num.parents)
-  names(markers.by.parent) <- colnames(pheno.results)
-  for(p in 1:num.parents){
-    markers.by.parent[[p]] <- unique(unlist(lapply(sampled.markers, function(x) x[[colnames(pheno.results)[p]]])))
+  num_parents <- ncol(pheno_results)
+  markers_by_parent <- vector(mode = "list", length = num_parents)
+  names(markers_by_parent) <- colnames(pheno_results)
+  for(p in 1:num_parents){
+    markers_by_parent[[p]] <- unique(unlist(lapply(sampled_markers, function(x) x[[colnames(pheno_results)[p]]])))
   }
   
-  total.markers <- length(unlist(markers.by.parent))
-  if(verbose){cat("total unique alleles:", "\t", total.markers, "\n")}
+  total_markers <- length(unlist(markers_by_parent))
+  if(verbose){cat("total unique alleles:", "\t", total_markers, "\n")}
   
   
-  geno.for.pairscan <- matrix(NA, nrow = nrow(data.obj$pheno), ncol = total.markers)
-  colnames(geno.for.pairscan) <- 1:ncol(geno.for.pairscan)
-  start.allele <- 1
-  for(p in 1:length(markers.by.parent)){
-    all.allele.markers <- markers.by.parent[[p]]
-    if(length(all.allele.markers) > 0){
-      geno.section <- geno[,colnames(pheno.results)[p],all.allele.markers,drop=FALSE]
-      geno.for.pairscan[,start.allele:(start.allele+length(all.allele.markers)-1)] <- geno.section
-      colnames(geno.for.pairscan)[start.allele:(start.allele+length(all.allele.markers)-1)] <- paste(all.allele.markers, colnames(pheno.results)[p], sep = "_")
-      start.allele <- start.allele+length(all.allele.markers)
+  geno_for_pairscan <- matrix(NA, nrow = nrow(data_obj$pheno), ncol = total_markers)
+  colnames(geno_for_pairscan) <- 1:ncol(geno_for_pairscan)
+  start_allele <- 1
+  for(p in 1:length(markers_by_parent)){
+    all_allele_markers <- markers_by_parent[[p]]
+    if(length(all_allele_markers) > 0){
+      geno_section <- geno[,colnames(pheno_results)[p],all_allele_markers,drop=FALSE]
+      geno_for_pairscan[,start_allele:(start_allele+length(all_allele_markers)-1)] <- geno_section
+      colnames(geno_for_pairscan)[start_allele:(start_allele+length(all_allele_markers)-1)] <- paste(all_allele_markers, colnames(pheno_results)[p], sep = "_")
+      start_allele <- start_allele+length(all_allele_markers)
     }
   }
   
   #now order the matrix first by marker then by allele
-  marker.split <- strsplit(colnames(geno.for.pairscan), "_")
-  just.markers <- unlist(lapply(marker.split, function(x) x[1]))
-  just.allele <- unlist(lapply(marker.split, function(x) x[2]))
-  marker.table <- cbind(get.marker.num(data.obj, just.markers), just.allele)
-  sorted.table <- sortByThenBy(marker.table, col.type = c("n", "c"), return.order = TRUE)
+  marker_split <- strsplit(colnames(geno_for_pairscan), "_")
+  just_markers <- unlist(lapply(marker_split, function(x) x[1]))
+  just_allele <- unlist(lapply(marker_split, function(x) x[2]))
+  marker_table <- cbind(get_marker_num(data_obj, just_markers), just_allele)
+  sorted_table <- sort_by_then_by(marker_table, col_type = c("n", "c"), return_order = TRUE)
   
-  for(i in 1:ncol(sorted.table)){
-    geno.for.pairscan <- geno.for.pairscan[,sorted.table[,i]]
+  for(i in 1:ncol(sorted_table)){
+    geno_for_pairscan <- geno_for_pairscan[,sorted_table[,i]]
   }
   
   
   if(verbose){cat("Checking for linear independence...\n")}
-  data.obj$geno_for_pairscan <- geno.for.pairscan
-  geno.ind <- get.linearly.independent(data.obj)
+  data_obj$geno_for_pairscan <- geno_for_pairscan
+  geno_ind <- get_linearly_independent(data_obj)
   
-  rownames(geno.ind$independent.markers) <- rownames(data.obj$pheno)
-  data.obj$geno_for_pairscan <- geno.ind$independent.markers
-  data.obj$effect_size_cutoff <- min.effect.size
-  data.obj$peak_density = peak.density
-  data.obj$window_size = window.size
-  data.obj$tolerance = tolerance
+  rownames(geno_ind$independent_markers) <- rownames(data_obj$pheno)
+  data_obj$geno_for_pairscan <- geno_ind$independent_markers
+  data_obj$effect_size_cutoff <- min_effect_size
+  data_obj$peak_density = peak_density
+  data_obj$window_size = window_size
+  data_obj$tolerance = tolerance
   
   if(verbose){
-    cat(length(geno.ind[[2]]), "allele(s) rejected.\n")
-    cat("Final alleles selected:", "\t", ncol(geno.ind$independent.markers), "\n")
+    cat(length(geno_ind[[2]]), "allele(s) rejected.\n")
+    cat("Final alleles selected:", "\t", ncol(geno_ind$independent_markers), "\n")
   }
 
-  if(plot.peaks){
+  if(plot_peaks){
     dev.off()
   }
   
-  return(data.obj)
+  return(data_obj)
   
   
 }

@@ -2,114 +2,113 @@
 #'
 #' This function plots the results of \code{\link{singlescan}}
 #' 
-#' @param data.obj a \code{\link{Cape}} object
-#' @param singlescan.obj a singlescan object from \code{\link{singlescan}}
+#' @param data_obj a \code{\link{Cape}} object
+#' @param singlescan_obj a singlescan object from \code{\link{singlescan}}
 #' @param chr a vector of chromosome names to include in the plot. Defaults to all chromosomes.
 #' @param traits a vector of trait names to plot. Defaults to all traits.
 #' @param alpha the alpha significance level. Lines for significance values will only
-#' be plotted if n.perm > 0 when \code{\link{singlescan}} was run. And only alpha values
+#' be plotted if n_perm > 0 when \code{\link{singlescan}} was run. And only alpha values
 #' specified in \code{\link{singlescan}} can be plotted.
 #' @param standardized If TRUE t statistics are plotted. If FALSE, effect sizes are plotted.
-#' @param color.scheme A character value of either "DO/CC" or other indicating the 
+#' @param color_scheme A character value of either "DO/CC" or other indicating the 
 #' color scheme of main effects. If "DO/CC" allele effects can be plotted with the
 #' DO/CC colors.
-#' @param allele.labels A vector of labels for the alleles if different thatn those
-#' stored in the data.object.
-#' @param include.covars Whether to include covariates in the plot.
-#' @param show.selected If TRUE will indicate which markers were selected for the pairscan.
+#' @param allele_labels A vector of labels for the alleles if different thatn those
+#' stored in the data_object.
+#' @param include_covars Whether to include covariates in the plot.
+#' @param show_selected If TRUE will indicate which markers were selected for the pairscan.
 #' In order for these to be plotted, \code{\link{select_markers_for_pairscan}} must be run first.
-#' @param line.type as defined in plot
+#' @param line_type as defined in plot
 #' @param lwd line width, default is 1
 #' @param pch see the "points()" R function. Default is 16 (a point).
 #' @param cex see the "points()" R function. Default is 1.
-#' @param covar.label.size default is 0.7
+#' @param covar_label_size default is 0.7
 #' 
 #' @export
 
-plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL, 
-  alpha = c(0.01, 0.05), standardized = TRUE, color.scheme = c("DO/CC","other"), 
-  allele.labels = NULL, include.covars = TRUE, show.selected = FALSE, 
-  line.type = "l", lwd = 1, pch = 16, cex = 1, covar.label.size = 0.7){
+plotSinglescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL, 
+  alpha = c(0.01, 0.05), standardized = TRUE, color_scheme = c("DO/CC","other"), 
+  allele_labels = NULL, include_covars = TRUE, show_selected = FALSE, 
+  line_type = "l", lwd = 1, pch = 16, cex = 1, covar_label_size = 0.7){
   
-  geno.names <- data.obj$geno_names
+  geno_names <- data_obj$geno_names
   
   if(is.null(chr)){
-    chr <- sort(as.numeric(unique(data.obj$chromosome)))
+    chr <- sort(as.numeric(unique(data_obj$chromosome)))
   }
   
   
-  calc.alpha <- singlescan.obj$alpha	
-  calc.alpha.locale <- which(calc.alpha %in% alpha)
-  if(length(calc.alpha.locale) > 0){
-    alpha.to.use = calc.alpha[calc.alpha.locale]
-    thresh.to.use = unlist(singlescan.obj$alpha.thresh)[calc.alpha.locale]
+  calc_alpha <- singlescan_obj$alpha	
+  calc_alpha_locale <- which(calc_alpha %in% alpha)
+  if(length(calc_alpha_locale) > 0){
+    alpha_to_use = calc_alpha[calc_alpha_locale]
+    thresh_to_use = unlist(singlescan_obj$alpha_thresh)[calc_alpha_locale]
   }else{
-    alpha.to.use = NULL
-    thresh.to.use = NULL
+    alpha_to_use = NULL
+    thresh_to_use = NULL
   }
   
-  covar.info <- get.covar(data.obj)
-  covar.names <- covar.info$covar.names
+  covar_info <- get_covar(data_obj)
+  covar_names <- covar_info$covar_names
   
   #Get the dimension names to minimize confusion	
-  allele.dim <- which(names(geno.names) == "allele")
+  allele_dim <- which(names(geno_names) == "allele")
   
-  all.chromosomes <- data.obj$chromosome
-  lod.scores <- singlescan.obj$locus.score.scores
+  all_chromosomes <- data_obj$chromosome
+  lod_scores <- singlescan_obj$locus_score_scores
   
   if(!standardized){
-    results <- singlescan.obj$singlescan.effects
-    plot.type.label <- "beta"
+    results <- singlescan_obj$singlescan_effects
+    plot_type_label <- "beta"
   }else{
-    results <- singlescan.obj$singlescan.t.stats
-    plot.type.label <- "t.stat"
+    results <- singlescan_obj$singlescan_t_stats
+    plot_type_label <- "t_stat"
   }
   
   
   if(is.null(traits)){
     traits <- dimnames(results)[[2]]
   }
-  results.el <- which(dimnames(results)[[2]] %in% traits)
+  results_el <- which(dimnames(results)[[2]] %in% traits)
   
-  if(length(results.el) < length(traits)){
-    if(length(results.el) > 0){
-      not.found <- traits[-results.el]
+  if(length(results_el) < length(traits)){
+    if(length(results_el) > 0){
+      not_found <- traits[-results_el]
     }else{
-      not.found <- traits
+      not_found <- traits
     }
     cat("The following traits could not be found:")
-    cat(not.found, sep = "\n")
+    cat(not_found, sep = "\n")
     return()
   }
   
   
   #subset the results based on which chromosomes
   #are desired.
-  covar.locale <- which(rownames(results) %in% covar.names)
-  chr.locale <- c(which(all.chromosomes %in% chr), covar.locale)
-  sub.results <- results[chr.locale,,,drop=FALSE]
-  # lod.scores <- lod.scores[chr.locale,,drop=FALSE]
+  covar_locale <- which(rownames(results) %in% covar_names)
+  chr_locale <- c(which(all_chromosomes %in% chr), covar_locale)
+  sub_results <- results[chr_locale,,,drop=FALSE]
+  # lod_scores <- lod_scores[chr_locale,,drop=FALSE]
   
-  if(include.covars){
-    covar.locale <- which(rownames(sub.results) %in% covar.names)
-    non.covar.locale <- setdiff(1:nrow(sub.results), covar.locale)
-    plot.length <- length(non.covar.locale)
-    if(length(covar.locale) > 1){
-      covar.x <- segment.region((plot.length+1), round(plot.length*1.1), length(covar.locale))
+  if(include_covars){
+    covar_locale <- which(rownames(sub_results) %in% covar_names)
+    non_covar_locale <- setdiff(1:nrow(sub_results), covar_locale)
+    plot_length <- length(non_covar_locale)
+    if(length(covar_locale) > 1){
+      covar_x <- segment_region((plot_length+1), round(plot_length*1.1), length(covar_locale))
     }else{
-      covar.x <- mean(c((plot.length+1), round(plot.length*1.1)))
+      covar_x <- mean(c((plot_length+1), round(plot_length*1.1)))
     }
   }else{
-    covar.locale <- NULL	
-    covar.x <- NULL
-    non.covar.locale <- which(!rownames(sub.results) %in% covar.names)
-    sub.results <- sub.results[non.covar.locale,,,drop=FALSE]
-    lod.scores <- lod.scores[non.covar.locale,,drop=FALSE]
+    covar_locale <- NULL	
+    covar_x <- NULL
+    non_covar_locale <- which(!rownames(sub_results) %in% covar_names)
+    sub_results <- sub_results[non_covar_locale,,,drop=FALSE]
+    lod_scores <- lod_scores[non_covar_locale,,drop=FALSE]
   }
   
-  max.x <- max(c(length(non.covar.locale), covar.x))
-  
-    
+  max_x <- max(c(length(non_covar_locale), covar_x))
+
   if(length(results) == 0){
     stop("You must run singlescan.R before plotting effects.")
   }
@@ -122,117 +121,115 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL,
   #presence of each parent allele across the genome in its
   #own color
   
-  num.loci <- dim(sub.results)[[1]]
-  num.alleles <- dim(sub.results)[[3]]
-  ref.allele <- singlescan.obj$ref.allele
-  alleles <- geno.names[[allele.dim]]
-  ref.allele.locale <- which(alleles == ref.allele)
+  num_loci <- dim(sub_results)[[1]]
+  num_alleles <- dim(sub_results)[[3]]
+  ref_allele <- singlescan_obj$ref_allele
+  alleles <- geno_names[[allele_dim]]
+  ref_allele_locale <- which(alleles == ref_allele)
   
-  used.alleles <- alleles[-ref.allele.locale]
-  allele.colors <- get.allele.colors(color.scheme, used.alleles)
+  used_alleles <- alleles[-ref_allele_locale]
+  allele_colors <- get_allele_colors(color_scheme, used_alleles)
   
-  if(!is.null(allele.labels)){
-    if(length(allele.labels) == length(geno.names[[allele.dim]])){
-      used.alleles <- allele.labels[-ref.allele.locale]
+  if(!is.null(allele_labels)){
+    if(length(allele_labels) == length(geno_names[[allele_dim]])){
+      used_alleles <- allele_labels[-ref_allele_locale]
     }else{
-      used.alleles <- allele.labels	
+      used_alleles <- allele_labels	
     }
   }
   
-  phenos.scanned  <- dimnames(results)[[2]]
+  phenos_scanned  <- dimnames(results)[[2]]
   
-  
-  
-  if(show.selected){
-    ind.markers <- colnames(data.obj$geno_for_pairscan)
-    if(is.null(ind.markers)){stop("select_markers_for_pairscan() must be run before showing selected markers")}
-    ind.loci <- apply(matrix(ind.markers, ncol = 1), 1, function(x) strsplit(x, "_")[[1]][1]) 
-    ind.alleles <- apply(matrix(ind.markers, ncol = 1), 1, function(x) strsplit(x, "_")[[1]][2]) 
-    ind.locale <- which(dimnames(sub.results)[[1]] %in% ind.loci)
+  if(show_selected){
+    ind_markers <- colnames(data_obj$geno_for_pairscan)
+    if(is.null(ind_markers)){stop("select_markers_for_pairscan() must be run before showing selected markers")}
+    ind_loci <- apply(matrix(ind_markers, ncol = 1), 1, function(x) strsplit(x, "_")[[1]][1]) 
+    ind_alleles <- apply(matrix(ind_markers, ncol = 1), 1, function(x) strsplit(x, "_")[[1]][2]) 
+    ind_locale <- which(dimnames(sub_results)[[1]] %in% ind_loci)
   }
   
   
   
   if(standardized){
-    ylim <- c(min(c(min(abs(sub.results), na.rm = TRUE), thresh.to.use)), max(c(max(abs(sub.results), na.rm = TRUE), thresh.to.use)))
+    ylim <- c(min(c(min(abs(sub_results), na.rm = TRUE), thresh_to_use)), max(c(max(abs(sub_results), na.rm = TRUE), thresh_to_use)))
   }else{
-    ylim <- c(min(c(min(sub.results, na.rm = TRUE))), max(c(max(sub.results, na.rm = TRUE))))	
+    ylim <- c(min(c(min(sub_results, na.rm = TRUE))), max(c(max(sub_results, na.rm = TRUE))))	
   }
   yrange <- ylim[2]-ylim[1]
   
   
-  t.layout.mat <- matrix(c(1,2), nrow = 2)
-  eff.layout.mat <- matrix(c(1:3), nrow = 3)
+  t_layout_mat <- matrix(c(1,2), nrow = 2)
+  eff_layout_mat <- matrix(c(1:3), nrow = 3)
   
   
-  for(i in results.el){
+  for(i in results_el){
     # dev.new(width = 15, height = 5)
-    if(plot.type.label == "t.stat"){
-      layout(t.layout.mat, heights = c(0.85, 0.15))
+    if(plot_type_label == "t_stat"){
+      layout(t_layout_mat, heights = c(0.85, 0.15))
     }else{
-      layout(eff.layout.mat, heights = c(0.45, 0.4, 0.15))	
+      layout(eff_layout_mat, heights = c(0.45, 0.4, 0.15))	
     }
     
-    if(plot.type.label == "t.stat"){
-      if(show.selected){par(mar = c(5,5,7,2))}else{par(mar = c(4,5,7,2))}
+    if(plot_type_label == "t_stat"){
+      if(show_selected){par(mar = c(5,5,7,2))}else{par(mar = c(4,5,7,2))}
       plot.new()
-      plot.window(xlim = c(1,max.x), ylim = ylim)
+      plot.window(xlim = c(1,max_x), ylim = ylim)
     }else{
-      if(show.selected){par(mar = c(5,5,7,2))}else{par(mar = c(4,5,5,2))}
+      if(show_selected){par(mar = c(5,5,7,2))}else{par(mar = c(4,5,5,2))}
       plot.new()
-      plot.window(xlim = c(1,max.x), ylim = c(0, max(lod.scores, na.rm = TRUE)))
-      points(non.covar.locale, lod.scores[non.covar.locale,i], type = line.type, pch = pch, cex = cex)
-      if(length(covar.locale) > 0){
-        points(covar.x, lod.scores[covar.locale,i], type = "h")
+      plot.window(xlim = c(1,max_x), ylim = c(0, max(lod_scores, na.rm = TRUE)))
+      points(non_covar_locale, lod_scores[non_covar_locale,i], type = line_type, pch = pch, cex = cex)
+      if(length(covar_locale) > 0){
+        points(covar_x, lod_scores[covar_locale,i], type = "h")
       }
       abline(h = 0)
       axis(2)
       mtext("F statistic", side = 2, line = 3)
-      legend(0, (max(lod.scores)*1.2), legend = used.alleles, col = allele.colors[,3], lty = 1, lwd = 3, xpd = TRUE, horiz = TRUE)
+      legend(0, (max(lod_scores)*1.2), legend = used_alleles, col = allele_colors[,3], lty = 1, lwd = 3, xpd = TRUE, horiz = TRUE)
       par(xpd = TRUE)
-      text(covar.x, ylim[2]*-0.05, labels = covar.names, srt = 90, adj = 1, cex = covar.label.size)
+      text(covar_x, ylim[2]*-0.05, labels = covar_names, srt = 90, adj = 1, cex = covar_label_size)
       par(xpd = FALSE)
-      if(show.selected){par(mar = c(5,5,0,2))}else{par(mar = c(4,5,0,2))}
+      if(show_selected){par(mar = c(5,5,0,2))}else{par(mar = c(4,5,0,2))}
       plot.new()
-      # plot.window(xlim = c(1,num.loci), ylim = ylim)
-      plot.window(xlim = c(1,max.x), ylim = ylim)
+      # plot.window(xlim = c(1,num_loci), ylim = ylim)
+      plot.window(xlim = c(1,max_x), ylim = ylim)
     }
     
-    if(length(covar.locale) > 0){
-      covar.effects <- as.vector(sub.results[covar.locale,i,1])
-      if(plot.type.label == "t.stat"){
-        points(covar.x, abs(covar.effects), col = "black", type = "h", lwd = lwd)
+    if(length(covar_locale) > 0){
+      covar_effects <- as.vector(sub_results[covar_locale,i,1])
+      if(plot_type_label == "t_stat"){
+        points(covar_x, abs(covar_effects), col = "black", type = "h", lwd = lwd)
         par(xpd = TRUE)
-        text(covar.x, ylim[2]*-0.05, labels = covar.names, srt = 90, adj = 1, cex = covar.label.size)
+        text(covar_x, ylim[2]*-0.05, labels = covar_names, srt = 90, adj = 1, cex = covar_label_size)
         par(xpd = FALSE)
         
       }else{
-        points(covar.x, covar.effects, col = "black", type = "h", lwd = lwd)	
+        points(covar_x, covar_effects, col = "black", type = "h", lwd = lwd)	
         par(xpd = TRUE)
-        text(covar.x, ylim[2]*-0.05, labels = covar.names, srt = 90, adj = 1, cex = covar.label.size)
+        text(covar_x, ylim[2]*-0.05, labels = covar_names, srt = 90, adj = 1, cex = covar_label_size)
         par(xpd = FALSE)
       }
     }
     
-    for(j in 1:num.alleles){
+    for(j in 1:num_alleles){
       #pull out the effects of the presence of
       #allele j on phenotype i
-      allele.effects <- as.vector(sub.results[non.covar.locale,i,j])
-      if(plot.type.label == "t.stat"){ #plot the absolute value of the t.statistics
-        points(non.covar.locale, abs(allele.effects), col = allele.colors[j,3], type = line.type, lwd = lwd, pch = pch, cex = cex)
+      allele_effects <- as.vector(sub_results[non_covar_locale,i,j])
+      if(plot_type_label == "t_stat"){ #plot the absolute value of the t_statistics
+        points(non_covar_locale, abs(allele_effects), col = allele_colors[j,3], type = line_type, lwd = lwd, pch = pch, cex = cex)
       }else{
-        points(non.covar.locale, allele.effects, col = allele.colors[j,3], type = line.type, lwd = lwd, pch = pch, cex = cex)	
+        points(non_covar_locale, allele_effects, col = allele_colors[j,3], type = line_type, lwd = lwd, pch = pch, cex = cex)	
       }
       
-      if(plot.type.label == "t.stat"){
-        lines(x = c(1,num.loci), y = rep(data.obj$pairscan_thresh, 2), lty = 1, col = "darkgray")
-        lines(x = c(1,num.loci), y = rep(data.obj$covar_thresh, 2), lty = 2, col = "darkgray")
+      if(plot_type_label == "t_stat"){
+        lines(x = c(1,num_loci), y = rep(data_obj$pairscan_thresh, 2), lty = 1, col = "darkgray")
+        lines(x = c(1,num_loci), y = rep(data_obj$covar_thresh, 2), lty = 2, col = "darkgray")
         par(xpd = TRUE)
-        if(length(alpha.to.use) > 0){
-          for(a in 1:length(alpha.to.use)){
-            text(x = num.loci*1.02, y = thresh.to.use[a], labels = paste("p =", alpha.to.use[a]), cex = 0.5, adj = 0)
+        if(length(alpha_to_use) > 0){
+          for(a in 1:length(alpha_to_use)){
+            text(x = num_loci*1.02, y = thresh_to_use[a], labels = paste("p =", alpha_to_use[a]), cex = 0.5, adj = 0)
             par(xpd = FALSE)
-            abline(h = thresh.to.use[a], lty = a)
+            abline(h = thresh_to_use[a], lty = a)
           }
         }
         par(xpd = FALSE)
@@ -242,28 +239,28 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL,
     abline(h = 0)
     axis(2)
     # axis(1, labels = FALSE)
-    mtext(paste("Effect Relative to Allele", ref.allele), side = 2, line = 2.5)
-    mtext(phenos.scanned[i], outer = TRUE, line = -3, cex = 2)
+    mtext(paste("Effect Relative to Allele", ref_allele), side = 2, line = 2.5)
+    mtext(phenos_scanned[i], outer = TRUE, line = -3, cex = 2)
     
-    if(plot.type.label == "t.stat"){
-      legend(x = 0, y = ylim[2]+yrange*0.15, legend = used.alleles, col = allele.colors[,3], lty = 1, lwd = 3, xpd = TRUE, horiz = TRUE)
+    if(plot_type_label == "t_stat"){
+      legend(x = 0, y = ylim[2]+yrange*0.15, legend = used_alleles, col = allele_colors[,3], lty = 1, lwd = 3, xpd = TRUE, horiz = TRUE)
     }
     
     #put in lines for chromosome boundaries
     for(ch in 1:length(chr)){
-      abline(v = max(which(all.chromosomes == chr[ch])) - min(which(all.chromosomes %in% chr)), lty = 3)
+      abline(v = max(which(all_chromosomes == chr[ch])) - min(which(all_chromosomes %in% chr)), lty = 3)
     }	
     
-    if(show.selected){
-      abline(h = data.obj$effect_size_cutoff)
+    if(show_selected){
+      abline(h = data_obj$effect_size_cutoff)
       par(xpd = TRUE)
-      allele.cols <- get.allele.colors(color.scheme, used.alleles)
-      y.pos <- ylim[1] - ylim[2]*0.01
-      for(cl in 1:nrow(allele.cols)){
-        allele.locale <- which(ind.alleles == allele.cols[cl,2])
-        if(length(allele.locale) > 0){
-          points(ind.locale[allele.locale], rep(y.pos, length(allele.locale)), col = allele.cols[cl,3], pch = 16, cex = 0.5)
-          y.pos <- y.pos - ylim[2]*0.01
+      allele_cols <- get_allele_colors(color_scheme, used_alleles)
+      y_pos <- ylim[1] - ylim[2]*0.01
+      for(cl in 1:nrow(allele_cols)){
+        allele_locale <- which(ind_alleles == allele_cols[cl,2])
+        if(length(allele_locale) > 0){
+          points(ind_locale[allele_locale], rep(y_pos, length(allele_locale)), col = allele_cols[cl,3], pch = 16, cex = 0.5)
+          y_pos <- y_pos - ylim[2]*0.01
         }
       }
       par(xpd = FALSE)
@@ -271,20 +268,18 @@ plotSinglescan <- function(data.obj, singlescan.obj, chr = NULL, traits = NULL,
     
     par(mar = c(0,5,0,2))	
     plot.new()
-    plot.window(xlim = c(1,max.x), ylim = c(0,1))		
+    plot.window(xlim = c(1,max_x), ylim = c(0,1))		
     #indicate where chromosomes are and rewrite the
     #phenotype for each, so we can see it on really
     #zoomed in plots
     for(ch in 1:length(chr)){
       #find the mean position of where each chromosome starts and stops
-      mid.pos <- mean(which(all.chromosomes == chr[ch])) - min(which(all.chromosomes %in% chr))
-      text(mid.pos, 0.7, labels = chr[ch], xpd = TRUE, cex = 1.5)
+      mid_pos <- mean(which(all_chromosomes == chr[ch])) - min(which(all_chromosomes %in% chr))
+      text(mid_pos, 0.7, labels = chr[ch], xpd = TRUE, cex = 1.5)
     }
     
     mtext("Chromosome", side = 1, line = -1.6, cex = 1.2)	
     
   } #end looping over phenotypes
-  
-  
   
 }
