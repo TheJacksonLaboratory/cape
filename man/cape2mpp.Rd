@@ -2,19 +2,19 @@
 % Please edit documentation in R/cape2mpp.R
 \name{cape2mpp}
 \alias{cape2mpp}
-\title{Converts a \code{\link{read.population}} object to a multi-parent object}
+\title{Converts a \code{\link{read_population}} object to a multi-parent object}
 \usage{
-cape2mpp(data.obj, geno.obj = NULL)
+cape2mpp(data_obj, geno_obj = NULL)
 }
 \arguments{
-\item{data.obj}{a data.obj formatted for cape 1.0}
+\item{data_obj}{a data_obj formatted for cape 1.0}
 
-\item{geno.obj}{a genotype object. If geno.obj is NULL
-the genotype object is generated from data.obj$geno.}
+\item{geno_obj}{a genotype object. If geno_obj is NULL
+the genotype object is generated from data_obj$geno.}
 }
 \value{
 This function returns a list with two objects:
-\code{list("data.obj" = data.obj, "geno.obj" = geno.obj)}
+\code{list("data_obj" = data_obj, "geno_obj" = geno_obj)}
 These two objects must be separated again to run through 
 cape.
 }
