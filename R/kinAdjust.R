@@ -24,7 +24,7 @@
 #' and \code{\link{pairscan_kin}}.
 #'
 
-kinship_on_the_fly <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
+kinAdjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
 covarV = NULL, verbose = FALSE){
   
   get_g=function(pair = NULL, phenotype, covarV){
