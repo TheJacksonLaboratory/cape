@@ -3,7 +3,7 @@
 #' This function is called by \code{\link{pairscan}}
 #' when a kinship correction is requested. It adjusts 
 #' each variable according to the kinship matrix using
-#' \code{\link{kinAdjust}} and then fits linear
+#' \code{\link{kin_adjust}} and then fits linear
 #' pairwise models to the adjusted data.
 #' 
 #' @param data_obj a \code{\link{Cape}} object
@@ -150,12 +150,12 @@ kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
     if(data_obj$kinship_type == "overall"){
       #if we are using an overall kinship matrix
         kin_mat <- kin_obj
-        kin_dat <- kinAdjust(kin_mat, geno, chr1 = NULL, chr2 = NULL, 
+        kin_dat <- kin_adjust(kin_mat, geno, chr1 = NULL, chr2 = NULL, 
         phenoV = pheno_vector, covarV = covar_vector)
     }else{
       #If we are using LTCO
       chr_pairs <- Reduce("rbind", strsplit(names(kin_obj), ","))
-      kin_dat <- apply(chr_pairs, 1, function(x) kinAdjust(kin_obj, geno, 
+      kin_dat <- apply(chr_pairs, 1, function(x) kin_adjust(kin_obj, geno, 
       x[1], x[2], phenoV = pheno_vector, covarV = covar_vector))
       names(kin_dat) <- names(kin_obj)
     }

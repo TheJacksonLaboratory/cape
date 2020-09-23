@@ -248,12 +248,12 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
       sink(file.path(data_obj$results_path,"regress.warnings.singlescan")) #create a temporary output file for the regress warnings
       # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
       if(data_obj$kinship_type == "ltco"){
-        cor_data <- lapply(chr_which, function(x) kinAdjust(kin_obj, gene, 
+        cor_data <- lapply(chr_which, function(x) kin_adjust(kin_obj, gene, 
         chr1 = x, chr2 = x, phenoV = phenotype, covarV = covar_table))
         names(cor_data) <- chr_which
       }else{
         cor_data <- vector(mode = "list", length = 1)
-        cor_data[[1]] <- kinAdjust(kin_obj, gene, phenoV = phenotype, 
+        cor_data[[1]] <- kin_adjust(kin_obj, gene, phenoV = phenotype, 
         covarV = covar_table)
       }
       sink(NULL)
@@ -317,7 +317,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
       if(use_kinship){
         sink(file.path(data_obj$results_path,"regress.warnings.covar"))
         # TODO check if dim(kin.obj)[1] == length(phenoV) == length(covarV) when using covariates
-        cor_data <- kinAdjust(kin_obj, gene, phenoV = phenotype, covarV = covar_table, 
+        cor_data <- kin_adjust(kin_obj, gene, phenoV = phenotype, covarV = covar_table, 
         verbose = verbose)
         sink(NULL) #stop sinking to the file
       }else{
