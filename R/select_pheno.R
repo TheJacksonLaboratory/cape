@@ -1,67 +1,67 @@
 #' This function selects the phenotypes in a Cape object
 #' 
-#' Updates the pheno object to include only `pheno.which` columns.
+#' Updates the pheno object to include only `pheno_which` columns.
 #' Optionally scale and/or normalize traits.
 #'
-#' @param data.obj a \code{\link{Cape}} object
-#' @param pheno.which vector of names from the parameters YAML file.
+#' @param data_obj a \code{\link{Cape}} object
+#' @param pheno_which vector of names from the parameters YAML file.
 #' This vector should include both traits and covariates. The covariates
 #' are assigned after trait selection. 
-#' @param min.entries minimum number of data entries the phenotype needs 
-#' to have for it to be included. If any trait has fewer than min.entries,
+#' @param min_entries minimum number of data entries the phenotype needs 
+#' to have for it to be included. If any trait has fewer than min_entries,
 #' It will be removed with a warning.
-#' @param scale.pheno if TRUE then phenotypes are mean-centered and standardized
-#' @param rank.norm.pheno if TRUE then phenotypes are rank Z normalized
+#' @param scale_pheno if TRUE then phenotypes are mean-centered and standardized
+#' @param rank_norm_pheno if TRUE then phenotypes are rank Z normalized
 #'
 #' @return updated \code{\link{Cape}} object
 #' 
 #' @export
-select_pheno <- function(data.obj, pheno.which, min.entries = 5, scale.pheno = FALSE, rank.norm.pheno = FALSE){
-  check.underscore(data.obj)
-  # check.bad.markers(data.obj)
+select_pheno <- function(data_obj, pheno_which, min_entries = 5, scale_pheno = FALSE, rank_norm_pheno = FALSE){
+  check_underscore(data_obj)
+  # check_bad_markers(data_obj)
   
   
-  pheno <- data.obj$pheno
+  pheno <- data_obj$pheno
   
   #find the phenotype column numbers if 
   #names have been put in instead of numbers	
-  pheno.num <- get.col.num(pheno, pheno.which)
+  pheno_num <- get_col_num(pheno, pheno_which)
   
-  if(length(pheno.num) < 2){
+  if(length(pheno_num) < 2){
     stop("There must be at least two phenotypes selected.")
   }
 
-  new.pheno <- pheno[,pheno.num]
+  new_pheno <- pheno[,pheno_num]
   
   # #make sure the phenotypes are numeric
   # #and replace the phenotype matrix with 
   # #the selected phenotypes
-  new.pheno <- apply(new.pheno, 2, as.numeric)
+  new_pheno <- apply(new_pheno, 2, as.numeric)
   
   #check to see if there are any phenotypes with
   #fewer than 5 entries
-  data.entries <- as.vector(apply(new.pheno, 2, function(x) length(which(!is.na(x)))))
-  bad.pheno <- which(data.entries <= min.entries)
+  data_entries <- as.vector(apply(new_pheno, 2, function(x) length(which(!is.na(x)))))
+  bad_pheno <- which(data_entries <= min_entries)
   
-  if(length(bad.pheno) > 0){
-    final.pheno <- new.pheno[,-bad.pheno]
-    cat("The following phenotypes had fewer than ", min.entries, " entries and were removed.\n")
-    cat(paste("\t", colnames(new.pheno)[bad.pheno], "\n"))
+  if(length(bad_pheno) > 0){
+    final_pheno <- new_pheno[,-bad_pheno]
+    cat("The following phenotypes had fewer than ", min_entries, " entries and were removed.\n")
+    cat(paste("\t", colnames(new_pheno)[bad_pheno], "\n"))
   }else{
-    final.pheno <- new.pheno
+    final_pheno <- new_pheno
   }
   
-  if(rank.norm.pheno){
-    final.pheno <- apply(final.pheno, 2, rz.transform)
+  if(rank_norm_pheno){
+    final_pheno <- apply(final_pheno, 2, rz_transform)
   }
   
-  if(scale.pheno){
-    final.pheno <- apply(final.pheno, 2, center.std) #mean center and standardize the phenotypes
+  if(scale_pheno){
+    final_pheno <- apply(final_pheno, 2, center_std) #mean center and standardize the phenotypes
   }
   
-  rownames(final.pheno) <- rownames(pheno)		
-  data.obj$pheno <- final.pheno
+  rownames(final_pheno) <- rownames(pheno)		
+  data_obj$pheno <- final_pheno
   
-  return(data.obj)
+  return(data_obj)
   
 }

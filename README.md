@@ -5,7 +5,7 @@ The CAPE2.0 R package implements a method, originally described in Carter et al.
 CAPE 2.0 has a vignette, which can be found [here](). 
 
 ## New Features!
-- new run.cape function runs the entire cape pipeline with one command
+- new run_cape function runs the entire cape pipeline with one command
 - read in data in multiple formats (R/qtl, R/qtl2, and PLINK)
 - performs kinship correction using linear mixed models as described in Kang et al. (2008)
 - Handles multi-parent populations

@@ -4,18 +4,18 @@
 \alias{pheno2covar}
 \title{Create a covariate from a trait}
 \usage{
-pheno2covar(data.obj, pheno.which)
+pheno2covar(data_obj, pheno_which)
 }
 \arguments{
-\item{data.obj}{a \code{\link{Cape}} object}
+\item{data_obj}{a \code{\link{Cape}} object}
 
-\item{pheno.which}{vector of trait names to be used as covariates}
+\item{pheno_which}{vector of trait names to be used as covariates}
 }
 \value{
 Returns the data object with the specified traits removed
 from the phenotype matrix and transferred where they will be used
 as covariates. Information about assigned covariates can be retrieved
-with \code{\link{get.covar}}.
+with \code{\link{get_covar}}.
 }
 \description{
 This function takes a variable from the phenotype matrix

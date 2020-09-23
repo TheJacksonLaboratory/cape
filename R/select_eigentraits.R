@@ -9,8 +9,8 @@
 #' this by subsetting the ET matrix to only those eigentraits
 #' specified. The traits not selected are deleted from the object.
 #' 
-#' @param data.obj a \code{\link{Cape}} object
-#' @param traits.which A vector of integers, of at least length two
+#' @param data_obj a \code{\link{Cape}} object
+#' @param traits_which A vector of integers, of at least length two
 #'  specifying which eigentraits should be analyzed.
 #'
 #' @seealso \code{\link{plotSVD}}
@@ -18,17 +18,17 @@
 #' @return updated \code{\link{Cape}} object
 #'
 #' @export
-select_eigentraits <- function(data.obj, traits.which = c(1,2)){
+select_eigentraits <- function(data_obj, traits_which = c(1,2)){
   
-  check.underscore(data.obj)
-  # check.bad.markers(data.obj)
+  check_underscore(data_obj)
+  # check_bad_markers(data_obj)
   
-  ET <- data.obj$ET
+  ET <- data_obj$ET
   
-  if(length(traits.which) > ncol(ET)){stop("There are more eigentraits specified than exist. Please select a smaller number in the parameter file.")}
+  if(length(traits_which) > ncol(ET)){stop("There are more eigentraits specified than exist. Please select a smaller number in the parameter file.")}
   
-  selected.ET <- ET[,traits.which]
-  data.obj$ET <- selected.ET
-  return(data.obj)
+  selected_ET <- ET[,traits_which]
+  data_obj$ET <- selected_ET
+  return(data_obj)
   
 }

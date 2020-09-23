@@ -8,6 +8,7 @@ dest_path = here("cape_pkg")
 write("**********************************************************", stdout())
 write(dest_path, stdout())
 write("**********************************************************", stdout())
-build_path <- devtools::build(pkg = here(), path = dest_path, binary = FALSE, quiet = TRUE)
+build_path <- devtools::build(pkg = here(), path = dest_path, binary = FALSE, quiet = FALSE)
 doc <- devtools::document(pkg = here(), roclets=c('rd', 'collate', 'namespace', 'vignette'))
 utils::install.packages(build_path, type="source", lib = dest_path)
+

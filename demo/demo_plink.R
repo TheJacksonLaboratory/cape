@@ -2,20 +2,20 @@ set.seed(1234)
 
 library(cape)
 
-results.path <- here("demo", "demo_PLINK")
-data.path <- here("tests", "testthat", "testdata", "demo_PLINK_data")
+results_path <- here("demo", "demo_PLINK")
+data_path <- here("tests", "testthat", "testdata", "demo_PLINK_data")
 
-ped <- file.path(data.path, "test.ped")
-map <- file.path(data.path, "test.map")
-pheno <- file.path(data.path, "test.pheno")
-out <- file.path(data.path, "test.csv")
-param.file <- file.path(results.path, "plink.parameters.yml")
+ped <- file.path(data_path, "test.ped")
+map <- file.path(data_path, "test.map")
+pheno <- file.path(data_path, "test.pheno")
+out <- file.path(data_path, "test.csv")
+param_file <- file.path(results_path, "plink.parameters.yml")
 
-cross.obj <- plink2cape(ped, map, pheno, out, overwrite = TRUE)
+cross_obj <- plink2cape(ped, map, pheno, out, overwrite = TRUE)
 
-data.obj <- cross.obj$data.obj
-geno.obj <- cross.obj$geno.obj$geno
+data_obj <- cross_obj$data_obj
+geno_obj <- cross_obj$geno_obj$geno
 
-final.cross <- run.cape(pheno.obj = data.obj, geno.obj, results.file = "plink.RData", 
-	p.or.q = 0.05, verbose = TRUE, param.file = param.file, 
-	results.path = results.path)
+final_cross <- run_cape(pheno_obj = data_obj, geno_obj, results_file = "plink.RData", 
+	p_or_q = 0.05, verbose = TRUE, param_file = param_file, 
+	results_path = results_path)

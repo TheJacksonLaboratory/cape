@@ -2,17 +2,17 @@ set.seed(1234)
 
 library(cape)
 
-results.path <- here("demo", "demo_qtl")
-data.path <- here("tests", "testthat", "testdata", "demo_qtl_data")
+results_path <- here("demo", "demo_qtl")
+data_path <- here("tests", "testthat", "testdata", "demo_qtl_data")
 
-data.file <- file.path(data.path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
-param.file <- file.path(results.path, "NON_NZO.parameters.yml")
+data_file <- file.path(data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
+param_file <- file.path(results_path, "NON_NZO.parameters.yml")
 
-cross <- read.population(data.file)
-cross.obj <- cape2mpp(cross)
-data.obj <- cross.obj$data.obj
-geno.obj <- cross.obj$geno.obj$geno
+cross <- read_population(data_file)
+cross_obj <- cape2mpp(cross)
+data_obj <- cross_obj$data_obj
+geno_obj <- cross_obj$geno_obj$geno
 
-final.cross <- run.cape(data.obj, geno.obj, results.file = "NON_NZO.RData", 
-	p.or.q = 0.05, verbose = TRUE, param.file = param.file, 
-	results.path = results.path)
+final_cross <- run_cape(data_obj, geno_obj, results_file = "NON_NZO.RData", 
+                        p_or_q = 0.05, verbose = TRUE, param_file = param_file, 
+                        results_path = results_path)
