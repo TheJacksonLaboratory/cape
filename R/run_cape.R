@@ -77,7 +77,7 @@ run_cape <- function(pheno_obj, geno_obj,
     
     if (isFALSE(kin_obj)){
       #if there isn't a kinship object already, we need to make one
-      kin_obj <- Kinship(data_obj, geno_obj, type = "overall", 
+      kin_obj <- kinship(data_obj, geno_obj, type = "overall", 
       pop = data_obj$pop)
       data_obj$save_rds(kin_obj, kin_file_name)
     }
@@ -117,7 +117,7 @@ run_cape <- function(pheno_obj, geno_obj,
         data_obj$save_rds(geno_obj, imp_geno_file)
       
         # recalculate the kinship matrix with the updated objects
-        #kin_obj <- Kinship(data_obj, geno_obj, type = "overall", pop = data_obj$pop)
+        #kin_obj <- kinship(data_obj, geno_obj, type = "overall", pop = data_obj$pop)
         #data_obj$save_rds(kin_obj, kin_file_name)
 
       } #end case for when there are missing values but no imputed genotypes

@@ -4,9 +4,9 @@
 #' This function uses linear mixed models to adjust the
 #' genotype matrix, phenotype matrix, and covariate matrix
 #' for kinship based on the kinship matrix calculated 
-#' by \code{\link{Kinship}}.
+#' by \code{\link{kinship}}.
 #'
-#' @param kin_obj The kinship object calculated by \code{\link{Kinship}}
+#' @param kin_obj The kinship object calculated by \code{\link{kinship}}
 #' @param geno a genotype object.
 #' @param chr1 The first of two chromomsomes to leave out of the calculation, if any.
 #' @param chr2 The second of two chromomsomes to leave out of the calculation, if any.
