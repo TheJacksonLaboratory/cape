@@ -1,6 +1,6 @@
 #' Generate list of concentric circles
 #' 
-#' This is an internal function used by \code{\link{plotNetwork}}
+#' This is an internal function used by \code{\link{plot_network}}
 #' and calling get_circle to generate concentric circles starting
 #' at a specified radius and with a specified gap between them.
 #' These circles are used for plotting traits and chromosomes

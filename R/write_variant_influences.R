@@ -48,7 +48,7 @@
 #' 
 #' @export
 #' 
-writeVariantInfluences <- function(data_obj, p_or_q = 0.05, include_main_effects = TRUE, 
+write_variant_influences <- function(data_obj, p_or_q = 0.05, include_main_effects = TRUE, 
                                    filename = "Variant.Influences.csv", delim = ",", 
                                    mark_covar = FALSE, write_file = TRUE){
   

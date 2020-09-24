@@ -62,7 +62,7 @@
 #' pairs_tested_perm: A matrix of the marker pairs used in the permutation
 #' tests.
 #'   
-#' @seealso \code{\link{select_markers_for_pairscan}}, \code{\link{plotPairscan}}
+#' @seealso \code{\link{select_markers_for_pairscan}}, \code{\link{plot_pairscan}}
 #'
 #' @export
 pairscan <- function(data_obj, geno_obj = NULL,

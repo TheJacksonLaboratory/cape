@@ -1,7 +1,7 @@
 #' Plot phenotypic effects for two markers as a heat map
 #' 
 #' This internal function is called by 
-#' \code{\link{plotEffects}} to generate a 
+#' \code{\link{plot_effects}} to generate a 
 #' heat map showing the effects of genotype on
 #' phenotype. This function fits linear models
 #' to the markers and traits. It then uses
@@ -30,7 +30,7 @@
 #'
 #' @return None
 
-plotIntHeat <- function(phenoV, marker1_vals, marker2_vals, pheno_name = NULL, 
+plot_int_heat <- function(phenoV, marker1_vals, marker2_vals, pheno_name = NULL, 
                         marker1_label = NULL, marker2_label = NULL, bins1 = 50, bins2 = 50){
 
     if(length(bins1) == 1){

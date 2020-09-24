@@ -216,7 +216,7 @@ This is in contrast to traits that are perfectly correlated and likely have
 only common genetic influences, and to traits that are completely uncorrelated
 and likely have divergent genetic influences.
 
-We can look at the correlation of the traits in our data set using `plotPhenoCor`
+We can look at the correlation of the traits in our data set using `plot_pheno_cor`
 The figure below shows the correlations between all pairs of traits. Here,
 we have also colored the points by the covariate "pgm" to look for some
 initial trends. You can see that mice with obese mothers tended to have
@@ -231,7 +231,7 @@ trait pair. If `color_by` is specified, we show the overall correlation
 as well as correlations for each group in `color_by.`
 
 ```{r pheno_cor, fig.width = 5, fig.height = 5}
-plotPhenoCor(obesity_cross, pheno_which = c("BW_24", "INS_24", "log_GLU_24"),
+plot_pheno_cor(obesity_cross, pheno_which = c("BW_24", "INS_24", "log_GLU_24"),
 color_by = "pgm", group_labels = c("Non-obese", "Obese"))
 ```
 
@@ -374,7 +374,7 @@ we recommend using R/qtl2 [@broman2019r].
 **alpha:** If "singlescan_perm" is a number greater than 0, you can also 
 specify a significance threshold alpha. If alpha is specified, cape will 
 calculate an effect size threshold for each value of alpha. These can be
-plotted using `plotSinglescan`.
+plotted using `plot_singlescan`.
 
 ### Marker Selection Parameters
 As mentioned above, the single-locus scan is primarily used to select 
@@ -508,7 +508,7 @@ correlated signals, that are otherwise distributed across traits, into
 individual eigentraits. This potentially increases power to detect variants
 associated with the common components of groups of traits.
 
-Cape uses the function `plotSVD` to plot the results of the SVD. The 
+Cape uses the function `plot_svd` to plot the results of the SVD. The 
 plot for the NON/NZO data set are shown below.
 
 ```{r eigentraits, results = "asis", echo = FALSE, out.width = 4, out.height = 4}
@@ -559,12 +559,12 @@ scan if there are too many to test exhautively.
 Although `run_cape` creates files with the singlescan results automatically,
 it is also sometimes desireable to re-plot these results with different 
 parameters. We show how to do that below by reading in the singlescan
-results file and using `plotSinglescan` with parameters different from
+results file and using `plot_singlescan` with parameters different from
 those in `run_cape.`
 
 ```{r single_plot, fig.width = 7, fig.height = 5}
 singlescan_obj <- readRDS(here("demo", "demo_qtl", "NON_NZO.singlescan.RData"))
-plotSinglescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
+plot_singlescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
 covar_label_size = 1)
 ```
 
@@ -773,11 +773,11 @@ The primary output of cape is the file VariantInfluences.csv. This
 file holds information about the interactions and main effects
 identified in the data. Another file Variant.Influences.Interactions.csv,
 excludes the main effects. Please see the documentation for the 
-function `writeVariantInfluences` for a description of the columns
+function `write_variant_influences` for a description of the columns
 in these files. 
 
 Cape results can also be plotted in multiple different forms. The function
-`plotVariantInfluences` plots the results as a heatmap. Interactions
+`plot_variant_influences` plots the results as a heatmap. Interactions
 between genetic loci are shown in the main part of the graph and 
 main effects are shown along the right-hand side. 
 
@@ -798,7 +798,7 @@ Marker pairs that were not tested due to high correlation are shown in
 gray. Chromosome boundaries and labels are shown along the $x$ and $y$
 axes.
 
-The function `plotNetwork` plots cape results as a circular network.
+The function `plot_network` plots cape results as a circular network.
 Here chromosomes are arranged in a circle with traits in concentric 
 circles around the chromosomes. Main effects are depicted in these 
 concentric circles and genetic interactions are shown as arrows within
@@ -809,7 +809,7 @@ circ_net_file <- here("demo", "demo_qtl", "Network.Circular.jpg")
 cat(paste0("![](", circ_net_file, ")\n"))
 ```
 
-And finally, the function `plotFullNetwork` This function plots
+And finally, the function `plot_full_network` This function plots
 the same results in a network that ignores genomic position. 
 This view accentuates the structure of the genetic interaction
 network.
@@ -834,7 +834,7 @@ effects on plasma insulin and glucose levels as well as on body weight.
 
 We can plot individual interactions from the Variant Influences table
 to get a more detailed look at some of these interactions. There is a
-new plotting function in cape called `plotEffects` that can be used
+new plotting function in cape called `plot_effects` that can be used
 to plot the phenotypic effects of individual interactions in multiple
 different styles. 
 
@@ -843,12 +843,12 @@ in which the presence of the NZO allele on Chr 2 enhances the positive
 influence of the NZO allele on all traits.
 
 We can look at both the main effects and the interaction effects using 
-`plotEffects`. First to verify the positive effect of the marker on Chr 15,
+`plot_effects`. First to verify the positive effect of the marker on Chr 15,
 we can plot it by itself. Here we use `plot_type = l` which generates a line
 plot.
 
 ```{r plotrlang::last_error()_main, fig.width = 7, fig.height = 3}
-plotEffects(data_obj = final_cross, geno_obj = obesity_geno, 
+plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
 marker1 = "D15Mit72_B", marker1_label = "Chr15", plot_type = "l", 
 error_bars = "se")
 ```
@@ -857,7 +857,7 @@ We can then look at both markers together to see the enhanced
 effect of this allele when the Chr 2 NZO allele is present.
 
 ```{r plot_int, fig.width = 7, fig.height = 3}
-plotEffects(data_obj = final_cross, geno_obj = obesity_geno, 
+plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
 marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1_label = "Chr2",
 marker2_label = "Chr15", plot_type = "l", error_bars = "se")
 ```
@@ -875,7 +875,7 @@ has a small positive effect. However, when both NZO alleles are present,
 all trait values are higher than expected from the additive effects alone.
 
 ```{r int_bar, fig.width = 7, fig.height = 3}
-plotEffects(data_obj = final_cross, geno_obj = obesity_geno, 
+plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
 marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1_label = "Chr2",
 marker2_label = "Chr15", plot_type = "b", error_bars = "se")
 ```
@@ -901,30 +901,30 @@ whether traits are normally distributed.
 **qnorm_pheno:** Plots trait quantiles compared to theoretical normal 
 quantiles. Helps identify whether traits are normally distributed.
 
-**plotPhenoCor:** Plots the correlation between pairs of traits. 
+**plot_pheno_cor:** Plots the correlation between pairs of traits. 
 Includes individual trait distributions, correlation plots, and 
 correlation values. Points can be color-coded by a covariate or 
 another trait.
 
-**plotSVD:** Plots the results of the singular value decomposition
+**plot_svd:** Plots the results of the singular value decomposition
 that generates the eigentraits. Shows the total trait variance 
 explained by each eigentrait, as well as the contribution of 
 each trait to each eigentrait.
 
-**plotSinglescan:** Plots the results of the single-locus scan.
+**plot_singlescan:** Plots the results of the single-locus scan.
 Can plot either standardized effects or undstandardized effects.
 Also plots effects both by allele and by marker.
 
-**plotPairscan:** Plots the results of the pairwise scan.
+**plot_pairscan:** Plots the results of the pairwise scan.
 
-**plotVariantInfluences:** Plots cape results as a heatmap. Genetic
+**plot_variant_influences:** Plots cape results as a heatmap. Genetic
 interactions are plotted in the main part of the heatmap, and main
 effects are plotted along the right-hand side. Positive and negative
 effects are distinguished by color. This plot is useful for identifying
 overall trends in interaction networks, particularly dense interaction 
 networks. 
 
-**plotNetwork:** Plots cape results as a circular network. Genetic
+**plot_network:** Plots cape results as a circular network. Genetic
 markers are laid out in a circle with traits in concentric circles
 around the chromosomes. Main effects are indicated in the trait 
 circles. Interactions are drawn as arrows between genetic markers
@@ -932,7 +932,7 @@ or between genetic markers and covariates. This view is good for
 identifying patterns on a finer scale than the heat map view, particularly 
 for sparse networks. This view is not very informative for dense networks.
 
-**plotFullNetwork:** Plots cape results in a standard network layout.
+**plot_full_network:** Plots cape results in a standard network layout.
 Each marker is a node, and its main effects are shown in a pie chart
 in which each section of the pie is a trait. Interactions are shown 
 as arrows between nodes. This view is good for looking at overall
@@ -941,12 +941,12 @@ can be informative both for dense and sparse networks. The function
 contains many arguments for adjusting the layout of the network for
 better visualization.
 
-**plotEffects:** Plots the effects of individual interactions on traits.
+**plot_effects:** Plots the effects of individual interactions on traits.
 This function is for exploring individual interactions in more detail.
 It can plot main effects and interaction effects as lines, points, bars,
 or heatmaps. To select individual interactions to plot, use the file
 plot.variant.influences.csv or Variant.Influences.Interactions.csv. The 
-function plotVariantInfluences can also return these tables invisibly 
+function plot_variant_influences can also return these tables invisibly 
 without writing to a file. 
 
 ## List of Output Files
@@ -992,22 +992,22 @@ The results are a list of the following seven elements:
    * locus_score_scores: Marker-level test statistics.
 
 **Network.Circular.jpg** A jpg file containing the circular cape results
-plot generated by `plotNetwork`
+plot generated by `plot_network`
 
 **Network.Circular.pdf:** A pdf file containing the circular cape results
-plot generated by `plotNetwork`
+plot generated by `plot_network`
 
 **Network.View.jpg:** A jpg file containing the cape results plot 
-generated by `plotFullNetwork`.
+generated by `plot_full_network`.
 
 **Network.View.pdf:** A pdf file containing the cape results plot 
-generated by `plotFullNetwork`.
+generated by `plot_full_network`.
 
 **Pairscan.Regression.jpg:** A jpg file containing the results
-of the pairwise scan plotted by `plotPairscan`.
+of the pairwise scan plotted by `plot_pairscan`.
 
 **Pairscan.Regression.pdf:** A pdf file containing the results
-of the pairwise scan plotted by `plotPairscan`.
+of the pairwise scan plotted by `plot_pairscan`.
 
 **permutation.data.RData** The results of the permutations from the 
 function `pairscan`.
@@ -1017,34 +1017,34 @@ allele effects are plotted in this plot, as well as the effects for each
 locus overall. Multiple allele effects are only plotted for multi-parent
 populations. Otherwise, the allele plot looks similar to the locus plot.
 There will be one singlescan effects plot for each trait, and the trait
-name will be included in the filename. This plot is generated by `plotSinglescan`.
+name will be included in the filename. This plot is generated by `plot_singlescan`.
 
 **Singlescan.ET1.Standardized.jpg:** The results of the single-locus scan. 
 In contrast to the file above, this plot shows only the standardized allele 
 effects for each locus. Similar to the file above, there will be one effects 
 plot for each trait, and the trait name will be included in the filename. 
-This plot is generated by `plotSinglescan`.
+This plot is generated by `plot_singlescan`.
 
 **svd.jpg:** A jpg file showing the results of the singular value 
 decomposition of the traits, if that step was performed. The plot
-is generated by `plotSVD`. It shows the total trait variance 
+is generated by `plot_svd`. It shows the total trait variance 
 explained by each eigentrait, as well as the contribution of 
 each trait to each eigentrait.
 
 **svd.pdf** A pdf version of svd.jpg.
 
 **Variant.Influences.csv:** A csv file holding the results of cape,
-and written by the function `writeVariantInfluences' This file contains
+and written by the function `write_variant_influences' This file contains
 both main effects and interactions. 
 
 **Variant.Influences.Interactions.csv:** A csv file holding the results of cape,
-and written by the function `writeVariantInfluences' This file contains
+and written by the function `write_variant_influences' This file contains
 only the interactions. 
 
 **variant.influences.jpg:** A jpg showing cape results as plotted by 
-`plotVariantInfluences`.
+`plot_variant_influences`.
 
 **variant.influences.pdf:** A pdf showing cape results as plotted by 
-`plotVariantInfluences`.
+`plot_variant_influences`.
 
 ## References

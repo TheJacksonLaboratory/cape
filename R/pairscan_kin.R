@@ -3,7 +3,7 @@
 #' This function is called by \code{\link{pairscan}}
 #' when a kinship correction is requested. It adjusts 
 #' each variable according to the kinship matrix using
-#' \code{\link{kinship_on_the_fly}} and then fits linear
+#' \code{\link{kinship_adjust}} and then fits linear
 #' pairwise models to the adjusted data.
 #' 
 #' @param data_obj a \code{\link{Cape}} object
@@ -168,12 +168,12 @@ pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs,
         }
       }
       
-      kin_dat <- kinship_on_the_fly(kin_mat, geno, chr1 = NULL, chr2 = NULL, 
+      kin_dat <- kinship_adjust(kin_mat, geno, chr1 = NULL, chr2 = NULL, 
       phenoV = pheno_vector, covarV = covar_vector)
     #}else{
       #If we are using LTCO (taking this out for now)
     #  chr_pairs <- Reduce("rbind", strsplit(names(kin_obj), ","))
-    #  kin_dat <- apply(chr_pairs, 1, function(x) kinship_on_the_fly(kin_obj, geno, 
+    #  kin_dat <- apply(chr_pairs, 1, function(x) kinship_adjust(kin_obj, geno, 
     #  x[1], x[2], phenoV = pheno_vector, covarV = covar_vector))
     #}
     sink(NULL) #stop sinking output

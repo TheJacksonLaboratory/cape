@@ -2,7 +2,7 @@
 title: "cape: A package for the combined analysis of pleiotropy and epistasis"
 author: 
 - Anna L. Tyler^[The Jackson Laboratory, anna.tyler@jax.org], Jake Emerson^[The Jackson Laboratory, jake.emerson@jax.org], Baha El Kassaby^[The Jackson Laboratory, baha.elkassaby@jax.org], Ann Wells^[The Jackson Laboratory, ann.wells@jax.org], Georgi Kolishovski^[The Jackson Laboratory, georgi.kolishovski@jax.org], Vivek M. Philip^[The Jackson Laboratory, vivek.philip@jax.org],and Gregory W. Carter^[The Jackson Laboratory, gregory.carter@jax.org]
-date: 'September 18, 2020'
+date: 'September 21, 2020'
 output: 
    rmarkdown::html_vignette:
       toc: true
@@ -242,7 +242,7 @@ This is in contrast to traits that are perfectly correlated and likely have
 only common genetic influences, and to traits that are completely uncorrelated
 and likely have divergent genetic influences.
 
-We can look at the correlation of the traits in our data set using `plotPhenoCor.`
+We can look at the correlation of the traits in our data set using `plot_pheno_cor`
 The figure below shows the correlations between all pairs of traits. Here,
 we have also colored the points by the covariate "pgm" to look for some
 initial trends. You can see that mice with obese mothers tended to have
@@ -258,7 +258,7 @@ as well as correlations for each group in `color_by.`
 
 
 ```r
-plotPhenoCor(obesity_cross, pheno_which = c("BW_24", "INS_24", "log_GLU_24"),
+plot_pheno_cor(obesity_cross, pheno_which = c("BW_24", "INS_24", "log_GLU_24"),
 color_by = "pgm", group_labels = c("Non-obese", "Obese"))
 ```
 
@@ -403,7 +403,7 @@ we recommend using R/qtl2 [@broman2019r].
 **alpha:** If "singlescan_perm" is a number greater than 0, you can also 
 specify a significance threshold alpha. If alpha is specified, cape will 
 calculate an effect size threshold for each value of alpha. These can be
-plotted using `plotSinglescan`.
+plotted using `plot_singlescan`.
 
 ### Marker Selection Parameters
 As mentioned above, the single-locus scan is primarily used to select 
@@ -507,22 +507,575 @@ to FALSE, important messages are still printed, but printing of progress
 is suppressed.
 
 
+```r
+final_cross <- run_cape(obesity_cross, obesity_geno, results_file = "NON_NZO.RData", p_or_q = 0.05, verbose = FALSE, param_file = param_file, results_path = results_path)
+```
+
+```
+## Removing 18 individuals with missing phenotypes.
+```
+
+The benefit to this new function is obvious: cape is now much easier to run. 
+However, it comes with a sizeable reduction in flexibility. For most users the 
+benefit of the increased ease of use will far outweigh the decrease in 
+flexibility.
+
+If you do need of more flexibility, all functions in the function 
+`run_cape` are exported, so the entire analysis can be run step-by-step 
+as it was in earlier versions. All plotting functions are also exported 
+to allow greater flexibility in plotting. Although `run_cape` does some 
+plotting automatically, you may wish to re-run some plotting functions 
+with your own settings. 
+
+However you choose to run cape, the cape team is very happy to answer 
+any questions and to help with running or interpreting any cape analysis.
+
+### Eigentraits
+As described above, the first step performed by cape is typically to 
+decompose the trait matrix into eigentraits. This is done if "scan_what"
+is set to "eigentraits."
+
+This step uses singular value decomposition (SVD) to decompose the trait
+matrix into orthogonal eigentraits. Because we use modestly correlated 
+traits in cape by design, the eigentrait decomposition may help concentrate
+correlated signals, that are otherwise distributed across traits, into 
+individual eigentraits. This potentially increases power to detect variants
+associated with the common components of groups of traits.
+
+Cape uses the function `plot_svd` to plot the results of the SVD. The 
+plot for the NON/NZO data set are shown below.
+
+![](/Users/elkasb/git/cape/demo/demo_qtl/svd.jpg)
+
+In the example illustrated here, the first eigentrait captures 75\% of the 
+total trait variance. This eigentrait describes the processes by which body 
+weight, glucose levels, and insulin levels all vary together. The correlations 
+between obesity and risk factors for obesity, such as elevated insulin and 
+fasting glucose levels are well known [@Permutt:2005ir; @Das:2006bo; @Haffner:2003kb]. 
+The second eigentrait captures 14\% of the variance in the phenotypes. It captures 
+the processes through which glucose and body weight vary in opposite directions. 
+This eigentrait may be important in distinguishing the genetic discordance between 
+obesity and diabetes. While obesity is a strong risk factor for diabetes, not 
+all those who are obese have diabetes, and not all those with diabetes are obese 
+[@Permutt:2005ir; @Burcelin:2002co].
+
+The third eigentrait is less interpretable biologically, as it describes the 
+divergence of blood glucose and insulin levels. It may represent a genetic 
+link between glucose and body weight that is non-insulin dependent. Because we 
+are primarily interested in the connection between diabetes and insulin, we used 
+only the first two eigentraits for the analysis. In many cases in which more 
+than two phenotypes are being analyzed, the first two or three eigentraits will 
+capture the majority of the variance in the data and capture obvious features. 
+Other eigentraits may capture noise or systematic bias in the data. Often the 
+amount of total variance captured by such eigentraits is small, and they can 
+be removed from the analysis.
+
+Ultimately, there is no universal recipe for selecting which eigentraits 
+should be included in the analysis, and the decision will be based on how 
+the eigentraits contribute to the original phenotypes and how much variance 
+in the data they capture.
+
+### Single-locus scan
+After computing eigentraits, we go on to perform marker regression on all 
+individual markers:
+
+$$U_{i}^{j} = \beta_{0}^{j} + x_{i}\beta^{j} + \epsilon_{i}^{j}$$
+
+The index $i$ runs from 1 to the number of individuals, and $j$ runs from 
+1 to the number of eigentraits or traits. $x_{i}$ is the probability 
+of the presence of the reference allele for individual $i$ at locus $j$. 
+The primary purpose of this scan is is to select markers for the pairwise
+scan if there are too many to test exhautively.
+
+Although `run_cape` creates files with the singlescan results automatically,
+it is also sometimes desireable to re-plot these results with different 
+parameters. We show how to do that below by reading in the singlescan
+results file and using `plot_singlescan` with parameters different from
+those in `run_cape.`
 
 
+```r
+singlescan_obj <- readRDS(here("demo", "demo_qtl", "NON_NZO.singlescan.RData"))
+plot_singlescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
+covar_label_size = 1)
+```
+
+![plot of chunk single_plot](figure/single_plot-1.png)![plot of chunk single_plot](figure/single_plot-2.png)
+
+### Pairwise Testing
+
+The purpose of the pairwise scan is to find interactions, or epistasis, 
+between variants. The epistatic models are then combined across traits or 
+eigentraits to infer a parsimonious model that takes data from all 
+traits or eigentraits into account.
+
+To find epistatic interactions we test the following regression model for each 
+variant 1 and 2:
+
+$$
+U_{i}^{j} = \beta_{0}^{j} + \underbrace{\sum_{c=1}^{2}x_{c,i}\beta_{c}^{j}}_{\mathrm{covariates}} + 
+\underbrace{x_{1,i}\beta_{1}^{j} + x_{2,i}\beta_{2}^{j}}_{\mathrm{main\;effects}} + \underbrace{x_{1,i}x_{2,i} 
+\beta_{12}^{j}}_{\mathrm{interaction}} +  \epsilon_{i}^{j}
+$$
+
+The terms in this equation are the same as those in the equation for the 
+single-marker scan except for the addition of the term for the interaction 
+between the two variants being tested. 
+
+### kinship Correction 
+
+To reduce the incidence of false positives arising from genetic relatedness,
+cape can implement a kinship correction [@Kang:2008bx].
+
+The relatedness matrix ($K$) is calculated 
+using the markers on the remaining chromosomes as follows:
+
+$$ K = \frac{G \times G^T}{n},$$
+
+where $G$ and $n$ is the number of markers in $G$. This matrix is then used to 
+correct the genotype and phenotype matrices for kinship using hierarchical 
+linear models [@Kang:2008bx; @gelman2006data].
+
+Currently cape only implements an overall kinship correction. Anecdotally,
+we have tested leave-two-chromosomes-out methods as an extension of the
+leave-one-chromosome-out method already commonly used 
+[@cheng2013practical; @gonzales2018genome], but our results 
+were inconsistent suggesting we need to do more research into this area.
+More appropriate corrections are currently a topic of research in our 
+group and will be implemented in later iterations of cape.
+
+### Reprarametrization
+The reparametrization step is where we actually do the combined analysis of
+pleiotropy and epistasis that cape is named for. This step reparametrizes
+the $\beta$ coefficients from the pairwise linear regressions across all 
+traits/eigentraits in terms of directed influence coefficients. These 
+directed influence coefficients are consistent across all traits, and are
+therefore trait-independent. Cape identifies one set of genetic interactions 
+that explains all traits simultaneously [@Carter:2012fd].
+
+From the pair scan, each pair of markers 1 and 2 receives a set of $\beta$ 
+coefficients describing the main effect of each marker on each eigentrait 
+$j$ ($\beta^j_1$ and $\beta^j_2$) as well as the interaction effect of both 
+markers on each eigentrait ($\beta^j_{12}$) (See figure below). The central 
+idea of `cape` is that these coefficients can be combined across eigentraits 
+and reparameterized to calculate how each pair of markers influences each 
+other directly and independently of eigentrait.
+
+![](/Users/elkasb/git/cape/vignettes/reparam.png)
+
+The first step in this reparameterization is to define two new parameters 
+($\delta_1$ and $\delta_2$) in terms of the interaction coefficients. 
+$\delta_1$ can be thought of as the additional genetic activity of marker 1 
+when marker 2 is present. Together the $\delta$ terms capture the interaction 
+term, and are interpreted as the extent to which each marker influences the 
+effect of the other on downstream phenotypes. For example, a negative $\delta_2$ 
+indicates that the presence of marker 2 represses the effect of marker 1 on the 
+phenotypes or eigentraits. The $\delta$ terms are related to the main effects 
+and interaction effects as follows:
+
+$$
+\label{eqn:delta_mat_def}
+\begin{bmatrix}
+\beta^1_1 & \beta^1_2\\
+\beta^2_1 & \beta^2_2\\
+\vdots & \vdots
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+\delta_1\\
+\delta_2\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\beta^1_{12}\\
+\beta^2_{12}\\
+\vdots
+\end{bmatrix}
+$$
+
+In multiplying out this equation, it can be seen how the $\delta$ terms 
+influence each main effect term to give rise to the interaction terms 
+independent of phenotype. 
+
+$$
+\label{eqn:delta_def}
+\beta^j_1\delta_1 + \beta^j_2\delta_2 = \beta^j_{12}
+$$
+
+If $\delta_1 = 0$ and $\delta_2 = 0$, there are no addition effects exerted by the 
+markers when both are present. Substitution into the equations above shows that 
+the interaction terms $\beta^j_{12}$ are $0$ and thus the interaction terms have 
+no effect on the phenotype.
+ 
+Alternatively, consider the situation when $\delta_1 = 1$ and $\delta_2 = 0$. 
+The positive $\delta_1$ indicates that marker 1 should exert an additional effect 
+when marker 2 is present. This can be seen again through substitution into 
+equation \ref{eqn:delta_def}:
+
+$$ \beta_j^1 = \beta_{12}^j $$
+
+These non-zero terms show that there is an interaction effect between marker 1 and 
+marker 2. The positive $\delta_1$ indicates that this interaction is driven through
+an enhanced effect of marker 1 in the presence of marker 2.
+
+The $\delta$s are calculated by solving for equation \ref{eqn:delta_mat_def} using 
+matrix inversion:
+
+$$
+\begin{bmatrix}
+\delta_1\\
+\delta_2\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\beta^1_1 & \beta^1_2\\
+\beta^2_1 & \beta^2_2\\
+\vdots & \vdots
+\end{bmatrix}^{-1}
+\cdot
+\begin{bmatrix}
+\beta^1_{12}\\
+\beta^2_{12}\\
+\vdots
+\end{bmatrix}
+$$
+
+This inversion is exact for two eigentraits, and `cape` implements 
+pseudo-inversion for up to 12 eigentraits. We have observed that maximum 
+power to detect interactions is achieved with three to five eigentraits 
+[@tyler2017epistatic]. 
+
+The $\delta$ terms are then translated into directed variables defining the 
+marker-to-marker influences $m_{12}$ and $m_{21}$. Whereas $\delta_2$ 
+described the change in activity of marker 2 in the presence of marker 1, 
+$m_{12}$ can be thought of as the direct influence of marker 2 on marker 1, 
+with negative values indicating repression and positive values indicating 
+enhancement. The terms $m_{12}$ and $m_{21}$ are self-consistent and 
+defined in terms of $\delta_1$ and $\delta_2$:
+
+$$
+\delta_1 = m_{12}(1 + \delta_2),\;\delta_2 = m_{21}(1 + \delta_1)
+$$
+ 
+Rearranging these equations yields the solutions:
+ 
+$$
+m_{12} = \frac{\delta_1}{1 + \delta_2},\;m_{21} = \frac{\delta_2}{1 + \delta_1}.
+$$
+ 
+These directed influence variables provide a map of how each marker influences 
+each other marker independent of phenotype. The significance of these influences 
+is determined through standard error analysis on the regression parameters 
+[@bevington1994data; @Carter:2012fd]. This step is particularly important as 
+matrix inversion can lead to large values but larger standard errors, yielding 
+insignificant results. As an example, the variance of $m_{12}$ is calculated by 
+differentiating with respect to all model parameters:
+
+$$
+\sigma^{2}_{m_{12}} \cong \sum_{ij} \sigma^2_{\beta_{i}^{j}} \Bigg(\frac{\partial m_{12}}
+{\partial \beta_{i}^{j}}\Bigg)^2 + 2 \sum_{i<k, j < l} \sigma^2_{\beta^{j}_{i}\beta^{l}_{k}} \Bigg(\frac{\partial m_{12}}
+{\partial \beta^{j}_{i}} \Bigg) \Bigg(\frac{\partial m_{12}}{\partial \beta^{l}_{k}} \Bigg)
+ $$
+ 
+In this equation, the indices $i$ and $k$ run over regression parameters and $j$ 
+and $l$ run from 1 to the number of traits. 
+
+### Main Effects
+In addition to identifying directed influences between genetic markers,
+cape also calculates main effects. These effects are a little different 
+from the main effects we typically calculate. The main effect of a locus
+calculated in the usual way is the main effect averaged across all genetic 
+backgrounds. In cape, the main effect of a marker is derived from the set
+of all pairwise regressions that included that marker. We select the maximum
+main effect exerted by that marker across all pairwise tests. That is, the
+main effect that is reported by cape is a main effect conditioned on another
+marker or covariate. The conditioning markers and covariates are reported
+along with the main effects in the VariantInfluences.csv file.
+
+If eigentraits were scanned, the main effects can be recast in terms of the
+original traits. This step is performed by multiplying the coefficient matrices 
+are by the singular value matrices $V \cdot W^{T}$. With two phenotypes and 
+two eigentraits this conversion results in no loss of information. The 
+translation back to phenotype space does not affect the interactions between 
+markers.
+
+### CAPE Results
+The primary output of cape is the file VariantInfluences.csv. This
+file holds information about the interactions and main effects
+identified in the data. Another file Variant.Influences.Interactions.csv,
+excludes the main effects. Please see the documentation for the 
+function `write_variant_influences` for a description of the columns
+in these files. 
+
+Cape results can also be plotted in multiple different forms. The function
+`plot_variant_influences` plots the results as a heatmap. Interactions
+between genetic loci are shown in the main part of the graph and 
+main effects are shown along the right-hand side. 
+
+The direction of the influences is read from the $y$-axis to the $x$-axis.
+For example, there is a large blue block near the top of the figure indicating
+that multiple markers on chromosome 1 suppress the phenotypic effects of 
+markers on chromosome 12. To see the main effects of markers on chromosome
+1, follow the chromosome 1 line all the way to the right to see that markers
+on chromosome 1 increase levels of all three traits. 
+
+![](/Users/elkasb/git/cape/demo/demo_qtl/variant.influences.jpg)
+
+Positive effects are shown in brown, and negative effects are in blue.
+Marker pairs that were not tested due to high correlation are shown in
+gray. Chromosome boundaries and labels are shown along the $x$ and $y$
+axes.
+
+The function `plot_network` plots cape results as a circular network.
+Here chromosomes are arranged in a circle with traits in concentric 
+circles around the chromosomes. Main effects are depicted in these 
+concentric circles and genetic interactions are shown as arrows within
+the circle. 
+
+![](/Users/elkasb/git/cape/demo/demo_qtl/Network.Circular.jpg)
+
+And finally, the function `plot_full_network` This function plots
+the same results in a network that ignores genomic position. 
+This view accentuates the structure of the genetic interaction
+network.
+
+Each node is one genetic locus or covariate. Each is plotted as 
+a pie chart with one trait per section. Significant effects are indicated
+by coloring the sections corresponding to the traits either brown 
+for positive main effects or blue for negative main effects. Gray indicates
+no significant main effect. Interactions are shown as arrows between the nodes. 
+
+![](/Users/elkasb/git/cape/demo/demo_qtl/Network.View.jpg)
+
+### Interpreting CAPE Results
+
+Both the network figure and the adjacency matrix show direct influences of 
+markers on the phenotypes as well as interactions between markers. As 
+expected, many NZO variants on multiple chromosomes show positive 
+effects on plasma insulin and glucose levels as well as on body weight. 
+
+We can plot individual interactions from the Variant Influences table
+to get a more detailed look at some of these interactions. There is a
+new plotting function in cape called `plot_effects` that can be used
+to plot the phenotypic effects of individual interactions in multiple
+different styles. 
+
+For example, there is a positive interaction between Chrs 2 and 15
+in which the presence of the NZO allele on Chr 2 enhances the positive
+influence of the NZO allele on all traits.
+
+We can look at both the main effects and the interaction effects using 
+`plot_effects`. First to verify the positive effect of the marker on Chr 15,
+we can plot it by itself. Here we use `plot_type = l` which generates a line
+plot.
 
 
+```r
+plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
+marker1 = "D15Mit72_B", marker1_label = "Chr15", plot_type = "l", 
+error_bars = "se")
+```
+
+![plot of chunk plotrlang::last_error()_main](figure/plotrlang::last_error()_main-1.png)
+
+We can then look at both markers together to see the enhanced
+effect of this allele when the Chr 2 NZO allele is present.
 
 
+```r
+plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
+marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1_label = "Chr2",
+marker2_label = "Chr15", plot_type = "l", error_bars = "se")
+```
+
+![plot of chunk plot_int](figure/plot_int-1.png)
+
+We can see from this plot that the effect of the Chr 15 NZO allele
+is negligible when the Chr 2 NZO allele is present, but is quite 
+substantial when the Chr 2 NZO allele is present. Thus the NZO allele
+on Chr 2 enhances the positive effect of the Chr 15 allele across 
+all traits.
+
+We can look at this with other types of visualization. The bar plot
+below shows the same data in a different form. We can see here that the
+Chr 2 allele has a negative effect on the trait, while the Chr 15 allele
+has a small positive effect. However, when both NZO alleles are present, 
+all trait values are higher than expected from the additive effects alone.
 
 
+```r
+plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
+marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1_label = "Chr2",
+marker2_label = "Chr15", plot_type = "b", error_bars = "se")
+```
 
+![plot of chunk int_bar](figure/int_bar-1.png)
 
+There are several other plotting types that are worth exploring when looking
+at different types of interactions, including heat maps, and points for 
+individual values. 
 
+These findings illustrate how `cape` is designed to find interactions that 
+simultaneously model all phenotypes under the assumption that interactions 
+between variants across multiple contexts represent a single underlying 
+interaction network. Thus we recommend users assess single-phenotype epistasis 
+using functions in `cape` or in parallel analyses using tools such as R/qtl2
+and R/qtlbim [@rqtlbim].
 
+## List of Plotting Functions
+The following list describes the plotting functions available in cape.
+They are ordered by where you would probably use them in a cape analysis.
 
+**hist_pheno:** Plots trait distributions as histograms. Helps identify
+whether traits are normally distributed.
 
+**qnorm_pheno:** Plots trait quantiles compared to theoretical normal 
+quantiles. Helps identify whether traits are normally distributed.
 
+**plot_pheno_cor:** Plots the correlation between pairs of traits. 
+Includes individual trait distributions, correlation plots, and 
+correlation values. Points can be color-coded by a covariate or 
+another trait.
 
+**plot_svd:** Plots the results of the singular value decomposition
+that generates the eigentraits. Shows the total trait variance 
+explained by each eigentrait, as well as the contribution of 
+each trait to each eigentrait.
 
+**plot_singlescan:** Plots the results of the single-locus scan.
+Can plot either standardized effects or undstandardized effects.
+Also plots effects both by allele and by marker.
 
+**plot_pairscan:** Plots the results of the pairwise scan.
 
+**plot_variant_influences:** Plots cape results as a heatmap. Genetic
+interactions are plotted in the main part of the heatmap, and main
+effects are plotted along the right-hand side. Positive and negative
+effects are distinguished by color. This plot is useful for identifying
+overall trends in interaction networks, particularly dense interaction 
+networks. 
+
+**plot_network:** Plots cape results as a circular network. Genetic
+markers are laid out in a circle with traits in concentric circles
+around the chromosomes. Main effects are indicated in the trait 
+circles. Interactions are drawn as arrows between genetic markers
+or between genetic markers and covariates. This view is good for 
+identifying patterns on a finer scale than the heat map view, particularly 
+for sparse networks. This view is not very informative for dense networks.
+
+**plot_full_network:** Plots cape results in a standard network layout.
+Each marker is a node, and its main effects are shown in a pie chart
+in which each section of the pie is a trait. Interactions are shown 
+as arrows between nodes. This view is good for looking at overall
+network structure independent of genomic position. This view
+can be informative both for dense and sparse networks. The function 
+contains many arguments for adjusting the layout of the network for
+better visualization.
+
+**plot_effects:** Plots the effects of individual interactions on traits.
+This function is for exploring individual interactions in more detail.
+It can plot main effects and interaction effects as lines, points, bars,
+or heatmaps. To select individual interactions to plot, use the file
+plot.variant.influences.csv or Variant.Influences.Interactions.csv. The 
+function plot_variant_influences can also return these tables invisibly 
+without writing to a file. 
+
+## List of Output Files
+The following list describes each output file produced by `run_cape`.
+Where we use `cross` below, this stands in for the user-defined 
+experiment name. The default experiment name in cape is "cross."
+
+**cross_geno.RData:** The genotype object used in the cape run. 
+This will have any markers on the X, Y, or mitochondrial chromosomes
+removed, and any underscores removed from marker names. This genotype
+object can be used in post-cape plotting functions.
+
+**cross.pairscan.RData:** The results of the pairwise scan. It consists
+of a list with the following five elements:
+   * ref_allele: The allele used as the reference for the tests.
+   * max_pair_cor: The maximum pairwise correlation between marker pairs
+   * pairscan_results: A list with one element per trait. The element for
+     each trait is a list of the following three elements:
+     * pairscan_effects: the effect sizes from the linear models
+     * pairscan_se: the standard erros from the linear models
+     * model_covariance: the model covariance from the linear models.
+   * pairscan_perm: The same structure as pairscan_results, but for the
+     permuted data.
+   * pairs_tested_perm: A matrix of the marker pairs used in the permutation
+     tests.
+
+**cross.parameters.yml** The parameter file dictating all the parameters
+for the cape run.
+
+**cross.RData** The data object. This object holds all the trait data,
+and cape results. It is used as input for almost all cape functions. 
+
+**cross.singlescan.RData:** The results of the single-locus scan.
+The results are a list of the following seven elements:
+   * alpha: The alpha values set in the argument alpha
+   * alpha_thresh: The calculated effect size thresholds at each 
+      alpha if permutations are run.
+   * ref_allele: The allele used as the reference allele
+   * singlescan_effects: The effect sizes (beta coefficients) from the 
+      single-locus linear models
+   * singlescan_t_stats: The t statistics from the single-locus linear models
+   * locus.p_vals: Marker-level p values
+   * locus_score_scores: Marker-level test statistics.
+
+**Network.Circular.jpg** A jpg file containing the circular cape results
+plot generated by `plot_network`
+
+**Network.Circular.pdf:** A pdf file containing the circular cape results
+plot generated by `plot_network`
+
+**Network.View.jpg:** A jpg file containing the cape results plot 
+generated by `plot_full_network`.
+
+**Network.View.pdf:** A pdf file containing the cape results plot 
+generated by `plot_full_network`.
+
+**Pairscan.Regression.jpg:** A jpg file containing the results
+of the pairwise scan plotted by `plot_pairscan`.
+
+**Pairscan.Regression.pdf:** A pdf file containing the results
+of the pairwise scan plotted by `plot_pairscan`.
+
+**permutation.data.RData** The results of the permutations from the 
+function `pairscan`.
+
+**Singlescan.Effects.jpg** The results of the single-locus scan. All 
+allele effects are plotted in this plot, as well as the effects for each
+locus overall. Multiple allele effects are only plotted for multi-parent
+populations. Otherwise, the allele plot looks similar to the locus plot.
+There will be one singlescan effects plot for each trait, and the trait
+name will be included in the filename. This plot is generated by `plot_singlescan`.
+
+**Singlescan.ET1.Standardized.jpg:** The results of the single-locus scan. 
+In contrast to the file above, this plot shows only the standardized allele 
+effects for each locus. Similar to the file above, there will be one effects 
+plot for each trait, and the trait name will be included in the filename. 
+This plot is generated by `plot_singlescan`.
+
+**svd.jpg:** A jpg file showing the results of the singular value 
+decomposition of the traits, if that step was performed. The plot
+is generated by `plot_svd`. It shows the total trait variance 
+explained by each eigentrait, as well as the contribution of 
+each trait to each eigentrait.
+
+**svd.pdf** A pdf version of svd.jpg.
+
+**Variant.Influences.csv:** A csv file holding the results of cape,
+and written by the function `write_variant_influences' This file contains
+both main effects and interactions. 
+
+**Variant.Influences.Interactions.csv:** A csv file holding the results of cape,
+and written by the function `write_variant_influences' This file contains
+only the interactions. 
+
+**variant.influences.jpg:** A jpg showing cape results as plotted by 
+`plot_variant_influences`.
+
+**variant.influences.pdf:** A pdf showing cape results as plotted by 
+`plot_variant_influences`.
+
+## References

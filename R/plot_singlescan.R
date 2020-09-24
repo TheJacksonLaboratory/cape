@@ -26,7 +26,7 @@
 #' 
 #' @export
 
-plotSinglescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL, 
+plot_singlescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL, 
   alpha = c(0.01, 0.05), standardized = TRUE, color_scheme = c("DO/CC","other"), 
   allele_labels = NULL, include_covars = TRUE, show_selected = FALSE, 
   line_type = "l", lwd = 1, pch = 16, cex = 1, covar_label_size = 0.7){

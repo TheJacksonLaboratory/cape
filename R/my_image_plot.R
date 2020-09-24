@@ -1,8 +1,8 @@
 #' Generate a Heatmap-type image
 #'
 #' This internal function generates heatmap-type
-#' images for functions like \code{\link{plotSVD}}
-#' \code{\link{plotPairscan}}, and \code{\link{plotVariantInfluences}}
+#' images for functions like \code{\link{plot_svd}}
+#' \code{\link{plot_pairscan}}, and \code{\link{plot_variant_influences}}
 #' 
 #' @param x Matrix to be plotted 
 
