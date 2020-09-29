@@ -221,12 +221,12 @@ use_pheatmap_colors = FALSE, na_col = "lightgray"){
 		if(use_pheatmap_colors){
 			pal <- colorRampPalette(rev(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu")))(100)
 			if(global_color_scale){
-				bks <- pheatmap:::generate.breaks(c(global_min, global_max), length(pal), 
+				bks <- pheatmap:::generate_breaks(c(global_min, global_max), length(pal), 
 				center = F)
 			}else{
-				bks <- pheatmap:::generate.breaks(vals, length(pal), center = F)
+				bks <- pheatmap:::generate_breaks(vals, length(pal), center = F)
 			}
-			color_ramp <- pheatmap:::scale.colours(vals, col=pal, breaks=bks, na_col = na_col)
+			color_ramp <- pheatmap:::scale_colours(vals, col=pal, breaks=bks, na_col = na_col)
 		}else{
 			color_ramp = fill_color_ramp(vals, class_mat, global_color_scale)
 		}
