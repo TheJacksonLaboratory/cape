@@ -79,8 +79,8 @@ covarV = NULL, verbose = FALSE){
     
     #This err_cov is the same as err_cov in Dan's code using estVC
     #err_cov = summary(model)$sigma[1]*K+summary(model)$sigma[2]*diag(nrow(K))
-    if(verbose){cat("\tCalculating err_cov...\n")}
-    err_cov = model$sigma[1]*K+model$sigma[2]*diag(nrow(K))
+    #if(verbose){cat("\tCalculating err_cov...\n")}
+    #err_cov = model$sigma[1]*K+model$sigma[2]*diag(nrow(K))
     
   if(verbose){cat("\tCalculating eW...\n")}
     eW = eigen(err_cov, symmetric = TRUE)
