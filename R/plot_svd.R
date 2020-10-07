@@ -52,7 +52,8 @@ plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_co
                     ET_label_x = 0.5, ET_label_y = 0.5, pheno_label_pos = 0.5, 
                     cex_pheno = 1.7, pheno_srt = 90, percent_total_variance_x = 0.5, 
                     percent_total_variance_y = 0.5, cex_color_scale = 1, cex_var_accounted = 2, 
-                    var_accounted_x = 0, var_accounted_y = 0, show_var_accounted = FALSE){
+                    var_accounted_x = 0, var_accounted_y = 0, show_var_accounted = FALSE,
+                    just_selected_et = FALSE){
   
   #test to see if there is a v in the orientation vector
   orient_test <- grep("v", orientation) 
@@ -64,32 +65,38 @@ plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_co
     stop("pheno_labels needs to have as many elements as there are phenotypes.\n")
   }
   
+  et <- data_obj$ET
+  if(just_selected_et){
+    et_which <- as.numeric(gsub("ET", "", colnames(et)))
+  }else{
+    et_which <- 1:length(pheno_labels)
+  }
   
   #The contribution of each eigentrait to each phenotype
   #is encoded in the right singular vectors (eigenvectors)
-  eigen_weights <- t(data_obj$right_singular_vectors)[1:dim(data_obj$ET)[2],]
+  eigen_weights <- t(data_obj$right_singular_vectors)
   colnames(eigen_weights) <- colnames(data_obj$pheno)
-  rownames(eigen_weights) <- colnames(data_obj$ET)
+  rownames(eigen_weights) <- paste0("ET", 1:nrow(eigen_weights))
   
   #use the singular values to calculate the variance
   #captured by each mode
-  singular_vals <- data_obj$singular_values[1:dim(data_obj$ET)[2]]
+  singular_vals <- data_obj$singular_values
   
   if(is.null(singular_vals)){
     stop("get_eigentraits() must be run before plot_svd()")
   }
   
   eigen_vals <- singular_vals^2
-  var_accounted <- eigen_vals/sum(eigen_vals)
+  var_accounted <- (eigen_vals/sum(eigen_vals))[et_which]
   
   
   #if the orientation is vertical, use the matrix as is.
   #otherwise, rotate the matrix, so the ETs are plotted 
   #in each row
   if(length(orient_test) > 0){
-    rotated_eigen <- eigen_weights
+    rotated_eigen <- eigen_weights[et_which,]
   }else{
-    rotated_eigen <- rotate_mat(eigen_weights)
+    rotated_eigen <- rotate_mat(eigen_weights[et_which,])
   }
   
   
@@ -105,8 +112,7 @@ plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_co
   
   color_levels <- seq(min_weight, max_weight, length=256)
   color_ramp <- c(mypal_neg(length(which(color_levels < 0))), mypal_pos(length(which(color_levels >= 0))))
-  
-  
+    
   
   #plot the horizontal configuration
   if(length(orient_test) == 0){
@@ -130,13 +136,15 @@ plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_co
     #2) plot the weight matrix
     par(mar = c(0, 0, 2, 0))
     # my_image_plot(rotated_eigen)
-    image(x = 1:length(rotated_eigen[,1]), y = 1:length(rotated_eigen[1,]), rotated_eigen, col = color_ramp, axes = FALSE, xlab = "", ylab = "")
+    image(x = 1:length(rotated_eigen[,1]), y = 1:length(rotated_eigen[1,]), 
+    rotated_eigen, col = color_ramp, axes = FALSE, xlab = "", ylab = "")
     
     #3) fit in the text for the y axis of the weight matrix
     par(mar = c(0,0,0,0))
     plot.new()
-    plot.window(xlim = c(0, 1), ylim = c(0, length(eigen_weights[,1])))
-    text(x = ET_label_x, y = seq(ET_label_y, (length(eigen_weights[,1])-0.5), 1), rev(rownames(eigen_weights)), cex = cex_ET) #the labels for the y axis (phenotypes)
+    plot.window(xlim = c(0, 1), ylim = c(0, ncol(rotated_eigen)))
+    text(x = ET_label_x, y = seq(ET_label_y, (ncol(rotated_eigen)-0.5), 1), 
+    rev(rownames(eigen_weights)[et_which]), cex = cex_ET) #the labels for the y axis (phenotypes)
     
     #4) fit in the text for the x axis of the weight matrix
     par(mar = c(0,0,0,0))
@@ -204,24 +212,28 @@ plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_co
     plot.new()
     plot.window(xlim = c(0, 1), ylim = c(0, 1))
     par(xpd = TRUE)
-    text(x = percent_total_variance_x, y = percent_total_variance_y, labels = "% Total Var.", cex = cex_barplot_title, srt = 90) #the labels for the y axis (phenotypes)
+    text(x = percent_total_variance_x, y = percent_total_variance_y, 
+    labels = "% Total Var.", cex = cex_barplot_title, srt = 90) #the labels for the y axis (phenotypes)
     par(xpd = FALSE)
     
     #3) plot the weight matrix
     par(mar = c(0, 0, 0, 2))
-    image(x = 1:length(eigen_weights[,1]), y = 1:length(eigen_weights[1,]), rotated_eigen, col = color_ramp, axes = FALSE, xlab = "", ylab = "")
+    image(x = 1:nrow(rotated_eigen), y = 1:ncol(rotated_eigen), rotated_eigen, 
+    col = color_ramp, axes = FALSE, xlab = "", ylab = "")
     
     #4) fit in the text for the y axis of the weight matrix
     par(mar = c(0,0,0,0))
     plot.new()
     plot.window(xlim = c(0, 1), ylim = c(0, length(eigen_weights[1,])))
-    text(x = pheno_label_pos, y = seq(0.5, (length(eigen_weights[1,])-0.5), 1), labels = pheno_labels, cex = cex_pheno) #the labels for the y axis (phenotypes)
+    text(x = pheno_label_pos, y = seq(0.5, (ncol(rotated_eigen)-0.5), 1), 
+    labels = pheno_labels, cex = cex_pheno) #the labels for the y axis (phenotypes)
     
     #5) fit in the text for the x axis of the weight matrix
     par(mar = c(0,0,0,0))
     plot.new()
-    plot.window(xlim = c(0, length(eigen_weights[,1])), ylim = c(0, 1))
-    text(x = seq(ET_label_x, (length(eigen_weights[,1])-0.5), 1), y = ET_label_y, rownames(eigen_weights), cex = cex_ET) #the labels for the x axis (ETs)
+    plot.window(xlim = c(0, nrow(rotated_eigen)), ylim = c(0, 1))
+    text(x = seq(ET_label_x, (nrow(rotated_eigen)-0.5), 1), 
+    y = ET_label_y, rownames(rotated_eigen), cex = cex_ET) #the labels for the x axis (ETs)
     
     #6) add the color ramp
     #par(mar = c(0,2,0,2))
