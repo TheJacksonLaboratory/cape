@@ -1,7 +1,7 @@
 #' Plot phenotypic effect for two markers as a bar plot
 #' 
 #' This internal function is called by 
-#' \code{\link{plotEffects}} to generate a 
+#' \code{\link{plot_effects}} to generate a 
 #' bar plot showing mean trait values for all
 #' combinations of genotypes for two markers.
 #' This function also indicates the predicted
@@ -38,7 +38,7 @@
 #' on the reference genotype.
 #' @return None
 
-plotBars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
+plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
 	marker2_label, ymin = NULL, ymax = NULL, error_bars, ref_centered){
 
 		error_bar_width = 0.1

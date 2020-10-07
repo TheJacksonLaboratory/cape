@@ -1,6 +1,6 @@
 #' Plot concentric trait circles
 #'
-#' This internal function is called by \code{\link{plotNetwork}}
+#' This internal function is called by \code{\link{plot_network}}
 #' It plots one circle for each trait in the data object.
 #'
 #' @param trait_circ A list with one element for each cirlce giving
@@ -12,7 +12,7 @@
 #'
 #' @return None
 
-plotTraitCirc <- function(trait_circ, label_gap, plot_dim, main_lwd){
+plot_trait_circ <- function(trait_circ, label_gap, plot_dim, main_lwd){
   
   num_pheno = length(trait_circ)
   

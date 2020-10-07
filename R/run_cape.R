@@ -160,8 +160,8 @@ run_cape <- function(pheno_obj, geno_obj,
       normalize_pheno = as.logical(data_obj$traits_normalized)
     )
     
-    data_obj$plot_svd("svd.pdf")
-    data_obj$plot_svd("svd.jpg")
+    data_obj$plotSVD("svd.pdf")
+    data_obj$plotSVD("svd.jpg")
     
     # TODO update select_eigentraits
     data_obj <- select_eigentraits(data_obj, traits_which = data_obj$eig_which)

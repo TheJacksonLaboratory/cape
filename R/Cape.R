@@ -122,18 +122,18 @@
 #'  The list of results from the error propagation of coefficients.
 #' @slot pval_correction Options are "holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none"
 #' @slot linkage_blocks_collapsed A list containing assignments of markers to linkage blocks 
-#'  calculated by \code{\link{linkage_blocks_network}} and \code{\link{plotNetwork}}.
+#'  calculated by \code{\link{linkage_blocks_network}} and \code{\link{plot_network}}.
 #'  In this list there can be multiple markers assigned to a single linkage block.
 #' @slot linkage_blocks_full A list containing assignments of markers to linkage blocks 
 #'  when no linkage blocks are calculated. In this list there can only be one marker
-#'  per "linkage block". See \code{\link{linkage_blocks_network}} and \code{\link{plotNetwork}}.
+#'  per "linkage block". See \code{\link{linkage_blocks_network}} and \code{\link{plot_network}}.
 #' @slot var_to_var_p_val The final table of cape interaction results calculated by \code{\link{error_prop}}.
 #' @slot max_var_to_pheno_influence The final table of cape direct influences of markers to traits
 #'  calculated by \code{\link{direct_influence}}.
 #' @slot collapsed_net An adjacency matrix holding significant cape interactions between
-#'  linkage blocks. See \code{\link{plotNetwork}} and \code{\link{get_network}}.
+#'  linkage blocks. See \code{\link{plot_network}} and \code{\link{get_network}}.
 #' @slot full_net An adjacency matrix holding significant cape interactions between
-#'  individual markers. See \code{\link{plotNetwork}} and \code{\link{get_network}}.
+#'  individual markers. See \code{\link{plot_network}} and \code{\link{get_network}}.
 #' @slot use_kinship Whether to use a kinship correction in the analysis.
 #' @slot kinship_type Which type of kinship matrix to use. Either "overall" 
 #' for the overall kinship matrix or "ltco" for leave-two-chromosomes-out.
@@ -316,7 +316,7 @@ Cape <- R6::R6Class(
     #' by \code{\link{direct_influence}}.
     max_var_to_pheno_influence = NULL,
     #' @field full_net An adjacency matrix holding significant cape interactions between individual markers. See
-    #' \code{\link{plotNetwork}} and \code{\link{get_network}}.
+    #' \code{\link{plot_network}} and \code{\link{get_network}}.
     full_net = NULL,
     #' @field use_kinship Whether to use a kinship correction in the analysis.
     use_kinship = NULL,
@@ -462,7 +462,7 @@ Cape <- R6::R6Class(
     #' @param max_var_to_pheno_influence The final table of cape direct influences of markers to traits
     #'  calculated by \code{\link{direct_influence}}.
     #' @param full_net An adjacency matrix holding significant cape interactions between
-    #'  individual markers. See \code{\link{plotNetwork}} and \code{\link{get_network}}.
+    #'  individual markers. See \code{\link{plot_network}} and \code{\link{get_network}}.
     #' @param use_kinship Whether to use a kinship correction in the analysis.
     #' @param kinship_type Which type of kinship matrix to use. Either "overall" or "ltco."
     #' @param transform_to_phenospace whether to transform to phenospace or not.
@@ -580,7 +580,7 @@ Cape <- R6::R6Class(
     #' @description
     #' Plot Eignentraits
     #' @param filename filename of result plot
-    plot_svd = function(filename) {
+    plotSVD = function(filename) {
       
       full_path <- file.path(self$results_path, filename)
       
@@ -591,7 +591,7 @@ Cape <- R6::R6Class(
         "jpeg" = jpeg(full_path, res = 300, width = 7, height = 7, units = "in"),
         "jpg" = jpeg(full_path, res = 300, width = 7, height = 7, units = "in")
       )
-      plotSVD(self, orientation = "vertical", show_var_accounted = TRUE)
+      plot_svd(self, orientation = "vertical", show_var_accounted = TRUE)
       dev.off()
       
     },
@@ -615,14 +615,14 @@ Cape <- R6::R6Class(
     #' @param cex see the "points()" R function. Default is 0.5.
     #' @param lwd line width, default is 3.
     #' @param traits a vector of trait names to plot. Defaults to all traits.
-    plot_singlescan = function(filename, singlescan_obj, width = 20, height = 6, units = "in", res = 300, 
+    plotSinglescan = function(filename, singlescan_obj, width = 20, height = 6, units = "in", res = 300, 
                                standardized = TRUE, allele_labels = NULL, alpha = alpha, include_covars = TRUE, 
                                line_type = "l", pch = 16, cex = 0.5, lwd = 3, traits = NULL) {
       
       full_path <- file.path(self$results_path, filename)
       
       jpeg(full_path, width = width, height = height, units = units, res = res)
-      plotSinglescan(self, singlescan_obj = singlescan_obj, standardized = standardized, allele_labels = allele_labels, 
+      plot_singlescan(self, singlescan_obj = singlescan_obj, standardized = standardized, allele_labels = allele_labels, 
                      alpha = alpha, include_covars = include_covars, line_type = line_type, pch = pch, cex = cex, 
                      lwd = lwd, traits = traits)
       dev.off()
@@ -635,14 +635,14 @@ Cape <- R6::R6Class(
     #' @param phenotype The names of the phenotypes to be plotted. If NULL, all phenotypes are plotted.
     #' @param show_marker_labels If TRUE marker labels are plotted along the axes. If FALSE, they are omitted.
     #' @param show_alleles If TRUE, the allele of each marker is indicated by color.
-    plot_pairscan = function(filename, pairscan_obj, phenotype = NULL, 
+    plotPairscan = function(filename, pairscan_obj, phenotype = NULL, 
                              show_marker_labels = TRUE, show_alleles = FALSE) {
       
       # filename is usually "Pairscan.Regression.pdf"
       
       full_path <- file.path(self$results_path, filename)
       
-      plotPairscan(self, pairscan_obj, phenotype = phenotype, pdf_label = full_path, 
+      plot_pairscan(self, pairscan_obj, phenotype = phenotype, pdf_label = full_path, 
                    show_marker_labels = show_marker_labels, show_alleles = show_alleles)
       
     },
@@ -662,7 +662,7 @@ Cape <- R6::R6Class(
     #' this makes the effects on the traits difficult  to see. pheno_width increases the number of columns
     #' given to the phenotypes. For example, if pheno_width = 11, the phenotypes will be shown 11 times wider
     #' than individual markers.
-    plot_variant_influences = function(filename, width = 10, height = 7,
+    plotVariantInfluences = function(filename, width = 10, height = 7,
                                        p_or_q = p_or_q, standardize = FALSE, 
                                        not_tested_col = "lightgray", 
                                        covar_width = NULL, pheno_width = NULL) {
@@ -675,7 +675,7 @@ Cape <- R6::R6Class(
         jpeg(full_path, quality = 100)
       }
       
-      plotVariantInfluences(self, p_or_q = p_or_q, standardize = FALSE, 
+      plot_variant_influences(self, p_or_q = p_or_q, standardize = FALSE, 
                             not_tested_col = "lightgray", 
                             covar_width = NULL, pheno_width = NULL)
       dev.off()
@@ -688,7 +688,7 @@ Cape <- R6::R6Class(
     #' default is 10.
     #' @param label_cex A numeric value indicating the size of the labels, default is 1.5.
     #' @param show_alleles TRUE show the alleles, FALSE does not show alleles. Default is FALSE.
-    plot_network = function(filename, label_gap = 10, label_cex = 1.5, show_alleles = FALSE) {
+    plotNetwork = function(filename, label_gap = 10, label_cex = 1.5, show_alleles = FALSE) {
       
       full_path <- file.path(self$results_path, filename)
       if (endsWith(full_path, "pdf")) {
@@ -697,7 +697,7 @@ Cape <- R6::R6Class(
         jpeg(full_path)
       }
 
-      plotNetwork(self, label_gap = label_gap, label_cex = label_cex, show_alleles = show_alleles)
+      plot_network(self, label_gap = label_gap, label_cex = label_cex, show_alleles = show_alleles)
       dev.off()
     },
     #' @description
@@ -724,7 +724,7 @@ Cape <- R6::R6Class(
     #' @param legend_cex The size of the labels in the legend, default is 0.7.
     #' @param xshift A constant by which to shift the x values of all nodes in the network,
     #' default is -1.
-    plot_full_network = function(filename, zoom = 1.2, node_radius = 0.3, label_nodes = TRUE, label_offset = 0.4, label_cex = 0.5, 
+    plotFullNetwork = function(filename, zoom = 1.2, node_radius = 0.3, label_nodes = TRUE, label_offset = 0.4, label_cex = 0.5, 
                                  bg_col = "lightgray", arrow_length = 0.1, layout_matrix = "layout_with_kk", legend_position = "topright", 
                                  edge_lwd = 1, legend_radius = 2, legend_cex = 0.7, xshift = -1) {
       
@@ -736,7 +736,7 @@ Cape <- R6::R6Class(
         jpeg(full_path)
       }
 
-      plotFullNetwork(self, zoom = zoom, node_radius = node_radius, label_nodes = label_nodes, label_offset = label_offset, label_cex = label_cex, 
+      plot_full_network(self, zoom = zoom, node_radius = node_radius, label_nodes = label_nodes, label_offset = label_offset, label_cex = label_cex, 
                       bg_col = bg_col, arrow_length = arrow_length, layout_matrix = layout_matrix, legend_position = legend_position, 
                       edge_lwd = edge_lwd, legend_radius = legend_radius, legend_cex = legend_cex, xshift = xshift)
       dev.off()
@@ -749,12 +749,12 @@ Cape <- R6::R6Class(
     #' this value specifies the maximum q value considered significant, default is 0.05.
     #' @param include_main_effects Whether to include main effects (TRUE) or only
     #' interaction effects (FALSE) in the output table, default is TRUE.
-    write_variant_influences = function(filename, p_or_q = 0.05, 
+    writeVariantInfluences = function(filename, p_or_q = 0.05, 
     include_main_effects = TRUE) {
       
       full_path <- file.path(self$results_path, filename)
       
-      writeVariantInfluences(self, p_or_q = max(c(p_or_q, 0.2)), 
+      write_variant_influences(self, p_or_q = max(c(p_or_q, 0.2)), 
       	include_main_effects = include_main_effects, filename = full_path)
     },
     #' @description

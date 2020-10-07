@@ -2,6 +2,7 @@
 #'
 #' @param ped full path to the ped file
 #' @param map full path to the map file
+#' @param pheno full path to the pheno file
 #' @param out full path to the output file
 #' @param missing_genotype default is "0"
 #' @param no_fid boolean, default is FALSE
@@ -25,9 +26,9 @@
 #' 
 #' @export
 plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno", 
-	out = "out.csv", missing_genotype = "0", no_fid = FALSE, 
-	no_parents = FALSE, no_sex = FALSE, no_pheno = FALSE,
-	verbose = FALSE, overwrite = FALSE){
+                       out = "out.csv", missing_genotype = "0", no_fid = FALSE,
+                       no_parents = FALSE, no_sex = FALSE, no_pheno = FALSE,
+                       verbose = FALSE, overwrite = FALSE){
   
   # first check to see if the output file already exists
   if (file.exists(out) & overwrite == TRUE) {

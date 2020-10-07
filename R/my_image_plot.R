@@ -1,8 +1,14 @@
 #' Generate a Heatmap-type image
 #'
 #' This internal function generates heatmap-type
-#' images for functions like \code{\link{plotSVD}}
-#' \code{\link{plotPairscan}}, and \code{\link{plotVariantInfluences}}
+#' images for functions like \code{\link{plot_svd}}
+#' \code{\link{plot_pairscan}}, and \code{\link{plot_variant_influences}}
+#' 
+#' @param x Matrix to be plotted 
+
+#' @param ... possible parameters are main, xlab, ylab, mark_coords,
+#'  mark_col, show_labels, chromosome_coordinates, chr_names, chr_labels,
+#'  show_pheno_labels, extra_col_mat,allele_cols
 
 my_image_plot <- function(x,...){
     # print(dim(x))

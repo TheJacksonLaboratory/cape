@@ -2,7 +2,7 @@
 #'
 #' Given x,y coordinates and a radius, this function
 #' generates points on the circumference of the circle.
-#' This function is used by plotNetwork to plot cape
+#' This function is used by plot_network to plot cape
 #' results in a circular layout.
 #'
 #' @param radius A numeric value giving the radius of the
