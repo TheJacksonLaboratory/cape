@@ -107,7 +107,8 @@ error_prop <- function (data_obj, pairscan_obj, perm = FALSE, verbose = FALSE,
       beta_se <- t(get_se_mat(marker_pair_number, scan_two_results)) ### Extract Main effect and interactions
       beta_cov <- get_cov_mat(marker_pair_number, num_pheno) ### Extract Covars
       if(!just_m){
-        inf_coeffs <- calc_delta_errors(markers = marker_mat[marker_pair_number,], beta_m = beta_main, se = beta_se, beta_cov)
+        inf_coeffs <- calc_delta_errors(markers = marker_mat[marker_pair_number,], 
+        beta_m = beta_main, se = beta_se, beta_cov)
       }else{
         inf_coeffs <- calc_m(markers = marker_mat[marker_pair_number,], beta_m = beta_main)	
       }
