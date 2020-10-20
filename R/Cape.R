@@ -28,13 +28,13 @@
 #'    the genomic position of each marker. The positions are primarily used for plotting
 #'    and can be in base pairs, centiMorgans, or dummy variables.
 #' @slot marker_selection_method A string indicating how markers should be 
-#'   selected for the pairscan. Options are "top.effects" or "from.list."
-#'   If "top.effects," markers are selected using main effect sizes. 
-#'   If "from.list," markers are specified using a vector of marker names. 
+#'   selected for the pairscan. Options are "top_effects" or "from_list."
+#'   If "top_effects," markers are selected using main effect sizes. 
+#'   If "from_list" markers are specified using a vector of marker names. 
 #'   See \code{\link{select_markers_for_pairscan}}.
 #' @slot geno_names The dimnames of the genotype array. The genotype array is a three-dimensional
 #'   array in which rows are individuals, columns are alleles, and the third dimension houses
-#'   the markers. Genotypes are pulled for analysis using \code{\link{get.geno}} based on
+#'   the markers. Genotypes are pulled for analysis using \code{\link{get_geno}} based on
 #'   geno_names. Only the individuals, alleles, and markers listed in geno_names are
 #'   taken from the genotype matrix. Functions that remove markers and individuals from
 #'   analysis always operate on geno_names in addition to other relevant slots.
@@ -99,42 +99,44 @@
 #'   family. Phenotypes can be assigned different model families by
 #'   providing a vector of the same length as the number of phenotypes,
 #'   indicating how each phenotype should be modeled. See \code{\link{singlescan}}.
-#' @slot scan_what A string indicating whether "eigentraits", "normalized.traits", or 
-#'   "raw.traits" should be analyzed. See \code{\link{get.pheno}}.
+#' @slot scan_what A string indicating whether "eigentraits", "normalized_traits", or 
+#'   "raw_traits" should be analyzed. See \code{\link{get_pheno}}.
 #' @slot ET A matrix holding the eigentraits to be analyzed.
-#' @slot singular_values Added by \code{\link{get.eigentraits}}. A vector holding 
+#' @slot singular_values Added by \code{\link{get_eigentraits}}. A vector holding 
 #'   the singular values from the singular
 #'   value decomposition of the trait matrix. They are used in rotating the 
 #'   final direct influences back to trait space from eigentrait space. See
-#'   \code{\link{get.eigentraits}} and \code{\link{direct.influence}}.
-#' @slot right_singular_vectors Added by \code{\link{get.eigentraits}}. A matrix 
+#'   \code{\link{get_eigentraits}} and \code{\link{direct_influence}}.
+#' @slot right_singular_vectors Added by \code{\link{get_eigentraits}}. A matrix 
 #'   containing the right singular vectors from the singular
 #'   value decomposition of the trait matrix. They are used in rotating the 
 #'   final direct influences back to trait space from eigentrait space. See
-#'   \code{\link{get.eigentraits}} and \code{\link{direct.influence}}.
+#'   \code{\link{get_eigentraits}} and \code{\link{direct_influence}}.
 #' @slot traits_scaled Whether the traits should be mean-centered and standardized
 #'   before analyzing.
 #' @slot traits_normalized Whether the traits should be rank Z normalized before
 #'   analyzing.
-#' @slot var_to_var_influences_perm added in \code{\link{error.prop}} 
+#' @slot var_to_var_influences_perm added in \code{\link{error_prop}} 
 #'  The list of results from the error propagation of permuted coefficients.
-#' @slot var_to_var_influences added in \code{\link{error.prop}} 
+#' @slot var_to_var_influences added in \code{\link{error_prop}} 
 #'  The list of results from the error propagation of coefficients.
 #' @slot pval_correction Options are "holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none"
 #' @slot linkage_blocks_collapsed A list containing assignments of markers to linkage blocks 
-#'  calculated by \code{\link{linkage.blocks.network}} and \code{\link{plotNetwork}}.
+#'  calculated by \code{\link{linkage_blocks_network}} and \code{\link{plot_network}}.
 #'  In this list there can be multiple markers assigned to a single linkage block.
 #' @slot linkage_blocks_full A list containing assignments of markers to linkage blocks 
 #'  when no linkage blocks are calculated. In this list there can only be one marker
-#'  per "linkage block". See \code{\link{linkage.blocks.network}} and \code{\link{plotNetwork}}.
-#' @slot var_to_var_p_val The final table of cape interaction results calculated by \code{\link{error.prop}}.
+#'  per "linkage block". See \code{\link{linkage_blocks_network}} and \code{\link{plot_network}}.
+#' @slot var_to_var_p_val The final table of cape interaction results calculated by \code{\link{error_prop}}.
 #' @slot max_var_to_pheno_influence The final table of cape direct influences of markers to traits
-#'  calculated by \code{\link{direct.influence}}.
+#'  calculated by \code{\link{direct_influence}}.
 #' @slot collapsed_net An adjacency matrix holding significant cape interactions between
-#'  linkage blocks. See \code{\link{plotNetwork}} and \code{\link{get.network}}.
+#'  linkage blocks. See \code{\link{plot_network}} and \code{\link{get_network}}.
 #' @slot full_net An adjacency matrix holding significant cape interactions between
-#'  individual markers. See \code{\link{plotNetwork}} and \code{\link{get.network}}.
+#'  individual markers. See \code{\link{plot_network}} and \code{\link{get_network}}.
 #' @slot use_kinship Whether to use a kinship correction in the analysis.
+#' @slot kinship_type Which type of kinship matrix to use. Either "overall" 
+#' for the overall kinship matrix or "ltco" for leave-two-chromosomes-out.
 #' @slot transform_to_phenospace whether to transform to phenospace or not.
 #'
 #' 
@@ -223,7 +225,7 @@ Cape <- R6::R6Class(
     marker_location = NULL,
     #' @field geno_names The dimnames of the genotype array. The genotype array is a three-dimensional array in which rows 
     #' are individuals, columns are alleles, and the third dimension houses the markers. Genotypes are pulled for analysis 
-    #' using \code{\link{get.geno}} based on geno_names. Only the individuals, alleles, and markers listed in geno_names are
+    #' using \code{\link{get_geno}} based on geno_names. Only the individuals, alleles, and markers listed in geno_names are
     #' taken from the genotype matrix. Functions that remove markers and individuals from analysis always operate on geno_names 
     #' in addition to other relevant slots. The names of geno_names must be "mouse", "allele", "locus."
     geno_names = NULL,
@@ -284,48 +286,50 @@ Cape <- R6::R6Class(
     #' different model families by providing a vector of the same length as the number of phenotypes, indicating how
     #' each phenotype should be modeled. See \code{\link{singlescan}}.
     model_family = NULL,
-    #' @field scan_what A string indicating whether "eigentraits", "normalized.traits", or "raw.traits" should be analyzed.
-    #' See \code{\link{get.pheno}}.
+    #' @field scan_what A string indicating whether "eigentraits", "normalized_traits", or "raw_traits" should be analyzed.
+    #' See \code{\link{get_pheno}}.
     scan_what = NULL,
     #' @field ET A matrix holding the eigentraits to be analyzed.
     ET = NULL,
-    #' @field singular_values Added by \code{\link{get.eigentraits}}. A vector holding the singular values from the singular
+    #' @field singular_values Added by \code{\link{get_eigentraits}}. A vector holding the singular values from the singular
     #' value decomposition of the trait matrix. They are used in rotating the final direct influences back to trait space
-    #' from eigentrait space. See \code{\link{get.eigentraits}} and \code{\link{direct.influence}}.
+    #' from eigentrait space. See \code{\link{get_eigentraits}} and \code{\link{direct_influence}}.
     singular_values = NULL,
-    #' @field right_singular_vectors Added by \code{\link{get.eigentraits}}. A matrix containing the right singular vectors
+    #' @field right_singular_vectors Added by \code{\link{get_eigentraits}}. A matrix containing the right singular vectors
     #' from the singular value decomposition of the trait matrix. They are used in rotating the final direct influences
-    #' back to trait space from eigentrait space. See \code{\link{get.eigentraits}} and \code{\link{direct.influence}}.
+    #' back to trait space from eigentrait space. See \code{\link{get_eigentraits}} and \code{\link{direct_influence}}.
     right_singular_vectors = NULL,
     #' @field traits_scaled Whether the traits should be mean-centered and standardized before analyzing.
     traits_scaled = NULL,
     #' @field traits_normalized Whether the traits should be rank Z normalized before analyzing.
     traits_normalized = NULL,
-    #' @field var_to_var_influences_perm added in \code{\link{error.prop}}. The list of results from the error propagation
+    #' @field var_to_var_influences_perm added in \code{\link{error_prop}}. The list of results from the error propagation
     #' of permuted coefficients.
     var_to_var_influences_perm = NULL,
-    #' @field var_to_var_influences added in \code{\link{error.prop}}. The list of results from the error propagation of coefficients.
+    #' @field var_to_var_influences added in \code{\link{error_prop}}. The list of results from the error propagation of coefficients.
     var_to_var_influences = NULL,
     #' @field pval_correction Options are "holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none".
     pval_correction = NULL,
-    #' @field var_to_var_p_val The final table of cape interaction results calculated by \code{\link{error.prop}}.
+    #' @field var_to_var_p_val The final table of cape interaction results calculated by \code{\link{error_prop}}.
     var_to_var_p_val = NULL,
     #' @field max_var_to_pheno_influence The final table of cape direct influences of markers to traits calculated
-    #' by \code{\link{direct.influence}}.
+    #' by \code{\link{direct_influence}}.
     max_var_to_pheno_influence = NULL,
     #' @field full_net An adjacency matrix holding significant cape interactions between individual markers. See
-    #' \code{\link{plotNetwork}} and \code{\link{get.network}}.
+    #' \code{\link{plot_network}} and \code{\link{get_network}}.
     full_net = NULL,
     #' @field use_kinship Whether to use a kinship correction in the analysis.
     use_kinship = NULL,
+    #' @field kinship_type which type of kinship matrix to use
+    kinship_type = NULL,
     #' @field transform_to_phenospace whether to transform to phenospace or not.
     transform_to_phenospace = NULL,
     #' @description
     #' Assigns variables from the parameter file to attributes in the Cape object.
     assign_parameters = function() {
-      parameter.table <- read.parameters(self$parameter_file, self$yaml_parameters)
-      for(name in names(parameter.table)){
-        val <- parameter.table[[name]]
+      parameter_table <- read_parameters(self$parameter_file, self$yaml_parameters)
+      for(name in names(parameter_table)){
+        val <- parameter_table[[name]]
         self[[name]] <- val
       }
     },
@@ -367,7 +371,7 @@ Cape <- R6::R6Class(
     #'    and can be in base pairs, centiMorgans, or dummy variables.
     #' @param geno_names The dimnames of the genotype array. The genotype array is a three-dimensional
     #'   array in which rows are individuals, columns are alleles, and the third dimension houses
-    #'   the markers. Genotypes are pulled for analysis using \code{\link{get.geno}} based on
+    #'   the markers. Genotypes are pulled for analysis using \code{\link{get_geno}} based on
     #'   geno_names. Only the individuals, alleles, and markers listed in geno_names are
     #'   taken from the genotype matrix. Functions that remove markers and individuals from
     #'   analysis always operate on geno_names in addition to other relevant slots.
@@ -432,34 +436,35 @@ Cape <- R6::R6Class(
     #'   family. Phenotypes can be assigned different model families by
     #'   providing a vector of the same length as the number of phenotypes,
     #'   indicating how each phenotype should be modeled. See \code{\link{singlescan}}.
-    #' @param scan_what A string indicating whether "eigentraits", "normalized.traits", or 
-    #'   "raw.traits" should be analyzed. See \code{\link{get.pheno}}.
+    #' @param scan_what A string indicating whether "eigentraits", "normalized_traits", or 
+    #'   "raw_traits" should be analyzed. See \code{\link{get_pheno}}.
     #' @param ET A matrix holding the eigentraits to be analyzed.
-    #' @param singular_values Added by \code{\link{get.eigentraits}}. A vector holding 
+    #' @param singular_values Added by \code{\link{get_eigentraits}}. A vector holding 
     #'   the singular values from the singular
     #'   value decomposition of the trait matrix. They are used in rotating the 
     #'   final direct influences back to trait space from eigentrait space. See
-    #'   \code{\link{get.eigentraits}} and \code{\link{direct.influence}}.
-    #' @param right_singular_vectors Added by \code{\link{get.eigentraits}}. A matrix 
+    #'   \code{\link{get_eigentraits}} and \code{\link{direct_influence}}.
+    #' @param right_singular_vectors Added by \code{\link{get_eigentraits}}. A matrix 
     #'   containing the right singular vectors from the singular
     #'   value decomposition of the trait matrix. They are used in rotating the 
     #'   final direct influences back to trait space from eigentrait space. See
-    #'   \code{\link{get.eigentraits}} and \code{\link{direct.influence}}.
+    #'   \code{\link{get_eigentraits}} and \code{\link{direct_influence}}.
     #' @param traits_scaled Whether the traits should be mean-centered and standardized
     #'   before analyzing.
     #' @param traits_normalized Whether the traits should be rank Z normalized before
     #'   analyzing.
-    #' @param var_to_var_influences_perm added in \code{\link{error.prop}} 
+    #' @param var_to_var_influences_perm added in \code{\link{error_prop}} 
     #'  The list of results from the error propagation of permuted coefficients.
-    #' @param var_to_var_influences added in \code{\link{error.prop}} 
+    #' @param var_to_var_influences added in \code{\link{error_prop}} 
     #'  The list of results from the error propagation of coefficients.
     #' @param pval_correction Options are "holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none"
-    #' @param var_to_var_p_val The final table of cape interaction results calculated by \code{\link{error.prop}}.
+    #' @param var_to_var_p_val The final table of cape interaction results calculated by \code{\link{error_prop}}.
     #' @param max_var_to_pheno_influence The final table of cape direct influences of markers to traits
-    #'  calculated by \code{\link{direct.influence}}.
+    #'  calculated by \code{\link{direct_influence}}.
     #' @param full_net An adjacency matrix holding significant cape interactions between
-    #'  individual markers. See \code{\link{plotNetwork}} and \code{\link{get.network}}.
+    #'  individual markers. See \code{\link{plot_network}} and \code{\link{get_network}}.
     #' @param use_kinship Whether to use a kinship correction in the analysis.
+    #' @param kinship_type Which type of kinship matrix to use. Either "overall" or "ltco."
     #' @param transform_to_phenospace whether to transform to phenospace or not.
     initialize = function(
       parameter_file = NULL,
@@ -502,6 +507,7 @@ Cape <- R6::R6Class(
       max_var_to_pheno_influence = NULL,
       full_net = NULL,
       use_kinship = NULL,
+      kinship_type = NULL,
       transform_to_phenospace = NULL
     ) {
       self$parameter_file <- parameter_file
@@ -562,61 +568,62 @@ Cape <- R6::R6Class(
       self$max_var_to_pheno_influence <- max_var_to_pheno_influence
       self$full_net <- full_net
       self$use_kinship <- use_kinship
+      self$kinship_type <- kinship_type
       self$transform_to_phenospace <- transform_to_phenospace
       # assign parameters from the parameter_file
       self$assign_parameters()
       self$check_inputs()
       self$check_geno_names()
-      #check.bad.markers(self)
+      #check_bad_markers(self)
       # TODO make sure that individual names match between the pheno object, geno object, and geno names
     },
     #' @description
     #' Plot Eignentraits
     #' @param filename filename of result plot
-    plot_svd = function(filename) {
+    plotSVD = function(filename) {
       
-      full.path <- file.path(self$results_path, filename)
+      full_path <- file.path(self$results_path, filename)
       
       switch(
         tolower(tools::file_ext(filename)),
-        "pdf" = pdf(full.path, width = 7, height = 7),
-        "png" = png(full.path, res = 300, width = 7, height = 7, units = "in"),
-        "jpeg" = jpeg(full.path, res = 300, width = 7, height = 7, units = "in"),
-        "jpg" = jpeg(full.path, res = 300, width = 7, height = 7, units = "in")
+        "pdf" = pdf(full_path, width = 7, height = 7),
+        "png" = png(full_path, res = 300, width = 7, height = 7, units = "in"),
+        "jpeg" = jpeg(full_path, res = 300, width = 7, height = 7, units = "in"),
+        "jpg" = jpeg(full_path, res = 300, width = 7, height = 7, units = "in")
       )
-      plotSVD(self, orientation = "vertical", show.var.accounted = TRUE)
+      plot_svd(self, orientation = "vertical", show_var_accounted = TRUE)
       dev.off()
       
     },
     #' @description
     #' Plot results of single-locus scans
     #' @param filename filename of result plot.
-    #' @param singlescan.obj a singlescan object from \code{\link{singlescan}}
+    #' @param singlescan_obj a singlescan object from \code{\link{singlescan}}
     #' @param width width of result plot, default is 20.
     #' @param height height of result plot, default is 6.
     #' @param units units of result plot, default is "in".
     #' @param res resolution of result plot, default is 300.
     #' @param standardized If TRUE t statistics are plotted. If FALSE, effect sizes are plotted, default is TRUE
-    #' @param allele.labels A vector of labels for the alleles if different that those
-    #' stored in the data.object.
+    #' @param allele_labels A vector of labels for the alleles if different that those
+    #' stored in the data_object.
     #' @param alpha the alpha significance level. Lines for significance values will only
-    #' be plotted if n.perm > 0 when \code{\link{singlescan}} was run. And only alpha values
+    #' be plotted if n_perm > 0 when \code{\link{singlescan}} was run. And only alpha values
     #' specified in \code{\link{singlescan}} can be plotted.
-    #' @param include.covars Whether to include covariates in the plot.
-    #' @param line.type as defined in plot
+    #' @param include_covars Whether to include covariates in the plot.
+    #' @param line_type as defined in plot
     #' @param pch see the "points()" R function. Default is 16 (a point).
     #' @param cex see the "points()" R function. Default is 0.5.
     #' @param lwd line width, default is 3.
     #' @param traits a vector of trait names to plot. Defaults to all traits.
-    plot_singlescan = function(filename, singlescan.obj, width = 20, height = 6, units = "in", res = 300, 
-                               standardized = TRUE, allele.labels = NULL, alpha = alpha, include.covars = TRUE, 
-                               line.type = "l", pch = 16, cex = 0.5, lwd = 3, traits = NULL) {
+    plotSinglescan = function(filename, singlescan_obj, width = 20, height = 6, units = "in", res = 300, 
+                               standardized = TRUE, allele_labels = NULL, alpha = alpha, include_covars = TRUE, 
+                               line_type = "l", pch = 16, cex = 0.5, lwd = 3, traits = NULL) {
       
-      full.path <- file.path(self$results_path, filename)
+      full_path <- file.path(self$results_path, filename)
       
-      jpeg(full.path, width = width, height = height, units = units, res = res)
-      plotSinglescan(self, singlescan.obj = singlescan.obj, standardized = standardized, allele.labels = allele.labels, 
-                     alpha = alpha, include.covars = include.covars, line.type = line.type, pch = pch, cex = cex, 
+      jpeg(full_path, width = width, height = height, units = units, res = res)
+      plot_singlescan(self, singlescan_obj = singlescan_obj, standardized = standardized, allele_labels = allele_labels, 
+                     alpha = alpha, include_covars = include_covars, line_type = line_type, pch = pch, cex = cex, 
                      lwd = lwd, traits = traits)
       dev.off()
       
@@ -624,19 +631,19 @@ Cape <- R6::R6Class(
     #' @description
     #' Plot the result of the pairwise scan
     #' @param filename filename of result plot.
-    #' @param pairscan.obj a pairscan object from \code{\link{pairscan}}
+    #' @param pairscan_obj a pairscan object from \code{\link{pairscan}}
     #' @param phenotype The names of the phenotypes to be plotted. If NULL, all phenotypes are plotted.
-    #' @param show.marker.labels If TRUE marker labels are plotted along the axes. If FALSE, they are omitted.
-    #' @param show.alleles If TRUE, the allele of each marker is indicated by color.
-    plot_pairscan = function(filename, pairscan.obj, phenotype = NULL, 
-                             show.marker.labels = TRUE, show.alleles = FALSE) {
+    #' @param show_marker_labels If TRUE marker labels are plotted along the axes. If FALSE, they are omitted.
+    #' @param show_alleles If TRUE, the allele of each marker is indicated by color.
+    plotPairscan = function(filename, pairscan_obj, phenotype = NULL, 
+                             show_marker_labels = TRUE, show_alleles = FALSE) {
       
       # filename is usually "Pairscan.Regression.pdf"
       
-      full.path <- file.path(self$results_path, filename)
+      full_path <- file.path(self$results_path, filename)
       
-      plotPairscan(self, pairscan.obj, phenotype = phenotype, pdf.label = full.path, 
-                   show.marker.labels = show.marker.labels, show.alleles = show.alleles)
+      plot_pairscan(self, pairscan_obj, phenotype = phenotype, pdf_label = full_path, 
+                   show_marker_labels = show_marker_labels, show_alleles = show_alleles)
       
     },
     #' @description
@@ -644,53 +651,53 @@ Cape <- R6::R6Class(
     #' @param filename filename of result plot.
     #' @param width width of result plot, default is 10.
     #' @param height height of result plot, default is 7.
-    #' @param p.or.q A threshold indicating the maximum p value (or q value if FDR was used) of significant 
+    #' @param p_or_q A threshold indicating the maximum p value (or q value if FDR was used) of significant 
     #' interactions and main effects.
     #' @param standardize Whether to plot effect sizes (FALSE) or standardized effect sizes (TRUE), 
     #' default is TRUE.
-    #' @param not.tested.col The color to use for marker pairs not tested. Takes the same values as 
-    #' pos.col and neg.col, default is "lightgray".
-    #' @param covar.width See pheno.width. This is the same effect for covariates.
-    #' @param pheno.width Each marker and trait gets one column in the matrix. If there are many markers, 
-    #' this makes the effects on the traits difficult  to see. pheno.width increases the number of columns
-    #' given to the phenotypes. For example, if pheno.width = 11, the phenotypes will be shown 11 times wider
+    #' @param not_tested_col The color to use for marker pairs not tested. Takes the same values as 
+    #' pos_col and neg_col, default is "lightgray".
+    #' @param covar_width See pheno_width. This is the same effect for covariates.
+    #' @param pheno_width Each marker and trait gets one column in the matrix. If there are many markers, 
+    #' this makes the effects on the traits difficult  to see. pheno_width increases the number of columns
+    #' given to the phenotypes. For example, if pheno_width = 11, the phenotypes will be shown 11 times wider
     #' than individual markers.
-    plot_variant_influences = function(filename, width = 10, height = 7,
-                                       p.or.q = p.or.q, standardize = FALSE, 
-                                       not.tested.col = "lightgray", 
-                                       covar.width = NULL, pheno.width = NULL) {
+    plotVariantInfluences = function(filename, width = 10, height = 7,
+                                       p_or_q = p_or_q, standardize = FALSE, 
+                                       not_tested_col = "lightgray", 
+                                       covar_width = NULL, pheno_width = NULL) {
       
-      full.path <- file.path(self$results_path, filename)
+      full_path <- file.path(self$results_path, filename)
       
-      if (endsWith(full.path, "pdf")) {
-        pdf(full.path, width = width, height = height)
-      } else if (endsWith(full.path, "jpg")) {
-        jpeg(full.path, quality = 100)
+      if (endsWith(full_path, "pdf")) {
+        pdf(full_path, width = width, height = height)
+      } else if (endsWith(full_path, "jpg")) {
+        jpeg(full_path, quality = 100)
       }
       
-      plotVariantInfluences(self, p.or.q = p.or.q, standardize = FALSE, 
-                            not.tested.col = "lightgray", 
-                            covar.width = NULL, pheno.width = NULL)
+      plot_variant_influences(self, p_or_q = p_or_q, standardize = FALSE, 
+                            not_tested_col = "lightgray", 
+                            covar_width = NULL, pheno_width = NULL)
       dev.off()
       
     },
     #' @description
     #' Plots cape results as a circular network
     #' @param filename filename of result plot.
-    #' @param label.gap A numeric value indicating the size of the gap the chromosomes and their labels, 
+    #' @param label_gap A numeric value indicating the size of the gap the chromosomes and their labels, 
     #' default is 10.
-    #' @param label.cex A numeric value indicating the size of the labels, default is 1.5.
-    #' @param show.alleles TRUE show the alleles, FALSE does not show alleles. Default is FALSE.
-    plot_network = function(filename, label.gap = 10, label.cex = 1.5, show.alleles = FALSE) {
+    #' @param label_cex A numeric value indicating the size of the labels, default is 1.5.
+    #' @param show_alleles TRUE show the alleles, FALSE does not show alleles. Default is FALSE.
+    plotNetwork = function(filename, label_gap = 10, label_cex = 1.5, show_alleles = FALSE) {
       
-      full.path <- file.path(self$results_path, filename)
-      if (endsWith(full.path, "pdf")) {
-        pdf(full.path)
-      } else if (endsWith(full.path, "jpg")) {
-        jpeg(full.path)
+      full_path <- file.path(self$results_path, filename)
+      if (endsWith(full_path, "pdf")) {
+        pdf(full_path)
+      } else if (endsWith(full_path, "jpg")) {
+        jpeg(full_path)
       }
 
-      plotNetwork(self, label.gap = label.gap, label.cex = label.cex, show.alleles = show.alleles)
+      plot_network(self, label_gap = label_gap, label_cex = label_cex, show_alleles = show_alleles)
       dev.off()
     },
     #' @description
@@ -698,57 +705,57 @@ Cape <- R6::R6Class(
     #' @param filename filename of result plot.
     #' @param zoom Allows the user to zoom in and out on the image if the network is either 
     #' running off the edges of the plot or too small in the middle of the plot, default is 1.2.
-    #' @param node.radius The size of the pie chart for each node, default is 0.3.
-    #' @param label.nodes A logical value indicating whether the nodes should be labeled.
+    #' @param node_radius The size of the pie chart for each node, default is 0.3.
+    #' @param label_nodes A logical value indicating whether the nodes should be labeled.
     #' Users may want to remove labels for large networks, default is TRUE.
-    #' @param label.offset The amount by which to offset the node labels from the center of
+    #' @param label_offset The amount by which to offset the node labels from the center of
     #' the nodes, default is 0.4.
-    #' @param label.cex The size of the node labels, default is 0.5.
-    #' @param bg.col The color to be used in pie charts for non-significant main effects.
-    #' Takes the same values as pos.col, default is "lightgray".
-    #' @param arrow.length The length of the head of the arrow, default is 0.1.
-    #' @param layout.matrix Users have the option of providing their own layout matrix for the
+    #' @param label_cex The size of the node labels, default is 0.5.
+    #' @param bg_col The color to be used in pie charts for non-significant main effects.
+    #' Takes the same values as pos_col, default is "lightgray".
+    #' @param arrow_length The length of the head of the arrow, default is 0.1.
+    #' @param layout_matrix Users have the option of providing their own layout matrix for the
     #' network. This should be a two column matrix indicating the x and y coordinates of each 
     #' node in the network, default is "layout_with_kk".
-    #' @param legend.position The position of the legend on the plot, default is "topright".
-    #' @param edge.lwd The thickness of the arrows showing the interactions, default is 1.
-    #' @param legend.radius The size of the legend indicating which pie piece corresponds to which
+    #' @param legend_position The position of the legend on the plot, default is "topright".
+    #' @param edge_lwd The thickness of the arrows showing the interactions, default is 1.
+    #' @param legend_radius The size of the legend indicating which pie piece corresponds to which
     #' traits, default is 2.
-    #' @param legend.cex The size of the labels in the legend, default is 0.7.
+    #' @param legend_cex The size of the labels in the legend, default is 0.7.
     #' @param xshift A constant by which to shift the x values of all nodes in the network,
     #' default is -1.
-    plot_full_network = function(filename, zoom = 1.2, node.radius = 0.3, label.nodes = TRUE, label.offset = 0.4, label.cex = 0.5, 
-                                 bg.col = "lightgray", arrow.length = 0.1, layout.matrix = "layout_with_kk", legend.position = "topright", 
-                                 edge.lwd = 1, legend.radius = 2, legend.cex = 0.7, xshift = -1) {
+    plotFullNetwork = function(filename, zoom = 1.2, node_radius = 0.3, label_nodes = TRUE, label_offset = 0.4, label_cex = 0.5, 
+                                 bg_col = "lightgray", arrow_length = 0.1, layout_matrix = "layout_with_kk", legend_position = "topright", 
+                                 edge_lwd = 1, legend_radius = 2, legend_cex = 0.7, xshift = -1) {
       
-      full.path <- file.path(self$results_path, filename)
+      full_path <- file.path(self$results_path, filename)
       
-      if (endsWith(full.path, "pdf")) {
-        pdf(full.path)
-      } else if (endsWith(full.path, "jpg")) {
-        jpeg(full.path)
+      if (endsWith(full_path, "pdf")) {
+        pdf(full_path)
+      } else if (endsWith(full_path, "jpg")) {
+        jpeg(full_path)
       }
 
-      plotFullNetwork(self, zoom = zoom, node.radius = node.radius, label.nodes = label.nodes, label.offset = label.offset, label.cex = label.cex, 
-                      bg.col = bg.col, arrow.length = arrow.length, layout.matrix = layout.matrix, legend.position = legend.position, 
-                      edge.lwd = edge.lwd, legend.radius = legend.radius, legend.cex = legend.cex, xshift = xshift)
+      plot_full_network(self, zoom = zoom, node_radius = node_radius, label_nodes = label_nodes, label_offset = label_offset, label_cex = label_cex, 
+                      bg_col = bg_col, arrow_length = arrow_length, layout_matrix = layout_matrix, legend_position = legend_position, 
+                      edge_lwd = edge_lwd, legend_radius = legend_radius, legend_cex = legend_cex, xshift = xshift)
       dev.off()
     },
     #' @description
     #' Write significant cape interactions to a csv file.
     #' @param filename filename of csv file
-    #' @param p.or.q A threshold indicating the maximum adjusted p value considered 
+    #' @param p_or_q A threshold indicating the maximum adjusted p value considered 
     #' significant. If an FDR method has been used to correct for multiple testing, 
     #' this value specifies the maximum q value considered significant, default is 0.05.
-    #' @param include.main.effects Whether to include main effects (TRUE) or only
+    #' @param include_main_effects Whether to include main effects (TRUE) or only
     #' interaction effects (FALSE) in the output table, default is TRUE.
-    write_variant_influences = function(filename, p.or.q = 0.05, 
-    include.main.effects = TRUE) {
+    writeVariantInfluences = function(filename, p_or_q = 0.05, 
+    include_main_effects = TRUE) {
       
-      full.path <- file.path(self$results_path, filename)
+      full_path <- file.path(self$results_path, filename)
       
-      writeVariantInfluences(self, p.or.q = max(c(p.or.q, 0.2)), 
-      	include.main.effects = include.main.effects, filename = full.path)
+      write_variant_influences(self, p_or_q = max(c(p_or_q, 0.2)), 
+      	include_main_effects = include_main_effects, filename = full_path)
     },
     #' @description
     #' Set phenotype
@@ -769,17 +776,17 @@ Cape <- R6::R6Class(
     #' @param value covariate values
     create_covar_table = function(value) {
       
-      marker.locale <- get.col.num(self$pheno, value)
+      marker_locale <- get_col_num(self$pheno, value)
       
       # make a separate covariate table, then modify the dimnames
       # in the genotype object to include the covariates
       # do not modify the genotype object
       
-      self$covar_table <- self$pheno[,marker.locale,drop=FALSE]
+      self$covar_table <- self$pheno[,marker_locale,drop=FALSE]
       rownames(self$covar_table) <- rownames(self$pheno)
       
       # take the phenotypes made into markers out of the phenotype matrix
-      self$pheno <- self$pheno[,-marker.locale]
+      self$pheno <- self$pheno[,-marker_locale]
       self$geno_names[[3]] <- c(self$geno_names[[3]], value)
       self$chromosome <- c(self$chromosome, rep(0, length(value)))
       self$marker_location <- c(self$marker_location, 1:length(value))
@@ -792,18 +799,18 @@ Cape <- R6::R6Class(
     save_rds = function(object, filename) {
       # only save the results RData file if save_results is TRUE
       if (self$save_results) {
-        full.path <- file.path(self$results_path, filename)
-        saveRDS(object, full.path)
+        full_path <- file.path(self$results_path, filename)
+        saveRDS(object, full_path)
       }
     },
     #' @description
     #' Read RDS file
     #' @param filename RData filename to be read.
     read_rds = function(filename) {
-      full.path <- file.path(self$results_path, filename)
+      full_path <- file.path(self$results_path, filename)
       # only return the results RData file if use_saved_results is TRUE
-      if ((self$use_saved_results) & (file.exists(full.path))) {
-        return(readRDS(full.path))
+      if ((self$use_saved_results) & (file.exists(full_path))) {
+        return(readRDS(full_path))
       } else {
         return(FALSE)
       }

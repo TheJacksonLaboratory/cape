@@ -24,6 +24,6 @@ cross_info:
   (SxB)x(SxB): 0
   (BxS)x(BxS): 1
 x_chr: X
-na.strings:
+na_strings:
 - '-'
 - NA

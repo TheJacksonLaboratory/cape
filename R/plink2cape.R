@@ -2,21 +2,22 @@
 #'
 #' @param ped full path to the ped file
 #' @param map full path to the map file
+#' @param pheno full path to the pheno file
 #' @param out full path to the output file
-#' @param missing.genotype default is "0"
-#' @param no.fid boolean, default is FALSE
-#' @param no.parents boolean, default is FALSE
-#' @param no.sex boolean, default is FALSE
-#' @param no.pheno boolean, default is FALSE
+#' @param missing_genotype default is "0"
+#' @param no_fid boolean, default is FALSE
+#' @param no_parents boolean, default is FALSE
+#' @param no_sex boolean, default is FALSE
+#' @param no_pheno boolean, default is FALSE
 #' @param verbose boolean, default is FALSE, gives some happy little progress messages
 #' @param overwrite boolean, default is FALSE, will only remove the existing file if this is set to TRUE
 #'
 #' @details For further information about PLINK and its file formats,
 #' see \url{http://zzz.bwh.harvard.edu/plink/}
 #' 
-#' @return A list with two elements: data.obj and geno.obj
+#' @return A list with two elements: data_obj and geno_obj
 #' These objects are formatted for use in cape and must then
-#' be separated to use in \code{\link{run.cape}}.
+#' be separated to use in \code{\link{run_cape}}.
 #'
 #' @references Purcell S, Neale B, Todd-Brown K, Thomas L, Ferreira MAR, 
 #' Bender D, Maller J, Sklar P, de Bakker PIW, Daly MJ & Sham PC (2007) 
@@ -25,9 +26,9 @@
 #' 
 #' @export
 plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno", 
-	out = "out.csv", missing.genotype = "0", no.fid = FALSE, 
-	no.parents = FALSE, no.sex = FALSE, no.pheno = FALSE,
-	verbose = FALSE, overwrite = FALSE){
+                       out = "out.csv", missing_genotype = "0", no_fid = FALSE,
+                       no_parents = FALSE, no_sex = FALSE, no_pheno = FALSE,
+                       verbose = FALSE, overwrite = FALSE){
   
   # first check to see if the output file already exists
   if (file.exists(out) & overwrite == TRUE) {
@@ -36,7 +37,7 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
     stop(paste('The file', out, 'already exists. Please rename it or set overwrite to TRUE.', collapse = ' '))
   }
   
-  pheno.table <- as.matrix(read.table(pheno, header = TRUE))
+  pheno_table <- as.matrix(read.table(pheno, header = TRUE))
   # the map file should contain the following columns (see: https://www.cog-genomics.org/plink2/formats#map):
   # 1. Chromosome code. PLINK 1.9 also permits contig names here, but most older programs do not.
   # 2. Variant identifier
@@ -66,22 +67,22 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
   peddata <- scan(ped, what=character(), na.strings=c("-9"))
   columnNames <- NULL
   columnNames <- c(columnNames, "IID")
-  if(!no.fid) columnNames <- c(columnNames, "FID")
-  if(!no.parents) columnNames <- c(columnNames, "PID", "MID")
-  if(!no.sex) columnNames <- c(columnNames, "Sex")
-  if(!no.pheno) columnNames <- c(columnNames, "Pheno")
+  if(!no_fid) columnNames <- c(columnNames, "FID")
+  if(!no_parents) columnNames <- c(columnNames, "PID", "MID")
+  if(!no_sex) columnNames <- c(columnNames, "Sex")
+  if(!no_pheno) columnNames <- c(columnNames, "Pheno")
   
   peddata <- matrix(peddata, ncol=length(c(columnNames, SNPcolnames)), byrow = TRUE)
   
   colnames(peddata) <- c(columnNames, SNPcolnames)
   
   # If there is no phenotype, create a random one
-  if(no.pheno) {
+  if(no_pheno) {
     peddata <- cbind(peddata, Pheno=runif(nrow(peddata)))
   }
   
   # If there is no sex, then everyone is a female
-  if(no.sex) {
+  if(no_sex) {
     peddata <- cbind(peddata, Sex=rep(0, nrow(peddata)))
   }
   
@@ -98,8 +99,8 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
     # The SNP alleles
     snpalleles <- sort(unique(unlist(as.character(peddata[,cols]))))
     # Missing data should not count as an allele
-    if (missing.genotype %in% snpalleles) {
-      snpalleles <- snpalleles[-which(snpalleles == missing.genotype)]
+    if (missing_genotype %in% snpalleles) {
+      snpalleles <- snpalleles[-which(snpalleles == missing_genotype)]
     }
     if (length(snpalleles) > 2) {
       cat("WARNING", snp, "found multi allelic marker:", snpalleles, ", passed as all missing\n")
@@ -111,7 +112,7 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
       }
       genotype <- apply(peddata[,cols], 1, function(x) {
         # if missing genotype data
-        if (x[1] == missing.genotype) return(NA)
+        if (x[1] == missing_genotype) return(NA)
         # if heterozygous
         if (x[1] != x[2]) return(2)
         # if homozygous, allele 1/A
@@ -125,18 +126,18 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
   }
   
   #create a table in the the qtl csv format
-  geno.info <- t(as.matrix(cbind(mapdata[,c("ID","Chr","BP")])))
-  geno.mat <- rbind(geno.info, t(genotypes)-1)
-  pheno.padding <- matrix(NA, nrow = 3, ncol = ncol(pheno.table)-2)
-  pheno.padding[1,] <- colnames(pheno.table)[3:ncol(pheno.table)]
-  pheno.mat <- rbind(pheno.padding, pheno.table[,3:ncol(pheno.table)])
-  final.table <- cbind(pheno.mat, geno.mat)
-  write.table(final.table, out, quote = FALSE, sep = ",", row.names = FALSE, col.names = FALSE,
+  geno_info <- t(as.matrix(cbind(mapdata[,c("ID","Chr","BP")])))
+  geno_mat <- rbind(geno_info, t(genotypes)-1)
+  pheno_padding <- matrix(NA, nrow = 3, ncol = ncol(pheno_table)-2)
+  pheno_padding[1,] <- colnames(pheno_table)[3:ncol(pheno_table)]
+  pheno_mat <- rbind(pheno_padding, pheno_table[,3:ncol(pheno_table)])
+  final_table <- cbind(pheno_mat, geno_mat)
+  write.table(final_table, out, quote = FALSE, sep = ",", row.names = FALSE, col.names = FALSE,
   na = "-")
   
-	cross.obj <- read.population(out)
- 	new.obj <- cape2mpp(cross.obj)
- 	return(new.obj)
+	cross_obj <- read_population(out)
+ 	new_obj <- cape2mpp(cross_obj)
+ 	return(new_obj)
 
 }
 

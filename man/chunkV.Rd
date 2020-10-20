@@ -4,17 +4,17 @@
 \alias{chunkV}
 \title{Bins a vector into chunks}
 \usage{
-chunkV(V, num.chunks)
+chunkV(V, num_chunks)
 }
 \arguments{
 \item{V}{The vector to be divided into chunks}
 
-\item{num.chunks}{The number of chunks in which
+\item{num_chunks}{The number of chunks in which
 to bin the vector.}
 }
 \value{
 This function returns a list of length 
-num.chunks. Each element in the list contains
+num_chunks. Each element in the list contains
 the elements of the vector that were assigned 
 to that bin.
 }

@@ -5,36 +5,36 @@
 #' sent to a certain number of parallel clusters. 
 
 #' @param V The vector to be divided into chunks
-#' @param num.chunks The number of chunks in which
+#' @param num_chunks The number of chunks in which
 #' to bin the vector.
 #'
 #' @return This function returns a list of length 
-#' num.chunks. Each element in the list contains
+#' num_chunks. Each element in the list contains
 #' the elements of the vector that were assigned 
 #' to that bin.
 
-chunkV <- function(V, num.chunks){
+chunkV <- function(V, num_chunks){
   
-  v.list <- vector(mode = "list", length = num.chunks)
-  num.per.chunk <- floor(length(V)/num.chunks)
-  num.leftover <- length(V)%%num.chunks
+  v_list <- vector(mode = "list", length = num_chunks)
+  num_per_chunk <- floor(length(V)/num_chunks)
+  num_leftover <- length(V)%%num_chunks
   
   #distribute the leftovers througout the list
-  without.leftovers <- num.chunks - num.leftover
-  extra.per.chunk <- c(rep(0, without.leftovers), rep(1, num.leftover))
+  without_leftovers <- num_chunks - num_leftover
+  extra_per_chunk <- c(rep(0, without_leftovers), rep(1, num_leftover))
   
-  start.chunk <- 1
-  for(i in 1:num.chunks){
-    total <- num.per.chunk + extra.per.chunk[i]
-    if(i < num.chunks){
-      v.list[[i]] <- V[start.chunk:(start.chunk+total-1)]
-      start.chunk <- start.chunk+total
+  start_chunk <- 1
+  for(i in 1:num_chunks){
+    total <- num_per_chunk + extra_per_chunk[i]
+    if(i < num_chunks){
+      v_list[[i]] <- V[start_chunk:(start_chunk+total-1)]
+      start_chunk <- start_chunk+total
     }else{
-      v.list[[i]] <- V[start.chunk:length(V)]
+      v_list[[i]] <- V[start_chunk:length(V)]
     }
   }
   
   
-  return(v.list)
+  return(v_list)
   
 }
