@@ -63,7 +63,8 @@ plot_int_heat <- function(phenoV, marker1_vals, marker2_vals, pheno_name = NULL,
 	colnames(predict_grid) <- c(marker1_label, marker2_label)
 	predict_df <- data.frame(predict_grid)
 	pred_data <- predict(model, newdata = predict_df)
-	pred_mat <- matrix(pred_data, nrow = length(marker_grid2), ncol = length(marker_grid1), byrow = FALSE)
+	pred_mat <- matrix(pred_data, nrow = length(marker_grid2), ncol = length(marker_grid1), 
+	byrow = FALSE)
 	image_with_text(pred_mat, col_text_rotation = 0, use_pheatmap_colors = TRUE, 
 	show_text = FALSE, ylab = marker2_label, xlab = marker1_label, 
 	main = pheno_name)

@@ -51,19 +51,17 @@ Depends:
   qtl2,
   qtl2convert,
   R (>= 3.6),
-  R6,
-  RcppEigen,
-  RColorBrewer,
-  regress,
-  RSQLite,
-  shape,
-  stringr,
-  tidyr,
-  tools,
-  utils,
-  yaml
-Imports:
-  biomaRt (>= 2.42.1)
+  R6 (>= 2.4.1),
+  RcppEigen (>= 0.3.3.7.0),
+  RColorBrewer (>= 1.1.2),
+  regress (>= 1.3.21),
+  RSQLite (>= 2.2.0),
+  shape (>= 1.4.5),
+  stringr (>= 1.4.0),
+  tidyr (>= 1.1.2),
+  tools (>= 3.6.2),
+  utils (>= 3.6.2),
+  yaml (>= 2.2.1)
 Suggests: 
   testthat (>= 2.3.2),
   knitr (>= 1.29), 

@@ -25,8 +25,8 @@
 #' and \code{\link{pairscan_kin}}.
 #'
 
-kinship_adjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
-  covarV = NULL, verbose = FALSE){
+kin_adjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
+covarV = NULL, verbose = FALSE){
   
   get_g=function(pair = NULL, phenotype, covarV){
 
@@ -35,16 +35,18 @@ kinship_adjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NUL
     if(is.null(pair)){
       pair_name <- "overall"
     }else{
-      pair_name <- paste(unique(pair), collapse = ",")
+      pair_name <- paste(pair, collapse = ",")
     }
     
     if(verbose){cat("Chromosomes:", pair_name, "\n")}
     
-    if(class(kin_obj) == "matrix"){
+    if(class(kin_obj)[1] == "matrix"){
       full_kin <- kin_obj
+      cat("\tUsing overall matrix\n")
     }else{
       kin_mat_locale <- which(names(kin_obj) == pair_name)
       full_kin <- kin_obj[[kin_mat_locale]]
+      cat("\tUsing", pair_name, "kinship matrix\n")
     }
     
     #remove individuals with NAs
@@ -78,8 +80,8 @@ kinship_adjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NUL
     
     #This err_cov is the same as err_cov in Dan's code using estVC
     #err_cov = summary(model)$sigma[1]*K+summary(model)$sigma[2]*diag(nrow(K))
-    if(verbose){cat("\tCalculating err_cov...\n")}
-    err_cov = model$sigma[1]*K+model$sigma[2]*diag(nrow(K))
+    #if(verbose){cat("\tCalculating err_cov...\n")}
+    #err_cov = model$sigma[1]*K+model$sigma[2]*diag(nrow(K))
     
   if(verbose){cat("\tCalculating eW...\n")}
     eW = eigen(err_cov, symmetric = TRUE)
@@ -114,32 +116,11 @@ kinship_adjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NUL
     return(results)
   }
   
-  #only use LOCO, LTCO gives weird results  
-  cat("Chromosome1:", chr1, "\n")
-  cat("Chromosome2:", chr2, "\n")
-  
-  use_loco <- TRUE
-  check_na <- is.na(chr1) || is.na(chr2)
-  check_null <- is.null(chr1) || is.null(chr2)
-  
-  if(any(c(check_na, check_null))){
-    use_loco = FALSE
-  }else{
-      if(chr1 != chr2){
-        use_loco <- FALSE
-      }
-    }
+  cat("Chromosomes", chr1, chr2, "\n")
 
-
-  if(use_loco){
-    chr_pair <- c(chr1, chr2)
-  }else{
-    chr_pair <- NULL
-  }
-
-  if(use_loco){cat("Using LOCO.\n")}else{cat("Using Overall kinship Matrix.\n")}
-
+  chr_pair <- c(chr1, chr2)
   result <- get_g(pair = chr_pair, phenotype = phenoV, covarV = covarV)
+  
   
   return(result)
   

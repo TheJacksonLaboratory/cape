@@ -3,7 +3,7 @@
 #' This function is called by \code{\link{pairscan}}
 #' when a kinship correction is requested. It adjusts 
 #' each variable according to the kinship matrix using
-#' \code{\link{kinship_adjust}} and then fits linear
+#' \code{\link{kin_adjust}} and then fits linear
 #' pairwise models to the adjusted data.
 #' 
 #' @param data_obj a \code{\link{Cape}} object
@@ -25,7 +25,7 @@
 #' The output is then further processed by \code{\link{pairscan}}.
 #' 
 pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs, 
-  kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
+kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
   
   m = NULL #for appeasing R CMD check
   
@@ -50,29 +50,27 @@ pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs,
   #============================================================================
   
   get_marker_pair_stats <- function(m, kin_dat){
-    #if(class(kin_obj) == "matrix"){
+    
+    if(data_obj$kinship_type == "overall"){
       new_pheno <- kin_dat$corrected_pheno
       new_geno <- kin_dat$corrected_geno
       new_covar <- kin_dat$corrected_covar
       err_cov <- kin_dat$err_cov
-    #}else{
-      #taking out the LTCO option for now, since it has weird behavior
-     # new_pheno <- kin_dat[[1]]$corrected_pheno
-     # new_geno <- kin_dat[[1]]$corrected_geno
-     # new_covar <- kin_dat[[1]]$corrected_covar
-     # err_cov <- kin_dat[[1]]$err_cov
-    #  marker_chr <- get_marker_chr(data_obj, m)
-    #  non_covar <- setdiff(marker_chr, 0)
-    #  if(length(non_covar) == 0){kin.name = "overall"}#if both markers are covariates
-    #  if(length(non_covar) == 1){kin.name = paste(rep(non_covar, 2), collapse = ",")}
-    #  if(length(non_covar) == 2){kin.name = paste(marker_chr, collapse = ",")}
-    #  kin_locale <- which(names(kin_obj) == kin.name)
+    }else{
+      marker_chr <- get_marker_chr(data_obj, m)      
+      non_covar <- setdiff(marker_chr, 0)
+
+      if(length(non_covar) == 0){kin_name = "overall"}#if both markers are covariates
+      if(length(non_covar) == 1){kin_name = paste(rep(non_covar, 2), collapse = ",")}
+      if(length(non_covar) == 2){kin_name = paste(marker_chr, collapse = ",")}
       
-    #  new_pheno <- kin_dat[[kin_locale]]$corrected_pheno
-    #  new_geno <- kin_dat[[kin_locale]]$corrected_geno
-    #  new_covar <- kin_dat[[kin_locale]]$corrected_covar
-    #  err_cov <- kin_dat[[kin_locale]]$err_cov			
-    #}
+      kin_locale <- which(names(kin_obj) == kin_name)
+      
+      new_pheno <- kin_dat[[kin_locale]]$corrected_pheno
+      new_geno <- kin_dat[[kin_locale]]$corrected_geno
+      new_covar <- kin_dat[[kin_locale]]$corrected_covar
+      err_cov <- kin_dat[[kin_locale]]$err_cov			
+    }
     
     int_term = matrix(solve(err_cov) %*% new_geno[,m[1]]*new_geno[,m[2]], ncol = 1)
     pairscan_results <- one_pairscan_parallel(data_obj, phenotype_vector = new_pheno,
@@ -82,7 +80,7 @@ pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs,
 
     if(is.null(pairscan_results[[1]])){
 #      marker_num <- get_marker_num(data_obj, m)
-		  marker_num <- m
+		marker_num <- m
       dummyV <- c(marker_num, rep(NA, 3))
       results <- list("effects" = dummyV, "se" = dummyV, "cov" = c(dummyV, rep(NA, 4)))
     }else{
@@ -95,30 +93,24 @@ pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs,
   
   get_covar_stats <- function(m, kin_dat){
     
-    #if(class(kin_obj) == "matrix"){
+    if(data_obj$kinship_type == "overall"){
       new_pheno <- kin_dat$corrected_pheno
       new_geno <- kin_dat$corrected_geno
       new_covar <- kin_dat$corrected_covar
       err_cov <- kin_dat$err_cov
-      #taking out LTCO option for now, since it has werid results
-    #}else{
-     # new_pheno <- kin_dat[[1]]$corrected_pheno
-     # new_geno <- kin_dat[[1]]$corrected_geno
-     # new_covar <- kin_dat[[1]]$corrected_covar
-     # err_cov <- kin_dat[[1]]$err_cov
-    #  marker_chr <- get_marker_chr(data_obj, m)
-    #  non_covar <- setdiff(marker_chr, 0)
-    #  if(length(non_covar) == 0){kin.name = "overall"}#if both markers are covariates
-    #  if(length(non_covar) == 1){kin.name = paste(rep(non_covar, 2), collapse = ",")}
-    #  if(length(non_covar) == 2){kin.name = paste(marker_chr, collapse = ",")}
-    #  kin_locale <- which(names(kin_obj) == kin.name)
+    }else{
+      marker_chr <- get_marker_chr(data_obj, m)
+      non_covar <- setdiff(marker_chr, 0)
+      if(length(non_covar) == 0){kin_name = "overall"}#if both markers are covariates
+      if(length(non_covar) == 1){kin_name = paste(rep(non_covar, 2), collapse = ",")}
+      if(length(non_covar) == 2){kin_name = paste(marker_chr, collapse = ",")}
+      kin_locale <- which(names(kin_obj) == kin_name)
       
-    #  new_pheno <- kin_dat[[kin_locale]]$corrected_pheno
-    #  new_geno <- kin_dat[[kin_locale]]$corrected_geno
-    #  new_covar <- kin_dat[[kin_locale]]$corrected_covar
-    #  err_cov <- kin_dat[[kin_locale]]$err_cov			
-    #}
-    
+      new_pheno <- kin_dat[[kin_locale]]$corrected_pheno
+      new_geno <- kin_dat[[kin_locale]]$corrected_geno
+      new_covar <- kin_dat[[kin_locale]]$corrected_covar
+      err_cov <- kin_dat[[kin_locale]]$err_cov			
+    }
     
     covar_locale <- which(covar_names %in% m)
     if(length(covar_locale) > 0){
@@ -153,29 +145,20 @@ pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs,
     pheno_vector <- pheno[,p,drop=FALSE]
     
     #sink the warnings from regress about solutions close to zero to a file
-    sink(file.path(data_obj$results_path,"regress.warnings"))
-    #if(class(kin_obj) == "matrix"){
+    sink(file.path(data_obj$results_path,"regress.warnings.pairscan"))
+    
+    if(data_obj$kinship_type == "overall"){
       #if we are using an overall kinship matrix
-      #convert to epistatic kinship matrix
-      if(class(kin_obj) == "matrix"){
         kin_mat <- kin_obj
-      }else{
-        epi_locale <- which(names(kin_obj) == "emat")
-        if(length(epi_locale) > 0){
-          kin_mat <- kin_obj[[epi_locale]]
-        }else{
-          kin_mat <- kin_obj[[1]]
-        }
-      }
-      
-      kin_dat <- kinship_adjust(kin_mat, geno, chr1 = NULL, chr2 = NULL, 
-      phenoV = pheno_vector, covarV = covar_vector)
-    #}else{
-      #If we are using LTCO (taking this out for now)
-    #  chr_pairs <- Reduce("rbind", strsplit(names(kin_obj), ","))
-    #  kin_dat <- apply(chr_pairs, 1, function(x) kinship_adjust(kin_obj, geno, 
-    #  x[1], x[2], phenoV = pheno_vector, covarV = covar_vector))
-    #}
+        kin_dat <- kin_adjust(kin_mat, geno, chr1 = NULL, chr2 = NULL, 
+        phenoV = pheno_vector, covarV = covar_vector)
+    }else{
+      #If we are using LTCO
+      chr_pairs <- Reduce("rbind", strsplit(names(kin_obj), ","))
+      kin_dat <- apply(chr_pairs, 1, function(x) kin_adjust(kin_obj, geno, 
+      x[1], x[2], phenoV = pheno_vector, covarV = covar_vector))
+      names(kin_dat) <- names(kin_obj)
+    }
     sink(NULL) #stop sinking output
     
     if (run_parallel) {
@@ -219,7 +202,7 @@ pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs,
             
             cl <- parallel::makeCluster(n_cores)
             doParallel::registerDoParallel(cl)
-            cape_dir_full <- find.package("cape")
+            cape_dir_full <- find_package("cape")
             cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
             parallel::clusterExport(cl, varlist=c("rankMatrix", "one_pairscan_parallel", "get_covar", "get_marker_num", "get_marker_chr","cape_dir"), envir=environment())
             parallel::clusterEvalQ(cl, .libPaths(cape_dir))
@@ -263,7 +246,8 @@ pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs,
     results_list[[p]] <- pheno_results
   }	#end looping over phenotypes	
   
-  unlink(file.path(data_obj$results_path,"regress.warnings"))
+  #unlink(file_path(data_obj$results_path,"regress_warnings"))
   return(results_list)
+  
   
 }

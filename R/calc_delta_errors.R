@@ -27,7 +27,7 @@ calc_delta_errors <- function(markers,beta_m,se,beta_cov) {
     act_delta <- solve(beta_main)%*%beta_inter
   }else{
     act_delta <- try(corpcor::pseudoinverse(beta_main) %*% beta_inter, silent = TRUE)
-    if(class(act_delta) == "try-error"){
+    if(class(act_delta)[1] == "try-error"){
       act_delta <- c(NA, NA)
     }
   }

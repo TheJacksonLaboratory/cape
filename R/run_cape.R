@@ -153,7 +153,7 @@ run_cape <- function(pheno_obj, geno_obj,
   
   data_obj <- select_pheno(data_obj, pheno_which = data_obj$traits)	
   
-  if(length(grep("e", data_obj$scan_what, ignore.case = TRUE)) > 0){
+  if(length(grep("eig", data_obj$scan_what, ignore.case = TRUE)) > 0){
     data_obj <- get_eigentraits(
       data_obj, 
       scale_pheno = as.logical(data_obj$traits_scaled), 
@@ -163,7 +163,7 @@ run_cape <- function(pheno_obj, geno_obj,
     data_obj$plotSVD("svd.pdf")
     data_obj$plotSVD("svd.jpg")
     
-    # TODO update select.eigentraits
+    # TODO update select_eigentraits
     data_obj <- select_eigentraits(data_obj, traits_which = data_obj$eig_which)
   }
   
@@ -176,7 +176,7 @@ run_cape <- function(pheno_obj, geno_obj,
   #===============================================================
   # run singlescan
   #===============================================================
-  singlescan_results_file <- paste0(results_base_name, ".singlescan.RData")
+  singlescan_results_file <- paste0(results_base_name, "_singlescan.RData")
   
   singlescan_obj <- data_obj$read_rds(singlescan_results_file)
   
@@ -195,7 +195,7 @@ run_cape <- function(pheno_obj, geno_obj,
       data_obj$save_rds(singlescan_obj, singlescan_results_file)
       
       for(ph in 1:ncol(singlescan_obj$singlescan_effects)){
-        filename <- paste0("Singlescan.", colnames(singlescan_obj$singlescan_effects)[ph], ".Standardized.jpg")
+        filename <- paste0("Singlescan_", colnames(singlescan_obj$singlescan_effects)[ph], "_Standardized.jpg")
         data_obj$plotSinglescan(filename, singlescan_obj, width = 20, height = 6, 
           units = "in", res = 300, standardized = TRUE, allele_labels = NULL, 
           alpha = data_obj$alpha, include_covars = TRUE, line_type = "l", pch = 16, cex = 0.5, 
@@ -203,7 +203,7 @@ run_cape <- function(pheno_obj, geno_obj,
       }
       
       for(ph in 1:ncol(singlescan_obj$singlescan_effects)){
-        filename <- paste0("Singlescan.", colnames(singlescan_obj$singlescan_effects)[ph], ".Effects.jpg")
+        filename <- paste0("Singlescan_", colnames(singlescan_obj$singlescan_effects)[ph], "_Effects.jpg")
         data_obj$plotSinglescan(filename, singlescan_obj, width = 20, height = 6, units = "in", res = 300,
           standardized = FALSE, allele_labels = NULL, alpha = data_obj$alpha, include_covars = TRUE,
           line_type = "l", pch = 16, cex = 0.5, lwd = 3, traits = colnames(singlescan_obj$singlescan_effects)[ph])
@@ -213,7 +213,7 @@ run_cape <- function(pheno_obj, geno_obj,
   #===============================================================
   # run pairscan
   #===============================================================
-  pairscan_file <- paste0(results_base_name, ".pairscan.RData")
+  pairscan_file <- paste0(results_base_name, "_pairscan.RData")
   
   pairscan_obj <- data_obj$read_rds(pairscan_file)
   
@@ -247,12 +247,12 @@ run_cape <- function(pheno_obj, geno_obj,
       }
       
       # if(marker_selection_method == "by_gene"){
-        # gene.list.mat <- read.table("gene.list.txt", sep = "\t", stringsAsFactors = FALSE)		
-        # gene.list <- gene.list.mat[,1]
-        # data_obj <- select_markers_for_pairscan.by_gene(data_obj, geno_obj, gene.list = gene.list, 
-                                                        # bp.buffer = data_obj$bp_buffer, organism = data_obj$organism)
+        # gene_list_mat <- read.table("gene_list.txt", sep = "\t", stringsAsFactors = FALSE)		
+        # gene_list <- gene_list_mat[,1]
+        # data_obj <- select_markers_for_pairscan_by_gene(data_obj, geno_obj, gene_list = gene_list, 
+                                                        # bp_buffer = data_obj$bp_buffer, organism = data_obj$organism)
       # } else {
-        # gene.list <- NULL
+        # gene_list <- NULL
       # }
       
       data_obj$save_rds(data_obj, results_file)
@@ -265,9 +265,9 @@ run_cape <- function(pheno_obj, geno_obj,
       
       data_obj$save_rds(pairscan_obj, pairscan_file)
       
-      data_obj$plotPairscan("Pairscan.Regression.pdf", pairscan_obj, 
+      data_obj$plotPairscan("Pairscan_Regression.pdf", pairscan_obj, 
         phenotype = NULL, show_marker_labels = TRUE, show_alleles = FALSE)
-      data_obj$plotPairscan("Pairscan.Regression.jpg", pairscan_obj, 
+      data_obj$plotPairscan("Pairscan_Regression.jpg", pairscan_obj, 
         phenotype = NULL, show_marker_labels = TRUE, show_alleles = FALSE)
       data_obj$save_rds(data_obj, results_file)
 
@@ -294,7 +294,7 @@ run_cape <- function(pheno_obj, geno_obj,
     data_obj <- calc_p(data_obj, pval_correction = data_obj$pval_correction)
   }
   
-  #if(length(grep("e", data_obj$scan_what, ignore.case = TRUE)) > 0){
+  #if(length(grep("e", data_obj$scan_what, ignore_case = TRUE)) > 0){
   #  transform_to_phenospace <- TRUE
   #}else{
   #  transform_to_phenospace <- FALSE	
@@ -309,16 +309,16 @@ run_cape <- function(pheno_obj, geno_obj,
   }
   
   
-  data_obj$writeVariantInfluences("Variant.Influences.csv", p_or_q = max(c(p_or_q, 0.2)))
+  data_obj$writeVariantInfluences("Variant_Influences.csv", p_or_q = max(c(p_or_q, 0.2)))
 
-  data_obj$writeVariantInfluences("Variant.Influences.Interactions.csv", 
+  data_obj$writeVariantInfluences("Variant_Influences_Interactions.csv", 
     include_main_effects = FALSE, p_or_q = max(c(p_or_q, 0.2)))
   
-  data_obj$plotVariantInfluences("variant.influences.pdf", width = 10, height = 7,
+  data_obj$plotVariantInfluences("variant_influences.pdf", width = 10, height = 7,
     p_or_q = p_or_q, standardize = FALSE, not_tested_col = "lightgray", 
     covar_width = NULL, pheno_width = NULL)
 
-  data_obj$plotVariantInfluences("variant.influences.jpg", width = 10, height = 7,
+  data_obj$plotVariantInfluences("variant_influences.jpg", width = 10, height = 7,
     p_or_q = p_or_q, standardize = FALSE, not_tested_col = "lightgray", 
     covar_width = NULL, pheno_width = NULL)
 
@@ -334,20 +334,20 @@ run_cape <- function(pheno_obj, geno_obj,
   
   data_obj$save_rds(data_obj, results_file)
   
-  data_obj$plotNetwork("Network.Circular.pdf", label_gap = 10, label_cex = 1.5, show_alleles = FALSE)
-  data_obj$plotNetwork("Network.Circular.jpg", label_gap = 10, label_cex = 1.5, show_alleles = FALSE)
+  data_obj$plotNetwork("Network_Circular.pdf", label_gap = 10, label_cex = 1.5, show_alleles = FALSE)
+  data_obj$plotNetwork("Network_Circular.jpg", label_gap = 10, label_cex = 1.5, show_alleles = FALSE)
 
   if(dim(geno_obj)[2] == 8){
-    data_obj$plotNetwork("Network.Circular.DO.pdf", label_gap = 10, label_cex = 1.5, show_alleles = TRUE)
-    data_obj$plotNetwork("Network.Circular.DO.jpg", label_gap = 10, label_cex = 1.5, show_alleles = TRUE)
+    data_obj$plotNetwork("Network_Circular_DO.pdf", label_gap = 10, label_cex = 1.5, show_alleles = TRUE)
+    data_obj$plotNetwork("Network_Circular_DO.jpg", label_gap = 10, label_cex = 1.5, show_alleles = TRUE)
   }	
   
-  data_obj$plotFullNetwork("Network.View.pdf", zoom = 1.2, node_radius = 0.3, 
+  data_obj$plotFullNetwork("Network_View.pdf", zoom = 1.2, node_radius = 0.3, 
     label_nodes = TRUE, label_offset = 0.4, label_cex = 0.5, bg_col = "lightgray", 
     arrow_length = 0.1, layout_matrix = "layout_with_kk", legend_position = "topright", 
     edge_lwd = 1, legend_radius = 2, legend_cex = 0.7, xshift = -1)
   
-  data_obj$plotFullNetwork("Network.View.jpg", zoom = 1.2, node_radius = 0.3, 
+  data_obj$plotFullNetwork("Network_View.jpg", zoom = 1.2, node_radius = 0.3, 
     label_nodes = TRUE, label_offset = 0.4, label_cex = 0.5, bg_col = "lightgray", 
     arrow_length = 0.1, layout_matrix = "layout_with_kk", legend_position = "topright", 
     edge_lwd = 1, legend_radius = 2, legend_cex = 0.7, xshift = -1)
