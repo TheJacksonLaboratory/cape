@@ -564,7 +564,7 @@ results file and using `plot_singlescan` with parameters different from
 those in `run_cape.`
 
 ```{r single_plot, fig.width = 7, fig.height = 5}
-singlescan_obj <- readRDS(here("demo", "demo_qtl", "NON_NZO.singlescan.RData"))
+singlescan_obj <- readRDS(here("demo", "demo_qtl", "NON_NZO_singlescan.RData"))
 plot_singlescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
 covar_label_size = 1)
 ```
