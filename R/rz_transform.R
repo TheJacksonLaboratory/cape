@@ -10,9 +10,9 @@
 #' 
 #' @return Returns a numeric vector with a normal distribution
 #'
+#' @importFrom stats qnorm
+#'
 #' @export
-
-
 rz_transform <- function (x, jitter = FALSE){
   x = rank(x, na.last = "keep", ties.method = "average") / (length(x) + 1)
   return(qnorm(x))

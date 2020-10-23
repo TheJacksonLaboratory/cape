@@ -50,6 +50,10 @@
 #' @return This function returns a list that includes both the data_obj and geno_obj
 #' These objects must then be separated again to continue through the cape analysis.
 #'
+#' @import parallel
+#' @import foreach
+#' @importFrom doParallel registerDoParallel
+#'
 #' @export
 
 impute_missing_geno <- function(data_obj, geno_obj = NULL, k = 10, ind_missing_thresh = 0, 
@@ -168,18 +172,18 @@ impute_missing_geno <- function(data_obj, geno_obj = NULL, k = 10, ind_missing_t
   
   if(run_parallel){
     if(verbose){cat("Imputing missing genotypes...\n")}
-    cl <- parallel::makeCluster(n_cores)
-    doParallel::registerDoParallel(cl)
+    cl <- makeCluster(n_cores)
+    registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
     cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-    parallel::clusterExport(cl, "cape_dir", envir=environment())
-    parallel::clusterEvalQ(cl, .libPaths(cape_dir))
+    clusterExport(cl, "cape_dir", envir=environment())
+    clusterEvalQ(cl, .libPaths(cape_dir))
     # the following line adds package variables to the parallel worker environments
     #parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-    imputed_geno <- foreach::foreach(m = geno_chunks, .export = "flatten_array") %dopar% {
+    imputed_geno <- foreach(m = geno_chunks, .export = "flatten_array") %dopar% {
       impute_section(m)
     }
-    parallel::stopCluster(cl)
+    stopCluster(cl)
   }else{
     if(verbose){cat("Imputing missing genotypes...\n")}
       imputed_geno <- lapply(geno_chunks, impute_section)

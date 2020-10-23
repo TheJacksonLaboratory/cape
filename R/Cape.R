@@ -138,10 +138,12 @@
 #' @slot kinship_type Which type of kinship matrix to use. Either "overall" 
 #' for the overall kinship matrix or "ltco" for leave-two-chromosomes-out.
 #' @slot transform_to_phenospace whether to transform to phenospace or not.
-#'
+#' 
+#' @import R6
+#' @import tools
 #' 
 #' @export
-Cape <- R6::R6Class(
+Cape <- R6Class(
   "Cape",
   portable = FALSE,
   class = FALSE,
@@ -515,7 +517,7 @@ Cape <- R6::R6Class(
       if (missing(results_path)) {
         # if the path isn't suplied, take the parameter file's name and append
         # the date and time to create the results directory
-        param_name <- tools::file_path_sans_ext(basename(self$parameter_file))
+        param_name <- file_path_sans_ext(basename(self$parameter_file))
         dt <- format(Sys.time(), "%Y%m%d_%H%M")
         results_path <- paste(param_name, dt, sep = "_")
         self$results_path <- file.path(".", results_path)
@@ -585,7 +587,7 @@ Cape <- R6::R6Class(
       full_path <- file.path(self$results_path, filename)
       
       switch(
-        tolower(tools::file_ext(filename)),
+        tolower(file_ext(filename)),
         "pdf" = pdf(full_path, width = 7, height = 7),
         "png" = png(full_path, res = 300, width = 7, height = 7, units = "in"),
         "jpeg" = jpeg(full_path, res = 300, width = 7, height = 7, units = "in"),

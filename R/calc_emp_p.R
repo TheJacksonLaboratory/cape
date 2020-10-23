@@ -7,6 +7,7 @@
 #' @param null_dist The null distribution 
 #'
 #' @return An empirical p value for each observed value
+#' @importFrom stats ecdf
 
 calc_emp_p <- function(obs_dist, null_dist){
   p_fun <- ecdf(null_dist)

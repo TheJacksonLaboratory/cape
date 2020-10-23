@@ -12,13 +12,15 @@
 #' @param n_cores integer, default is 4
 #' @param initialize_only boolean, default: FALSE
 #' @param verbose boolean, output goes to stdout
-#'
+#' 
+#' @import here
+#' 
 #' @export
 load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
                                     run_parallel = FALSE, results_file = "cross.RData", p_or_q = 0.05, 
                                     n_cores = 4, initialize_only = FALSE, verbose = TRUE){
   		
-  if(!require(here)){install.packages("here")}
+  # if(!require(here)){install.packages("here")}
   
   # if R/QTL2 file format
   if (endsWith(input_file, ".zip")) {

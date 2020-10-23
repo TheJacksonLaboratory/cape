@@ -34,7 +34,11 @@
 #' @details One and only one of min_per_genotype or max_pair_cor should be specified.
 #' We recommend that if you have continuous genotype probabilities, you use max_pair_cor.
 #' If both values are specified, this function will preferrentially use max_pair_cor.
-#'   
+#' 
+#' @import parallel
+#' @import foreach
+#' @importFrom doParallel registerDoParallel
+#' 
 #' @export
 get_pairs_for_pairscan <- function(gene, covar_names = NULL, max_pair_cor = NULL, 
 	min_per_genotype = NULL, run_parallel = FALSE, n_cores = 4, verbose = FALSE){
@@ -118,16 +122,16 @@ get_pairs_for_pairscan <- function(gene, covar_names = NULL, max_pair_cor = NULL
   
   if (run_parallel) {
     
-    cl <- parallel::makeCluster(n_cores)
-    doParallel::registerDoParallel(cl)
+    cl <- makeCluster(n_cores)
+    registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
     cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-    parallel::clusterExport(cl, "cape_dir", envir=environment())
-    parallel::clusterEvalQ(cl, .libPaths(cape_dir))
-    good_pair_list <- foreach::foreach(p = 1:length(pair_list)) %dopar% {
+    clusterExport(cl, "cape_dir", envir=environment())
+    clusterEvalQ(cl, .libPaths(cape_dir))
+    good_pair_list <- foreach(p = 1:length(pair_list)) %dopar% {
       check_multi_pairs(pair_list[[p]])
     }
-    parallel::stopCluster(cl)
+    stopCluster(cl)
     
   } else {
     

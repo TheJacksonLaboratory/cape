@@ -30,6 +30,8 @@
 #' y value for the plot. If NULL, it will be calculated
 #' based on phenoV and error bars.
 #'
+#' @importFrom graphics stripchart boxplot segments
+#'
 #' @return None
 
 plot_points <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label, marker2_label, ymin = NULL, ymax = NULL){

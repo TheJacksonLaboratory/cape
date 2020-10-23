@@ -7,11 +7,13 @@
 #' 
 #' @return The data object is returned with a new table called var_to_var_p_val.
 #' This table is the same as var_to_var_influences, but with p value and adjusted
-#' p value columns appended. 
+#' p value columns appended.
+#' 
+#' @importFrom stats p.adjust
 #' 
 #' @export
-calc_p <- function(data_obj, pval_correction = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none")) {
-  
+calc_p <- function(data_obj, pval_correction = 
+                     c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none")) {
   
   pval_correction = pval_correction[1]
   data_obj$pval_correction <- pval_correction	

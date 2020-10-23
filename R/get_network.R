@@ -38,8 +38,9 @@
 #' if collapse_linked_markers is set to FALSE. \code{\link{run_cape}} automatically
 #' requests both networks be generated.
 #' 
+#' @import igraph
+#' 
 #' @export
-
 get_network <- function(data_obj, geno_obj, p_or_q = 0.05, min_std_effect = 0, standardize = FALSE, 
                         collapse_linked_markers = TRUE, threshold_power = 1, verbose = FALSE, 
                         plot_linkage_blocks = FALSE){
@@ -112,7 +113,7 @@ get_network <- function(data_obj, geno_obj, p_or_q = 0.05, min_std_effect = 0, s
   filtered_edgelist <- edgelist[not_na,]
   #filtered_edgelist <- subset(edgelist, !is.na(edgelist[,"source_markers"]) & !is.na(edgelist[,"target_markers"]))
   
-  net <- igraph::graph_from_edgelist(filtered_edgelist)
+  net <- graph_from_edgelist(filtered_edgelist)
   if(standardize){
     weights <- as.numeric(all_net_data[not_na,5])
   }else{
@@ -121,13 +122,13 @@ get_network <- function(data_obj, geno_obj, p_or_q = 0.05, min_std_effect = 0, s
   var_sig_col <- 7
   non_sig_locale <- which(as.numeric(all_net_data[not_na,var_sig_col]) > p_or_q)
   weights[non_sig_locale] <- 0
-  igraph::E(net)$weight <- weights
+  E(net)$weight <- weights
   
   #remove multiple edges between blocks, take the edge with the maximum magnitude
   edge_attr_comb = list(weight = function(x) x[which.max(abs(x))], name="ignore")
-  simple_net <- igraph::simplify(net, remove.multiple = TRUE, remove.loops = FALSE, edge.attr.comb = edge_attr_comb)
+  simple_net <- simplify(net, remove.multiple = TRUE, remove.loops = FALSE, edge.attr.comb = edge_attr_comb)
   
-  adj_mat <- as.matrix(igraph::as_adjacency_matrix(simple_net, type = "both", attr = "weight"))
+  adj_mat <- as.matrix(as_adjacency_matrix(simple_net, type = "both", attr = "weight"))
   
   #put the adjacency matrix in chromosome order
   split_labels <- unlist(lapply(strsplit(rownames(adj_mat), "Chr"), function(x) x[2]))

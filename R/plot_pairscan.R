@@ -29,6 +29,8 @@
 #'
 #' @return Plots to a pdf
 #' 
+#' @importFrom grDevices jpeg
+#' 
 #' @export
 plot_pairscan <- function(data_obj, pairscan_obj, phenotype = NULL, standardized = FALSE,
 	show_marker_labels = FALSE, show_chr = TRUE, label_chr = TRUE, show_alleles = TRUE,

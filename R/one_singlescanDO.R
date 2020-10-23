@@ -21,6 +21,10 @@
 #' @return This function returns the t_statistics for all linear models 
 #' testing the effects of each marker on the phenotype.
 #' 
+#' @import parallel
+#' @import foreach
+#' @importFrom doParallel registerDoParallel
+#' 
 one_singlescanDO <- function(phenotype_vector, genotype_mat, model_family, ref_allele = "A", 
 covar_table = NULL, run_parallel = FALSE, n_cores = 4){
   
@@ -46,17 +50,17 @@ covar_table = NULL, run_parallel = FALSE, n_cores = 4){
   # !diagnostics suppress=m
   if (run_parallel) {
     
-    cl <- parallel::makeCluster(n_cores)
-    doParallel::registerDoParallel(cl)
+    cl <- makeCluster(n_cores)
+    registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
     cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-    parallel::clusterExport(cl, "cape_dir", envir=environment())
-    parallel::clusterEvalQ(cl, .libPaths(cape_dir))
-    results <- foreach::foreach(m = 1:dim(gene)[[locus_dim]], .packages = 'cape', .export = c("get_stats_multiallele", "check_geno")) %dopar% {
+    clusterExport(cl, "cape_dir", envir=environment())
+    clusterEvalQ(cl, .libPaths(cape_dir))
+    results <- foreach(m = 1:dim(gene)[[locus_dim]], .packages = 'cape', .export = c("get_stats_multiallele", "check_geno")) %dopar% {
       get_stats_multiallele(phenotype_vector, gene[,,m], covar_table = covar_table, 
       model_family, ref_col)
     }
-    parallel::stopCluster(cl)
+    stopCluster(cl)
     
   } else {
     

@@ -9,6 +9,9 @@
 #' @param pheno_which A vector of trait names to plot. The default is to plot all traits.
 #' @param pheno_labels A vector of names for traits to appear in the plot in case the column names are not very pretty.
 #' 
+#' @importFrom graphics abline
+#' @importFrom stats rnorm qqplot
+#' 
 #' @export
 
 qnorm_pheno <- function(data_obj, pheno_which = NULL, pheno_labels = NULL){

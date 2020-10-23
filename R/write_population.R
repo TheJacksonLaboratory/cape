@@ -14,7 +14,9 @@
 #' Bioinformatics 19:889-890 doi:10.1093/bioinformatics/btg112
 #' 
 #' @return Writes a file to the destination path
-#'
+#' 
+#' @importFrom utils write.table
+#' 
 #' @export
 
 write_population <- function(data_obj, geno_obj, ref_allele = "A", na = NA, 

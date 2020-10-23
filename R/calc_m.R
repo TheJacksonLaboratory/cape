@@ -15,7 +15,9 @@
 #' @return This function returns a matrix with one 
 #' row holding the m12 and m21 values as described 
 #' in Carter et al. 2012
-
+#' 
+#' @import corpcor
+#' @importFrom stats D
 
 calc_m <- function(markers,beta_m) {
   beta_main <- beta_m[,1:2]
@@ -27,7 +29,7 @@ calc_m <- function(markers,beta_m) {
     act_delta <- solve(beta_main)%*%beta_inter
   }else{
     tolerance = max(dim(beta_main))*max(D)*.Machine$double.eps
-    act_delta <- try(corpcor::pseudoinverse(beta_main, tol = tolerance)%*%beta_inter, silent = TRUE)
+    act_delta <- try(pseudoinverse(beta_main, tol = tolerance)%*%beta_inter, silent = TRUE)
     if(class(act_delta) == "try-error"){
       act_delta <- c(NA, NA)
     }

@@ -27,7 +27,7 @@
 #' @param num_pairs_limit A number indicating the maximum number of pairs to
 #'   scan. If the number of pairs exceeds this threshold, the function asks for
 #'   confirmation before proceeding with the pairwise scan.
-#' @param num.perm.limit A number indicating the maximum number of total
+#' @param num_perm_limit A number indicating the maximum number of total
 #'   permutations that will be performed. If the number of total permutations
 #'   exceeds this threshold, the function asks for confirmation before
 #'   proceeding with the pairwise scan.

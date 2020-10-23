@@ -31,6 +31,12 @@
 #' sizes, standard errors, and covariance matrices for the
 #' pairwise tests.
 #' 
+#' @import parallel
+#' @import foreach
+#' @importFrom Matrix rankMatrix
+#' @importFrom doParallel registerDoParallel
+#' @importFrom stats coefficients vcov
+#' 
 one_pairscan_parallel <- function(data_obj, phenotype_vector, genotype_matrix, 
   int = NULL, covar_vector = NULL, paired_markers, n_perm = 0, run_parallel = FALSE, 
   verbose = FALSE, n_cores = 4){
@@ -52,7 +58,7 @@ one_pairscan_parallel <- function(data_obj, phenotype_vector, genotype_matrix,
     no_na_cov <- cov_mat[not_na_locale,,drop=FALSE]
     
     design_cov <- cbind(rep(1, dim(no_na_cov)[1]), no_na_cov)
-    rank_cov <- Matrix::rankMatrix(design_cov)
+    rank_cov <- rankMatrix(design_cov)
     if(rank_cov[[1]] < dim(design_cov)[2]){
       stop("The covariate matrix does not appear to be linearly independent.\nIf you are using dummy variables for groups, leave one of the groups out.")
     }
@@ -99,7 +105,7 @@ one_pairscan_parallel <- function(data_obj, phenotype_vector, genotype_matrix,
     if(length(missing_rows) > 0){
       design_mat <- design_mat[-missing_rows,]
     }
-    rank_check <- Matrix::rankMatrix(design_mat)[[1]]
+    rank_check <- rankMatrix(design_mat)[[1]]
     
     if(rank_check < dim(design_mat)[2]){
       return(NULL)
@@ -208,16 +214,16 @@ one_pairscan_parallel <- function(data_obj, phenotype_vector, genotype_matrix,
   }
   
   if (run_parallel) {
-    cl <- parallel::makeCluster(n_cores)
-    doParallel::registerDoParallel(cl)
+    cl <- makeCluster(n_cores)
+    registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
     cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-    parallel::clusterExport(cl, "cape_dir", envir=environment())
-    parallel::clusterEvalQ(cl, .libPaths(cape_dir))
-    pair_results_list <- foreach::foreach(m = 1:length(chunked_pairs), .packages = 'cape', .export = c("phenotype_vector", "rankMatrix")) %dopar% {
+    clusterExport(cl, "cape_dir", envir=environment())
+    clusterEvalQ(cl, .libPaths(cape_dir))
+    pair_results_list <- foreach(m = 1:length(chunked_pairs), .packages = 'cape', .export = c("phenotype_vector", "rankMatrix")) %dopar% {
       get_multi_pair_results(m_pair_v = chunked_pairs[m])
     }
-    parallel::stopCluster(cl)
+    stopCluster(cl)
     
   } else {
     
@@ -266,16 +272,16 @@ one_pairscan_parallel <- function(data_obj, phenotype_vector, genotype_matrix,
     
     if (run_parallel) {
       
-      cl <- parallel::makeCluster(n_cores)
-      doParallel::registerDoParallel(cl)
+      cl <- makeCluster(n_cores)
+      registerDoParallel(cl)
       cape_dir_full <- find.package("cape")
       cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-      parallel::clusterExport(cl, "cape_dir", envir=environment())
-      parallel::clusterEvalQ(cl, .libPaths(cape_dir))
-      perm_results <- foreach::foreach(p = 1:n_perm, .packages = 'cape', .export = c("phenotype_vector", "rankMatrix")) %dopar% {
+      clusterExport(cl, "cape_dir", envir=environment())
+      clusterEvalQ(cl, .libPaths(cape_dir))
+      perm_results <- foreach(p = 1:n_perm, .packages = 'cape', .export = c("phenotype_vector", "rankMatrix")) %dopar% {
         one_perm(p)
       }
-      parallel::stopCluster(cl)
+      stopCluster(cl)
       
     } else {
       

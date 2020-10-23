@@ -24,6 +24,11 @@
 #' pair standard errors, and the covariance matrix for each test.
 #' The output is then further processed by \code{\link{pairscan}}.
 #' 
+#' @import parallel
+#' @import foreach
+#' @importFrom doParallel registerDoParallel
+#' 
+#' 
 pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs, 
 kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
   
@@ -162,16 +167,16 @@ kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
     sink(NULL) #stop sinking output
     
     if (run_parallel) {
-      cl <- parallel::makeCluster(n_cores)
-      doParallel::registerDoParallel(cl)
+      cl <- makeCluster(n_cores)
+      registerDoParallel(cl)
       cape_dir_full <- find.package("cape")
       cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-      parallel::clusterExport(cl, varlist="cape_dir", envir=environment())
-      parallel::clusterEvalQ(cl, .libPaths(cape_dir))
-      pairscan_results <- foreach::foreach(m = t(marker_pairs), .export=c("rankMatrix", "one_pairscan_parallel", "get_covar", "get_marker_num","get_marker_chr"), .packages = 'cape') %dopar% {
+      clusterExport(cl, varlist="cape_dir", envir=environment())
+      clusterEvalQ(cl, .libPaths(cape_dir))
+      pairscan_results <- foreach(m = t(marker_pairs), .export=c("rankMatrix", "one_pairscan_parallel", "get_covar", "get_marker_num","get_marker_chr"), .packages = 'cape') %dopar% {
                                         get_marker_pair_stats(m, kin_dat)
                                       }
-      parallel::stopCluster(cl)
+      stopCluster(cl)
       
     } else {
       
@@ -200,18 +205,18 @@ kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
           
           if (run_parallel) {
             
-            cl <- parallel::makeCluster(n_cores)
-            doParallel::registerDoParallel(cl)
+            cl <- makeCluster(n_cores)
+            registerDoParallel(cl)
             cape_dir_full <- find_package("cape")
             cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-            parallel::clusterExport(cl, varlist=c("rankMatrix", "one_pairscan_parallel", "get_covar", "get_marker_num", "get_marker_chr","cape_dir"), envir=environment())
-            parallel::clusterEvalQ(cl, .libPaths(cape_dir))
+            clusterExport(cl, varlist=c("rankMatrix", "one_pairscan_parallel", "get_covar", "get_marker_num", "get_marker_chr","cape_dir"), envir=environment())
+            clusterEvalQ(cl, .libPaths(cape_dir))
             #.export = c("rankMatrix", "one_pairscan_parallel", "get_covar", "get_marker_num", "get_marker_chr")
-            covar_results <- foreach::foreach(m = t(cv_markers), .packages = 'cape'
+            covar_results <- foreach(m = t(cv_markers), .packages = 'cape'
             		) %dopar% {
               get_covar_stats(m, kin_dat)
             }
-            parallel::stopCluster(cl)
+            stopCluster(cl)
             
           } else {
             

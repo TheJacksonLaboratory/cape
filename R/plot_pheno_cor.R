@@ -12,6 +12,9 @@
 #' @param pheno_labels A vector of names for traits to appear in the plot in case the column names are not very pretty.
 #' @param pt_cex A numeric value indicating the size of the points.
 #' 
+#' @importFrom graphics hist legend pairs rect
+#' @importFrom stats cor
+#' 
 #' @export
 
 plot_pheno_cor <- function(data_obj, pheno_which = NULL, color_by = NULL, group_labels = NULL,

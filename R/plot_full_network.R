@@ -66,6 +66,9 @@
 #' @references Csardi G, Nepusz T: The igraph software package for complex network 
 #' research, InterJournal, Complex Systems 1695. 2006. http://igraph.org 
 #' 
+#' @importFrom graphics arrows
+#' @importFrom stats dist na.omit
+#' 
 #' @export
  
 plot_full_network <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, main = NULL, 

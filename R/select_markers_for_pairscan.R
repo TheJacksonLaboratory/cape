@@ -68,7 +68,12 @@
 #' @return Returns the \code{\link{Cape}} object with a new matrix called
 #' \code{geno_for_pairscan} containing the genotypes of the selected markers
 #' for each individual.
-#'
+#' 
+#' @importFrom abind adrop
+#' @importFrom grDevices dev.off pdf 
+#' @importFrom graphics layout
+#' @importFrom stats runif
+#' 
 #' @export
 select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj, 
   specific_markers = NULL, num_alleles = 50, peak_density = 0.5, window_size = NULL, 

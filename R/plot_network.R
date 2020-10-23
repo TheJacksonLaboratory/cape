@@ -39,6 +39,9 @@
 #' or by whether they are positive or negative (FALSE)
 #' @param show_alleles boolean, default is TRUE
 #' 
+#' @importFrom shape Arrowhead
+#' @importFrom graphics xspline
+#' 
 #' @export
 
 plot_network <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE, 
