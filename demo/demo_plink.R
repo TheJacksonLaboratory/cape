@@ -2,8 +2,8 @@ set.seed(1234)
 
 library(cape)
 
-results_path <- here("demo", "demo_PLINK")
-data_path <- here("tests", "testthat", "testdata", "demo_PLINK_data")
+results_path <- here::here("demo", "demo_PLINK")
+data_path <- here::here("tests", "testthat", "testdata", "demo_PLINK_data")
 
 ped <- file.path(data_path, "test.ped")
 map <- file.path(data_path, "test.map")

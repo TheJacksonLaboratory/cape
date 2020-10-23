@@ -2,8 +2,8 @@ set.seed(1234)
 
 library(cape)
 
-demo.path <- here("demo", "demo_qtl2")
-data_path <- here("tests", "testthat", "testdata", "demo_qtl2_data")
+demo.path <- here::here("demo", "demo_qtl2")
+data_path <- here::here("tests", "testthat", "testdata", "demo_qtl2_data")
 
 data_file <- file.path(data_path, "iron.yaml")
 param_file <- file.path(demo.path, "iron.parameters.yml")

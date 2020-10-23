@@ -2,8 +2,8 @@ set.seed(1234)
 
 library(cape)
 
-results_path <- here("demo", "demo_qtl")
-data_path <- here("tests", "testthat", "testdata", "demo_qtl_data")
+results_path <- here::here("demo", "demo_qtl")
+data_path <- here::here("tests", "testthat", "testdata", "demo_qtl_data")
 
 data_file <- file.path(data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param_file <- file.path(results_path, "NON_NZO.parameters.yml")
