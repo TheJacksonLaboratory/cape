@@ -12,6 +12,8 @@
 #' the markers and individuals specified in 
 #' data_obj$geno_names
 #'
+#' @importFrom abind abind
+#'
 #' @export
 
 get_geno <- function(data_obj, geno_obj){

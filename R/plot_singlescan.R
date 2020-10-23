@@ -24,6 +24,8 @@
 #' @param cex see the "points()" R function. Default is 1.
 #' @param covar_label_size default is 0.7
 #' 
+#' @importFrom graphics lines
+#' 
 #' @export
 
 plot_singlescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL, 

@@ -26,7 +26,9 @@
 #' add is FALSE
 #' @param add A logical value indicating whether the pie should be 
 #' added to an existing plot (TRUE) or drawn on a new plot (FALSE).
-#'
+#' 
+#' @importFrom graphics text
+#' 
 #' @export 
 draw_pie <- function(x = 0.5, y = 0.5, radius = 1, cols = c("red", "green"), border_col = "black", node_border_lwd = 1, labels = NULL, edges = 200, label_cex = 1, xlim = NULL, ylim = NULL, add = TRUE){
   

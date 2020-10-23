@@ -37,6 +37,8 @@
 #' @param ref_centered Whether to center the effects
 #' on the reference genotype.
 #' @return None
+#' 
+#' @importFrom graphics mtext
 
 plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
 	marker2_label, ymin = NULL, ymax = NULL, error_bars, ref_centered){

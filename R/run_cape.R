@@ -29,7 +29,9 @@
 #'
 #' @return This function invisibly returns the data object with all final 
 #' data included. In addition, data saved to the data_obj$results_path directory
-#'
+#' 
+#' @importFrom utils read.table
+#' 
 #' @export
 run_cape <- function(pheno_obj, geno_obj, 
   results_file = "cross.RData", p_or_q = 0.05, n_cores = 4, 

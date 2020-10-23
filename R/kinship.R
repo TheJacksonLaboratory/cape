@@ -33,6 +33,10 @@
 #' Kang, H. M. et al. Efficient control of population 
 #' structure in model organism association mapping. Genetics 
 #' 178, 1709–1723 (2008).
+#' 
+#' @import qtl
+#' @import qtl2convert
+#' @importFrom qtl2 calc_kinship genoprob_to_alleleprob
 #'
 #' @export
 kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4, 
@@ -75,9 +79,9 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
     
     #data_obj$save_rds(map,"map.RData")
     
-    genoprobs <- qtl2convert::probs_doqtl_to_qtl2(geno_obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
+    genoprobs <- probs_doqtl_to_qtl2(geno_obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
-    genoprobs <- qtl2::genoprob_to_alleleprob(genoprobs)
+    genoprobs <- genoprob_to_alleleprob(genoprobs)
   }
   
   
@@ -101,9 +105,9 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
     
     #data_obj$save_rds(map,"map.RData")
     
-    genoprobs <- qtl2convert::probs_doqtl_to_qtl2(geno_obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
+    genoprobs <- probs_doqtl_to_qtl2(geno_obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
-    genoprobs <- qtl2::genoprob_to_alleleprob(genoprobs)
+    genoprobs <- genoprob_to_alleleprob(genoprobs)
     
   }
   
@@ -118,12 +122,12 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   ##############################################################
   if(!("calc_genoprob" %in% class(geno_obj)) & pop=="RIL"){
     write_population(data_obj, geno_obj, filename = file.path(qtl_path, qtl_file), na = "")
-    cross <- qtl::read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
+    cross <- read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
     unlink(file.path(qtl_path, qtl_file)) #delete the file
-    cross <- qtl::convert2risib(cross)
-    cross <- qtl::jittermap(cross)
-    qtlprobs <- qtl::calc_genoprob(cross)
-    probs <- qtl2convert::probs_qtl_to_qtl2(qtlprobs)
+    cross <- convert2risib(cross)
+    cross <- jittermap(cross)
+    qtlprobs <- calc_genoprob(cross)
+    probs <- probs_qtl_to_qtl2(qtlprobs)
     genoprobs <- probs$probs
     map <- probs$map
   }
@@ -136,10 +140,10 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   if(!("calc_genoprob" %in% class(geno_obj)) & pop=="2PP"){
     write_population(data_obj, geno_obj, filename = file.path(qtl_path, qtl_file), 
     na = "")
-    cross <- qtl::read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
+    cross <- read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
     unlink(file.path(qtl_path, qtl_file)) #delete the file
-    qtlprobs <- qtl::calc_genoprob(cross)
-    probs <- qtl2convert::probs_qtl_to_qtl2(qtlprobs)
+    qtlprobs <- calc_genoprob(cross)
+    probs <- probs_qtl_to_qtl2(qtlprobs)
     genoprobs <- probs$probs
     map <- probs$map
   }
@@ -161,11 +165,11 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
         stop("Must be type overall")
       }
 
-      map <- qtl2convert::map_df_to_list(map,pos_column = "pos")
+      map <- map_df_to_list(map,pos_column = "pos")
       
       #data_obj$save_rds(map,"map.RData")
       
-      K <- qtl2::calc_kinship(probs=genoprobs,type=type, cores=n_cores)
+      K <- calc_kinship(probs=genoprobs,type=type, cores=n_cores)
     }
     
     
@@ -184,7 +188,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
         stop("Must be type overall")
       }
       
-      kinship <- qtl2::calc_kinship(probs=genoprobs,type=type, cores=n_cores)
+      kinship <- calc_kinship(probs=genoprobs,type=type, cores=n_cores)
       rownames(kinship) <- colnames(kinship) <- rownames(data_obj$pheno)
       K <- list(kinship)
       names(K)[1] <- "overall"
@@ -196,7 +200,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
     if ("calc_genoprob" %in% class(file)){
       
       ## Convert to allele probabilities if it isn't a 2PP 
-      if(pop=="MPP"){ genoprobs<-qtl2::genoprob_to_alleleprob(genoprobs)}
+      if(pop=="MPP"){ genoprobs<-genoprob_to_alleleprob(genoprobs)}
       
       if(type=="chr"){
         stop("Must be type overall")
@@ -205,7 +209,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
         stop("Must be type overall")
       }
       
-      kinship <- qtl2::calc_kinship(probs=genoprobs,type=type, cores=n_cores)
+      kinship <- calc_kinship(probs=genoprobs,type=type, cores=n_cores)
       rownames(kinship) <- colnames(kinship) <- rownames(data_obj$pheno)
       K <- list(kinship)
       names(K)[1] <- "overall"
@@ -243,7 +247,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
       
       # calculate kinship matrix with some chromosomes excluded
       gp <- genoprobs[,!names(genoprobs) %in% excludes[,i]]
-      kinship <- qtl2::calc_kinship(probs=gp,type="overall", cores=n_cores)
+      kinship <- calc_kinship(probs=gp,type="overall", cores=n_cores)
       
       # assign row,column names using names from the pheno object
       rownames(kinship) <- colnames(kinship) <- rownames(data_obj$pheno)

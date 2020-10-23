@@ -29,6 +29,8 @@
 #' be a vector specifying those bins.
 #'
 #' @return None
+#' 
+#' @importFrom stats as.formula lm predict
 
 plot_int_heat <- function(phenoV, marker1_vals, marker2_vals, pheno_name = NULL, 
                         marker1_label = NULL, marker2_label = NULL, bins1 = 50, bins2 = 50){

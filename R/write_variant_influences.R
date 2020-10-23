@@ -46,8 +46,9 @@
 #' to a file and invisibly returns the table. If write_file is FALSE, the
 #' function returns the results table without writing to file.
 #' 
-#' @export
+#' @importFrom utils write.table
 #' 
+#' @export
 write_variant_influences <- function(data_obj, p_or_q = 0.05, include_main_effects = TRUE, 
                                    filename = "Variant.Influences.csv", delim = ",", 
                                    mark_covar = FALSE, write_file = TRUE){
