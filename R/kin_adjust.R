@@ -24,6 +24,7 @@
 #' genotypes, and covariates. These are used in \code{\link{singlescan}}
 #' and \code{\link{pairscan_kin}}.
 #'
+#' @importFrom regress regress
 
 kin_adjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
 covarV = NULL, verbose = FALSE){
