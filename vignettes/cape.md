@@ -2,7 +2,7 @@
 title: "cape: A package for the combined analysis of pleiotropy and epistasis"
 author: 
 - Anna L. Tyler^[The Jackson Laboratory, anna.tyler@jax.org], Jake Emerson^[The Jackson Laboratory, jake.emerson@jax.org], Baha El Kassaby^[The Jackson Laboratory, baha.elkassaby@jax.org], Ann Wells^[The Jackson Laboratory, ann.wells@jax.org], Georgi Kolishovski^[The Jackson Laboratory, georgi.kolishovski@jax.org], Vivek M. Philip^[The Jackson Laboratory, vivek.philip@jax.org],and Gregory W. Carter^[The Jackson Laboratory, gregory.carter@jax.org]
-date: 'September 21, 2020'
+date: 'October 23, 2020'
 output: 
    rmarkdown::html_vignette:
       toc: true
@@ -61,8 +61,8 @@ The following code is from the demo_qtl example.
 
 
 ```r
-results_path <- here("demo", "demo_qtl")
-data_path <- here("tests", "testthat", "testdata", "demo_qtl_data")
+results_path <- here::here("demo", "demo_qtl")
+data_path <- here::here("tests", "testthat", "testdata", "demo_qtl_data")
 data_file <- file.path(data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param_file <- file.path(results_path, "NON_NZO.parameters.yml")
 
@@ -141,7 +141,7 @@ This code is also included in demo_PLINK.R, which is included with cape.
 
 
 ```r
-data_path <- here("tests", "testthat", "testdata")
+data_path <- here::here("tests", "testthat", "testdata")
 ped <- file.path(data_path, "test.ped")
 map <- file.path(data_path, "test.map")
 pheno <- file.path(data_path, "test.pheno")
@@ -508,7 +508,8 @@ is suppressed.
 
 
 ```r
-final_cross <- run_cape(obesity_cross, obesity_geno, results_file = "NON_NZO.RData", p_or_q = 0.05, verbose = FALSE, param_file = param_file, results_path = results_path)
+final_cross <- run_cape(obesity_cross, obesity_geno, results_file = "NON_NZO.RData", 
+p_or_q = 0.05, verbose = FALSE, param_file = param_file, results_path = results_path)
 ```
 
 ```
@@ -595,7 +596,7 @@ those in `run_cape.`
 
 
 ```r
-singlescan_obj <- readRDS(here("demo", "demo_qtl", "NON_NZO.singlescan.RData"))
+singlescan_obj <- readRDS(here::here("demo", "demo_qtl", "NON_NZO_singlescan.RData"))
 plot_singlescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
 covar_label_size = 1)
 ```
@@ -819,7 +820,7 @@ markers on chromosome 12. To see the main effects of markers on chromosome
 1, follow the chromosome 1 line all the way to the right to see that markers
 on chromosome 1 increase levels of all three traits. 
 
-![](/Users/elkasb/git/cape/demo/demo_qtl/variant.influences.jpg)
+![](/Users/elkasb/git/cape/demo/demo_qtl/variant_influences.jpg)
 
 Positive effects are shown in brown, and negative effects are in blue.
 Marker pairs that were not tested due to high correlation are shown in
@@ -832,7 +833,7 @@ circles around the chromosomes. Main effects are depicted in these
 concentric circles and genetic interactions are shown as arrows within
 the circle. 
 
-![](/Users/elkasb/git/cape/demo/demo_qtl/Network.Circular.jpg)
+![](/Users/elkasb/git/cape/demo/demo_qtl/Network_Circular.jpg)
 
 And finally, the function `plot_full_network` This function plots
 the same results in a network that ignores genomic position. 
@@ -845,7 +846,7 @@ by coloring the sections corresponding to the traits either brown
 for positive main effects or blue for negative main effects. Gray indicates
 no significant main effect. Interactions are shown as arrows between the nodes. 
 
-![](/Users/elkasb/git/cape/demo/demo_qtl/Network.View.jpg)
+![](/Users/elkasb/git/cape/demo/demo_qtl/Network_View.jpg)
 
 ### Interpreting CAPE Results
 

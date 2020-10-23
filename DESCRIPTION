@@ -69,5 +69,5 @@ Imports:
   tools (>= 3.6.2),
   utils (>= 3.6.2),
   yaml (>= 2.2.1)
-VignetteBuilder: rmarkdown
+VignetteBuilder: knitr
 RoxygenNote: 7.1.1

@@ -8,7 +8,7 @@ output:
       toc: true
 vignette: >
   %\VignetteIndexEntry{Combined Analysis of Pleiotropy and Epistasis}
-  %\VignetteEngine{rmarkdown::render}
+  %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 bibliography: cape.bib
 ---
@@ -62,8 +62,8 @@ by `cape2mpp`, which updates the object to the newer cape format.
 The following code is from the demo_qtl example.
 
 ```{r read_csv_format}
-results_path <- here("demo", "demo_qtl")
-data_path <- here("tests", "testthat", "testdata", "demo_qtl_data")
+results_path <- here::here("demo", "demo_qtl")
+data_path <- here::here("tests", "testthat", "testdata", "demo_qtl_data")
 data_file <- file.path(data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param_file <- file.path(results_path, "NON_NZO.parameters.yml")
 
@@ -125,7 +125,7 @@ The following code shows how to read in PLINK data, use the function
 This code is also included in demo_PLINK.R, which is included with cape.
 
 ```{r read_plink, eval = FALSE}
-data_path <- here("tests", "testthat", "testdata")
+data_path <- here::here("tests", "testthat", "testdata")
 ped <- file.path(data_path, "test.ped")
 map <- file.path(data_path, "test.map")
 pheno <- file.path(data_path, "test.pheno")
@@ -513,7 +513,7 @@ Cape uses the function `plot_svd` to plot the results of the SVD. The
 plot for the NON/NZO data set are shown below.
 
 ```{r eigentraits, results = "asis", echo = FALSE, out.width = 4, out.height = 4}
-svd_file <- here("demo", "demo_qtl", "svd.jpg")
+svd_file <- here::here("demo", "demo_qtl", "svd.jpg")
 cat(paste0("![](", svd_file, ")\n"))
 ```
 
@@ -564,7 +564,7 @@ results file and using `plot_singlescan` with parameters different from
 those in `run_cape.`
 
 ```{r single_plot, fig.width = 7, fig.height = 5}
-singlescan_obj <- readRDS(here("demo", "demo_qtl", "NON_NZO_singlescan.RData"))
+singlescan_obj <- readRDS(here::here("demo", "demo_qtl", "NON_NZO_singlescan.RData"))
 plot_singlescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
 covar_label_size = 1)
 ```
@@ -629,7 +629,7 @@ and reparameterized to calculate how each pair of markers influences each
 other directly and independently of eigentrait.
 
 ```{r reparam_fig, results = "asis", echo = FALSE, fig.width = 3, fig.height = 3}
-reparam_file <- here("vignettes", "reparam.png")
+reparam_file <- here::here("vignettes", "reparam.png")
 cat(paste0("![](", reparam_file, ")\n"))
 ```
 
@@ -790,7 +790,7 @@ markers on chromosome 12. To see the main effects of markers on chromosome
 on chromosome 1 increase levels of all three traits. 
 
 ```{r var_inf, results = "asis", echo = FALSE}
-var_inf_file <- here("demo", "demo_qtl", "variant_influences.jpg")
+var_inf_file <- here::here("demo", "demo_qtl", "variant_influences.jpg")
 cat(paste0("![](", var_inf_file, ")\n"))
 ```
 
@@ -806,7 +806,7 @@ concentric circles and genetic interactions are shown as arrows within
 the circle. 
 
 ```{r circ_net, results = "asis", echo = FALSE}
-circ_net_file <- here("demo", "demo_qtl", "Network_Circular.jpg")
+circ_net_file <- here::here("demo", "demo_qtl", "Network_Circular.jpg")
 cat(paste0("![](", circ_net_file, ")\n"))
 ```
 
@@ -822,7 +822,7 @@ for positive main effects or blue for negative main effects. Gray indicates
 no significant main effect. Interactions are shown as arrows between the nodes. 
 
 ```{r net_vis, results = "asis", echo = FALSE}
-net_file <- here("demo", "demo_qtl", "Network_View.jpg")
+net_file <- here::here("demo", "demo_qtl", "Network_View.jpg")
 cat(paste0("![](", net_file, ")\n"))
 ```
 
