@@ -40,9 +40,12 @@
 #' @param var_accounted_x x shift for the variance accounted axis label
 #' @param var_accounted_y x shift for the variance accounted axis label
 #' @param show_var_accounted logical
+#' @param just_selected_et logical
 #'
 #' @return \code{list("data_obj" = data_obj, "geno_obj" = geno_obj)}
-#'
+#' 
+#' @importFrom graphics barplot image
+#' 
 #' @export
 plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_col = "blue", 
                     pos_col =  "brown", light_dark = "f", pheno_labels = NULL, cex_barplot_axis = 1.7, 
