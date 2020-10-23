@@ -13,6 +13,9 @@
 #' @return Returns the error propagated coefficients and 
 #' standard errors for m12 and m21
 #' 
+#' @import corpcor
+#' @import propagate
+#' 
 calc_delta_errors <- function(markers,beta_m,se,beta_cov) {
   # print(markers)		
   beta_main <- beta_m[,1:2]
@@ -26,7 +29,7 @@ calc_delta_errors <- function(markers,beta_m,se,beta_cov) {
   if(n_rows == n_cols){
     act_delta <- solve(beta_main)%*%beta_inter
   }else{
-    act_delta <- try(corpcor::pseudoinverse(beta_main) %*% beta_inter, silent = TRUE)
+    act_delta <- try(pseudoinverse(beta_main) %*% beta_inter, silent = TRUE)
     if(class(act_delta)[1] == "try-error"){
       act_delta <- c(NA, NA)
     }
@@ -117,8 +120,8 @@ calc_delta_errors <- function(markers,beta_m,se,beta_cov) {
   }
   
   # using the expressions for m12 and m21 above, propagate errors
-  m12_errors <- propagate::propagate(expr = EXPR1, data = full_matrix, second.order = TRUE, cov=beta_cov, do.sim=FALSE)
-  m21_errors <- propagate::propagate(expr = EXPR2, data = full_matrix, second.order = TRUE, cov=beta_cov, do.sim=FALSE)
+  m12_errors <- propagate(expr = EXPR1, data = full_matrix, second.order = TRUE, cov=beta_cov, do.sim=FALSE)
+  m21_errors <- propagate(expr = EXPR2, data = full_matrix, second.order = TRUE, cov=beta_cov, do.sim=FALSE)
   results <- cbind(markers[1],markers[2],m12,m12_errors$prop[[4]],m21,m21_errors$prop[[4]])
   colnames(results) <- c("marker 1","marker 2","m12","m12_std_dev","m21","m21_std_dev")
   rownames(results)  <- NULL

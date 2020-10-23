@@ -45,6 +45,14 @@
 #'    locus_score_scores: Marker-level test statistics.
 #'
 #' @seealso \code{\link{plot_singlescan}}
+#' 
+#' @import parallel
+#' @import foreach
+#' @importFrom doParallel registerDoParallel
+#' @importFrom Matrix rankMatrix
+#' @importFrom stats var
+#' @importFrom stringr str_replace
+#' 
 #' @export
 #' 
 singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0, 
@@ -101,7 +109,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
     not_na_locale <- which(!is.na(rowSums(covar_table)))
     no_na_cov <- as.array(covar_table[not_na_locale,,drop=FALSE])
     design_cov <- cbind(rep(1, dim(no_na_cov)[1]), no_na_cov)
-    rank_cov <- Matrix::rankMatrix(design_cov)
+    rank_cov <- rankMatrix(design_cov)
     if(rank_cov[[1]] < dim(design_cov)[2]){
       stop("The covariate matrix does not appear to be linearly independent.\nIf you are using dummy variables for groups, leave one of the groups out.")
     }
@@ -274,8 +282,8 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
       c_covar <- cor_data[[ch]]$corrected_covar
       
       if (run_parallel) {
-        cl <- parallel::makeCluster(n_cores)
-        doParallel::registerDoParallel(cl)
+        cl <- makeCluster(n_cores)
+        registerDoParallel(cl)
         
         # the following line adds package variables to the parallel worker environments
         # copy functions in the package to the workers
@@ -283,14 +291,14 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
         #cape_dir <- "/Users/ramamg/Desktop/JAX/Projects/CAPE/cape/cape_pkg"
         cape_dir_full <- find.package("cape")
         cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-        parallel::clusterExport(cl, "cape_dir", envir=environment())
-        parallel::clusterEvalQ(cl, .libPaths(cape_dir))
-        results_by_chr <- foreach::foreach(x = 1:dim(c_geno)[locus_dim], .packages = 'cape') %dopar% {
+        clusterExport(cl, "cape_dir", envir=environment())
+        clusterEvalQ(cl, .libPaths(cape_dir))
+        results_by_chr <- foreach(x = 1:dim(c_geno)[locus_dim], .packages = 'cape') %dopar% {
           # Note that "Show Diagnostics" in RStudio will throw a warning that the `x` variable below is undefined
           # but it actually is defined in the foreach line above. You can safely ignore the warning.
           cape::get_stats_multiallele(phenotype = c_pheno, genotype = c_geno[,,x], covar_table = c_covar, ph_family, ref_col)
         }
-        parallel::stopCluster(cl)
+        stopCluster(cl)
         
       } else {
         

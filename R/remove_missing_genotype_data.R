@@ -45,8 +45,8 @@
 #' is set to TRUE. 
 #' 
 #' @seealso \code{\link{get_geno}}, \code{\link{impute_missing_geno}}, \code{\link{run_cape}}
+#' 
 #' @export
-#'
 remove_missing_genotype_data <- function(data_obj, geno_obj = NULL, ind_missing_thresh = 0,
                                          marker_missing_thresh = 0, prioritize = c("fewer", "ind", "marker")){
 	

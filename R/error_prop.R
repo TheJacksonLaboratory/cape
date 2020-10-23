@@ -21,6 +21,10 @@
 #' marker2 to marker1 (m12) influences. These results are used by \code{\link{calc_p}} to
 #' calculate empirical p values.
 #' 
+#' @import parallel
+#' @import foreach
+#' @importFrom doParallel registerDoParallel 
+#' 
 #' @export
 error_prop <- function (data_obj, pairscan_obj, perm = FALSE, verbose = FALSE,
                         run_parallel = FALSE, n_cores = 4, just_m = FALSE) {
@@ -150,17 +154,17 @@ error_prop <- function (data_obj, pairscan_obj, perm = FALSE, verbose = FALSE,
   chunked_pairs <- chunkV(1:n_pairs, n_cores)
   
   if (run_parallel) {
-    cl <- parallel::makeCluster(n_cores)
-    doParallel::registerDoParallel(cl)
+    cl <- makeCluster(n_cores)
+    registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
     cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-    parallel::clusterExport(cl, "cape_dir", envir=environment())
-    parallel::clusterEvalQ(cl, .libPaths(cape_dir))
+    clusterExport(cl, "cape_dir", envir=environment())
+    clusterEvalQ(cl, .libPaths(cape_dir))
     # , .packages = 'cape'
-    influence_coeffs <- foreach::foreach(p = c(1:length(chunked_pairs)), .combine = "rbind", .export = c("calc_delta_errors", "pseudoinverse", "propagate", "calc_m")) %dopar% {
+    influence_coeffs <- foreach(p = c(1:length(chunked_pairs)), .combine = "rbind", .export = c("calc_delta_errors", "pseudoinverse", "propagate", "calc_m")) %dopar% {
       get_multi_pair_coeffs(chunked_pairs[[p]], scan_two_results, marker_mat)
     }				
-    parallel::stopCluster(cl)
+    stopCluster(cl)
     
   } else {
     

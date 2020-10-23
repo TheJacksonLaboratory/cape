@@ -25,6 +25,11 @@
 #' window_size: The input window_size or the cacluated window_size if 
 #' window_size was NULL
 #' amp_min: the input amp_min or calculated amp_min if amp_min was NULL
+#' 
+#' @import caTools
+#' @importFrom stats sd
+#' @importFrom utils head tail
+#' @importFrom graphics axis par plot plot.new plot.window points polygon
 
 bin_curve <- function(the_curve, plot_peaks = FALSE, window_size = NULL, amp_min = NULL){
   
@@ -115,7 +120,7 @@ bin_curve <- function(the_curve, plot_peaks = FALSE, window_size = NULL, amp_min
   
   cols <- c("grey", "white")
   the_curve <- abs(the_curve)
-  smoothed_curve <- caTools::runmean(the_curve, window_size)
+  smoothed_curve <- runmean(the_curve, window_size)
   curve_bins <- rep(NA, length(the_curve))
   
   # hist(smoothed_curve)	

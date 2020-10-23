@@ -24,6 +24,8 @@
 #' @return Returns the data object with the eigentraits,
 #' singular values, and right singular vectors added.
 #'
+#' @importFrom Matrix rankMatrix
+#'
 #' @export
 
 get_eigentraits <- function(data_obj, scale_pheno = TRUE, normalize_pheno = TRUE){
@@ -60,7 +62,7 @@ get_eigentraits <- function(data_obj, scale_pheno = TRUE, normalize_pheno = TRUE
     not_na_locale <- which(!is.na(apply(data_obj$p_covar_table,1,sum)))
     no_na_cov <- as.array(data_obj$p_covar_table[not_na_locale,drop=FALSE])
     design_cov <- cbind(rep(1, dim(no_na_cov)[1]), no_na_cov)  #####################
-    rank_cov <- Matrix::rankMatrix(design_cov)
+    rank_cov <- rankMatrix(design_cov)
     if(rank_cov[[1]] < dim(design_cov)[2]){
       stop("The covariate matrix does not appear to be linearly independent.\nIf you are using dummy variables for groups, leave one of the groups out.")
     }

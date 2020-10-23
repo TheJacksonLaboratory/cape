@@ -58,6 +58,10 @@
 #' R package version 1.0.12. https://CRAN.R-project.org/package=pheatmap
 #'
 #' @return A vector of colors assigned to the number is vals is returned.
+#' 
+#' @import pheatmap
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom grDevices col2rgb colorRampPalette rgb
 
 colors_from_values <- function(vals, split_at_vals = FALSE, split_points = 0, 
 col_scale = c("green", "purple", "orange", "blue", "brown", "gray"), light_dark = "f", 
@@ -219,14 +223,14 @@ use_pheatmap_colors = FALSE, na_col = "lightgray"){
 
 
 		if(use_pheatmap_colors){
-			pal <- colorRampPalette(rev(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu")))(100)
+			pal <- colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100)
 			if(global_color_scale){
-				bks <- pheatmap:::generate_breaks(c(global_min, global_max), length(pal), 
+				bks <- generate_breaks(c(global_min, global_max), length(pal), 
 				center = F)
 			}else{
-				bks <- pheatmap:::generate_breaks(vals, length(pal), center = F)
+				bks <- generate_breaks(vals, length(pal), center = F)
 			}
-			color_ramp <- pheatmap:::scale_colours(vals, col=pal, breaks=bks, na_col = na_col)
+			color_ramp <- scale_colours(vals, col=pal, breaks=bks, na_col = na_col)
 		}else{
 			color_ramp = fill_color_ramp(vals, class_mat, global_color_scale)
 		}

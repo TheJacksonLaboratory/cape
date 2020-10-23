@@ -11,12 +11,14 @@
 #'
 #' @return Returns a named list with all possible options
 #' 
+#' @import yaml
+#' 
 #' @export
 read_parameters <- function(filename = "cape.parameters.yml", yaml_parameters = NULL){
   if (!is.null(yaml_parameters)) {
-    parameter_table <- yaml::yaml.load(yaml_parameters)
+    parameter_table <- yaml.load(yaml_parameters)
   } else {
-    parameter_table <- yaml::read_yaml(filename)
+    parameter_table <- read_yaml(filename)
   }
   
   #================================================

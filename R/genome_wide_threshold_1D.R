@@ -36,7 +36,12 @@
 #' 
 #' @return Returns a vector the same length as alpha indicating the
 #' thresholds for each value of alpha.
-
+#' 
+#' @import parallel
+#' @import foreach
+#' @importFrom doParallel registerDoParallel
+#' @importFrom stats coef glm
+#' 
 genome_wide_threshold_1D <- function(data_obj, geno_obj, n_perm = 100, 
                                      scan_what = c("eigentraits", "raw_traits"), 
                                      ref_allele = NULL, alpha = c(0.01, 0.05), 
@@ -157,16 +162,16 @@ genome_wide_threshold_1D <- function(data_obj, geno_obj, n_perm = 100,
   
   
   if (run_parallel) {
-    cl <- parallel::makeCluster(n_cores)
-    doParallel::registerDoParallel(cl)
+    cl <- makeCluster(n_cores)
+    registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
     cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
-    parallel::clusterExport(cl, "cape_dir", envir=environment())
-    parallel::clusterEvalQ(cl, .libPaths(cape_dir))
-    max_stat <- foreach::foreach(p = 1:n_perm, .combine = "rbind")  %dopar% {
+    clusterExport(cl, "cape_dir", envir=environment())
+    clusterEvalQ(cl, .libPaths(cape_dir))
+    max_stat <- foreach(p = 1:n_perm, .combine = "rbind")  %dopar% {
       one_perm()
     }
-    parallel::stopCluster(cl)
+    stopCluster(cl)
     
   } else {
     

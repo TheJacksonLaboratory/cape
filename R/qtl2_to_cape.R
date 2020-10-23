@@ -25,6 +25,9 @@
 #' @return This function returns a list of two elements. The first element is a cape data
 #' object. The second element is a cape genotype object.
 #'
+#' @import qtl2convert
+#' @importFrom qtl2 genoprob_to_alleleprob
+#'
 #' @export
 
 qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL){
@@ -48,8 +51,8 @@ qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL){
 		geno_ind <- rownames(geno[[1]])
 
 		if(is_mpp){
-		    genoprobs<-qtl2convert::probs_doqtl_to_qtl2(geno, map = map, pos_column = "pos")
-		    genoprobs<-qtl2::genoprob_to_alleleprob(genoprobs)
+		    genoprobs<-probs_doqtl_to_qtl2(geno, map = map, pos_column = "pos")
+		    genoprobs<-genoprob_to_alleleprob(genoprobs)
 		}else{
 			genoprobs <- calc_genoprob(cross, map = map)
 		}
