@@ -8,7 +8,7 @@ output:
       toc: true
 vignette: >
   %\VignetteIndexEntry{Combined Analysis of Pleiotropy and Epistasis}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{rmarkdown::render}
   \usepackage[utf8]{inputenc}
 bibliography: cape.bib
 ---
