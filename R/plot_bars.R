@@ -198,8 +198,7 @@ plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_la
 			#also make a plot using B6 as the reference point
 			#center on B6 genotype
 			ref_pheno <- pheno_means-pheno_means[1]
-			plot_bars_int(pheno_vals = ref_pheno, pheno_error, pheno_name = pheno_name, 
-			marker1 = marker1, marker2 = marker2, geno_n = geno_n)
+			plot_bars_int(pheno_vals = ref_pheno, pheno_error, pheno_name = pheno_name, marker1 = marker1_vals, marker2 = marker2_vals, geno_n = geno_n)
 		}		
 	}
 } #end case for two markers

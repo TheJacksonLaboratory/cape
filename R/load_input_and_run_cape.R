@@ -14,6 +14,7 @@
 #' @param verbose boolean, output goes to stdout
 #' 
 #' @import here
+#' @importFrom qtl2 read_cross2
 #' 
 #' @export
 load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,

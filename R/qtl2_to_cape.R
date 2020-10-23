@@ -26,7 +26,7 @@
 #' object. The second element is a cape genotype object.
 #'
 #' @import qtl2convert
-#' @importFrom qtl2 genoprob_to_alleleprob
+#' @importFrom qtl2 genoprob_to_alleleprob calc_genoprob
 #'
 #' @export
 

@@ -9,6 +9,8 @@
 #' @param ... possible parameters are main, xlab, ylab, mark_coords,
 #'  mark_col, show_labels, chromosome_coordinates, chr_names, chr_labels,
 #'  show_pheno_labels, extra_col_mat,allele_cols
+#'  
+#' @importFrom stats median
 
 my_image_plot <- function(x,...){
     # print(dim(x))

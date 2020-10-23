@@ -28,6 +28,8 @@
 #' pval holds the p value for the marker overall
 #' and score holds the test statistic for the marker overall.
 #'
+#' @importFrom stats anova
+#' 
 #' @export
 get_stats_multiallele <- function(phenotype, genotype, covar_table, ph_family, ref_col){
   

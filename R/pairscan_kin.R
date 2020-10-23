@@ -207,7 +207,7 @@ kin_obj, verbose = FALSE, run_parallel = FALSE, n_cores = 2){
             
             cl <- makeCluster(n_cores)
             registerDoParallel(cl)
-            cape_dir_full <- find_package("cape")
+            cape_dir_full <- find.package("cape")
             cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
             clusterExport(cl, varlist=c("rankMatrix", "one_pairscan_parallel", "get_covar", "get_marker_num", "get_marker_chr","cape_dir"), envir=environment())
             clusterEvalQ(cl, .libPaths(cape_dir))

@@ -41,6 +41,7 @@
 #' @import foreach
 #' @importFrom doParallel registerDoParallel
 #' @importFrom stats coef glm
+#' @importFrom evd qgev fgev
 #' 
 genome_wide_threshold_1D <- function(data_obj, geno_obj, n_perm = 100, 
                                      scan_what = c("eigentraits", "raw_traits"), 

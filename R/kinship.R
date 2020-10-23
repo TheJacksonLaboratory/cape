@@ -37,6 +37,7 @@
 #' @import qtl
 #' @import qtl2convert
 #' @importFrom qtl2 calc_kinship genoprob_to_alleleprob
+#' @importFrom utils combn
 #'
 #' @export
 kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4, 
