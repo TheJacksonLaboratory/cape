@@ -243,12 +243,12 @@ image_with_text <- function(mat, xlab = "", ylab = "", main = NULL, main_shift =
 		if(use_pheatmap_colors){
 			pal <- colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100)
 			if(global_color_scale){
-				bks <- pheatmap:::generate_breaks(c(global_min, global_max), length(pal), 
+				bks <- pheatmap_generate_breaks(c(global_min, global_max), length(pal), 
 				center = F)
 			}else{
-				bks <- pheatmap:::generate_breaks(mat, length(pal), center = F)
+				bks <- pheatmap_generate_breaks(mat, length(pal), center = F)
 			}
-			color_ramp <- pheatmap:::scale_colours(mat, col=pal, breaks=bks, na_col = na_col)
+			color_ramp <- pheatmap_scale_colours(mat, col=pal, breaks=bks, na_col = na_col)
 		}else{
 			color_ramp = fill_color_ramp(mat, class_mat, global_color_scale)
 		}
