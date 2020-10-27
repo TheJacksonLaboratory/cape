@@ -121,14 +121,6 @@ pairscan_null <- function(data_obj, geno_obj = NULL, scan_what = c("eigentraits"
           peak_density = data_obj$peak_density, window_size = data_obj$window_size, 
           tolerance = data_obj$tolerance, plot_peaks = FALSE, verbose = verbose)
       }
-      if(marker_selection_method == "uniform"){
-        perm_data_obj <- select_markers_for_pairscan_uniform(data_obj, geno_obj, 
-        num_alleles = ncol(data_obj$geno_for_pairscan), verbose = verbose)	
-      }
-      if(marker_selection_method == "effects_dist"){
-        perm_data_obj <- select_markers_for_pairscan_dist(data_obj, 
-        singlescan_obj = single_scan_result, geno_obj, verbose = verbose)		
-      }
     }else{ 
       
       # if(marker_selection_method == "by_gene"){

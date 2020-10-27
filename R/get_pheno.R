@@ -17,6 +17,8 @@
 #' @return A matrix in which each column is a trait, and each row is an individual.
 #' The values correspond to the argument settings described above.
 #' 
+#' @importFrom stats residuals
+#' 
 #' @export
 get_pheno <- function(data_obj, scan_what = c("eigentraits", "normalized_traits", "raw_traits"), covar = NULL){
   

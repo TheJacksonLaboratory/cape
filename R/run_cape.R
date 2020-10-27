@@ -243,11 +243,6 @@ run_cape <- function(pheno_obj, geno_obj,
           specific_markers = specific_markers[,1], verbose = verbose, plot_peaks = FALSE)
       }
       
-      if(marker_selection_method == "uniform"){
-        data_obj <- select_markers_for_pairscan_uniform(data_obj, geno_obj, 
-        required_markers = NULL, num_alleles = num_alleles_in_pairscan, verbose = verbose)
-      }
-      
       # if(marker_selection_method == "by_gene"){
         # gene_list_mat <- read.table("gene_list.txt", sep = "\t", stringsAsFactors = FALSE)		
         # gene_list <- gene_list_mat[,1]

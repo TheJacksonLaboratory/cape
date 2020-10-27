@@ -27,6 +27,8 @@
 #' 
 one_singlescanDO <- function(phenotype_vector, genotype_mat, model_family, ref_allele = "A", 
 covar_table = NULL, run_parallel = FALSE, n_cores = 4){
+  # declaring variable to prevent warning
+  m <- NULL
   
   if(!run_parallel){n_cores = 1}
   
