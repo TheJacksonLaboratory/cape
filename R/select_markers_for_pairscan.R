@@ -75,7 +75,7 @@
 #' @importFrom stats runif
 #' 
 #' @export
-select_markers_for_pairscan2 <- function(data_obj, singlescan_obj, geno_obj, 
+select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj, 
   specific_markers = NULL, num_alleles = 50, peak_density = 0.5, window_size = NULL, 
   tolerance = 5, plot_peaks = FALSE, verbose = FALSE, pdf_filename = "Peak.Plots.pdf"){
   
