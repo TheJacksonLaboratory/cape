@@ -75,7 +75,7 @@
 #' @importFrom stats runif
 #' 
 #' @export
-select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj, 
+select_markers_for_pairscan2 <- function(data_obj, singlescan_obj, geno_obj, 
   specific_markers = NULL, num_alleles = 50, peak_density = 0.5, window_size = NULL, 
   tolerance = 5, plot_peaks = FALSE, verbose = FALSE, pdf_filename = "Peak.Plots.pdf"){
   
@@ -208,6 +208,15 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
     }
     return(result_mat)
   }
+
+  #find how many markers in each peak if we sample at the 
+  #specified density, with at least one marker per peak.
+  num_sampled_markers  <- function(num_per_peak, peak_density){
+    final_count <- num_per_peak
+    above_thresh <- which(num_per_peak > 0) #find peaks with effect sizes above threshold
+    final_count[above_thresh] <- 1 + floor(num_per_peak[above_thresh]*peak_density)
+    return(final_count)
+  }
   
   sample_peaks <- function(pheno_results, num_per_peak, bins){
     #sample markers based on peaks across all alleles
@@ -232,14 +241,6 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
       }#end looping through alleles
     }
     return(sampled_markers)
-  }
-  
-  allele_coin_flip <- function(alleles_per_bin, peak_density){
-    one_locale <- which(alleles_per_bin == 1)
-    coin_flip <- runif(length(one_locale), 0, 1)
-    alleles_per_bin[which(coin_flip < peak_density)] <- 0
-    alleles_per_bin[which(coin_flip >= peak_density)] <- 1/peak_density
-    return(alleles_per_bin)
   }
   
   #===============================================================
@@ -287,8 +288,9 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   
   
   #===============================================================			
-  #find an effect size cutoff that gives us the approximate number 
-  #of alleles requested
+  #Determine the number of alleles to sample in each peak
+  #lower the effect size cutoff until we have the approximate 
+  #number of alleles requested
   #===============================================================
   if(verbose){cat("\nFinding effect size threshold...\n")}
   
@@ -299,7 +301,7 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   #getting close to the desired, exit the loop anyway.
   #This prevents infinite loops when the tolerance is 
   #set too small.
-  while((total_alleles < (num_alleles - tolerance) || total_alleles > (num_alleles + tolerance)) && repeats == 0){
+  while((total_alleles < (num_alleles - tolerance) || total_alleles > (num_alleles + tolerance)) && repeats <= 100){
     ph_alleles <- vector(mode = "list", length = num_pheno)
     
     #adjust the guess point based on how much we need to shift
@@ -312,37 +314,25 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
       pheno_results <- results_no_covar[,ph,,drop=FALSE]
       ph_alleles[[ph]] <- markers_per_peak(allele_curves = pheno_results, 
       bins = allele_bins[[ph]], cutoff = min_effect_size)
-      total_alleles <- round(sum(unlist(ph_alleles))*peak_density)
     }
+
+    num_sampled_alleles <- lapply(ph_alleles, function(x) num_sampled_markers(x, peak_density))
+    total_alleles <- sum(unlist(num_sampled_alleles))
+
     if(verbose){
       cat(signif(min_effect_size,3), "\t\t", total_alleles, "\n")
     }
     
-    already.seen <- which(alleles_checked == total_alleles)
-    if(length(already.seen) > 0){
-      repeats = 1
+    if(!is.null(alleles_checked) && tail(alleles_checked, 1) == total_alleles){
+      repeats = repeats + 1
+    }else{
+      repeats <- 0 #otherwise, reset repeats
     }
     
     alleles_checked <- c(alleles_checked, total_alleles)
   }
   
-  
-  if(plot_peaks){
-    for(ph in 1:dim(results_no_covar)[[2]]){
-      # quartz(width = 11, height = 7)
-      pheno_results <- results_no_covar[,ph,,drop=FALSE]
-    }
-  }
-  
-  
-  #for each bin that has only 1 allele, flip a biased coin
-  #to decide whether to take it.
-  ph_alleles <- lapply(ph_alleles, function(x) allele_coin_flip(x, peak_density))
-  
-  #sample the peaks that reach above the min_effect_size
-  #multiply the number of markers from each bin by the peak density
-  #to determine how many markers from each bin we should take
-  alleles.per.peak <- lapply(ph_alleles, function(x) round(x*peak_density))
+  #sample markers from each peak as defined by num_sampled_alleles
   sampled_markers <- vector(mode = "list", length = num_pheno)
   for(ph in 1:num_pheno){	
     #phenotype results across all alleles
@@ -350,10 +340,11 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
     #individuals in rows and alleles in columns
     pheno_results <- results_no_covar[,ph,,drop=FALSE]
     pheno_results <- adrop(pheno_results, drop = 2)
-    sampled_markers[[ph]] <- sample_peaks(pheno_results = pheno_results, num_per_peak = alleles.per.peak[[ph]], bins = allele_bins[[ph]])			
+    sampled_markers[[ph]] <- sample_peaks(pheno_results = pheno_results, 
+    num_per_peak = num_sampled_alleles[[ph]], bins = allele_bins[[ph]])
   }
   
-  #pull out the sampled alleled for all phenotypes and build a genotype matrix
+  #build a genotype matrix just with the sampled alleles
   num_parents <- ncol(pheno_results)
   markers_by_parent <- vector(mode = "list", length = num_parents)
   names(markers_by_parent) <- colnames(pheno_results)
@@ -363,8 +354,7 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   
   total_markers <- length(unlist(markers_by_parent))
   if(verbose){cat("total unique alleles:", "\t", total_markers, "\n")}
-  
-  
+    
   geno_for_pairscan <- matrix(NA, nrow = nrow(data_obj$pheno), ncol = total_markers)
   colnames(geno_for_pairscan) <- 1:ncol(geno_for_pairscan)
   start_allele <- 1
