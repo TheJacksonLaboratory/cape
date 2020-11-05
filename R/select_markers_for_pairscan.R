@@ -161,13 +161,7 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   covar_info <- get_covar(data_obj)
   results_no_covar <- results[which(!rownames(results) %in% covar_info$covar_names),,,drop=FALSE]
   result_chr <- get_marker_chr(data_obj, markers = rownames(results_no_covar), character_names = TRUE)  
-  
-  sorted_results <- sort(abs(as.vector(results_no_covar)))
-  #start with a cutoff that might be near the number of 
-  #alleles desired
-  guess_point <- num_alleles
-  min_effect_size = min(tail(sorted_results, guess_point))
-  
+    
   #===============================================================
   #internal functions
   #===============================================================
@@ -284,6 +278,8 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
       allele_bins[[ph]] <- rbind(allele_bins[[ph]], total_bins)
     }
   }
+  if(verbose){cat("\n")}
+  
   #===============================================================
   
   
@@ -293,22 +289,39 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   #number of alleles requested
   #===============================================================
   if(verbose){cat("\nFinding effect size threshold...\n")}
-  
+  sorted_results <- sort(abs(as.vector(results_no_covar)))
+  #start with a cutoff that might be near the number of 
+  #alleles desired
+  guess_point <- num_alleles
+  min_effect_size = min(tail(sorted_results, guess_point))
+
   total_alleles <- 0
   alleles_checked <- NULL
-  repeats <- 0 #This checks for bouncing around the same numbers over
-  #and over. If we start to see repeat numbers without 
-  #getting close to the desired, exit the loop anyway.
-  #This prevents infinite loops when the tolerance is 
-  #set too small.
-  while((total_alleles < (num_alleles - tolerance) || total_alleles > (num_alleles + tolerance)) && repeats <= 100){
-    ph_alleles <- vector(mode = "list", length = num_pheno)
+  repeats <- 0 #checks for no change in allele number
+  flips <- 0 #checks for bouncing around up and down around
+  #around the target number
+  step_size <- 0.1 #starting effect size step
+  last_round <- "under"
+  #while we are far away from the target number, and we have not
+  #hit any of our checks.
+  while((total_alleles < (num_alleles - tolerance) || total_alleles > (num_alleles + tolerance)) && repeats <= 100 && flips < 2){
     
-    #adjust the guess point based on how much we need to shift
-    #if we have many fewer than we need lower the min_effect_size
-    #a lot, if we need only a few more, don't lower it too much
-    guess_point <- round(guess_point + num_alleles - total_alleles)
-    min_effect_size = min(tail(sorted_results, guess_point))
+    if(total_alleles < num_alleles){
+      this_round  <- "under"
+    }else{
+      this_round <- "over"
+    }
+
+    if(this_round != last_round){
+      flips <- flips + 1
+    }
+
+    #if we've flipped across the threshold, decrease the step size by 50%
+    if(flips > 0){
+      step_size <- step_size/2
+    }
+
+    ph_alleles <- vector(mode = "list", length = num_pheno)
     
     for(ph in 1:num_pheno){
       pheno_results <- results_no_covar[,ph,,drop=FALSE]
@@ -323,13 +336,29 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
       cat(signif(min_effect_size,3), "\t\t", total_alleles, "\n")
     }
     
+    #update and check number of repeats
     if(!is.null(alleles_checked) && tail(alleles_checked, 1) == total_alleles){
       repeats = repeats + 1
     }else{
       repeats <- 0 #otherwise, reset repeats
     }
+
+    if(repeats > 1){
+      #if we're starting to level off in the number of alleles we're
+      #finding, increase the step.size by 50%
+      step_size <- step_size *1.5
+    }
+
+    #update effect size threshold
+    if(total_alleles < num_alleles){
+      min_effect_size = min_effect_size - step_size
+    }else{
+      min_effect_size = min_effect_size + step_size
+    }
     
     alleles_checked <- c(alleles_checked, total_alleles)
+    
+    last_round <- this_round
   }
   
   #sample markers from each peak as defined by num_sampled_alleles
