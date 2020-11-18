@@ -37,7 +37,7 @@ install.packages("cape")
 
 # Or the development version from GitHub
 # install.packages("devtools")
-devtools::install_github("TheJacksonLaboratory/cape2")
+devtools::install_github("TheJacksonLaboratory/cape")
 ```
 
 ## Demos
