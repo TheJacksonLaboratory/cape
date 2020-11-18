@@ -3,12 +3,12 @@ Title: Combined Analysis of Pleiotropy and Epistasis for Diversity Outbred Mice
 Version: 0.1.0
 Authors@R: c(
     person("Anna", "Tyler", role = c("aut", "cre"), email = "anna.tyler@jax.org"),
-    person("Wei", "Lu", role = c("aut")),
-    person("Justin", "Hendrick", role = c("aut")),
-    person("Vivek", "Philip", role = c("aut")),
-    person("Gregory", "Carter", role = c("aut")),
+    person("Jake", "Emerson", role = c("aut"), email = "jake.emerson@jax.org"),
+    person("Baha", "El Kassaby", role = c("aut")),
     person("Ann", "Wells", role = c("aut"), email = "ann.wells@jax.org"),
-    person("Jake", "Emerson", role = c("aut"), email = "jake.emerson@jax.org"))
+    person("Georgi", "Kolishovski", role = c("aut")),
+    person("Vivek", "Philip", role = c("aut")),
+    person("Gregory", "Carter", role = c("aut")))
 Description: 
     This package infers predictive networks between genetic variants and between
     genetic variants and phenotypes. It is specifically designed for use with the
