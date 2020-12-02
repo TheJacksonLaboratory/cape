@@ -10,7 +10,7 @@ Authors@R: c(
     person("Vivek", "Philip", role = c("aut")),
     person("Gregory", "Carter", role = c("aut")))
 Description: 
-    This package infers predictive networks between genetic variants and between
+    Combined Analysis of Pleiotropy and Epistasis infers predictive networks between genetic variants and between
     genetic variants and phenotypes. It is specifically designed for use with the
     multi-allele mouse population known as the Diversity Outbred (DO) mice. It
     uses complementary information of pleiotropic gene variants across different
