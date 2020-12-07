@@ -848,7 +848,7 @@ We can look at both the main effects and the interaction effects using
 we can plot it by itself. Here we use `plot_type = l` which generates a line
 plot.
 
-```{r plotrlang::last_error()_main, fig.width = 7, fig.height = 3}
+```{r plot_effects_line, fig.width = 7, fig.height = 3}
 plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
 marker1 = "D15Mit72_B", marker1_label = "Chr15", plot_type = "l", 
 error_bars = "se")
