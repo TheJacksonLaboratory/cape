@@ -514,7 +514,7 @@ plot for the NON/NZO data set are shown below.
 
 ```{r eigentraits, results = "asis", echo = FALSE, out.width = 4, out.height = 4}
 svd_file <- here::here("demo", "demo_qtl", "svd.jpg")
-cat(paste0("![](", svd_file, ")\n"))
+cat(paste0("![](", svd_file, "){width=50%}\n"))
 ```
 
 In the example illustrated here, the first eigentrait captures 75\% of the 
@@ -628,9 +628,9 @@ idea of `cape` is that these coefficients can be combined across eigentraits
 and reparameterized to calculate how each pair of markers influences each 
 other directly and independently of eigentrait.
 
-```{r reparam_fig, results = "asis", echo = FALSE, fig.width = 3, fig.height = 3}
+```{r reparam_fig, results = "asis", echo = FALSE}
 reparam_file <- here::here("vignettes", "reparam.png")
-cat(paste0("![](", reparam_file, ")\n"))
+cat(paste0("![](", reparam_file, "){width=50%}\n"))
 ```
 
 The first step in this reparameterization is to define two new parameters 
