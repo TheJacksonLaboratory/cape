@@ -877,7 +877,7 @@ marker1 = "D15Mit72_B", marker1_label = "Chr15", plot_type = "l",
 error_bars = "se")
 ```
 
-![plot of chunk plotrlang::last_error()_main](figure/plotrlang::last_error()_main-1.png)
+![plot of chunk plot_effects_line](figure/plotrlang::last_error()_main-1.png)
 
 We can then look at both markers together to see the enhanced
 effect of this allele when the Chr 2 NZO allele is present.

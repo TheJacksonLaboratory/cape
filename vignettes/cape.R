@@ -81,7 +81,7 @@ cat(paste0("![](", circ_net_file, ")\n"))
 net_file <- here("demo", "demo_qtl", "Network_View.jpg")
 cat(paste0("![](", net_file, ")\n"))
 
-## ----plotrlang::last_error()_main, fig.width = 7, fig.height = 3--------------
+## ----plot_effects_line, fig.width = 7, fig.height = 3--------------
 plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
 marker1 = "D15Mit72_B", marker1_label = "Chr15", plot_type = "l", 
 error_bars = "se")

@@ -1,6 +1,6 @@
 Package: cape
 Title: Combined Analysis of Pleiotropy and Epistasis for Diversity Outbred Mice
-Version: 0.1.0
+Version: 3.1.0
 Authors@R: c(
     person("Anna", "Tyler", role = c("aut", "cre"), email = "anna.tyler@jax.org"),
     person("Jake", "Emerson", role = c("aut"), email = "jake.emerson@jax.org"),
@@ -10,7 +10,7 @@ Authors@R: c(
     person("Vivek", "Philip", role = c("aut")),
     person("Gregory", "Carter", role = c("aut")))
 Description: 
-    This package infers predictive networks between genetic variants and between
+    Combined Analysis of Pleiotropy and Epistasis infers predictive networks between genetic variants and between
     genetic variants and phenotypes. It is specifically designed for use with the
     multi-allele mouse population known as the Diversity Outbred (DO) mice. It
     uses complementary information of pleiotropic gene variants across different
@@ -37,19 +37,13 @@ Suggests:
   rmarkdown
 Imports:
   abind,
-  BiocManager,
   caTools,
   corpcor,
-  data.table,
-  devtools,
   doParallel,
   evd,
-  fdrtool,
   foreach,
   here,
   igraph,
-  jsonlite,
-  MASS,
   Matrix,
   parallel,
   pheatmap,
@@ -58,14 +52,11 @@ Imports:
   qtl2,
   qtl2convert,
   R6 (>= 2.4.1),
-  RcppEigen (>= 0.3.3.7.0),
   RColorBrewer (>= 1.1.2),
   regress (>= 1.3.21),
-  RSQLite (>= 2.2.0),
   shape (>= 1.4.5),
   stats,
   stringr (>= 1.4.0),
-  tidyr (>= 1.1.2),
   tools (>= 3.6.2),
   utils (>= 3.6.2),
   yaml (>= 2.2.1)
