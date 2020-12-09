@@ -73,8 +73,6 @@ plot_variant_influences(final_cross, show_alleles = FALSE)
 
 ## ----circ_net, fig.height = 5, fig.width = 5----------------------------------
 plot_network(final_cross)
-#circ_net_file <- here::here("demo", "demo_qtl", "Network_Circular.jpg")
-#cat(paste0("![](", circ_net_file, ")\n"))
 
 ## ----net_vis, results = "asis", echo = FALSE----------------------------------
 plot_full_network(final_cross, zoom = 1.2, node_radius = 0.3, 
@@ -82,7 +80,7 @@ plot_full_network(final_cross, zoom = 1.2, node_radius = 0.3,
     arrow_length = 0.1, layout_matrix = "layout_with_kk", legend_position = "topright", 
     edge_lwd = 1, legend_radius = 2, legend_cex = 0.7, xshift = -1)
 
-## ----plot_effects_line, fig.width = 7, fig.height = 3--------------
+## ----plot_effects_line, fig.width = 7, fig.height = 3-------------------------
 plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
 marker1 = "D15Mit72_B", marker1_label = "Chr15", plot_type = "l", 
 error_bars = "se")
@@ -98,7 +96,7 @@ marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1_label = "Chr2",
 marker2_label = "Chr15", plot_type = "b", error_bars = "se")
 
 ## ----remove_all_files, echo = FALSE, eval = TRUE------------------------------
-results.files <- list.files(path = results_path, full.names = TRUE)
-to.delete <- setdiff(results.files, param_file)
-unlink(to.delete)
+results_files <- list.files(path = results_path, full.names = TRUE)
+to_delete <- setdiff(results_files, param_file)
+unlink(to_delete)
 

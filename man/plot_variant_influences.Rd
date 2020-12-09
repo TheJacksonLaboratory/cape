@@ -9,7 +9,6 @@ plot_variant_influences(
   p_or_q = 0.05,
   min_std_effect = 0,
   plot_all_vals = FALSE,
-  all_markers = FALSE,
   standardize = FALSE,
   color_scheme = c("DO/CC", "other"),
   pos_col = "brown",
@@ -38,10 +37,6 @@ all pairs with standardized effects below the number set here.}
 
 \item{plot_all_vals}{If TRUE will plot all values regardless of 
 significant}
-
-\item{all_markers}{if TRUE will plot all markers in the genotype
-object, not just those that were tested. Not recommended for large
-genotype object.}
 
 \item{standardize}{Whether to plot effect sizes (FALSE) or standardized
 effect sizes (TRUE)}
