@@ -18,9 +18,6 @@
 #' all pairs with standardized effects below the number set here.
 #' @param plot_all_vals If TRUE will plot all values regardless of 
 #' significant
-#' @param all_markers if TRUE will plot all markers in the genotype
-#' object, not just those that were tested. Not recommended for large
-#' genotype object.
 #' @param standardize Whether to plot effect sizes (FALSE) or standardized
 #' effect sizes (TRUE)
 #' @param color_scheme A character value of either "DO/CC" or other indicating the 
@@ -58,7 +55,7 @@
 #' 
 #' @export
 plot_variant_influences <- function(data_obj, p_or_q = 0.05, min_std_effect = 0, 
-  plot_all_vals = FALSE, all_markers = FALSE, standardize = FALSE, 
+  plot_all_vals = FALSE, standardize = FALSE, 
   color_scheme = c("DO/CC", "other"), pos_col = "brown", neg_col = "blue", 
   not_tested_col = "lightgray", show_marker_labels = FALSE, show_chr = TRUE, 
   label_chr = TRUE, show_alleles = TRUE, scale_effects = c("log10", "sqrt", "none"), 
@@ -152,12 +149,8 @@ plot_variant_influences <- function(data_obj, p_or_q = 0.05, min_std_effect = 0,
     }
   }
   
-  if(all_markers){
-    unique_markers <- geno_names[[3]]
-  }else{
-    unique_markers <- unique(c(as.vector(var_influences[,"Source"]), as.vector(var_influences[,"Target"]), rownames(pheno_inf[[1]])))
-  }
   
+  unique_markers <- unique(c(as.vector(var_influences[,"Source"]), as.vector(var_influences[,"Target"]), rownames(pheno_inf[[1]])))
   split_markers <- strsplit(unique_markers, "_")
   just_markers <- sapply(split_markers, function(x) x[1])
   just_alleles <- sapply(split_markers, function(x) x[2])
@@ -332,7 +325,6 @@ plot_variant_influences <- function(data_obj, p_or_q = 0.05, min_std_effect = 0,
   full_pval_mat_num <- apply(full_pval_mat, 2, as.numeric)
   dimnames(full_pval_mat_num) <- dimnames(full_pval_mat)
 
-  
   
   #get the coordinates for all pairs not tested
   # not_tested_locale <- which(is.na(rotate_mat(full_inf_mat)), arr.ind = TRUE)

@@ -6,8 +6,8 @@ set.seed(1234)
 library(cape)
 
 ## ----read_csv_format----------------------------------------------------------
-results_path <- here("demo", "demo_qtl")
-data_path <- here("tests", "testthat", "testdata", "demo_qtl_data")
+results_path <- here::here("demo", "demo_qtl")
+data_path <- here::here("tests", "testthat", "testdata", "demo_qtl_data")
 data_file <- file.path(data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
 param_file <- file.path(results_path, "NON_NZO.parameters.yml")
 
@@ -24,7 +24,7 @@ obesity_geno <- cross_obj$geno_obj$geno
 #  geno_obj <- iron_cape$geno_obj
 
 ## ----read_plink, eval = FALSE-------------------------------------------------
-#  data_path <- here("tests", "testthat", "testdata")
+#  data_path <- here::here("tests", "testthat", "testdata")
 #  ped <- file.path(data_path, "test.ped")
 #  map <- file.path(data_path, "test.map")
 #  pheno <- file.path(data_path, "test.pheno")
@@ -56,32 +56,31 @@ color_by = "pgm", group_labels = c("Non-obese", "Obese"))
 final_cross <- run_cape(obesity_cross, obesity_geno, results_file = "NON_NZO.RData", 
 p_or_q = 0.05, verbose = FALSE, param_file = param_file, results_path = results_path)
 
-## ----eigentraits, results = "asis", echo = FALSE, out.width = 4, out.height = 4----
-svd_file <- here("demo", "demo_qtl", "svd.jpg")
-cat(paste0("![](", svd_file, ")\n"))
+## ----eigentraits, fig.width = 4, fig.height = 4-------------------------------
+plot_svd(final_cross)
 
 ## ----single_plot, fig.width = 7, fig.height = 5-------------------------------
-singlescan_obj <- readRDS(here("demo", "demo_qtl", "NON_NZO_singlescan.RData"))
+singlescan_obj <- readRDS(here::here("demo", "demo_qtl", "NON_NZO_singlescan.RData"))
 plot_singlescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
 covar_label_size = 1)
 
-## ----reparam_fig, results = "asis", echo = FALSE, fig.width = 3, fig.height = 3----
-reparam_file <- here("vignettes", "reparam.png")
-cat(paste0("![](", reparam_file, ")\n"))
+## ----reparam_fig, results = "asis", echo = FALSE------------------------------
+reparam_file <- here::here("vignettes", "reparam.png")
+cat(paste0("![](", reparam_file, "){width=50%}\n"))
 
-## ----var_inf, results = "asis", echo = FALSE----------------------------------
-var_inf_file <- here("demo", "demo_qtl", "variant_influences.jpg")
-cat(paste0("![](", var_inf_file, ")\n"))
+## ----var_inf, fig.height = 6, fig.width = 5-----------------------------------
+plot_variant_influences(final_cross, show_alleles = FALSE)
 
-## ----circ_net, results = "asis", echo = FALSE---------------------------------
-circ_net_file <- here("demo", "demo_qtl", "Network_Circular.jpg")
-cat(paste0("![](", circ_net_file, ")\n"))
+## ----circ_net, fig.height = 5, fig.width = 5----------------------------------
+plot_network(final_cross)
 
 ## ----net_vis, results = "asis", echo = FALSE----------------------------------
-net_file <- here("demo", "demo_qtl", "Network_View.jpg")
-cat(paste0("![](", net_file, ")\n"))
+plot_full_network(final_cross, zoom = 1.2, node_radius = 0.3, 
+    label_nodes = TRUE, label_offset = 0.4, label_cex = 0.5, bg_col = "lightgray", 
+    arrow_length = 0.1, layout_matrix = "layout_with_kk", legend_position = "topright", 
+    edge_lwd = 1, legend_radius = 2, legend_cex = 0.7, xshift = -1)
 
-## ----plot_effects_line, fig.width = 7, fig.height = 3--------------
+## ----plot_effects_line, fig.width = 7, fig.height = 3-------------------------
 plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
 marker1 = "D15Mit72_B", marker1_label = "Chr15", plot_type = "l", 
 error_bars = "se")
@@ -95,4 +94,9 @@ marker2_label = "Chr15", plot_type = "l", error_bars = "se")
 plot_effects(data_obj = final_cross, geno_obj = obesity_geno, 
 marker1 = "D2Mit120_B", marker2 = "D15Mit72_B", marker1_label = "Chr2",
 marker2_label = "Chr15", plot_type = "b", error_bars = "se")
+
+## ----remove_all_files, echo = FALSE, eval = TRUE------------------------------
+results_files <- list.files(path = results_path, full.names = TRUE)
+to_delete <- setdiff(results_files, param_file)
+unlink(to_delete)
 
