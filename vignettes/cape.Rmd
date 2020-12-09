@@ -1048,9 +1048,9 @@ only the interactions.
 `plot_variant_influences`.
 
 ```{r remove_all_files, echo = FALSE, eval = TRUE}
-results.files <- list.files(path = results_path, full.names = TRUE)
-to.delete <- setdiff(results.files, param_file)
-unlink(to.delete)
+results_files <- list.files(path = results_path, full.names = TRUE)
+to_delete <- setdiff(results_files, param_file)
+unlink(to_delete)
 ```
 
 ## References
