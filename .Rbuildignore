@@ -7,3 +7,4 @@
 ^packrat$
 ^cran-comments\.md$
 ^\.here$
+^\.github$
