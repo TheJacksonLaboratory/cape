@@ -13,7 +13,7 @@
 #' @param color_scheme A character value of either "DO/CC" or other indicating the 
 #' color scheme of main effects. If "DO/CC" allele effects can be plotted with the
 #' DO/CC colors.
-#' @param allele_labels A vector of labels for the alleles if different thatn those
+#' @param allele_labels A vector of labels for the alleles if different than those
 #' stored in the data_object.
 #' @param include_covars Whether to include covariates in the plot.
 #' @param show_selected If TRUE will indicate which markers were selected for the pairscan.

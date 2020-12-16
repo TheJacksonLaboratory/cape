@@ -39,7 +39,7 @@
 #'   taken from the genotype matrix. Functions that remove markers and individuals from
 #'   analysis always operate on geno_names in addition to other relevant slots.
 #'   The names of geno_names must be "mouse", "allele", "locus."
-#' @slot geno A three dimentional array holding genotypes for each animal for each allele
+#' @slot geno A three dimensional array holding genotypes for each animal for each allele
 #'   at each marker. The genotypes are continuously valued probabilities ranging from 0 to 1. 
 #'   The dimnames of geno must be "mouse", "allele", and "locus," even if the individuals are
 #'   not mice.
@@ -231,7 +231,7 @@ Cape <- R6Class(
     #' taken from the genotype matrix. Functions that remove markers and individuals from analysis always operate on geno_names 
     #' in addition to other relevant slots. The names of geno_names must be "mouse", "allele", "locus."
     geno_names = NULL,
-    #' @field geno A three dimentional array holding genotypes for each animal for each allele at each marker. The genotypes
+    #' @field geno A three dimensional array holding genotypes for each animal for each allele at each marker. The genotypes
     #' are continuously valued probabilities ranging from 0 to 1. The dimnames of geno must be "mouse", "allele", and "locus,"
     #' even if the individuals are not mice.
     geno = NULL,
@@ -378,7 +378,7 @@ Cape <- R6Class(
     #'   taken from the genotype matrix. Functions that remove markers and individuals from
     #'   analysis always operate on geno_names in addition to other relevant slots.
     #'   The names of geno_names must be "mouse", "allele", "locus."
-    #' @param geno A three dimentional array holding genotypes for each animal for each allele
+    #' @param geno A three dimensional array holding genotypes for each animal for each allele
     #'   at each marker. The genotypes are continuously valued probabilities ranging from 0 to 1. 
     #'   The dimnames of geno must be "mouse", "allele", and "locus," even if the individuals are
     #'   not mice.
@@ -580,7 +580,7 @@ Cape <- R6Class(
       # TODO make sure that individual names match between the pheno object, geno object, and geno names
     },
     #' @description
-    #' Plot Eignentraits
+    #' Plot Eigentraits
     #' @param filename filename of result plot
     plotSVD = function(filename) {
       

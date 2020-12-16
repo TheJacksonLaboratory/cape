@@ -2,7 +2,7 @@
 #' 
 #' This function checks for markers that aren't used
 #' in cape. For example, markers on sex chromosomes,
-#' or mitochonrdial markers. It also removes any 
+#' or mitochondrial markers. It also removes any 
 #' markers that are invariant across all individuals.
 #'
 #' @param data_obj a \code{\link{Cape}} object

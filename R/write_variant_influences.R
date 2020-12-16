@@ -12,7 +12,7 @@
 #'    lists the marker that is the target of the directed interaction.
 #'    If the effect is a main effect, this column lists the 
 #'    trait that is the target of the main effect.
-#'  Chr: The chomosome on which the target marker lives.
+#'  Chr: The chromosome on which the target marker lives.
 #'    If the effect is a main effect, this is listed as 0.
 #'  Position: The genomic position of the target marker. If
 #'    the effect is a main effect, this is listed as 1.
@@ -35,7 +35,7 @@
 #' @param include_main_effects Whether to include main effects (TRUE) or only
 #'    interaction effects (FALSE) in the output table.
 #' @param filename A character vector specifying the name of the file.
-#' @param delim A character string indicating the delimeter in the data file. 
+#' @param delim A character string indicating the delimiter in the data file. 
 #'    The default indicates a comma-separated file (",").
 #' @param mark_covar A logical value. If TRUE, an asterisk is appended the 
 #'  names of markers used as covariates in the pair scan.

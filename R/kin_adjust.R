@@ -8,8 +8,8 @@
 #'
 #' @param kin_obj The kinship object calculated by \code{\link{kinship}}
 #' @param geno a genotype object.
-#' @param chr1 The first of two chromomsomes to leave out of the calculation, if any.
-#' @param chr2 The second of two chromomsomes to leave out of the calculation, if any.
+#' @param chr1 The first of two chromosomes to leave out of the calculation, if any.
+#' @param chr2 The second of two chromosomes to leave out of the calculation, if any.
 #' @param phenoV The phenotype vector
 #' @param covarV The covariate vector or matrix
 #' @param verbose A logical value indicating whether to print progress to the screen

@@ -1,7 +1,7 @@
 #' Get error bars for interaction plot
 #' 
 #' This function gets error bars for an interaction plot
-#' it takes in the x, y, and trace factor of the interatction
+#' it takes in the x, y, and trace factor of the interaction
 #' plot and returns a vector indicating how much should
 #' default error type is standard error
 #' 

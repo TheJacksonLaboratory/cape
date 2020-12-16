@@ -21,7 +21,7 @@
 #' used in \code{\link{plot_singlescan}}. They are not used for any other piece
 #' of the Cape analysis and may be safely omitted. The default number of permutations
 #' is 0.
-#' @param alpha significance level if permtuations are being run. If permutations are
+#' @param alpha significance level if permutations are being run. If permutations are
 #' run effect size thresholds for each alpha level are cacluated using the extreme value
 #' distribution.
 #' @param model_family A vector indicating the model family of the phenotypes. This can 

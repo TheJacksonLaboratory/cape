@@ -1,6 +1,6 @@
 #' Calculate m
 #' 
-#' This function performs the reparametrization
+#' This function performs the reparameterization
 #' step originally described in
 #' Carter, G. W., Hays, M., Sherman, A. & Galitski, T. 
 #' Use of pleiotropy to model genetic interactions in a 

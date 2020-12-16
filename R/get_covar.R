@@ -9,7 +9,7 @@
 #' covar_names: a character vector holding the names of the covariates  
 #' covar_type: a character vector indicating whether each covariate
 #' derived from the phenotype matrix ("p") or the genotype matrix ("g")
-#' covar_loc: A numeric vector indicating the locations of each covaraite
+#' covar_loc: A numeric vector indicating the locations of each covariate
 #' covar_table: A matrix holding the individual values for each covariate.
 #' 
 #' @export

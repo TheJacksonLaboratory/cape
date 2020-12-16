@@ -2,7 +2,7 @@
 title: "cape: A package for the combined analysis of pleiotropy and epistasis"
 author: 
 - Anna L. Tyler^[The Jackson Laboratory, anna.tyler@jax.org], Jake Emerson^[The Jackson Laboratory, jake.emerson@jax.org], Baha El Kassaby^[The Jackson Laboratory, baha.elkassaby@jax.org], Ann Wells^[The Jackson Laboratory, ann.wells@jax.org], Georgi Kolishovski^[The Jackson Laboratory, georgi.kolishovski@jax.org], Vivek M. Philip^[The Jackson Laboratory, vivek.philip@jax.org],and Gregory W. Carter^[The Jackson Laboratory, gregory.carter@jax.org]
-date: 'October 23, 2020'
+date: 'December 16, 2020'
 output: 
    rmarkdown::html_vignette:
       toc: true
@@ -50,7 +50,7 @@ In addition to supporting the newer R/qtl2 (@broman2019r) format, we also suppor
 the R/qtl (@rqtl) csv format for cape. You can learn more about this format
 at the [R/qtl website](https://rqtl.org). Briefly, this format 
 contains all traits and genotypes in one comma-delimited file.
-The first few columns contain traits, covariates, and indvidual identifiers,
+The first few columns contain traits, covariates, and individual identifiers,
 and the remaining contain genotypes. Please see the qtl demo data included 
 with cape for an example. Also see `?read_population` for more details. 
 
@@ -292,7 +292,7 @@ The section of general parameters is where we specify which traits we will
 use, whether we want cape to normalize the traits for us, and whether we want
 cape to save the results. This is also the section in which we tell cape 
 whether we want to use a kinship correction or not. kinship corrections are 
-discussed futher below.
+discussed further below.
 
 If a parameter has multiple entries, for example we always want to test
 multiple traits, each entry gets its own line starting with a dash.
@@ -335,7 +335,7 @@ whether cape should mean center and standardize the traits.
 cape should normalize the traits. 
 
 **eig_which:** After performing the SVD to create orthogonal eigentraits, you
-may whish to analyze only a subset of them in cape. For example, if the first 
+may wish to analyze only a subset of them in cape. For example, if the first 
 two eigentraits capture more than 90\% of the trait variance, you may wish
 to discard the last eigentrait. This results in a loss of some information, 
 but may increase power to detect important trait-related signals.
@@ -373,7 +373,7 @@ most cases.
 **transform_to_phenospace** A logical value indicating that is required 
 scanning eigentraits. If true, all effects are rotate back to trait space 
 after calculation, such that the final networks show marker influences on 
-traits. If false, all effects will be kept in terms of eigentriats, and all
+traits. If false, all effects will be kept in terms of eigentraits, and all
 final tables and plots will show marker effects on eigentraits. 
 
 ### Single scan parameters
@@ -546,7 +546,12 @@ associated with the common components of groups of traits.
 Cape uses the function `plot_svd` to plot the results of the SVD. The 
 plot for the NON/NZO data set are shown below.
 
-![](/Users/elkasb/git/cape/demo/demo_qtl/svd.jpg)
+
+```r
+plot_svd(final_cross)
+```
+
+![plot of chunk eigentraits](figure/eigentraits-1.png)
 
 In the example illustrated here, the first eigentrait captures 75\% of the 
 total trait variance. This eigentrait describes the processes by which body 
@@ -586,7 +591,7 @@ The index $i$ runs from 1 to the number of individuals, and $j$ runs from
 1 to the number of eigentraits or traits. $x_{i}$ is the probability 
 of the presence of the reference allele for individual $i$ at locus $j$. 
 The primary purpose of this scan is is to select markers for the pairwise
-scan if there are too many to test exhautively.
+scan if there are too many to test exhaustively.
 
 Although `run_cape` creates files with the singlescan results automatically,
 it is also sometimes desireable to re-plot these results with different 
@@ -645,9 +650,9 @@ were inconsistent suggesting we need to do more research into this area.
 More appropriate corrections are currently a topic of research in our 
 group and will be implemented in later iterations of cape.
 
-### Reprarametrization
-The reparametrization step is where we actually do the combined analysis of
-pleiotropy and epistasis that cape is named for. This step reparametrizes
+### Reparameterization
+The reparameterization step is where we actually do the combined analysis of
+pleiotropy and epistasis that cape is named for. This step reparameterizes
 the $\beta$ coefficients from the pairwise linear regressions across all 
 traits/eigentraits in terms of directed influence coefficients. These 
 directed influence coefficients are consistent across all traits, and are
@@ -662,7 +667,7 @@ idea of `cape` is that these coefficients can be combined across eigentraits
 and reparameterized to calculate how each pair of markers influences each 
 other directly and independently of eigentrait.
 
-![](/Users/elkasb/git/cape/vignettes/reparam.png)
+![](C:/dev/CAPE/cape/vignettes/reparam.png){width=50%}
 
 The first step in this reparameterization is to define two new parameters 
 ($\delta_1$ and $\delta_2$) in terms of the interaction coefficients. 
@@ -820,7 +825,12 @@ markers on chromosome 12. To see the main effects of markers on chromosome
 1, follow the chromosome 1 line all the way to the right to see that markers
 on chromosome 1 increase levels of all three traits. 
 
-![](/Users/elkasb/git/cape/demo/demo_qtl/variant_influences.jpg)
+
+```r
+plot_variant_influences(final_cross, show_alleles = FALSE)
+```
+
+![plot of chunk var_inf](figure/var_inf-1.png)
 
 Positive effects are shown in brown, and negative effects are in blue.
 Marker pairs that were not tested due to high correlation are shown in
@@ -833,7 +843,12 @@ circles around the chromosomes. Main effects are depicted in these
 concentric circles and genetic interactions are shown as arrows within
 the circle. 
 
-![](/Users/elkasb/git/cape/demo/demo_qtl/Network_Circular.jpg)
+
+```r
+plot_network(final_cross)
+```
+
+![plot of chunk circ_net](figure/circ_net-1.png)
 
 And finally, the function `plot_full_network` This function plots
 the same results in a network that ignores genomic position. 
@@ -846,7 +861,7 @@ by coloring the sections corresponding to the traits either brown
 for positive main effects or blue for negative main effects. Gray indicates
 no significant main effect. Interactions are shown as arrows between the nodes. 
 
-![](/Users/elkasb/git/cape/demo/demo_qtl/Network_View.jpg)
+![plot of chunk net_vis](figure/net_vis-1.png)
 
 ### Interpreting CAPE Results
 
@@ -877,7 +892,7 @@ marker1 = "D15Mit72_B", marker1_label = "Chr15", plot_type = "l",
 error_bars = "se")
 ```
 
-![plot of chunk plot_effects_line](figure/plotrlang::last_error()_main-1.png)
+![plot of chunk plot_effects_line](figure/plot_effects_line-1.png)
 
 We can then look at both markers together to see the enhanced
 effect of this allele when the Chr 2 NZO allele is present.
@@ -944,7 +959,7 @@ explained by each eigentrait, as well as the contribution of
 each trait to each eigentrait.
 
 **plot_singlescan:** Plots the results of the single-locus scan.
-Can plot either standardized effects or undstandardized effects.
+Can plot either standardized effects or non-standardized effects.
 Also plots effects both by allele and by marker.
 
 **plot_pairscan:** Plots the results of the pairwise scan.
@@ -998,7 +1013,7 @@ of a list with the following five elements:
    * pairscan_results: A list with one element per trait. The element for
      each trait is a list of the following three elements:
      * pairscan_effects: the effect sizes from the linear models
-     * pairscan_se: the standard erros from the linear models
+     * pairscan_se: the standard errors from the linear models
      * model_covariance: the model covariance from the linear models.
    * pairscan_perm: The same structure as pairscan_results, but for the
      permuted data.
@@ -1078,5 +1093,7 @@ only the interactions.
 
 **variant.influences.pdf:** A pdf showing cape results as plotted by 
 `plot_variant_influences`.
+
+
 
 ## References

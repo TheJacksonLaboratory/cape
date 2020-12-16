@@ -2,7 +2,7 @@
 #' 
 #' Given a vector of marker names or numbers, this 
 #' function returns the chromosome on which each 
-#' marker lives.Covariates are assigned to chromsome 0.
+#' marker lives.Covariates are assigned to chromosome 0.
 #' 
 #' @param data_obj a \code{\link{Cape}} object
 #' @param markers A vector of marker names 

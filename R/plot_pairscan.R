@@ -5,7 +5,7 @@
 #' pairs of markers.
 #'
 #' @param data_obj a \code{\link{Cape}} object
-#' @param pairscan_obj a pariscan object from \code{\link{pairscan}}
+#' @param pairscan_obj a pairscan object from \code{\link{pairscan}}
 #' @param phenotype The names of the phenotypes to be plotted. If NULL,
 #' all phenotypes are plotted.
 #' @param standardized If TRUE, the standardized effects are plotted.
@@ -13,7 +13,7 @@
 #' @param show_marker_labels If TRUE marker labels are plotted along the
 #' axes. If FALSE, they are omitted.
 #' @param show_chr If TRUE, the chromosome boundaries are shown
-#' @param label_chr If TRUE, the chromsomes are labeled
+#' @param label_chr If TRUE, the chromosomes are labeled
 #' @param show_alleles If TRUE, the allele of each marker is indicated by color.
 #' @param allele_labels Labels for the alleles if other than those stored in the
 #' data object.
@@ -24,7 +24,7 @@
 #' takes the same values as pos_col.
 #' @param color_scheme either "DO/CC" or "other". "DO/CC" uses the official "DO/CC"
 #' colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
-#' "other" uses an unrelated color pallette for multiple alleles.
+#' "other" uses an unrelated color palette for multiple alleles.
 #' @param pdf_label Label for the resulting file. Defaults to "Pairscan.Regression.pdf"
 #'
 #' @return Plots to a pdf

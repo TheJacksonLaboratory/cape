@@ -1,7 +1,7 @@
 #' Create a covariate from a trait
 #' 
 #' This function takes a variable from the phenotype matrix
-#' for example, diet treament or sex and converts it to
+#' for example, diet treatment or sex and converts it to
 #' a covariate.
 #'
 #' @param data_obj a \code{\link{Cape}} object
