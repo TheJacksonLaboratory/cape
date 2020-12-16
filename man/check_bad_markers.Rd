@@ -14,6 +14,6 @@ check_bad_markers(data_obj, geno_obj)
 \description{
 This function checks for markers that aren't used
 in cape. For example, markers on sex chromosomes,
-or mitochonrdial markers. It also removes any 
+or mitochondrial markers. It also removes any 
 markers that are invariant across all individuals.
 }

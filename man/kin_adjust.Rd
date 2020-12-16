@@ -20,9 +20,9 @@ kin_adjust(
 
 \item{geno}{a genotype object.}
 
-\item{chr1}{The first of two chromomsomes to leave out of the calculation, if any.}
+\item{chr1}{The first of two chromosomes to leave out of the calculation, if any.}
 
-\item{chr2}{The second of two chromomsomes to leave out of the calculation, if any.}
+\item{chr2}{The second of two chromosomes to leave out of the calculation, if any.}
 
 \item{phenoV}{The phenotype vector}
 

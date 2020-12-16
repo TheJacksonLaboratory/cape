@@ -17,7 +17,7 @@ marker2covar(
 
 \item{geno_obj}{a genotype object}
 
-\item{singlescan_obj}{It is possible to automitically identify
+\item{singlescan_obj}{It is possible to automatically identify
 markers to use as covariates based on their large main effects.
 If this is desired, a singlescan object is required.}
 

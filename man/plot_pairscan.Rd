@@ -23,7 +23,7 @@ plot_pairscan(
 \arguments{
 \item{data_obj}{a \code{\link{Cape}} object}
 
-\item{pairscan_obj}{a pariscan object from \code{\link{pairscan}}}
+\item{pairscan_obj}{a pairscan object from \code{\link{pairscan}}}
 
 \item{phenotype}{The names of the phenotypes to be plotted. If NULL,
 all phenotypes are plotted.}
@@ -36,7 +36,7 @@ axes. If FALSE, they are omitted.}
 
 \item{show_chr}{If TRUE, the chromosome boundaries are shown}
 
-\item{label_chr}{If TRUE, the chromsomes are labeled}
+\item{label_chr}{If TRUE, the chromosomes are labeled}
 
 \item{show_alleles}{If TRUE, the allele of each marker is indicated by color.}
 
@@ -52,7 +52,7 @@ takes the same values as pos_col.}
 
 \item{color_scheme}{either "DO/CC" or "other". "DO/CC" uses the official "DO/CC"
 colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
-"other" uses an unrelated color pallette for multiple alleles.}
+"other" uses an unrelated color palette for multiple alleles.}
 
 \item{pdf_label}{Label for the resulting file. Defaults to "Pairscan.Regression.pdf"}
 }

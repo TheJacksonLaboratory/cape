@@ -17,7 +17,7 @@ error_prop(
 \arguments{
 \item{data_obj}{a \code{\link{Cape}} object}
 
-\item{pairscan_obj}{a pariscan object from \code{\link{pairscan}}}
+\item{pairscan_obj}{a pairscan object from \code{\link{pairscan}}}
 
 \item{perm}{A logical value to indicate whether error propagation should be 
 performed on the test statistics (FALSE) or the permuted test statistics (TRUE).}

@@ -25,7 +25,7 @@ This function returns a list with the following elements:
 bins: a vector the same length as the input curve identifying which
 peak each position was assigned to. 
 smoothed_curve: A vector defining the smoothed curve
-window_size: The input window_size or the cacluated window_size if 
+window_size: The input window_size or the calculated window_size if 
 window_size was NULL
 amp_min: the input amp_min or calculated amp_min if amp_min was NULL
 }

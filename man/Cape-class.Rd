@@ -59,7 +59,7 @@ taken from the genotype matrix. Functions that remove markers and individuals fr
 analysis always operate on geno_names in addition to other relevant slots.
 The names of geno_names must be "mouse", "allele", "locus."}
 
-\item{\code{geno}}{A three dimentional array holding genotypes for each animal for each allele
+\item{\code{geno}}{A three dimensional array holding genotypes for each animal for each allele
 at each marker. The genotypes are continuously valued probabilities ranging from 0 to 1. 
 The dimnames of geno must be "mouse", "allele", and "locus," even if the individuals are
 not mice.}
@@ -226,7 +226,7 @@ using \code{\link{get_geno}} based on geno_names. Only the individuals, alleles,
 taken from the genotype matrix. Functions that remove markers and individuals from analysis always operate on geno_names 
 in addition to other relevant slots. The names of geno_names must be "mouse", "allele", "locus."}
 
-\item{\code{geno}}{A three dimentional array holding genotypes for each animal for each allele at each marker. The genotypes
+\item{\code{geno}}{A three dimensional array holding genotypes for each animal for each allele at each marker. The genotypes
 are continuously valued probabilities ranging from 0 to 1. The dimnames of geno must be "mouse", "allele", and "locus,"
 even if the individuals are not mice.}
 
@@ -482,7 +482,7 @@ taken from the genotype matrix. Functions that remove markers and individuals fr
 analysis always operate on geno_names in addition to other relevant slots.
 The names of geno_names must be "mouse", "allele", "locus."}
 
-\item{\code{geno}}{A three dimentional array holding genotypes for each animal for each allele
+\item{\code{geno}}{A three dimensional array holding genotypes for each animal for each allele
 at each marker. The genotypes are continuously valued probabilities ranging from 0 to 1. 
 The dimnames of geno must be "mouse", "allele", and "locus," even if the individuals are
 not mice.}
@@ -611,7 +611,7 @@ individual markers. See \code{\link{plot_network}} and \code{\link{get_network}}
 \if{html}{\out{<a id="method-plotSVD"></a>}}
 \if{latex}{\out{\hypertarget{method-plotSVD}{}}}
 \subsection{Method \code{plotSVD()}}{
-Plot Eignentraits
+Plot Eigentraits
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cape$plotSVD(filename)}\if{html}{\out{</div>}}
 }

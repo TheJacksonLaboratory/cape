@@ -21,7 +21,7 @@ A 2D matrix summarizing the input array
 }
 \description{
 This function takes in a 3D array of values, effects or t_stats, etc.
-and returns a 2D matrix in wich each entry contains a single value
+and returns a 2D matrix in which each entry contains a single value
 representing all corresponding entries in the 3rd dimension. This
 number is determined by the function specified by the user. It could be min,
 max, mean, etc.

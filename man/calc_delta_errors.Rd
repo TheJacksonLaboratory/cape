@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_delta_errors.R
 \name{calc_delta_errors}
 \alias{calc_delta_errors}
-\title{Error propogation}
+\title{Error propagation}
 \usage{
 calc_delta_errors(markers, beta_m, se, beta_cov)
 }
