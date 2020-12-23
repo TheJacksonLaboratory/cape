@@ -57,8 +57,8 @@ Imports:
   shape (>= 1.4.5),
   stats,
   stringr (>= 1.4.0),
-  tools (>= 3.6.2),
-  utils (>= 3.6.2),
+  tools,
+  utils,
   yaml (>= 2.2.1)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1

@@ -4,7 +4,6 @@
 #'
 #' @name Cape-class
 #' @rdname Cape-class
-#' @exportClass Cape
 #'
 #' @slot parameter_file string, full path to YAML file with initialization
 #'   parameters
