@@ -9,7 +9,7 @@
 #' if return order is TRUE, the function returns the order of
 #' each column instead of the ordered table. To order the original
 #' table, sort first by the order in the first column of the order
-#' matrix and then by the ofer in the second colum of the order
+#' matrix and then by the offer in the second colum of the order
 #' matrix.
 #' 
 #' @param tableX a matrix

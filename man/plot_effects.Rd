@@ -50,7 +50,7 @@ are "none" (the default), "se" for standard error, or
 "sd" for standard deviation.}
 
 \item{ymin}{A minimum value for the y axes across all plots.
-If NULL, each y axis will be dertermined independently}
+If NULL, each y axis will be determined independently}
 
 \item{ymax}{A maximum value for the y axes across all plots.
 If NULL, each y axis will be dertermined independently}

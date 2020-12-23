@@ -5,7 +5,7 @@
 #' estimate the error for all regression coefficients.
 #'
 #' @param data_obj a \code{\link{Cape}} object
-#' @param pairscan_obj a pariscan object from \code{\link{pairscan}}
+#' @param pairscan_obj a pairscan object from \code{\link{pairscan}}
 #' @param perm A logical value to indicate whether error propagation should be 
 #' performed on the test statistics (FALSE) or the permuted test statistics (TRUE).
 #' @param verbose A logical value to indicate whether the progress of the function 

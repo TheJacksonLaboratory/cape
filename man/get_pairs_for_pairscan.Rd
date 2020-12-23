@@ -57,5 +57,5 @@ pairs have sufficient representation in all genotype combinations.
 \details{
 One and only one of min_per_genotype or max_pair_cor should be specified.
 We recommend that if you have continuous genotype probabilities, you use max_pair_cor.
-If both values are specified, this function will preferrentially use max_pair_cor.
+If both values are specified, this function will preferentially use max_pair_cor.
 }

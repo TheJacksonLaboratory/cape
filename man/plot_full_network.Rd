@@ -44,7 +44,7 @@ condensed into linkage blocks (TRUE) or each individual marker (FALSE)}
 
 \item{color_scheme}{either "DO/CC" or "other". "DO/CC" uses the official "DO/CC"
 colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
-"other" uses an unrelated color pallette for multiple alleles.}
+"other" uses an unrelated color palette for multiple alleles.}
 
 \item{pos_col}{The color to use for positive main effects and interactions
 must be one of "green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"

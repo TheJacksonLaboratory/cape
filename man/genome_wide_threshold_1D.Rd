@@ -56,7 +56,7 @@ Returns a vector the same length as alpha indicating the
 thresholds for each value of alpha.
 }
 \description{
-This function uses permtuation testing to calculate a genome-wide significance
+This function uses permutation testing to calculate a genome-wide significance
 threshold for the single-variant scan. Two user-defined thresholds are 
 calculated: the lower threshold (higher alpha) can be used to determine which 
 variants will be used in the pairwise scan. The higher threshold (lower alpha) 

@@ -1,6 +1,6 @@
 #' Convert qtl2 object to cape format
 #'
-#' This function converts a data object contructed by qtl2 using the read_cross()
+#' This function converts a data object constructed by qtl2 using the read_cross()
 #' function to cape format. It returns a list in which the first element is the
 #' cape data object, and the second element is the cape genotype object.
 #'
@@ -19,7 +19,7 @@
 #' @param map The qtl2 map. This can be omitted if the map is included in the cross 
 #' object as either pmap or gmap. By default the physical map (pmap) is used. 
 #' If it is missing, the genetic map is used. A provided map will be used 
-#' preferrentially over a map included in the cross object.
+#' preferentially over a map included in the cross object.
 #' @param covar Optional matrix of any covariates to be included in the analysis.
 #'
 #' @return This function returns a list of two elements. The first element is a cape data

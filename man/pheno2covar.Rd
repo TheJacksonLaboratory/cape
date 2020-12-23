@@ -19,6 +19,6 @@ with \code{\link{get_covar}}.
 }
 \description{
 This function takes a variable from the phenotype matrix
-for example, diet treament or sex and converts it to
+for example, diet treatment or sex and converts it to
 a covariate.
 }

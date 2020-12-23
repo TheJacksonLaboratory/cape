@@ -10,7 +10,7 @@
 #'
 #' @param data_obj a \code{\link{Cape}} object
 #' @param geno_obj a genotype object
-#' @param singlescan_obj It is possible to automitically identify
+#' @param singlescan_obj It is possible to automatically identify
 #' markers to use as covariates based on their large main effects.
 #' If this is desired, a singlescan object is required.
 #' @param covar_thresh If designating markers as covariates based

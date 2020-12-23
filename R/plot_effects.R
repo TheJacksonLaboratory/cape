@@ -25,7 +25,7 @@
 #' are "none" (the default), "se" for standard error, or 
 #' "sd" for standard deviation.
 #' @param ymin A minimum value for the y axes across all plots.
-#' If NULL, each y axis will be dertermined independently
+#' If NULL, each y axis will be determined independently
 #' @param ymax A maximum value for the y axes across all plots.
 #' If NULL, each y axis will be dertermined independently
 #' @param covar A vector of strings indicating which covariates,

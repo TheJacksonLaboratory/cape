@@ -41,7 +41,7 @@ specified in \code{\link{singlescan}} can be plotted.}
 color scheme of main effects. If "DO/CC" allele effects can be plotted with the
 DO/CC colors.}
 
-\item{allele_labels}{A vector of labels for the alleles if different thatn those
+\item{allele_labels}{A vector of labels for the alleles if different than those
 stored in the data_object.}
 
 \item{include_covars}{Whether to include covariates in the plot.}

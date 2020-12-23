@@ -10,7 +10,7 @@ get_eigentraits(data_obj, scale_pheno = TRUE, normalize_pheno = TRUE)
 \item{data_obj}{a \code{\link{Cape}} object}
 
 \item{scale_pheno}{A logical value indicating whether to 
-mean-center and standardiase the traits.}
+mean-center and standardize the traits.}
 
 \item{normalize_pheno}{A logical value indicating whether to 
 rankZ normalize the phenotypes.}

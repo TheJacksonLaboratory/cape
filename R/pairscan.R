@@ -55,7 +55,7 @@
 #' pairscan_results: A list with one element per trait. The element for
 #' each trait is a list of the following three elements:
 #'    pairscan_effects: the effect sizes from the linear models
-#'    pairscan_se: the standard erros from the linear models
+#'    pairscan_se: the standard errors from the linear models
 #'    model_covariance: the model covariance from the linear models.
 #' pairscan_perm: The same structure as pairscan_results, but for the
 #' permuted data.

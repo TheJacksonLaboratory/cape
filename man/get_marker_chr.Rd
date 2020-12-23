@@ -21,5 +21,5 @@ indicating which chromosome each marker in markers lives on.
 \description{
 Given a vector of marker names or numbers, this 
 function returns the chromosome on which each 
-marker lives.Covariates are assigned to chromsome 0.
+marker lives.Covariates are assigned to chromosome 0.
 }

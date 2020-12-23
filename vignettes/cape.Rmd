@@ -52,7 +52,7 @@ In addition to supporting the newer R/qtl2 (@broman2019r) format, we also suppor
 the R/qtl (@rqtl) csv format for cape. You can learn more about this format
 at the [R/qtl website](https://rqtl.org). Briefly, this format 
 contains all traits and genotypes in one comma-delimited file.
-The first few columns contain traits, covariates, and indvidual identifiers,
+The first few columns contain traits, covariates, and individual identifiers,
 and the remaining contain genotypes. Please see the qtl demo data included 
 with cape for an example. Also see `?read_population` for more details. 
 
@@ -263,7 +263,7 @@ The section of general parameters is where we specify which traits we will
 use, whether we want cape to normalize the traits for us, and whether we want
 cape to save the results. This is also the section in which we tell cape 
 whether we want to use a kinship correction or not. kinship corrections are 
-discussed futher below.
+discussed further below.
 
 If a parameter has multiple entries, for example we always want to test
 multiple traits, each entry gets its own line starting with a dash.
@@ -306,7 +306,7 @@ whether cape should mean center and standardize the traits.
 cape should normalize the traits. 
 
 **eig_which:** After performing the SVD to create orthogonal eigentraits, you
-may whish to analyze only a subset of them in cape. For example, if the first 
+may wish to analyze only a subset of them in cape. For example, if the first 
 two eigentraits capture more than 90\% of the trait variance, you may wish
 to discard the last eigentrait. This results in a loss of some information, 
 but may increase power to detect important trait-related signals.
@@ -344,7 +344,7 @@ most cases.
 **transform_to_phenospace** A logical value indicating that is required 
 scanning eigentraits. If true, all effects are rotate back to trait space 
 after calculation, such that the final networks show marker influences on 
-traits. If false, all effects will be kept in terms of eigentriats, and all
+traits. If false, all effects will be kept in terms of eigentraits, and all
 final tables and plots will show marker effects on eigentraits. 
 
 ### Single scan parameters
@@ -554,7 +554,7 @@ The index $i$ runs from 1 to the number of individuals, and $j$ runs from
 1 to the number of eigentraits or traits. $x_{i}$ is the probability 
 of the presence of the reference allele for individual $i$ at locus $j$. 
 The primary purpose of this scan is is to select markers for the pairwise
-scan if there are too many to test exhautively.
+scan if there are too many to test exhaustively.
 
 Although `run_cape` creates files with the singlescan results automatically,
 it is also sometimes desireable to re-plot these results with different 
@@ -610,9 +610,9 @@ were inconsistent suggesting we need to do more research into this area.
 More appropriate corrections are currently a topic of research in our 
 group and will be implemented in later iterations of cape.
 
-### Reprarametrization
-The reparametrization step is where we actually do the combined analysis of
-pleiotropy and epistasis that cape is named for. This step reparametrizes
+### Reparameterization
+The reparameterization step is where we actually do the combined analysis of
+pleiotropy and epistasis that cape is named for. This step reparameterizes
 the $\beta$ coefficients from the pairwise linear regressions across all 
 traits/eigentraits in terms of directed influence coefficients. These 
 directed influence coefficients are consistent across all traits, and are
@@ -912,7 +912,7 @@ explained by each eigentrait, as well as the contribution of
 each trait to each eigentrait.
 
 **plot_singlescan:** Plots the results of the single-locus scan.
-Can plot either standardized effects or undstandardized effects.
+Can plot either standardized effects or non-standardized effects.
 Also plots effects both by allele and by marker.
 
 **plot_pairscan:** Plots the results of the pairwise scan.
@@ -966,7 +966,7 @@ of a list with the following five elements:
    * pairscan_results: A list with one element per trait. The element for
      each trait is a list of the following three elements:
      * pairscan_effects: the effect sizes from the linear models
-     * pairscan_se: the standard erros from the linear models
+     * pairscan_se: the standard errors from the linear models
      * model_covariance: the model covariance from the linear models.
    * pairscan_perm: The same structure as pairscan_results, but for the
      permuted data.

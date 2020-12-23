@@ -13,7 +13,7 @@
 #' 
 #' @param data_obj a \code{\link{Cape}} object
 #' @param scale_pheno A logical value indicating whether to 
-#' mean-center and standardiase the traits.
+#' mean-center and standardize the traits.
 #' @param normalize_pheno A logical value indicating whether to 
 #' rankZ normalize the phenotypes.
 #'

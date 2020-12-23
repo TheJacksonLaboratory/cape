@@ -16,7 +16,7 @@ A vector the same length as the input markers vector
 indicating the genomic coordinate of each marker.
 }
 \description{
-Given a vector of marker names or numers, this 
+Given a vector of marker names or numbers, this 
 function returns the genomic coordinates for
 each marker, not including the chromosome number,
 which is retrieved using \code{\link{get_marker_chr}}.

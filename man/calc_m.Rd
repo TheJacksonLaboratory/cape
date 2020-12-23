@@ -20,7 +20,7 @@ row holding the m12 and m21 values as described
 in Carter et al. 2012
 }
 \description{
-This function performs the reparametrization
+This function performs the reparameterization
 step originally described in
 Carter, G. W., Hays, M., Sherman, A. & Galitski, T. 
 Use of pleiotropy to model genetic interactions in a 

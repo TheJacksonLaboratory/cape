@@ -1,4 +1,4 @@
-#' Error propogation
+#' Error propagation
 #' 
 #' This function performs error propagation on 
 #' coefficients and standard errors.

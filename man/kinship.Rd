@@ -17,7 +17,7 @@ kinship(
 
 \item{geno_obj}{a genotype object}
 
-\item{type}{type of  kinshihp correction. Default is overall.}
+\item{type}{type of  kinship correction. Default is overall.}
 
 \item{n_cores}{The number of cores. Defaults to 4.}
 

@@ -14,7 +14,7 @@
 #'
 #' @param data_obj a \code{\link{Cape}} object
 #' @param geno_obj a genotype object
-#' @param type type of  kinshihp correction. Default is overall.
+#' @param type type of  kinship correction. Default is overall.
 #' @param pop population type, "MPP" (multi-parental population), 
 #' "2PP" (2 parents), "RIL" (recombinant inbred line)
 #' @param n_cores The number of cores. Defaults to 4.

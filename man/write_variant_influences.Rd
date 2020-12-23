@@ -26,7 +26,7 @@ interaction effects (FALSE) in the output table.}
 
 \item{filename}{A character vector specifying the name of the file.}
 
-\item{delim}{A character string indicating the delimeter in the data file. 
+\item{delim}{A character string indicating the delimiter in the data file. 
 The default indicates a comma-separated file (",").}
 
 \item{mark_covar}{A logical value. If TRUE, an asterisk is appended the 
@@ -54,7 +54,7 @@ The columns of the output file are the following:
    lists the marker that is the target of the directed interaction.
    If the effect is a main effect, this column lists the 
    trait that is the target of the main effect.
- Chr: The chomosome on which the target marker lives.
+ Chr: The chromosome on which the target marker lives.
    If the effect is a main effect, this is listed as 0.
  Position: The genomic position of the target marker. If
    the effect is a main effect, this is listed as 1.
