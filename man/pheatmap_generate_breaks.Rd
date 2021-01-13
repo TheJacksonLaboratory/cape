@@ -5,7 +5,7 @@
 \title{pheatmap generate breaks found at this link
 https://cran.r-project.org/package=pheatmap}
 \usage{
-pheatmap_generate_breaks(x, n, center = F)
+pheatmap_generate_breaks(x, n, center = FALSE)
 }
 \arguments{
 \item{x}{numeric vector}
