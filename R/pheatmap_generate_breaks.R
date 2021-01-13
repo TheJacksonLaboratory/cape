@@ -8,14 +8,14 @@
 #' @param n number of breaks
 #' @param center logical defaults to False
 
-pheatmap_generate_breaks <- function (x, n, center = F) 
+pheatmap_generate_breaks <- function (x, n, center = FALSE) 
 {
   if (center) {
-    m = max(abs(c(min(x, na.rm = T), max(x, na.rm = T))))
+    m = max(abs(c(min(x, na.rm = TRUE), max(x, na.rm = TRUE))))
     res = seq(-m, m, length.out = n + 1)
   }
   else {
-    res = seq(min(x, na.rm = T), max(x, na.rm = T), length.out = n + 
+    res = seq(min(x, na.rm = TRUE), max(x, na.rm = TRUE), length.out = n + 
                 1)
   }
   return(res)
