@@ -48,16 +48,21 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' #remove entries with more than 10\% missing data prioitizing removal of markers
-#' data_obj <- remove_missing_genotype_data(data_obj, geno_obj, marker_missing_thresh = 10, ind_missing_thresh = 10,
+#' #remove entries with more than 10\% missing data prioitizing 
+#' #removal of markers
+#' data_obj <- remove_missing_genotype_data(data_obj, geno_obj, 
+#' marker_missing_thresh = 10, ind_missing_thresh = 10,
 #' prioritize = "marker")
 #' 
-#' #remove markers with more than 5\% missing data and markers with more than 50\% 
+#' #remove markers with more than 5\% missing data and markers with 
+#' #more than 50\% 
 #' #missing data, prioritizing removal of individuals.
-#' data_obj <- remove_missing_genotype_data(data_obj, geno_obj, ind_missing_thresh = 10, marker_missing_thresh = 50,
+#' data_obj <- remove_missing_genotype_data(data_obj, geno_obj, 
+#' ind_missing_thresh = 10, marker_missing_thresh = 50,
 #' prioritize = "ind")
 #' 
-#' #remove entries witn any missing data prioritizing whichever method removes the least amount of data
+#' #remove entries witn any missing data prioritizing whichever 
+#' #method removes the least amount of data
 #' data_obj <- remove_missing_genotype_data(data_obj, geno_obj)
 #' 
 #' }
