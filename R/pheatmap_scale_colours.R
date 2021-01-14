@@ -15,7 +15,7 @@ pheatmap_scale_colours <- function (mat, col = rainbow(10), breaks = NA, na_col)
   
   scale_vec_colours <- function (x, col = rainbow(10), breaks = NA, na_col) 
   {
-    res <- col[as.numeric(cut(x, breaks = breaks, include.lowest = T))]
+    res <- col[as.numeric(cut(x, breaks = breaks, include.lowest = TRUE))]
     res[is.na(res)] <- na_col
     return(res)
   }
