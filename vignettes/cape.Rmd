@@ -7,7 +7,7 @@ output:
    rmarkdown::html_vignette:
       toc: true
 vignette: >
-  %\VignetteIndexEntry{Combined Analysis of Pleiotropy and Epistasis}
+  %\VignetteIndexEntry{cape: A package for the combined analysis of pleiotropy and epistasis}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 bibliography: cape.bib
@@ -562,10 +562,20 @@ parameters. We show how to do that below by reading in the singlescan
 results file and using `plot_singlescan` with parameters different from
 those in `run_cape.`
 
-```{r single_plot, fig.width = 7, fig.height = 5}
+```{r single_plot, eval = FALSE}
 singlescan_obj <- readRDS(here::here("demo", "demo_qtl", "NON_NZO_singlescan.RData"))
 plot_singlescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
 covar_label_size = 1)
+```
+
+```{r single_plot_fig1, results = "asis", echo = FALSE}
+et1_fig <- here::here("vignettes", "Singlescan_ET1_Standardized.jpg")
+cat(paste0("![](", et1_fig, "){width=70%}\n"))
+```
+
+```{r single_plot_fig2, results = "asis", echo = FALSE}
+et2_fig <- here::here("vignettes", "Singlescan_ET2_Standardized.jpg")
+cat(paste0("![](", et2_fig, "){width=70%}\n"))
 ```
 
 ### Pairwise Testing
@@ -788,7 +798,7 @@ markers on chromosome 12. To see the main effects of markers on chromosome
 1, follow the chromosome 1 line all the way to the right to see that markers
 on chromosome 1 increase levels of all three traits. 
 
-```{r var_inf, fig.height = 6, fig.width = 5}
+```{r var_inf, fig.height = 6, fig.width = 7}
 plot_variant_influences(final_cross, show_alleles = FALSE)
 ```
 
@@ -803,7 +813,7 @@ circles around the chromosomes. Main effects are depicted in these
 concentric circles and genetic interactions are shown as arrows within
 the circle. 
 
-```{r circ_net, fig.height = 5, fig.width = 5}
+```{r circ_net, fig.height = 6, fig.width = 6}
 plot_network(final_cross)
 ```
 
@@ -818,7 +828,7 @@ by coloring the sections corresponding to the traits either brown
 for positive main effects or blue for negative main effects. Gray indicates
 no significant main effect. Interactions are shown as arrows between the nodes. 
 
-```{r net_vis, results = "asis", echo = FALSE}
+```{r net_vis, echo = FALSE, fig.width = 6, fig.height = 6}
 plot_full_network(final_cross, zoom = 1.2, node_radius = 0.3, 
     label_nodes = TRUE, label_offset = 0.4, label_cex = 0.5, bg_col = "lightgray", 
     arrow_length = 0.1, layout_matrix = "layout_with_kk", legend_position = "topright", 
@@ -1046,11 +1056,5 @@ only the interactions.
 
 **variant.influences.pdf:** A pdf showing cape results as plotted by 
 `plot_variant_influences`.
-
-```{r remove_all_files, echo = FALSE, eval = TRUE}
-results_files <- list.files(path = results_path, full.names = TRUE)
-to_delete <- setdiff(results_files, param_file)
-unlink(to_delete)
-```
 
 ## References
