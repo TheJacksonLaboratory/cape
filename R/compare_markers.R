@@ -6,6 +6,11 @@
 #' @return The data_obj is returned, and any markers that were
 #' not present in geno_obj are removed from data_obj$geno_names
 #'
+#' @examples 
+#' \dontrun{
+#' data_obj <- compare_markers(data_obj, geno_obj)
+#' }
+#' 
 #' @export
 compare_markers <- function(data_obj, geno_obj){	
   geno <- get_geno(data_obj, geno_obj)

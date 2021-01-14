@@ -53,3 +53,9 @@ among R/qtl2, R/qtl, and DOQTL. http://kbroman.org/qtl2,
 https://github.com/rqtl/qtl2convert.
 And genoprob_to_alleleprob from qtl2.
 }
+\examples{
+\dontrun{
+K <- kinship(data_obj, geno_obj)
+}
+
+}

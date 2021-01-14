@@ -12,6 +12,11 @@
 #' @importFrom graphics abline
 #' @importFrom stats rnorm qqplot
 #' 
+#' @examples 
+#' \dontrun{
+#' qnorm_pheno(data_obj)
+#' }
+#' 
 #' @export
 
 qnorm_pheno <- function(data_obj, pheno_which = NULL, pheno_labels = NULL){

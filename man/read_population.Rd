@@ -47,6 +47,15 @@ phenotypes can be specified with a vector of column
 numbers or character strings. For each phenotype
 specified with a name, the script will find its location.
 }
+\examples{
+\dontrun{
+cape_obj <- read_population("cross.csv")
+combined_obj <- cape2mpp(cape_obj)
+data_obj <- combined_obj$data_obj
+geno_obj <- combined_obj$geno_obj
+}
+
+}
 \references{
 Broman et al. (2003) R/qtl: QTL mapping in experimental crosses. 
 Bioinformatics 19:889-890 doi:10.1093/bioinformatics/btg112

@@ -13,6 +13,11 @@
 #' data_obj$geno_names
 #'
 #' @importFrom abind abind
+#' 
+#' @examples 
+#' \dontrun{
+#' geno <- get_geno(data_obj, geno_obj)
+#' }
 #'
 #' @export
 

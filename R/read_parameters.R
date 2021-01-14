@@ -13,6 +13,11 @@
 #' 
 #' @import yaml
 #' 
+#' @examples 
+#' \dontrun{
+#' param_table <- read_parameters()
+#' }
+#' 
 #' @export
 read_parameters <- function(filename = "cape.parameters.yml", yaml_parameters = NULL){
   if (!is.null(yaml_parameters)) {

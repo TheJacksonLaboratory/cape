@@ -20,3 +20,9 @@ are not good for plotting}
 This function plots histograms of the traits held in 
 the pheno slot of the data object.
 }
+\examples{
+\dontrun{
+hist_pheno(data_obj)
+}
+
+}

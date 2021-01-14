@@ -69,6 +69,11 @@
 #' @importFrom graphics arrows
 #' @importFrom stats dist na.omit
 #' 
+#' @examples 
+#' \dontrun{
+#' plot_full_network(data_obj)
+#' }
+#' 
 #' @export
  
 plot_full_network <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, main = NULL, 

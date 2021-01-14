@@ -20,3 +20,12 @@ an updated cape data object with specified individuals removed.
 \description{
 Remove individuals
 }
+\examples{
+\dontrun{
+#remove males
+covar_info <- get_covar(data_obj)
+male_idx <- which(covar_info$covar_table[,"sex"] == 1)
+data_obj <- remove_ind(data_obj, ind_to_remove = male_idx)
+}
+
+}

@@ -2,6 +2,11 @@
 #' 
 #' @param data_obj a \code{\link{Cape}} object
 #' @param kin_obj a kinship object
+#' 
+#' @examples 
+#' \dontrun{
+#' kin_obj <- remove_kin_id(data_obj, kin_obj)
+#' }
 #'
 #' @return updated kinship object
 #'

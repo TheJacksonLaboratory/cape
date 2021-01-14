@@ -15,6 +15,11 @@
 #'
 #' @return updated \code{\link{Cape}} object
 #' 
+#' @examples 
+#' \dontrun{
+#' data_obj <- select_pheno(data_obj, pheno_which = c("BW_24", "INS_24", "log_GLU_24"))
+#' }
+#' 
 #' @export
 select_pheno <- function(data_obj, pheno_which, min_entries = 5, scale_pheno = FALSE, rank_norm_pheno = FALSE){
   check_underscore(data_obj)

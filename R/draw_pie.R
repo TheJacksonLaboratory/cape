@@ -29,8 +29,16 @@
 #' 
 #' @importFrom graphics text
 #' 
+#' @examples 
+#' plot.new()
+#' plot.window(xlim = c(0,2), ylim = c(0,2))
+#' draw_pie(cols = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"), radius = 0.2, edges = 200)
+#' draw_pie(x = 1.5, y = 1.5, cols = c("#66c2a5", "#fc8d62"), radius = 0.1)
+#' draw_pie(x = 1.5, y = 0.4, cols = c("#8da0cb", "#e78ac3", "#a6d854"), radius = 0.4)
+#' draw_pie(x = 0.4, y = 1.5, cols = c("#8da0cb", "#e78ac3", "#a6d854"), radius = 0.4, edges = 5)
 #' @export 
-draw_pie <- function(x = 0.5, y = 0.5, radius = 1, cols = c("red", "green"), border_col = "black", node_border_lwd = 1, labels = NULL, edges = 200, label_cex = 1, xlim = NULL, ylim = NULL, add = TRUE){
+draw_pie <- function(x = 0.5, y = 0.5, radius = 1, cols = c("red", "green"), border_col = "black", node_border_lwd = 1, 
+labels = NULL, edges = 200, label_cex = 1, xlim = NULL, ylim = NULL, add = TRUE){
   
   pies <- rep(1, length(cols))
   init_angle = 0

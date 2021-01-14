@@ -42,6 +42,11 @@
 #' emp_p: the empirical p value of the direct influence coefficient
 #' p_adjusted: the adjusted p value of the direct influence coefficient.
 #'
+#' @examples 
+#' \dontrun{
+#' data_obj <- direct_influence(data_obj, pairscan_obj)
+#' }
+#' 
 #' @export
  
 direct_influence <- function(data_obj, pairscan_obj, transform_to_phenospace = TRUE, 

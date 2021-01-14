@@ -13,6 +13,11 @@
 #' and dimnames(geno_obj). These two elements must be
 #' entered separately into \code{link{run_cape}}.
 #'
+#' @examples 
+#' \dontrun{
+#' data_obj <- delete_underscore(data_obj, geno_obj)
+#' }
+#' 
 #' @export
 
 delete_underscore <- function(data_obj, geno_obj = NULL){

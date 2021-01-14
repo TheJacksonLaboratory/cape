@@ -26,6 +26,14 @@
 #'
 #' @return This function returns a cape object in a former cape format.
 #' It must be updated using \code{\link{cape2mpp}}
+#' 
+#' @examples 
+#' \dontrun{
+#' cape_obj <- read_population("cross.csv")
+#' combined_obj <- cape2mpp(cape_obj)
+#' data_obj <- combined_obj$data_obj
+#' geno_obj <- combined_obj$geno_obj
+#' }
 #'
 #' @export
 read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, id_col = NULL, 

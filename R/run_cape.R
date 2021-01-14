@@ -32,6 +32,11 @@
 #' 
 #' @importFrom utils read.table
 #' 
+#' @examples 
+#' \dontrun{
+#' final_data_obj <- run_cape(pheno_obj, geno_obj)
+#' }
+#' 
 #' @export
 run_cape <- function(pheno_obj, geno_obj, 
   results_file = "cross.RData", p_or_q = 0.05, n_cores = 4, 

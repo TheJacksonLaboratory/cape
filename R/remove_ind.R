@@ -6,6 +6,14 @@
 #' Only one of ind_to_remove or names_to_remove should be specified.
 #'
 #' @return an updated cape data object with specified individuals removed.
+#' 
+#' @examples 
+#' \dontrun{
+#' #remove males
+#' covar_info <- get_covar(data_obj)
+#' male_idx <- which(covar_info$covar_table[,"sex"] == 1)
+#' data_obj <- remove_ind(data_obj, ind_to_remove = male_idx)
+#' }
 #'
 #' @export
 remove_ind <- function(data_obj, ind_to_remove = NULL, names_to_remove = NULL){

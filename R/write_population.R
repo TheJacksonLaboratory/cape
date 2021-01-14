@@ -17,6 +17,11 @@
 #' 
 #' @importFrom utils write.table
 #' 
+#' @examples 
+#' \dontrun{
+#' write_population(data_obj, geno_obj)
+#' }
+#' 
 #' @export
 
 write_population <- function(data_obj, geno_obj, ref_allele = "A", na = NA, 

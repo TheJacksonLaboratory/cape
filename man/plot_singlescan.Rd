@@ -62,3 +62,9 @@ In order for these to be plotted, \code{\link{select_markers_for_pairscan}} must
 \description{
 This function plots the results of \code{\link{singlescan}}
 }
+\examples{
+\dontrun{
+plot_singlescan(data_obj, singlescan_obj)
+}
+
+}
