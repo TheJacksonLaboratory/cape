@@ -48,6 +48,11 @@
 #' 
 #' @importFrom utils write.table
 #' 
+#' @examples 
+#' \dontrun{
+#' inf_table <- write_variant_influences(data_obj)
+#' }
+#' 
 #' @export
 write_variant_influences <- function(data_obj, p_or_q = 0.05, include_main_effects = TRUE, 
                                    filename = "Variant.Influences.csv", delim = ",", 

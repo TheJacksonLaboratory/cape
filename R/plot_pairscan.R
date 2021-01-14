@@ -29,6 +29,11 @@
 #'
 #' @return Plots to a pdf
 #' 
+#' @examples 
+#' \dontrun{
+#' plot_pairscan(data_obj, pairscan_obj)
+#' }
+#' 
 #' @importFrom grDevices jpeg
 #' 
 #' @export

@@ -34,3 +34,9 @@ updated \code{\link{Cape}} object
 Updates the pheno object to include only `pheno_which` columns.
 Optionally scale and/or normalize traits.
 }
+\examples{
+\dontrun{
+data_obj <- select_pheno(data_obj, pheno_which = c("BW_24", "INS_24", "log_GLU_24"))
+}
+
+}

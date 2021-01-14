@@ -74,6 +74,12 @@ family. Phenotypes can be assigned different model families by
 providing a vector of the same length as the number of phenotypes,
 indicating how each phenotype should be modeled.
 }
+\examples{
+\dontrun{
+singlescan_obj <- singlescan(data_obj, geno_obj, kin_obj)
+}
+
+}
 \seealso{
 \code{\link{plot_singlescan}}
 }

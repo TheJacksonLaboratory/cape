@@ -63,6 +63,11 @@
 #' tests.
 #'   
 #' @seealso \code{\link{select_markers_for_pairscan}}, \code{\link{plot_pairscan}}
+#' 
+#' @examples 
+#' \dontrun{
+#' pairscan_obj <- pairscan(data_obj, geno_obj, pairscan_null_size = 10000)
+#' }
 #'
 #' @export
 pairscan <- function(data_obj, geno_obj = NULL,

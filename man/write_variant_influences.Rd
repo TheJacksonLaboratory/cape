@@ -71,3 +71,9 @@ The columns of the output file are the following:
  P_empirical: The empirical p value calculated from permutations
  p_adjusted: The p value adjusted by the method specified in the parameter file.
 }
+\examples{
+\dontrun{
+inf_table <- write_variant_influences(data_obj)
+}
+
+}

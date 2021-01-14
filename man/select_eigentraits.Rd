@@ -25,6 +25,12 @@ which of the eigentraits will be analyzed by Cape. It does
 this by subsetting the ET matrix to only those eigentraits
 specified. The traits not selected are deleted from the object.
 }
+\examples{
+\dontrun{
+data_obj <- selecct_eigentraits(data_obj, traits_which = 1:3)
+}
+
+}
 \seealso{
 \code{\link{plot_svd}}
 }

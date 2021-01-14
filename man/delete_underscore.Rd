@@ -23,3 +23,9 @@ from alleles, we need to delete any underscores that
 were present in the original marker names. This function
 does that.
 }
+\examples{
+\dontrun{
+data_obj <- delete_underscore(data_obj, geno_obj)
+}
+
+}

@@ -31,6 +31,12 @@ This function writes out a cape object
 in a csv format readable both by \code{\link{read_population}}
 in Cape or by read.cross in R/qtl.
 }
+\examples{
+\dontrun{
+write_population(data_obj, geno_obj)
+}
+
+}
 \references{
 Broman et al. (2003) R/qtl: QTL mapping in experimental crosses. 
 Bioinformatics 19:889-890 doi:10.1093/bioinformatics/btg112

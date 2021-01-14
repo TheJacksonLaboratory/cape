@@ -19,3 +19,9 @@ against quantiles of a theoretical normal distribution.
 This provides a way to check whether traits are normally
 distributed
 }
+\examples{
+\dontrun{
+qnorm_pheno(data_obj)
+}
+
+}

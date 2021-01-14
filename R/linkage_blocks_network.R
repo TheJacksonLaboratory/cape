@@ -34,6 +34,11 @@
 #' a vector naming the markers in that block. Blocks are named
 #' with a chromosome number and an index.
 #' 
+#' @examples 
+#' \dontrun{
+#' data_obj <- linkage_blocks_network(data_obj, geno_obj)
+#' }
+#' 
 #' @export
 
 linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers = TRUE, 

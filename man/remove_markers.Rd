@@ -14,3 +14,11 @@ remove_markers(data_obj, markers_to_remove)
 \description{
 Removes genetic markers
 }
+\examples{
+\dontrun{
+#remove markers on chromosome 1
+marker_idx <- which(data_obj$chromosome == 1)
+data_obj <- remove_markers(data_obj, marker_idx)
+}
+
+}

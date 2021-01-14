@@ -53,6 +53,11 @@
 #' @importFrom stats var
 #' @importFrom stringr str_replace
 #' 
+#' @examples 
+#' \dontrun{
+#' singlescan_obj <- singlescan(data_obj, geno_obj, kin_obj)
+#' }
+#' 
 #' @export
 #' 
 singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0, 

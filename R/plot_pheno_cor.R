@@ -15,6 +15,11 @@
 #' @importFrom graphics hist legend pairs rect
 #' @importFrom stats cor
 #' 
+#' @examples 
+#' \dontrun{
+#' plot_pheno_cor(data_obj, color_by = "sex", group_labels = c("Female", "Male"))
+#' }
+#' 
 #' @export
 
 plot_pheno_cor <- function(data_obj, pheno_which = NULL, color_by = NULL, group_labels = NULL,

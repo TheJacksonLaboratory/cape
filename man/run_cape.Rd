@@ -62,3 +62,9 @@ specified in the file.
 This function assumes you already have all required libraries 
 and functions loaded.
 }
+\examples{
+\dontrun{
+final_data_obj <- run_cape(pheno_obj, geno_obj)
+}
+
+}

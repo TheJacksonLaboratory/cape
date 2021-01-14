@@ -11,6 +11,11 @@
 #' off. And second column holds the next consecutive 
 #' element.
 #'
+#' @examples
+#' elements <- 1:5
+#' consecutive <- consec_pairs(elements)
+#' print(consecutive)
+#' 
 #' @export
 consec_pairs <- function(elements){
   

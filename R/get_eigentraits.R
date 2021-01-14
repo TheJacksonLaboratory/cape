@@ -26,6 +26,10 @@
 #'
 #' @importFrom Matrix rankMatrix
 #'
+#' @examples 
+#' \dontrun{
+#' data_obj <- get_eigentraits(data_obj)
+#' }
 #' @export
 
 get_eigentraits <- function(data_obj, scale_pheno = TRUE, normalize_pheno = TRUE){

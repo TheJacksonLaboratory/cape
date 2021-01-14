@@ -78,3 +78,8 @@ Interaction effects are shown as arrows linking chromosomal
 positions. They are colored based on whether they are positive
 or negative.
 }
+\examples{
+\dontrun{
+plot_network(data_obj)
+}
+}

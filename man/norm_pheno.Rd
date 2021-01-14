@@ -25,3 +25,9 @@ This function is a wrapper for mean-centering
 normalizing and standardizing the trait matrix.
 in a data_obj.
 }
+\examples{
+\dontrun{
+data_obj <- norm_pheno(data_obj)
+}
+
+}

@@ -141,6 +141,7 @@
 #' @import R6
 #' @import tools
 #' 
+#' 
 #' @export
 Cape <- R6Class(
   "Cape",

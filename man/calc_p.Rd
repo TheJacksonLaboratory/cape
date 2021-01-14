@@ -25,3 +25,8 @@ p value columns appended.
 \description{
 Calculate P Values for Interactions Based on Permutations
 }
+\examples{
+\dontrun{
+data_obj <- calc_p(data_obj, "fdr")
+}
+}

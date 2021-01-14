@@ -82,3 +82,11 @@ of covariates.
 If individuals are genotyped very densely, the user may want to specify max_region_size
 to be smaller than the maximum chromosome size to speed calculation of similarity matrices.
 }
+\examples{
+\dontrun{
+combined_obj <- impute_missing_geno(data_obj, geno_obj)
+new_data_obj <- combined_obj$data_obj
+noew_geno_obj <- combined_obj$geno_obj
+}
+
+}

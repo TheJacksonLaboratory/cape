@@ -16,6 +16,11 @@
 #' @seealso \code{\link{plot_svd}}
 #'
 #' @return updated \code{\link{Cape}} object
+#' 
+#' @examples 
+#' \dontrun{
+#' data_obj <- selecct_eigentraits(data_obj, traits_which = 1:3)
+#' }
 #'
 #' @export
 select_eigentraits <- function(data_obj, traits_which = c(1,2)){
