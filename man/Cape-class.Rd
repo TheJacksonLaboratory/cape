@@ -194,6 +194,22 @@ for the overall kinship matrix or "ltco" for leave-two-chromosomes-out.}
 \item{\code{transform_to_phenospace}}{whether to transform to phenospace or not.}
 }}
 
+\examples{
+\dontrun{
+param_file <- "cape_parameters.yml"
+results_path = "."
+cape_obj <- read_population("cross.csv")
+combined_obj <- cape2mpp(cape_obj)
+pheno_obj <- combined_obj$data_obj
+geno_obj <- combined_obj$geno_obj
+
+data_obj <- Cape$new(parameter_file = param_file,
+results_path = results_path, pheno = pheno_obj$pheno, chromosome = pheno_obj$chromosome, 
+marker_num = pheno_obj$marker_num, marker_location = pheno_obj$marker_location, 
+geno_names = pheno_obj$geno_names, geno = geno_obj)
+}
+
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
