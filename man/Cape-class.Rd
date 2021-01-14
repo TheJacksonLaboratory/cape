@@ -415,7 +415,7 @@ Initialization method.
   parameter_file = NULL,
   yaml_parameters = NULL,
   results_path = NULL,
-  save_results = TRUE,
+  save_results = FALSE,
   use_saved_results = TRUE,
   pheno = NULL,
   chromosome = NULL,
