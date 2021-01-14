@@ -23,7 +23,7 @@ use_kinship:
 pop:
  - 2PP
 save_results:
- - true
+ - false
 use_saved_results:
  - false
 transform_to_phenospace:
