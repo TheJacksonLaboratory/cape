@@ -8,8 +8,8 @@
 #' max, mean, etc.
 #'
 #' @param arrayX 3D array of values, effects or t_stats, etc.
-#' @param dimension that will end up as the columns of the final matrix
-#' @param dimension that will end up as the rows of the final matrix
+#' @param margin1 dimension that will end up as the columns of the final matrix
+#' @param margin2 dimension that will end up as the rows of the final matrix
 #' @param slice_fun summary function. The function by which to summarize 
 #' the remaining dimension e.g., \code{function(x) mean(x, na.rm = TRUE)}
 #'

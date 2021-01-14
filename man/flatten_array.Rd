@@ -10,10 +10,12 @@ flatten_array(arrayX, margin1, margin2, slice_fun)
 \arguments{
 \item{arrayX}{3D array of values, effects or t_stats, etc.}
 
+\item{margin1}{dimension that will end up as the columns of the final matrix}
+
+\item{margin2}{dimension that will end up as the rows of the final matrix}
+
 \item{slice_fun}{summary function. The function by which to summarize 
 the remaining dimension e.g., \code{function(x) mean(x, na.rm = TRUE)}}
-
-\item{dimension}{that will end up as the rows of the final matrix}
 }
 \value{
 A 2D matrix summarizing the input array
