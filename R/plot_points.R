@@ -36,7 +36,9 @@
 
 plot_points <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label, marker2_label, ymin = NULL, ymax = NULL){
 	
-	
+	oldPar <- par(no.readonly = TRUE)
+	on.exit(oldPar)
+
 	mean_bar_width = 0.15
 	jitter_factor = 0.1
 	upper_plot_buffer = 0.5

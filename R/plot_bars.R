@@ -43,6 +43,9 @@
 plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
 	marker2_label, ymin = NULL, ymax = NULL, error_bars, ref_centered){
 
+		oldPar <- par(no.readonly = TRUE)
+		on.exit(oldPar)
+
 		error_bar_width = 0.1
 		addline_width = 0.5
 		addline_offset = 0.55

@@ -15,6 +15,9 @@
 my_image_plot <- function(x,...){
     # print(dim(x))
     
+    oldPar <- par(no.readonly = TRUE)
+		on.exit(oldPar)
+
     #build the argument list from additional arguments added to
     #the function
     additional_arguments <- list(...)
