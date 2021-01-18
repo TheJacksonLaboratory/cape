@@ -19,3 +19,5 @@ geno_obj <- cross_obj$geno_obj$geno
 final_cross <- run_cape(pheno_obj = data_obj, geno_obj, results_file = "plink.RData", 
 	p_or_q = 0.05, verbose = TRUE, param_file = param_file, 
 	results_path = results_path)
+
+plot_variant_influences(final_cross)

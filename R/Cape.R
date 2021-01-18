@@ -11,7 +11,7 @@
 #'   vignette for more descriptions of individual parameter settings.
 #' @slot results_path string, full path to directory for storing results
 #'   (optional, a directory will be created if one is not specified)
-#' @slot save_results Whether to save cape results. Defaults to TRUE.
+#' @slot save_results Whether to save cape results. Defaults to FALSE.
 #' @slot use_saved_results Whether to use existing results from a 
 #'   previous run. This can save time if re-running an analysis, but
 #'   can lead to problems if the old run and new run have competing settings.
@@ -224,7 +224,7 @@ Cape <- R6Class(
     #' @field results_path string, full path to directory for storing results (optional, a directory will be 
     #' created if one is not specified).
     results_path = NULL,
-    #' @field save_results Whether to save cape results. Defaults to TRUE.
+    #' @field save_results Whether to save cape results. Defaults to FALSE.
     save_results = NULL,
     #' @field use_saved_results Whether to use existing results from a previous run. This can save time if 
     #' re-running an analysis, but can lead to problems if the old run and new run have competing settings.
@@ -486,7 +486,7 @@ Cape <- R6Class(
       parameter_file = NULL,
       yaml_parameters = NULL,
       results_path = NULL,
-      save_results = TRUE,
+      save_results = FALSE,
       use_saved_results = TRUE,
       pheno = NULL,
       chromosome = NULL,

@@ -221,7 +221,7 @@ of individual parameter settings.}
 \item{\code{results_path}}{string, full path to directory for storing results (optional, a directory will be 
 created if one is not specified).}
 
-\item{\code{save_results}}{Whether to save cape results. Defaults to TRUE.}
+\item{\code{save_results}}{Whether to save cape results. Defaults to FALSE.}
 
 \item{\code{use_saved_results}}{Whether to use existing results from a previous run. This can save time if 
 re-running an analysis, but can lead to problems if the old run and new run have competing settings.
@@ -415,7 +415,7 @@ Initialization method.
   parameter_file = NULL,
   yaml_parameters = NULL,
   results_path = NULL,
-  save_results = TRUE,
+  save_results = FALSE,
   use_saved_results = TRUE,
   pheno = NULL,
   chromosome = NULL,

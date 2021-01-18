@@ -18,3 +18,5 @@ geno_obj <- iron.cape$geno_obj
 final_cross <- run_cape(pheno_obj = data_obj, geno_obj, results_file = "iron.RData", 
 	p_or_q = 0.05, verbose = TRUE, param_file = param_file, 
 	results_path = demo.path)
+
+plot_variant_influences(final_cross)
