@@ -32,6 +32,9 @@
 
 plot_lines <- function(phenoV, marker1_vals, marker2_vals = NULL, pheno_name, marker1_label, marker2_label, ymin = NULL, ymax = NULL, error_bars){
 	
+	oldPar <- par(no.readonly = TRUE)
+	on.exit(oldPar)
+
 	error_bar_width = 0.15
 
 

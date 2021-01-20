@@ -67,6 +67,9 @@ plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_co
                     var_accounted_x = 0, var_accounted_y = 0, show_var_accounted = FALSE,
                     just_selected_et = FALSE){
   
+  oldPar <- par(no.readonly = TRUE)
+  on.exit(oldPar)
+
   #test to see if there is a v in the orientation vector
   orient_test <- grep("v", orientation) 
   

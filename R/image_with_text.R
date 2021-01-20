@@ -90,6 +90,9 @@ image_with_text <- function(mat, xlab = "", ylab = "", main = NULL, main_shift =
 	exp_steepness = 1, global_color_scale = FALSE, global_min = NULL, global_max = NULL, 
 	sig_digs = 3, use_pheatmap_colors = FALSE, na_col = "lightgray", gridlines = FALSE){
 		
+		oldPar <- par(no.readonly = TRUE)
+		on.exit(oldPar)
+		
 		#make sure Inf and -Inf are coded as NA
 		mat[which(!is.finite(mat))] <- NA
 		
