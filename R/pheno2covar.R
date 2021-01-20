@@ -22,6 +22,7 @@
 pheno2covar <- function(data_obj, pheno_which){
   
   pheno <- data_obj$pheno
+  p_covar <- pheno_which
   if(length(rownames(pheno)) == 0){stop("The phenotype matrix must have rownames.")}
   
   marker_locale <- get_col_num(pheno, pheno_which)
@@ -34,10 +35,9 @@ pheno2covar <- function(data_obj, pheno_which){
     stop("Phenotype labels cannot be substrings of other phenotypes.")
   }
   
-  
   #make a separate covariate table, then modify the dimnames
-  #in the genotype object to include the covariates
-  #do not modify the genotype object
+  #in the genotype object to include the covariates.
+  #Do not modify the genotype object
   
   #get information for any covariates that have already been specified
   covar_info <- get_covar(data_obj)
@@ -47,17 +47,17 @@ pheno2covar <- function(data_obj, pheno_which){
   
   #check for invariant covariates
   covar_var <- apply(covar_table, 2, function(x) var(x, na.rm = TRUE))
-  if(any(covar_var == 0)){
-    cat("Removing invariant covariates...\n")
-    covar_table <- covar_table[,-which(covar_var == 0),drop=FALSE]
-    data_obj$covariates <- data_obj$covariates[-which(covar_var == 0)]
+  if(all(covar_var == 0)){
+    warning("The covariates are invariant.")    
   }
 
-  #if after removing invariant covariates, there
-  #are none left, just return the data object.
-  if(length(data_obj$covariates) == 0){
-    return(data_obj)
+  if(any(covar_var == 0)){
+    message("Removing invariant covariates...")
+    invar.locale <- which(covar_var == 0)
+    covar_table <- covar_table[,-invar.locale,drop=FALSE]
+    p_covar <- p_covar[-invar.locale]
   }
+
 
   #the covariate's number starts after genetic markers and any existing phenotypic covariates
   start_covar <- max(as.numeric(data_obj$marker_num))+1+length(covar_info$covar_names)
@@ -67,19 +67,14 @@ pheno2covar <- function(data_obj, pheno_which){
   scaled_table <- apply(covar_table, 2, function(x) x + abs(min(x, na.rm = TRUE)))
   scaled_table <- apply(scaled_table, 2, function(x) x/max(x, na.rm = TRUE))
 
-  #add the covariates to any existing covariates
-  data_obj$p_covar_table <- cbind(data_obj$p_covar_table, scaled_table)
-  
-  #take the phenotypes made into markers out of the phenotype matrix
+  #add the covariates to the data object
+  data_obj$p_covar_table <- scaled_table
+  data_obj$p_covar <- p_covar
+
+  #take the phenotypes made into covariates out of the phenotype matrix
   new_pheno <- pheno[,-marker_locale,drop=FALSE]
   data_obj$pheno <- new_pheno
-  
-  if (is.null(data_obj$p_covar)) {
-    data_obj$p_covar <- data_obj$covariates
-  } else {
-    data_obj$p_covar <- c(data_obj$p_covar, pheno_which)
-  }
-  
+    
   return(data_obj)
   
 }
