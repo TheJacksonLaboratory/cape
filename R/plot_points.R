@@ -39,6 +39,8 @@ plot_points <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_
 	oldPar <- par(no.readonly = TRUE)
 	on.exit(oldPar)
 
+	geno_pal <- brewer.pal(8, "Set2")
+
 	mean_bar_width = 0.15
 	jitter_factor = 0.1
 	upper_plot_buffer = 0.5
@@ -56,7 +58,8 @@ plot_points <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_
 
 		#get the genotype values
 		genotypes <- sort(unique(marker1_vals[which(!is.na(marker1_vals))]))
-		geno_col <- colors_from_values(1:length(genotypes), use_pheatmap_colors = TRUE)
+		#geno_col <- colors_from_values(1:length(genotypes), use_pheatmap_colors = TRUE)
+		geno_col <- geno_pal[1:length(genotypes)]
 		#barplot(rep(1, length(geno_col)), col = geno_col)
 		
 		stripchart(phenoV~as.factor(marker1_vals), vertical = TRUE, method = "jitter", 
@@ -75,7 +78,8 @@ plot_points <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_
 
 		#get the genotype values for marker 2
 		genotypes <- sort(unique(marker2_vals[which(!is.na(marker2_vals))]))
-		geno_col <- colors_from_values(1:length(genotypes), use_pheatmap_colors = TRUE)
+		#geno_col <- colors_from_values(1:length(genotypes), use_pheatmap_colors = TRUE)
+		geno_col <- geno_pal[1:length(genotypes)]
 
 		ind_cols <- rep(NA, length(phenoV))
 		for(g in 1:length(genotypes)){
