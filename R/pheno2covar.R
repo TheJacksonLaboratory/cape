@@ -47,8 +47,13 @@ pheno2covar <- function(data_obj, pheno_which){
   
   #check for invariant covariates
   covar_var <- apply(covar_table, 2, function(x) var(x, na.rm = TRUE))
+  if(all(is.na(covar_var))){
+  	warning("The covariates are invariant.")
+  	return(data_obj)
+  }
   if(all(covar_var == 0)){
     warning("The covariates are invariant.")    
+    return(data_obj)
   }
 
   if(any(covar_var == 0)){
