@@ -39,7 +39,7 @@ cape data object, and the second element is the cape genotype object.
 }
 \examples{
 \dontrun{
-data_obj <- qtl2_to_cape(cross_obj, genoprobs, map, covar)
+data_obj <- qtl2_to_cape(cross_obj, genoprobs, map, covar, verbose = TRUE)
 }
 
 

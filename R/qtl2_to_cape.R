@@ -22,7 +22,7 @@
 #' preferentially over a map included in the cross object.
 #' @param covar Optional matrix of any covariates to be included in the analysis.
 #' @param verbose A logical value indicating whether to print progress to the screen.
-#' Defaults to FALSE.
+#' Defaults to TRUE.
 #'
 #' @return This function returns a list of two elements. The first element is a cape data
 #' object. The second element is a cape genotype object.
@@ -32,13 +32,13 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' data_obj <- qtl2_to_cape(cross_obj, genoprobs, map, covar)
+#' data_obj <- qtl2_to_cape(cross_obj, genoprobs, map, covar, verbose = TRUE)
 #' }
 #' 
 #'
 #' @export
 
-qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL, verbose = FALSE){
+qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL, verbose = TRUE){
 
 	phenotype_matrix = as.matrix(cross$pheno)
 	

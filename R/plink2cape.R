@@ -140,7 +140,7 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
   write.table(final_table, out, quote = FALSE, sep = ",", row.names = FALSE, col.names = FALSE,
   na = "-")
   
-	cross_obj <- read_population(out)
+	cross_obj <- read_population(out, verbose = verbose)
  	new_obj <- cape2mpp(cross_obj)
  	return(new_obj)
 
