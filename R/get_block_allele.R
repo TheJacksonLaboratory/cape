@@ -13,6 +13,7 @@
 #' or linkage_blocks_full (FALSE)
 #' 
 #' @return A vector of the alleles contained in the linkage block
+#' @keywords internal
 
 get_block_allele <- function(data_obj, block_name, collapsed_net){
   

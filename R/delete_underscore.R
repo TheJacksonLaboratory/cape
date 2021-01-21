@@ -18,7 +18,7 @@
 #' data_obj <- delete_underscore(data_obj, geno_obj)
 #' }
 #' 
-#' @export
+#' @keywords internal
 
 delete_underscore <- function(data_obj, geno_obj = NULL){
   

@@ -18,7 +18,7 @@
 #' marker_chr <- get_marker_chr(data_obj, marker_names)
 #' }
 #' 
-#' @export 
+#' @keywords internal 
 #' 
 get_marker_chr <- function(data_obj, markers, character_names = TRUE){
   

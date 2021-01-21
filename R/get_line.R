@@ -18,6 +18,7 @@
 #' @return A list with two elements, x and y. These 
 #' elements hold the x and y coordinates respectively 
 #' for drawing the line.
+#' @keywords internal
 
 
 get_line <- function(x0, y0, x1, y1, dens = 0.0005){

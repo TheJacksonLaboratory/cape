@@ -25,6 +25,7 @@
 #' and \code{\link{pairscan_kin}}.
 #'
 #' @importFrom regress regress
+#' @keywords internal
 
 kin_adjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
 covarV = NULL, verbose = FALSE){

@@ -6,6 +6,7 @@
 #' @param covar_table The table of covariates
 #' 
 #' @return covariates indices that match the genotype
+#' @keywords internal
 #'
 check_geno <- function(genotype, covar_table){
   

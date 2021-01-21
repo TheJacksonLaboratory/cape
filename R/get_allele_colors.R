@@ -20,7 +20,8 @@
 #' barplot(rep(1, nrow(other_colors)), col = other_colors[,3], 
 #' names = other_colors[,1], main = "Other available colors")
 #' 
-#' @export
+#' @keywords internal
+#' 
 get_allele_colors <- function(color_scheme = c("DO/CC", "other"), alleles = NULL){
     
     

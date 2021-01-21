@@ -39,7 +39,8 @@
 #' ref_col = 2
 #' marker_stats <- get_stats_multiallele(rndPheno, rndGeno, covar_table, ph_family, ref_col)
 #' 
-#' @export
+#' @keywords internal
+#' 
 get_stats_multiallele <- function(phenotype, genotype, covar_table, ph_family, ref_col){
   
   if(is.null(dim(genotype))){

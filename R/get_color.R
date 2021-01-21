@@ -30,7 +30,7 @@
 #' dark_green_range <- get_color("green", "d")
 #' barplot(rep(1, length(dark_green_range)), col = dark_green_range, main = "Dark Green Range")
 #'
-#' @export
+#' @keywords internal
 
 get_color <- function(col_name = c("green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"), 
 light_dark = c("f", "l", "d")){

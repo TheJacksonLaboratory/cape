@@ -16,6 +16,7 @@
 #' @return This function returns a list with two elements x and y.
 #' These are the x and y coordinates of the circle. Plotted against
 #' each other they will plot a circle.
+#' @keywords internal
 #' 
 
 get_circle <- function(radius, center_x = 1, center_y = 1, dens = 0.0005){

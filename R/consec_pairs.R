@@ -16,7 +16,8 @@
 #' consecutive <- consec_pairs(elements)
 #' print(consecutive)
 #' 
-#' @export
+#' @keywords internal
+#' 
 consec_pairs <- function(elements){
   
   pair_mat <- matrix(NA, nrow = (length(elements)-1), ncol = 2)

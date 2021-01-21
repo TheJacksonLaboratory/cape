@@ -39,7 +39,7 @@
 #' data_obj <- linkage_blocks_network(data_obj, geno_obj)
 #' }
 #' 
-#' @export
+#' @keywords internal
 
 linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers = TRUE, 
   threshold_power = 1, plot_blocks = TRUE){

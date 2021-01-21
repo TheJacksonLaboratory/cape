@@ -12,6 +12,7 @@
 #' num_chunks. Each element in the list contains
 #' the elements of the vector that were assigned 
 #' to that bin.
+#' @keywords internal
 
 chunkV <- function(V, num_chunks){
   

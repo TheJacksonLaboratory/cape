@@ -12,6 +12,7 @@
 #' 
 #' @return A vector of colors forming a color ramp based on the 
 #' input name and numeric gap.
+#' @keywords internal
 
 get_color2 <- function(col_name, col_gap = 10, test_plot = FALSE){
 	

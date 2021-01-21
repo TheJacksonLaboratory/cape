@@ -30,6 +30,7 @@
 #' @importFrom stats sd
 #' @importFrom utils head tail
 #' @importFrom graphics axis par plot plot.new plot.window points polygon
+#' @keywords internal
 
 bin_curve <- function(the_curve, plot_peaks = FALSE, window_size = NULL, amp_min = NULL){
   

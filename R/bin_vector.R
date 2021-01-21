@@ -15,6 +15,7 @@
 #' contains a 0.49. That 0.49 value will be sent to 0.5.
 #' The returned vector contains only the values specified in bins.
 #'
+#' @keywords internal
 
 bin_vector <- function(vectorX, bins = seq(0,1,0.5)){
 	

@@ -11,7 +11,8 @@
 #' data_obj <- compare_markers(data_obj, geno_obj)
 #' }
 #' 
-#' @export
+#' @keywords internal
+#' 
 compare_markers <- function(data_obj, geno_obj){	
   geno <- get_geno(data_obj, geno_obj)
   missing_markers <- setdiff(data_obj$geno_names[[3]], dimnames(geno)[[3]])

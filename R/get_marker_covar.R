@@ -19,6 +19,7 @@
 #' 
 #' @return This function returns a matrix with individuals
 #' in rows and markers/covariates in columns.
+#' @keywords internal
 #'
 
  

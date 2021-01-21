@@ -10,6 +10,7 @@
 #' 
 #' @return Numeric vector with x_min:x_max remapped onto an 
 #' exponential curve.
+#' @keywords internal
 
 exp_color_fun <-
 function(x_min, x_max, steepness = 1, num_cols = 256){

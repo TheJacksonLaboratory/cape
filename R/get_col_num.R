@@ -13,6 +13,7 @@
 #' @return A numeric value indicating the column number corresponding
 #' to the name given by col_which. If col_which was a number, col_which
 #' is returned.
+#' @keywords internal
 
 get_col_num <- function (data_mat, col_which = NULL, dim_which = 2) 
 {

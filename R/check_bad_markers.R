@@ -7,6 +7,7 @@
 #'
 #' @param data_obj a \code{\link{Cape}} object
 #' @param geno_obj a genotype object
+#' @keywords internal
 #'
 
 

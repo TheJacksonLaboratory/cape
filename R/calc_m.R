@@ -18,6 +18,7 @@
 #' 
 #' @import corpcor
 #' @importFrom stats D
+#' @keywords internal
 
 calc_m <- function(markers,beta_m) {
   beta_main <- beta_m[,1:2]

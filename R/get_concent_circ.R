@@ -14,6 +14,7 @@
 #' @return A list of x,y coordinates as generated
 #' by the function \code{\link{get_circle}} and named with 
 #' list_names
+#' @keywords internal
 
 
 get_concent_circ <- function(list_names, start_rad = 1.05, gap_rad = 0.05){

@@ -11,6 +11,7 @@
 #'
 #' @return A layout matrix with positions for each element in num_panes
 #' and zeros filling the rest of the rectangle where nothing will be plotted.
+#' @keywords internal
 #' 
 
 get_layout_mat <- function(num_panes, type = c("landscape", "upright")){

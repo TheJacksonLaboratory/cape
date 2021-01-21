@@ -36,6 +36,7 @@
 #' @importFrom Matrix rankMatrix
 #' @importFrom doParallel registerDoParallel
 #' @importFrom stats coefficients vcov
+#' @keywords internal
 #' 
 one_pairscan_parallel <- function(data_obj, phenotype_vector, genotype_matrix, 
   int = NULL, covar_vector = NULL, paired_markers, n_perm = 0, run_parallel = FALSE, 
