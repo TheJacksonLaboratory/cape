@@ -29,23 +29,29 @@
 load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
                                     run_parallel = FALSE, results_file = "cross.RData", p_or_q = 0.05, 
                                     n_cores = 4, initialize_only = FALSE, verbose = TRUE){
-  		
-  # if(!require(here)){install.packages("here")}
-  
-  # if R/QTL2 file format
-  if (endsWith(input_file, ".zip")) {
 
+  if (endsWith(input_file, ".yaml") || endsWith(input_file, ".json") || endsWith(input_file, ".yml")) {
+    # QTL2 file type (with json/yml control file in a folder)
     qtl2 <- read_cross2(input_file)
-    
+
     cape_object <- qtl2_to_cape(qtl2)
     data_obj <- cape_object$data_obj
     geno_obj <- cape_object$geno_obj 
   } else if (endsWith(input_file, ".csv")){
-    # csv file format like NON_NZO...csv
+    # QTL file type as a single CSV file
     cross <- read_population(input_file)
     cross_obj <- cape2mpp(cross)
-	  data_obj <- cross_obj$data_obj
+    data_obj <- cross_obj$data_obj
     geno_obj <- cross_obj$geno_obj$geno
+  } else if (endsWith(input_file, ".ped")) {
+    # file is PLINK data type and we load the corresponding ped, map and pheno files
+    # ped = input_file
+
+    # cross_obj <- plink2cape(ped, map, pheno, out, overwrite = TRUE)
+
+    # data_obj <- cross_obj$data_obj
+    # geno_obj <- cross_obj$geno_obj$geno
+    stop("PLINK data is not yet supported")
   }
 
   final_cross <- run_cape(data_obj, geno_obj, results_file = results_file, p_or_q = p_or_q, 
