@@ -33,6 +33,7 @@
 #' @importFrom graphics stripchart boxplot segments
 #'
 #' @return None
+#' @keywords internal
 
 plot_points <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label, marker2_label, ymin = NULL, ymax = NULL){
 	

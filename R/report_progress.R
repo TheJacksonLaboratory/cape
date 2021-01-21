@@ -16,6 +16,7 @@
 #' the screen. Defaults to TRUE.
 #' 
 #' @return None. Prints output to the screen.
+#' @keywords internal
 
 
 report_progress <- function(current, total, percent_text = 10, percent_dot = 2, verbose = TRUE){

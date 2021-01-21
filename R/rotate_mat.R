@@ -9,6 +9,7 @@
 #' 
 #' @param mat a matrix
 #' @return The matrix "mat" rotated 90 degrees.
+#' @keywords internal
 #'
 
 rotate_mat <- function(mat){

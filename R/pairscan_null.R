@@ -36,6 +36,7 @@
 #' @param run_parallel Whether to run the analysis on multiple CPUs
 #' @param n_cores The number of CPUs to use if run_parallel is TRUE
 #' @param verbose Whether to write progress to the screen
+#' @keywords internal
 #' 
 pairscan_null <- function(data_obj, geno_obj = NULL, scan_what = c("eigentraits", "raw_traits"), 
   pairscan_null_size = NULL, max_pair_cor = NULL, min_per_geno = NULL, 

@@ -18,7 +18,8 @@
 #' normUnif <- rz_transform(rndUnif)
 #' hist(normUnif, main = "After Conversion to Normal Distribution")
 #'
-#' @export
+#' @keywords internal
+#' 
 rz_transform <- function (x, jitter = FALSE){
   x = rank(x, na.last = "keep", ties.method = "average") / (length(x) + 1)
   return(qnorm(x))

@@ -35,6 +35,7 @@
 #' @return This function returns a list with two elements, one containing
 #' the results of the permutations, and the other containing the markers
 #' that were tested in the individual permutations.
+#' @keywords internal
 #' 
 pairscan_null_kin <- function(data_obj, geno_obj = NULL, kin_obj = NULL, 
   scan_what = c("eigentraits", "raw_traits"), pairscan_null_size = NULL, 

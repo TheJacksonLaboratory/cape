@@ -10,6 +10,8 @@
 #' @param na_col color for na values
 #' 
 #' @importFrom grDevices rainbow
+#' @keywords internal
+#' 
 pheatmap_scale_colours <- function (mat, col = rainbow(10), breaks = NA, na_col) 
 {
   

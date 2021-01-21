@@ -12,6 +12,7 @@
 #' centered within the region or whether they should extend to the ends of the region.
 #' 
 #' @return Returns n points spaced evenly across the defined region
+#' @keywords internal
 #'
 segment_region <- function(region_min, region_max, num_points, alignment = c("center", "ends")){
   

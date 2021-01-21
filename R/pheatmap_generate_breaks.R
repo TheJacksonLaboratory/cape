@@ -7,6 +7,7 @@
 #' @param x numeric vector
 #' @param n number of breaks
 #' @param center logical defaults to False
+#' @keywords internal
 
 pheatmap_generate_breaks <- function (x, n, center = FALSE) 
 {
