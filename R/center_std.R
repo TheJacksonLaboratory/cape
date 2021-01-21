@@ -4,7 +4,7 @@
 #'
 #' @return A mean-centered and standardized vector
 #'
-#' #' @examples 
+#' @examples 
 #' randV <- runif(10000)
 #' hist(randV, main = "Histogram of Uniform Distribution")
 #' centV <- center_std(randV)

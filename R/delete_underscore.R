@@ -8,10 +8,10 @@
 #' @param data_obj a \code{\link{Cape}} object
 #' @param geno_obj a genotype object
 #' 
-#' @return lists containing data_obj and geno_obj
-#' with underscores removed from data_obj$geno_names
-#' and dimnames(geno_obj). These two elements must be
-#' entered separately into \code{link{run_cape}}.
+#' @return lists containing \code{data_obj} and \code{geno_obj}
+#' with underscores removed from \code{data_obj$geno_names}
+#' and \code{dimnames(geno_obj)}. These two elements must be
+#' entered separately into \code{\link{run_cape}}.
 #'
 #' @examples 
 #' \dontrun{
