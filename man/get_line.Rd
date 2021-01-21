@@ -32,3 +32,4 @@ for drawing the line.
 This function generates points along a line
 whose coordinates are user-defined.
 }
+\keyword{internal}

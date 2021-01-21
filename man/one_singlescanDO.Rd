@@ -44,3 +44,4 @@ To perform permutations, we permute trait values, and then re-do
 the singlescan, marker selection, and the pair scan on the permuted
 data. This function performs the singlescan on the permuted data.
 }
+\keyword{internal}

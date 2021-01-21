@@ -40,3 +40,4 @@ dark_green_range <- get_color("green", "d")
 barplot(rep(1, length(dark_green_range)), col = dark_green_range, main = "Dark Green Range")
 
 }
+\keyword{internal}

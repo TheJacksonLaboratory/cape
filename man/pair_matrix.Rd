@@ -27,3 +27,4 @@ This function makes a matrix with two columns
 listing all pairwise combinations of the elements
 of the input vector.
 }
+\keyword{internal}

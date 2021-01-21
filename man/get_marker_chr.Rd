@@ -30,3 +30,4 @@ marker_chr <- get_marker_chr(data_obj, marker_names)
 }
 
 }
+\keyword{internal}

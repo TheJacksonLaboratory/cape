@@ -12,10 +12,10 @@ delete_underscore(data_obj, geno_obj = NULL)
 \item{geno_obj}{a genotype object}
 }
 \value{
-lists containing data_obj and geno_obj
-with underscores removed from data_obj$geno_names
-and dimnames(geno_obj). These two elements must be
-entered separately into \code{link{run_cape}}.
+lists containing \code{data_obj} and \code{geno_obj}
+with underscores removed from \code{data_obj$geno_names}
+and \code{dimnames(geno_obj)}. These two elements must be
+entered separately into \code{\link{run_cape}}.
 }
 \description{
 Because cape uses underscores to separate marker names
@@ -29,3 +29,4 @@ data_obj <- delete_underscore(data_obj, geno_obj)
 }
 
 }
+\keyword{internal}

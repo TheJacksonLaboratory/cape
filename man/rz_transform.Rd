@@ -27,3 +27,4 @@ normUnif <- rz_transform(rndUnif)
 hist(normUnif, main = "After Conversion to Normal Distribution")
 
 }
+\keyword{internal}

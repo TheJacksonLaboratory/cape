@@ -26,3 +26,4 @@ Carter, G. W., Hays, M., Sherman, A. & Galitski, T.
 Use of pleiotropy to model genetic interactions in a 
 population. PLoS Genet. 8, e1003010 (2012).
 }
+\keyword{internal}

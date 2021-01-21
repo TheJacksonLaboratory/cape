@@ -124,7 +124,8 @@ from traits. See \code{\link{pheno2covar}}.}
 from genetic markers. See \code{\link{marker2covar}}.}
 
 \item{\code{p_covar_table}}{A matrix holding the individual values for each
-trait-derived covariate. See \code{\link{pheno2covar}}.}
+trait-derived covariate. 
+See \code{\link{pheno2covar}}.}
 
 \item{\code{g_covar_table}}{A matrix holding the individual values for each 
 marker-derived covariate. See \code{\link{marker2covar}}.}
@@ -246,11 +247,14 @@ in addition to other relevant slots. The names of geno_names must be "mouse", "a
 are continuously valued probabilities ranging from 0 to 1. The dimnames of geno must be "mouse", "allele", and "locus,"
 even if the individuals are not mice.}
 
-\item{\code{peak_density}}{The density parameter for \code{\link{select_markers_for_pairscan}}.  Determines how densely
-markers under an individual effect size peak are selected for the pairscan if marker_selection_method is TRUE.
+\item{\code{peak_density}}{The density parameter for 
+\code{\link{select_markers_for_pairscan}}.  Determines how densely
+markers under an individual effect size peak are selected for the 
+pairscan if marker_selection_method is TRUE.
 Defaults to 0.5.}
 
-\item{\code{window_size}}{The window size used by \code{\link{select_markers_for_pairscan}}. It specifies how many markers
+\item{\code{window_size}}{The window size used by 
+\code{\link{select_markers_for_pairscan}}. It specifies how many markers
 are used to smooth effect size curves for automatic peak identification. If set to NULL, window_size is determined
 automatically. Used when marker_selection_method is TRUE.}
 

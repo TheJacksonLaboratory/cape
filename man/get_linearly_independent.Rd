@@ -24,3 +24,4 @@ pairs of markers. If any are perfectly correlated,
 only one marker from the block of perfect correlation
 is kept.
 }
+\keyword{internal}

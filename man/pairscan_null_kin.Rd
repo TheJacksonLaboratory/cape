@@ -69,3 +69,4 @@ for the pairscan. For each permutation,
 it runs a single scan and selects markers
 in the same manner as for the true test.
 }
+\keyword{internal}

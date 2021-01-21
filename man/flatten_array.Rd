@@ -49,3 +49,4 @@ flat_mat3 <- flatten_array(rand_array, 1, 2, "max")
 print(flat_mat3)
 
 }
+\keyword{internal}

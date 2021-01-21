@@ -56,3 +56,4 @@ relating to a trait. If marker2_vals is NULL,
 the function instead shows the main effect for
 marker1.
 }
+\keyword{internal}

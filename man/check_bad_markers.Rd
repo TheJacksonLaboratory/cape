@@ -17,3 +17,4 @@ in cape. For example, markers on sex chromosomes,
 or mitochondrial markers. It also removes any 
 markers that are invariant across all individuals.
 }
+\keyword{internal}

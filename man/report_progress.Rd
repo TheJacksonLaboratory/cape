@@ -36,3 +36,4 @@ and the percentage at which a progress report is wanted.
 It only works on loops in which the index is explicitly incremented
 in the code.
 }
+\keyword{internal}

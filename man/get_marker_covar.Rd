@@ -32,3 +32,4 @@ This function looks both in the genotype
 matrix and in covariate tables to find those
 values.
 }
+\keyword{internal}

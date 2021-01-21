@@ -49,3 +49,4 @@ each variable according to the kinship matrix using
 \code{\link{kin_adjust}} and then fits linear
 pairwise models to the adjusted data.
 }
+\keyword{internal}

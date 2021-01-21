@@ -37,3 +37,4 @@ runs of all positive and all negative values.
 It smooths the curve and identifies peaks exceeding
 the threshold defined by amp_min.
 }
+\keyword{internal}

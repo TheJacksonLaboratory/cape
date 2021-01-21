@@ -50,3 +50,4 @@ compared to \code{\link{pairscan_kin}}.
 It fits pairwise linear models to estimate the effects of 
 marker pairs on each trait.
 }
+\keyword{internal}

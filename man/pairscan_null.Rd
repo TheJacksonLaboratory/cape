@@ -68,3 +68,4 @@ we need to update it to use select_markers_for_pairscan
 if marker_selection_method is netwas, you need to provide
 a list of genes from the netWAS analysis
 }
+\keyword{internal}

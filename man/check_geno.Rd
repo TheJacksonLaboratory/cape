@@ -20,3 +20,4 @@ covariates indices that match the genotype
 Check to see if the any markers in the supplied
 genotype matrix is one of the covariates.
 }
+\keyword{internal}

@@ -18,3 +18,4 @@ pheatmap_generate_breaks(x, n, center = FALSE)
 This function is internal to 'pheatmap' and not exported, but 
 our code depends on it. We added it here till it becomes exported.
 }
+\keyword{internal}

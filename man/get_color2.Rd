@@ -24,3 +24,4 @@ color. The colors will range from two shades lighter
 to two shades darker than the original color, based 
 on the color gap specified
 }
+\keyword{internal}

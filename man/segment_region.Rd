@@ -30,3 +30,4 @@ for plotting. It returns n evenly spaced points in a given
 region. The points can be aligned to the ends of 
 the interval, or centered in the interval.
 }
+\keyword{internal}

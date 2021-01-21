@@ -23,3 +23,4 @@ This function is used to chunk a vector into
 bins. It is primarily used to divide jobs 
 sent to a certain number of parallel clusters.
 }
+\keyword{internal}

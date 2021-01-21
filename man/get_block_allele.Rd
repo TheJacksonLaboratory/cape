@@ -25,3 +25,4 @@ This is an internal function used by \code{\link{plot_full_network}}
 to retrieve the allele names contained in linkage blocks for 
 plotting using the appropriate colors.
 }
+\keyword{internal}

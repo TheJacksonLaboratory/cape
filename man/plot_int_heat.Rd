@@ -55,3 +55,4 @@ different genotype combinations in a 2D
 grid. It plots these predicted values in
 a heat map.
 }
+\keyword{internal}

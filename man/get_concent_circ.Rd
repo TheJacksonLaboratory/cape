@@ -26,3 +26,4 @@ at a specified radius and with a specified gap between them.
 These circles are used for plotting traits and chromosomes
 in concentric circle plots.
 }
+\keyword{internal}

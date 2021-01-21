@@ -24,3 +24,4 @@ data_obj <- compare_markers(data_obj, geno_obj)
 }
 
 }
+\keyword{internal}

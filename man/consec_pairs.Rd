@@ -26,3 +26,4 @@ consecutive <- consec_pairs(elements)
 print(consecutive)
 
 }
+\keyword{internal}
