@@ -12,14 +12,6 @@
 #' @return A table with three columns corresponding to strain names,
 #' strain nicknames, and the assigned color values.
 #' 
-#' @examples 
-#' allele_colors <- get_allele_colors(color_scheme = "DO/CC")
-#' barplot(rep(1, nrow(allele_colors)), col = allele_colors[,3], 
-#' names = allele_colors[,1], main = "DO/CC colors")
-#' other_colors <- get_allele_colors(color_scheme = "other")
-#' barplot(rep(1, nrow(other_colors)), col = other_colors[,3], 
-#' names = other_colors[,1], main = "Other available colors")
-#' 
 #' @keywords internal
 #' 
 get_allele_colors <- function(color_scheme = c("DO/CC", "other"), alleles = NULL){

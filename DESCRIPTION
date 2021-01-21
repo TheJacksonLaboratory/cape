@@ -9,15 +9,14 @@ Authors@R: c(
     person("Georgi", "Kolishovski", role = c("aut")),
     person("Vivek", "Philip", role = c("aut")),
     person("Gregory", "Carter", role = c("aut")))
-Description: 
-    Combined Analysis of Pleiotropy and Epistasis infers predictive networks between
-    genetic variants and phenotypes. It can be used with standard two-parent 
-    populations as well as multi-parent populations, such as the Diversity 
-    Outbred (DO) mice, Collaborative Cross (CC) mice, or the multi-parent advanced
-    generation intercross (MAGIC) population of Arabidopsis thaliana. It
-    uses complementary information of pleiotropic gene variants across different
-    phenotypes to resolve models of epistatic interactions between alleles. To
-    do this, cape reparameterizes main effect and interaction coefficients from
+Description: Combined Analysis of Pleiotropy and Epistasis infers predictive 
+    networks between genetic variants and phenotypes. It can be used with 
+    standard two-parent populations as well as multi-parent populations, such 
+    as the Diversity Outbred (DO) mice, Collaborative Cross (CC) mice, or the 
+    multi-parent advanced generation intercross (MAGIC) population of Arabidopsis
+    thaliana. It uses complementary information of pleiotropic gene variants across
+    different phenotypes to resolve models of epistatic interactions between alleles. 
+    To do this, cape reparameterizes main effect and interaction coefficients from
     pairwise variant regressions into directed influence parameters. These
     parameters describe how alleles influence each other, in terms of suppression 
     and enhancement, as well as how gene variants influence phenotypes. All of the 

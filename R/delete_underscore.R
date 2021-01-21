@@ -12,11 +12,6 @@
 #' with underscores removed from \code{data_obj$geno_names}
 #' and \code{dimnames(geno_obj)}. These two elements must be
 #' entered separately into \code{\link{run_cape}}.
-#'
-#' @examples 
-#' \dontrun{
-#' data_obj <- delete_underscore(data_obj, geno_obj)
-#' }
 #' 
 #' @keywords internal
 

@@ -11,12 +11,6 @@
 #' @return Returns a numeric vector with a normal distribution
 #'
 #' @importFrom stats qnorm
-#' 
-#' @examples 
-#' rndUnif <- runif(10000)
-#' hist(rndUnif, main = "Random Uniform Distribution")
-#' normUnif <- rz_transform(rndUnif)
-#' hist(normUnif, main = "After Conversion to Normal Distribution")
 #'
 #' @keywords internal
 #' 

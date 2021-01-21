@@ -20,15 +20,6 @@
 #' @return a vector of length four containing the hex colors 
 #' indicated by the parameters
 #' 
-#' @examples 
-#' full_purple_range <- get_color("purple", "f")
-#' barplot(rep(1, length(full_purple_range)), col = full_purple_range, main = "Full Purple Range")
-#' 
-#' light_blue_range <- get_color("blue", "l")
-#' barplot(rep(1, length(light_blue_range)), col = light_blue_range, main = "Light Blue Range")
-#' 
-#' dark_green_range <- get_color("green", "d")
-#' barplot(rep(1, length(dark_green_range)), col = dark_green_range, main = "Dark Green Range")
 #'
 #' @keywords internal
 
