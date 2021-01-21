@@ -64,7 +64,7 @@
 #' in here.
 #'
 #' @references Csardi G, Nepusz T: The igraph software package for complex network 
-#' research, InterJournal, Complex Systems 1695. 2006. http://igraph.org 
+#' research, InterJournal, Complex Systems 1695. 2006. \url{http://igraph.org}
 #' 
 #' @importFrom graphics arrows
 #' @importFrom stats dist na.omit

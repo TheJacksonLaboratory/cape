@@ -59,12 +59,4 @@ each colored according to the specified colors (cols)
 The center of the pie chart is at coordinates x, y
 and the radius is defined by rad
 }
-\examples{
-plot.new()
-plot.window(xlim = c(0,2), ylim = c(0,2))
-draw_pie(cols = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"), radius = 0.2, edges = 200)
-draw_pie(x = 1.5, y = 1.5, cols = c("#66c2a5", "#fc8d62"), radius = 0.1)
-draw_pie(x = 1.5, y = 0.4, cols = c("#8da0cb", "#e78ac3", "#a6d854"), radius = 0.4)
-draw_pie(x = 0.4, y = 1.5, cols = c("#8da0cb", "#e78ac3", "#a6d854"), radius = 0.4, edges = 5)
-}
 \keyword{internal}

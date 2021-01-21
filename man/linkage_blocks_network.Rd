@@ -54,10 +54,4 @@ complex network research, InterJournal, Complex Systems
 The correlation network can be optionally soft thresholded
 to increase or decrease resolution.
 }
-\examples{
-\dontrun{
-data_obj <- linkage_blocks_network(data_obj, geno_obj)
-}
-
-}
 \keyword{internal}

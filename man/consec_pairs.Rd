@@ -20,10 +20,4 @@ Given a vector, this function generates a two-column
 matrix in which each row contains an element and its
 consecutive neighbor.
 }
-\examples{
-elements <- 1:5
-consecutive <- consec_pairs(elements)
-print(consecutive)
-
-}
 \keyword{internal}
