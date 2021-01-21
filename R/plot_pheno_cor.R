@@ -24,7 +24,10 @@
 
 plot_pheno_cor <- function(data_obj, pheno_which = NULL, color_by = NULL, group_labels = NULL,
   text_cex = 1, pheno_labels = NULL, pt_cex = 1){
-			
+
+	oldPar <- par(no.readonly = TRUE)
+	on.exit(oldPar)
+		
 	all_pheno <- data_obj$pheno
 
 	if(is.null(pheno_which)){

@@ -85,6 +85,9 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   specific_markers = NULL, num_alleles = 50, peak_density = 0.5, window_size = NULL, 
   tolerance = 5, plot_peaks = FALSE, verbose = FALSE, pdf_filename = "Peak.Plots.pdf"){
   
+  oldPar <- par(no.readonly = TRUE)
+  on.exit(oldPar)
+
   chr <- unique(data_obj$chromosome)
   
   geno <- get_geno(data_obj, geno_obj)

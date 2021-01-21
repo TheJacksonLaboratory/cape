@@ -84,7 +84,9 @@ plot_full_network <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, ma
                          legend_position = "topleft", arrow_offset = node_radius, arrow_length = 0.2, 
                          edge_lwd = 2){
   
-    
+  oldPar <- par(no.readonly = TRUE)
+	on.exit(oldPar)
+
   pheno_tables <- data_obj$max_var_to_pheno_influence
   phenotypes <- names(pheno_tables)	
   

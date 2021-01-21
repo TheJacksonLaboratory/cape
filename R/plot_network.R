@@ -54,6 +54,9 @@ plot_network <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE,
                         chr_gap = 1, label_gap = 5, positive_col = "brown", 
                         negative_col = "blue", show_alleles = TRUE){
   
+    oldPar <- par(no.readonly = TRUE)
+		on.exit(oldPar)
+
   if(collapsed_net){
     adj_mat <- data_obj$collapsed_net
     blocks <- data_obj$linkage_blocks_collapsed

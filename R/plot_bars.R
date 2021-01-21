@@ -44,6 +44,9 @@
 plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_label,
 	marker2_label, ymin = NULL, ymax = NULL, error_bars, ref_centered){
 
+		oldPar <- par(no.readonly = TRUE)
+		on.exit(oldPar)
+
 		error_bar_width = 0.1
 		addline_width = 0.5
 		addline_offset = 0.55
@@ -64,8 +67,8 @@ plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_la
 				pheno_error <- rep(0, length(pheno_vals))
 			}
 			# pheno_error[which(is.na(pheno_error))] <- 0
-			if(is.null(ymin)){ymin <- min(c(pheno_means - pheno_error, 0))}
-			if(is.null(ymax)){ymax <- max(pheno_means + pheno_error)}
+			if(is.null(ymin)){ymin <- min(c(pheno_means - pheno_error, 0), na.rm = TRUE)}
+			if(is.null(ymax)){ymax <- max(pheno_means + pheno_error, na.rm = TRUE)}
 			plot_height = ymax - ymin
 				
 			a <- barplot(pheno_means, ylim = c(ymin, ymax*1.1))
@@ -75,7 +78,8 @@ plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_la
 			segments((a+error_bar_width), (pheno_means-pheno_error), (a-error_bar_width), pheno_means-pheno_error, lwd = error_bar_lwd)	
 			#upper bar
 			segments(a+error_bar_width, pheno_means+pheno_error, a-error_bar_width, pheno_means+pheno_error, lwd = error_bar_lwd)	
-			text(x = genotypes, y = ymin-(plot_height*0.1), labels = genotypes)
+			par(xpd = TRUE)
+			text(x = a[,1], y = ymin-(plot_height*0.05), labels = genotypes)
 			mtext(pheno_name, side = 3, line = 1.5)
 
 		} else { #instead if there are two markers
@@ -99,14 +103,14 @@ plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_la
 		
 				if(is.null(ymin)){
 					if(error_bars != "none"){
-						ymin <- min(c((pheno_vals-pheno_error), pred_add, 0), na.rm = TRUE)
+						ymin <- min(c((pheno_vals-pheno_error), pred_add - pred_error, 0), na.rm = TRUE)
 					}else{
 						ymin <- min(c(pheno_vals, pred_add, 0), na.rm = TRUE)	
 					}
 				}
 				if(is.null(ymax)){
 					if(error_bars != "none"){
-						ymax <- max(c((pheno_vals+pheno_error), pred_add), na.rm = TRUE)
+						ymax <- max(c((pheno_vals+pheno_error), pred_add + pred_error), na.rm = TRUE)
 					}else{
 						ymax <- max(c(pheno_vals, pred_add), na.rm = TRUE)	
 					}
@@ -191,10 +195,12 @@ plot_bars <- function(phenoV, marker1_vals, marker2_vals, pheno_name, marker1_la
 		if(error_bars == "none"){
 			pheno_error <- rep(0, length(pheno_list))
 		}
-
+		pheno_error[which(is.na(pheno_error))] <- 0
 
 		if(!ref_centered){
-			plot_bars_int(pheno_vals = pheno_means, pheno_error = pheno_error, pheno_name = pheno_name, marker1 = marker1_vals, marker2 = marker2_vals, geno_n = geno_n)
+			plot_bars_int(pheno_vals = pheno_means, pheno_error = pheno_error, 
+			pheno_name = pheno_name, marker1 = marker1_vals, marker2 = marker2_vals, 
+			geno_n = geno_n)
 		}else{
 			#also make a plot using B6 as the reference point
 			#center on B6 genotype
