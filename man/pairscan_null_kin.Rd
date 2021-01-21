@@ -16,7 +16,7 @@ pairscan_null_kin(
   marker_selection_method = c("top_effects", "uniform", "effects_dist", "by_gene"),
   run_parallel = FALSE,
   n_cores = 4,
-  verbose = verbose
+  verbose = FALSE
 )
 }
 \arguments{

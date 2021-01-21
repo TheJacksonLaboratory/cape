@@ -4,7 +4,13 @@
 \alias{report_progress}
 \title{Report Progress of a Process}
 \usage{
-report_progress(current, total, percent_text = 10, percent_dot = 2)
+report_progress(
+  current,
+  total,
+  percent_text = 10,
+  percent_dot = 2,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{current}{The current index being processed}
@@ -16,6 +22,9 @@ be printed to the screen.}
 
 \item{percent_dot}{The percent progress at which a dot should be printed
 to the screen}
+
+\item{verbose}{A logical value indicating whether to report progress to 
+the screen. Defaults to TRUE.}
 }
 \value{
 None. Prints output to the screen.

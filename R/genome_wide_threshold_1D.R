@@ -47,7 +47,7 @@ genome_wide_threshold_1D <- function(data_obj, geno_obj, n_perm = 100,
                                      scan_what = c("eigentraits", "raw_traits"), 
                                      ref_allele = NULL, alpha = c(0.01, 0.05), 
                                      model_family, run_parallel = FALSE, n_cores = 4,
-                                     verbose = verbose){
+                                     verbose = FALSE){
   
   if(!run_parallel){n_cores = 1}
     

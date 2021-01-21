@@ -4,7 +4,13 @@
 \alias{qtl2_to_cape}
 \title{Convert qtl2 object to cape format}
 \usage{
-qtl2_to_cape(cross, genoprobs = NULL, map = NULL, covar = NULL)
+qtl2_to_cape(
+  cross,
+  genoprobs = NULL,
+  map = NULL,
+  covar = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{cross}{a cross object created by the R/qtl2 function read_cross()}
@@ -18,6 +24,9 @@ If it is missing, the genetic map is used. A provided map will be used
 preferentially over a map included in the cross object.}
 
 \item{covar}{Optional matrix of any covariates to be included in the analysis.}
+
+\item{verbose}{A logical value indicating whether to print progress to the screen.
+Defaults to FALSE.}
 }
 \value{
 This function returns a list of two elements. The first element is a cape data

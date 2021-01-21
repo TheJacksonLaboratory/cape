@@ -12,11 +12,13 @@
 #' be printed to the screen.
 #' @param percent_dot The percent progress at which a dot should be printed
 #' to the screen
+#' @param verbose A logical value indicating whether to report progress to 
+#' the screen. Defaults to TRUE.
 #' 
 #' @return None. Prints output to the screen.
 
 
-report_progress <- function(current, total, percent_text = 10, percent_dot = 2){
+report_progress <- function(current, total, percent_text = 10, percent_dot = 2, verbose = TRUE){
   
   all_iterations <- 1:total
   percent_prog <- round(all_iterations/total, 2)*100
@@ -33,10 +35,10 @@ report_progress <- function(current, total, percent_text = 10, percent_dot = 2){
   
   
   if(current_locale == min(curr_percent_write_locale)){
-    cat(rounded_percent_write[current_locale]*percent_text, "%.", sep = "")
+    if(verbose){cat(rounded_percent_write[current_locale]*percent_text, "%.", sep = "")}
   }else{
     if(current_locale == min(curr_percent_dot_locale)){
-      cat(".")
+      if(verbose){cat(".")}
     }
   }
   

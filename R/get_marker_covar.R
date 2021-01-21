@@ -56,7 +56,7 @@ get_marker_covar <- function(data_obj, geno_obj, marker_covar_names){
 	#if there are markers without alleles set,
 	#set allele locale to 2 with a message
 	if(length(marker_no_allele) > 0){ 
-		cat('Setting missing alleles to', geno_names[[2]][2], "\n")
+		message('Setting missing alleles to', geno_names[[2]][2], "\n")
 		allele_locale[marker_no_allele] <- 2
 	}
 
@@ -69,7 +69,7 @@ get_marker_covar <- function(data_obj, geno_obj, marker_covar_names){
     for(i in na_markers){
 	  	covar_locale <- which(covar_info$covar_names == just_markers[i])
 	  	if(is.na(covar_locale)){
-		  	cat("Cannot find", marker_covar_names[i], "\n")
+		  	warning("Cannot find", marker_covar_names[i], "\n")
 		}else{
 		  	marker_vals[,i] <- covar_info$covar_table[covar_ind_locale,covar_locale]
 		}

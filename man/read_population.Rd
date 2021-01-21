@@ -11,7 +11,8 @@ read_population(
   id_col = NULL,
   delim = ",",
   na_strings = "-",
-  check_chr_order = TRUE
+  check_chr_order = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ allowed in the ID column. All other trait data must be numeric.}
 \item{na_strings}{a character string indicating how NA values are specified, default is "-"}
 
 \item{check_chr_order}{boolean, default is TRUE}
+
+\item{verbose}{A  logical value indicating whether to print progress 
+and cross information to the screen. Defaults to TRUE.}
 }
 \value{
 This function returns a cape object in a former cape format.

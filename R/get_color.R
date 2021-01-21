@@ -44,7 +44,7 @@ light_dark = c("f", "l", "d")){
   possible_light_dark <- c("f", "l", "d")
   light_dark_check2 <- match(light_dark, possible_light_dark)
   if(is.na(light_dark_check2)){
-    cat("Possible specifications of light_dark are:", possible_light_dark, sep = "\n")
+    message("Possible specifications of light_dark are: ", paste(possible_light_dark, collapse = ","))
     stop()
   }
   
@@ -52,7 +52,7 @@ light_dark = c("f", "l", "d")){
   col_check <- match(col_name, possible_cols)
   
   if(is.na(col_check)){
-    cat("Possible colors are:", possible_cols, sep = "\n")
+    message("Possible colors are: ", paste(possible_cols, collapse = ", "))
     stop()
   }
   

@@ -58,7 +58,7 @@ get_pairs_for_pairscan <- function(gene, covar_names = NULL, max_pair_cor = NULL
   }
   
   if(!is.null(max_pair_cor) && !is.null(min_per_genotype)){
-    cat("Only one of max_pair_cor or min_per_genotype should be set. Choosing only max_pair_cor.")
+    warning("Only one of max_pair_cor or min_per_genotype should be set. Choosing only max_pair_cor.")
     min_per_genotype = NULL
   }
   

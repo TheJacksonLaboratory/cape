@@ -108,7 +108,7 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
       snpalleles <- snpalleles[-which(snpalleles == missing_genotype)]
     }
     if (length(snpalleles) > 2) {
-      cat("WARNING", snp, "found multi allelic marker:", snpalleles, ", passed as all missing\n")
+      warning("WARNING", snp, "found multi allelic marker:", snpalleles, ", passed as all missing\n")
       genotype <- rep(NA, nrow(peddata))
     } else {
       # a bit of debugging info if you want some

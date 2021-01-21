@@ -84,9 +84,8 @@ plot_singlescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL,
     }else{
       not_found <- traits
     }
-    cat("The following traits could not be found:")
-    cat(not_found, sep = "\n")
-    return()
+    warning("The following traits could not be found: ", paste(not_found, collapse = ", "))
+    stop()
   }
   
   

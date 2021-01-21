@@ -48,7 +48,7 @@ pheno2covar <- function(data_obj, pheno_which){
   #check for invariant covariates
   covar_var <- apply(covar_table, 2, function(x) var(x, na.rm = TRUE))
   if(any(covar_var == 0)){
-    cat("Removing invariant covariates...\n")
+    message("Removing invariant covariates...\n")
     covar_table <- covar_table[,-which(covar_var == 0),drop=FALSE]
     data_obj$covariates <- data_obj$covariates[-which(covar_var == 0)]
   }

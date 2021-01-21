@@ -14,7 +14,7 @@ genome_wide_threshold_1D(
   model_family,
   run_parallel = FALSE,
   n_cores = 4,
-  verbose = verbose
+  verbose = FALSE
 )
 }
 \arguments{

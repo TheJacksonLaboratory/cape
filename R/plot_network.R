@@ -218,8 +218,7 @@ plot_network <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE,
     trait_locale <- which(trait %in% names(data_obj$max_var_to_pheno_influence))
     if(length(trait_locale) < length(trait)){
       not_found <- which(!trait %in% names(data_obj$max_var_to_pheno_influence))
-      cat("I couldn't find the following traits:")
-      cat(trait[not_found], sep = "\n")
+      warning("I couldn't find the following traits:", paste(trait[not_found], collapse = ", "))
       return()
     }
   }

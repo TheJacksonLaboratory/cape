@@ -16,7 +16,7 @@ compare_markers <- function(data_obj, geno_obj){
   geno <- get_geno(data_obj, geno_obj)
   missing_markers <- setdiff(data_obj$geno_names[[3]], dimnames(geno)[[3]])
   if(length(missing_markers) > 0){
-    cat("Removing markers from data_obj that are not present in the geno_obj\n")
+    message("Removing markers from data_obj that are not present in the geno_obj\n")
     data_obj <- remove_markers(data_obj, missing_markers)
   }
   return(data_obj)	

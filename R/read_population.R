@@ -20,6 +20,8 @@
 #' @param delim column delimiter for the file, default is ","
 #' @param na_strings a character string indicating how NA values are specified, default is "-"
 #' @param check_chr_order boolean, default is TRUE
+#' @param verbose A  logical value indicating whether to print progress 
+#' and cross information to the screen. Defaults to TRUE.
 #' 
 #' @references Broman et al. (2003) R/qtl: QTL mapping in experimental crosses. 
 #' Bioinformatics 19:889-890 doi:10.1093/bioinformatics/btg112
@@ -37,7 +39,7 @@
 #'
 #' @export
 read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, id_col = NULL, 
-	delim = ",", na_strings = "-", check_chr_order = TRUE) {
+	delim = ",", na_strings = "-", check_chr_order = TRUE, verbose = TRUE) {
 
 		if(is.null(filename)){
 			filename <- file.choose()
@@ -70,10 +72,10 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		char_pheno <- which(pheno_classes == "character")
 	
 		if(length(char_pheno) > 0){
-			cat("All phenotypes must be numeric.")
-			cat("The following phenotype columns have character values:", colnames(cross_data)[char_pheno], sep = "\n")
-			cat("This error can occur if NA's are coded with multiple characters, or if na_strings is mis-specified. Make sure NA coding is consistent throughout the data set and specified correctly with na_strings.")
-			return(NULL)
+			warning("All phenotypes must be numeric.")
+			warning("The following phenotype columns have character values:", paste(colnames(cross_data)[char_pheno], collapse = ", "))
+			message("This error can occur if NA's are coded with multiple characters, or if na_strings is mis-specified. Make sure NA coding is consistent throughout the data set and specified correctly with na_strings.")
+			stop()
 		}
 		
 		chr <- as.vector(as.matrix(cross_data[1,beginGeno:dim(cross_data)[2]]))
@@ -136,7 +138,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		    all_genotypes <- sort(unique(na.omit(as.vector(as.matrix(geno)))))
 		    if(length(all_genotypes) > 3){
 		    	#look for empty genotypes
-		    	cat("I have detected", length(all_genotypes), "genotypes:\n")
+		    	if(verbose){cat("I have detected", length(all_genotypes), "genotypes:\n")}
 		    	print(all_genotypes)
 				stop("Please check for missing genotype values or other errors in the genotype data.")
 		   	}
@@ -147,8 +149,8 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 	  	if(genotype_class == "character"){
 	  		het_present <- grep("H", all_genotypes)
 	  		if(length(all_genotypes) > 2 && length(het_present) == 0){
-	  			cat("I am detecting more than 2 genotypes:", all_genotypes, "\n")
-	  			cat("But no H\n")
+	  			warning("I am detecting more than 2 genotypes: ", paste(all_genotypes, collapse = ", "))
+	  			warning("But no H")
 	  			stop("Heterozygotes must be coded by H")
 	  		}
 	  			
@@ -162,13 +164,14 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		    if(length(all_genotypes) == 3){
 				baseGeno <- all_genotypes[all_genotypes != "H"][1]
 				notBaseGeno <- all_genotypes[all_genotypes != "H"][2]
-				cat("The genotypes are encoded as ", baseGeno, ", H, ", notBaseGeno, "\nConverting to 0, 0.5, 1.\n", sep = "")
+				if(verbose){cat("The genotypes are encoded as ", baseGeno, ", H, ", 
+				notBaseGeno, "\nConverting to 0, 0.5, 1.\n", sep = "")}
 			}else{
 				# baseGeno <- all_genotypes[all_genotypes != "H"][1]
 				# notBaseGeno <- "H"
 				baseGeno <- sort(all_genotypes)[1]
 				notBaseGeno <- sort(all_genotypes)[2]
-				cat("The genotypes are encoded as ", baseGeno, " and ", notBaseGeno, "\nConverting to 0 and 1.\n", sep = "")
+				if(verbose){cat("The genotypes are encoded as ", baseGeno, " and ", notBaseGeno, "\nConverting to 0 and 1.\n", sep = "")}
 		 	}
 				
 		    #turn baseGeno, H, and notBaseGeno to 0, .5, and 1 respectively
@@ -197,7 +200,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 	 		if(length(outside_upper_bound) > 0 || length(outside_lower_bound) > 0){
 	 			stop("Assuming (0,1,2) coding, but I detected genotypes greater than 2 or less than 0.")
 	 		}
-	 		cat("The genotypes are encoded as 0, 1, 2.\nConverting to 0, 0.5, 1.\n")
+	 		if(verbose){cat("The genotypes are encoded as 0, 1, 2.\nConverting to 0, 0.5, 1.\n")}
 	 		found_genotype_mode <- 1 #set the flag indicating we've figured out the encoding
 	 		#turn 0, 1, 2 into 0, 0.5 and 1 respectively
 			convert_geno_number <- function(genotypes){
@@ -216,7 +219,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 	 		min_geno <- min(all_genotypes); max_geno <- max(all_genotypes) #find the max and min values for genotypes
 	 		if(min_geno >= 0 && max_geno <= 1){ #and make sure they are bounded as probabilities are
 	 			found_genotype_mode <- 1 #set the flag to indicate we have found the genotype mode
-	 			cat("The genotypes are encoded as probabilities.\nNo conversion needed.\n")
+	 			if(verbose){cat("The genotypes are encoded as probabilities.\nNo conversion needed.\n")}
 	 			
 				#we still need to conver the data frame to a numeric matrix for later compatibility
 	 			convert_geno_prob <- function(genotypes){
@@ -239,7 +242,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		#take out the sex chromosomes and invariant markers
 		x_locale <- grep("X", chr, ignore.case = TRUE)
 		if(length(x_locale) > 0){
-			cat("\nRemoving markers on the X chromosome")
+			if(verbose){cat("\nRemoving markers on the X chromosome")}
 			geno <- geno[,-x_locale]
 			chr <- chr[-x_locale]
 			marker_loc <- marker_loc[-x_locale]
@@ -247,7 +250,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 			
 		y_locale <- grep("Y", chr, ignore.case = TRUE)
 		if(length(y_locale) > 0){
-			cat("\nRemoving markers on the Y chromosome")
+			if(verbose){cat("\nRemoving markers on the Y chromosome")}
 			geno <- geno[,-y_locale]
 			chr <- chr[-y_locale]
 			marker_loc <- marker_loc[-y_locale]
@@ -255,7 +258,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 
 		m_locale <- grep("M", chr, ignore.case = TRUE)
 		if(length(m_locale) > 0){
-			cat("\nRemoving markers on the mitochondrial chromosome")
+			if(verbose){cat("\nRemoving markers on the mitochondrial chromosome")}
 			geno <- geno[,-m_locale]
 			chr <- chr[-m_locale]
 			marker_loc <- marker_loc[-m_locale]
@@ -265,7 +268,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		num_allele <- apply(geno, 2, function(x) length(unique(x)))
 		mono_allele <- which(num_allele == 1)
 		if(length(mono_allele) > 0){
-			cat("\nRemoving invariant markers.\n")
+			if(verbose){cat("\nRemoving invariant markers.\n")}
 			geno <- geno[,-mono_allele]
 			chr <- chr[-mono_allele]
 			marker_loc <- marker_loc[-mono_allele]
@@ -273,7 +276,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 	
 		na_locale <- which(is.na(geno))
 		if(length(na_locale) > 0){
-			cat("Missing values detected in the genotype matrix.\n\tIf you are planning to use the kinship correction, please use impute.geno() to impute the genotype data.\n")
+			message("Missing values detected in the genotype matrix.\n\tIf you are planning to use the kinship correction, please use impute.geno() to impute the genotype data.\n")
 		}
 	
 		#put in code here to distribute the genotypes between -1 and 1 so we get symmetric m12/m21 null distributions
@@ -289,11 +292,13 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 	
 		final_data <- list(pheno, geno, chr, marker_names, marker_num, marker_loc)
 		names(final_data) <- c("pheno", "geno", "chromosome", "marker_names", "marker_num", "marker_location")
-		     
-		cat("Read in the following data:\n")
-		cat("\t-", dim(pheno)[1], "individuals -\n")
-		cat("\t-", dim(geno)[2], "markers -\n")
-		cat("\t-", dim(pheno)[2], "phenotypes -\n")
+
+		if(verbose){     
+			cat("Read in the following data:\n")
+			cat("\t-", dim(pheno)[1], "individuals -\n")
+			cat("\t-", dim(geno)[2], "markers -\n")
+			cat("\t-", dim(pheno)[2], "phenotypes -\n")
+		}
 	
 	
 	    return(final_data)

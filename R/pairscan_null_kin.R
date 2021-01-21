@@ -40,7 +40,7 @@ pairscan_null_kin <- function(data_obj, geno_obj = NULL, kin_obj = NULL,
   scan_what = c("eigentraits", "raw_traits"), pairscan_null_size = NULL, 
   max_pair_cor = NULL, min_per_geno = NULL, model_family = "gaussian", 
   marker_selection_method = c("top_effects", "uniform", "effects_dist", "by_gene"), 
-  run_parallel = FALSE, n_cores = 4, verbose = verbose){
+  run_parallel = FALSE, n_cores = 4, verbose = FALSE){
   
   marker_selection_method <- data_obj$marker_selection_method
   
