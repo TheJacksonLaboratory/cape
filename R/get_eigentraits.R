@@ -44,7 +44,7 @@ get_eigentraits <- function(data_obj, scale_pheno = TRUE, normalize_pheno = TRUE
   #sure the phenotypes are numeric
   ind_missing_pheno <- which(is.na(data_obj$pheno), arr.ind = TRUE)
   if(nrow(ind_missing_pheno) > 0){
-    message("Removing", length(unique(ind_missing_pheno[,1])), "individuals with missing phenotypes.\n")
+    message("Removing ", length(unique(ind_missing_pheno[,1])), " individuals with missing phenotypes.\n")
   }
   data_obj <- remove_ind(data_obj, ind_to_remove = unique(ind_missing_pheno[,1]))
   
