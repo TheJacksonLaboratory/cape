@@ -47,6 +47,10 @@ bin_curve <- function(the_curve, plot_peaks = FALSE, window_size = NULL, amp_min
   #that mark the beginning of a run of multiple elements
   #of the same state.
   remove_runs <- function(peak_locale, trough_locale, smoothed_curve){
+    if(length(peak_locale) == 0 || length(trough_locale) == 0){
+      trimmed_vectors <- list("peak_locale" = peak_locale, "trough_locale" = trough_locale)
+      return(trimmed_vectors)
+      }
     bigv <- c(peak_locale, trough_locale)
     bigc <- c(rep(1, length(peak_locale)), rep(2, length(trough_locale)))
     bigi <- c(1:length(peak_locale), 1:length(trough_locale))
@@ -113,9 +117,13 @@ bin_curve <- function(the_curve, plot_peaks = FALSE, window_size = NULL, amp_min
     neg_slope <- which(all_diff < 0)
     pos_slope_runs <- diff(pos_slope)
     neg_slope_runs <- diff(neg_slope)
-    max_pos <- max(pos_slope_runs)
-    max_neg <- max(neg_slope_runs)
-    window_size = min(c(max_pos, max_neg))
+    if(length(pos_slope_runs) == 0 || length(neg_slope_runs) == 0){
+      window_size = 1
+    }else{
+      max_pos <- max(pos_slope_runs)
+      max_neg <- max(neg_slope_runs)
+      window_size = min(c(max_pos, max_neg))
+    }
   }
   
   

@@ -270,6 +270,7 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
       if(verbose){
         report_progress(ch, length(chr))
       }
+
       chr_locale <- which(result_chr == chr[ch])
       chr_results <- pheno_results[chr_locale,,,drop=FALSE]
       
