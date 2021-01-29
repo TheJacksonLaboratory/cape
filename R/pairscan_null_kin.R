@@ -30,7 +30,7 @@
 #' @param marker_selection_method options are "top_effects", "uniform", "effects_dist", "by_gene"
 #' @param run_parallel Whether to run the analysis on multiple CPUs.
 #' @param n_cores The number of CPUs to use if run_parallel is TRUE.
-#' @param verbose Whether to print progress to the screen.
+#' @param verbose Whether to print progress to the screen. Defaults to FALSE.
 #' 
 #' @return This function returns a list with two elements, one containing
 #' the results of the permutations, and the other containing the markers
