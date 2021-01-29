@@ -20,17 +20,8 @@
 #' @return a vector of length four containing the hex colors 
 #' indicated by the parameters
 #' 
-#' @examples 
-#' full_purple_range <- get_color("purple", "f")
-#' barplot(rep(1, length(full_purple_range)), col = full_purple_range, main = "Full Purple Range")
-#' 
-#' light_blue_range <- get_color("blue", "l")
-#' barplot(rep(1, length(light_blue_range)), col = light_blue_range, main = "Light Blue Range")
-#' 
-#' dark_green_range <- get_color("green", "d")
-#' barplot(rep(1, length(dark_green_range)), col = dark_green_range, main = "Dark Green Range")
 #'
-#' @export
+#' @keywords internal
 
 get_color <- function(col_name = c("green", "purple", "red", "orange", "blue", "brown", "yellow", "gray"), 
 light_dark = c("f", "l", "d")){
@@ -44,7 +35,7 @@ light_dark = c("f", "l", "d")){
   possible_light_dark <- c("f", "l", "d")
   light_dark_check2 <- match(light_dark, possible_light_dark)
   if(is.na(light_dark_check2)){
-    cat("Possible specifications of light_dark are:", possible_light_dark, sep = "\n")
+    message("Possible specifications of light_dark are: ", paste(possible_light_dark, collapse = ","))
     stop()
   }
   
@@ -52,7 +43,7 @@ light_dark = c("f", "l", "d")){
   col_check <- match(col_name, possible_cols)
   
   if(is.na(col_check)){
-    cat("Possible colors are:", possible_cols, sep = "\n")
+    message("Possible colors are: ", paste(possible_cols, collapse = ", "))
     stop()
   }
   

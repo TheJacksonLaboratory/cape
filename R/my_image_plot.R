@@ -11,6 +11,7 @@
 #'  show_pheno_labels, extra_col_mat,allele_cols
 #'  
 #' @importFrom stats median
+#' @keywords internal
 
 my_image_plot <- function(x,...){
     # print(dim(x))

@@ -16,6 +16,7 @@
 #' genotype matrix as specified by data_obj$geno_names.
 #'
 #' @return Returns a genotype matrix with covariates appended.
+#' @keywords internal
 
 
 #This function puts covariates into the genotype

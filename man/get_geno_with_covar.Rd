@@ -36,3 +36,4 @@ For pairwise testing, cape appends the covariates
 to the genotype matrix. This function performs
 that task.
 }
+\keyword{internal}

@@ -30,16 +30,9 @@
 #'
 #' @importFrom stats anova
 #' 
-#' @examples 
-#' rndPheno <- rnorm(100)
-#' rndGeno <- sapply(1:8, function(x) sample(c(0, 0.5, 1), 100, replace = TRUE))
-#' colnames(rndGeno) <- LETTERS[1:8]
-#' covar_table = NULL
-#' ph_family = "gaussian"
-#' ref_col = 2
-#' marker_stats <- get_stats_multiallele(rndPheno, rndGeno, covar_table, ph_family, ref_col)
-#' 
+#' @keywords internal
 #' @export
+#' 
 get_stats_multiallele <- function(phenotype, genotype, covar_table, ph_family, ref_col){
   
   if(is.null(dim(genotype))){

@@ -32,7 +32,8 @@
 #' @param run_parallel A logical value indicating whether the process should
 #' be run in parallel. Defaults to FALSE.
 #' @param n_cores integer number of cores to use if running in parallel
-#' @param verbose A logical value indicating whether to print progress to the screen
+#' @param verbose A logical value indicating whether to print progress to the screen.
+#' Defaults to FALSE.
 #' 
 #' @return Returns a vector the same length as alpha indicating the
 #' thresholds for each value of alpha.
@@ -42,12 +43,13 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom stats coef glm
 #' @importFrom evd qgev fgev
+#' @keywords internal
 #' 
 genome_wide_threshold_1D <- function(data_obj, geno_obj, n_perm = 100, 
                                      scan_what = c("eigentraits", "raw_traits"), 
                                      ref_allele = NULL, alpha = c(0.01, 0.05), 
                                      model_family, run_parallel = FALSE, n_cores = 4,
-                                     verbose = verbose){
+                                     verbose = FALSE){
   
   if(!run_parallel){n_cores = 1}
     

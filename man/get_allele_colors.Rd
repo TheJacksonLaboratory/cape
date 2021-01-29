@@ -22,12 +22,4 @@ strain nicknames, and the assigned color values.
 This function returns the official DO allele colors.
 as described here \url{https://compgen.unc.edu/wp/?page_id=577}
 }
-\examples{
-allele_colors <- get_allele_colors(color_scheme = "DO/CC")
-barplot(rep(1, nrow(allele_colors)), col = allele_colors[,3], 
-names = allele_colors[,1], main = "DO/CC colors")
-other_colors <- get_allele_colors(color_scheme = "other")
-barplot(rep(1, nrow(other_colors)), col = other_colors[,3], 
-names = other_colors[,1], main = "Other available colors")
-
-}
+\keyword{internal}

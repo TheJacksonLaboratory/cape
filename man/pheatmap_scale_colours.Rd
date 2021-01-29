@@ -20,3 +20,4 @@ pheatmap_scale_colours(mat, col = rainbow(10), breaks = NA, na_col)
 This function is internal to 'pheatmap' and not exported, but 
 our code depends on it. We added it here till it becomes exported.
 }
+\keyword{internal}

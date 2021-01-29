@@ -30,3 +30,4 @@ it takes in the x, y, and trace factor of the interaction
 plot and returns a vector indicating how much should
 default error type is standard error
 }
+\keyword{internal}

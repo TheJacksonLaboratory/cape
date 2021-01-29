@@ -9,6 +9,7 @@
 #' 
 #' @return A vector the same length as the input markers vector
 #' indicating the index of each marker
+#' @keywords internal
 #'
 
 get_marker_idx <- function(data_obj, markers){

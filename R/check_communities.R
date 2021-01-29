@@ -5,6 +5,7 @@
 #' split up along the chromosome
 #' 
 #' @param comm community from \code{fastgreedy.community}
+#' @keywords internal
 #' 
 check_communities <- function(comm){
   

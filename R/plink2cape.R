@@ -108,7 +108,7 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
       snpalleles <- snpalleles[-which(snpalleles == missing_genotype)]
     }
     if (length(snpalleles) > 2) {
-      cat("WARNING", snp, "found multi allelic marker:", snpalleles, ", passed as all missing\n")
+      warning("WARNING", snp, "found multi allelic marker:", snpalleles, ", passed as all missing\n")
       genotype <- rep(NA, nrow(peddata))
     } else {
       # a bit of debugging info if you want some
@@ -140,7 +140,7 @@ plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno",
   write.table(final_table, out, quote = FALSE, sep = ",", row.names = FALSE, col.names = FALSE,
   na = "-")
   
-	cross_obj <- read_population(out)
+	cross_obj <- read_population(out, verbose = verbose)
  	new_obj <- cape2mpp(cross_obj)
  	return(new_obj)
 

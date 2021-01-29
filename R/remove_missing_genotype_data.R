@@ -73,7 +73,7 @@ remove_missing_genotype_data <- function(data_obj, geno_obj = NULL, ind_missing_
 	
 	geno <- get_geno(data_obj, geno_obj)
 	num_na <- length(which(is.na(geno)))
-	if(num_na == 0){cat("No missing genotypes\n"); return(data_obj)}
+	if(num_na == 0){message("No missing genotypes\n"); return(data_obj)}
 		
 	prioritize <- prioritize[1]
 	
@@ -107,12 +107,12 @@ remove_missing_genotype_data <- function(data_obj, geno_obj = NULL, ind_missing_
 	if(length(grep("i", prioritize, ignore.case = TRUE)) > 0){
 		test <- assess_missing(data_obj, geno)
 		if(length(test$ind_missing_lots) > 0){
-			cat(paste("Removing ", length(test$ind_missing_lots), " individual(s) with more than ", ind_missing_thresh, "% missing data.\n", sep = ""))
+			message(paste("Removing ", length(test$ind_missing_lots), " individual(s) with more than ", ind_missing_thresh, "% missing data.\n", sep = ""))
 			data_obj <- remove_ind(data_obj, ind_to_remove = test$ind_missing_lots)
 		}
 		test <- assess_missing(data_obj, geno)
 		if(length(test$marker_missing_lots) > 0){
-			cat(paste("Removing ", length(test$marker_missing_lots), " markers with more than ", marker_missing_thresh, "% missing data.\n", sep = ""))		
+			message(paste("Removing ", length(test$marker_missing_lots), " markers with more than ", marker_missing_thresh, "% missing data.\n", sep = ""))
 			data_obj <- remove_markers(data_obj, markers_to_remove = test$marker_missing_lots)
 		}
 	}
@@ -124,12 +124,12 @@ remove_missing_genotype_data <- function(data_obj, geno_obj = NULL, ind_missing_
 	if(length(grep("m", prioritize, ignore.case = TRUE)) > 0){
 		test <- assess_missing(data_obj, geno)
 		if(length(test$marker_missing_lots) > 0){
-			cat(paste("Removing ", length(test$marker_missing_lots), " markers with more than ", marker_missing_thresh, "% missing data.\n", sep = ""))		
+			message(paste("Removing ", length(test$marker_missing_lots), " markers with more than ", marker_missing_thresh, "% missing data.\n", sep = ""))		
 			data_obj <- remove_markers(data_obj, markers_to_remove = test$marker_missing_lots)
 		}
 		test <- assess_missing(data_obj, geno)
 		if(length(test$ind_missing_lots) > 0){
-		cat(paste("Removing ", length(test$ind_missing_lots), " individual(s) with more than ", ind_missing_thresh, "% missing data.\n", sep = ""))
+			message(paste("Removing ", length(test$ind_missing_lots), " individual(s) with more than ", ind_missing_thresh, "% missing data.\n", sep = ""))
 			data_obj <- remove_ind(data_obj, ind_to_remove = test$ind_missing_lots)
 		}
 	}
@@ -145,10 +145,10 @@ remove_missing_genotype_data <- function(data_obj, geno_obj = NULL, ind_missing_
 		
 		if(perc_markers > 0 || perc_ind > 0){
 			if(perc_markers < perc_ind){
-				cat(paste("Removing ", length(test$marker_missing_lots), " markers with more than ", marker_missing_thresh, "% missing data.\n", sep = ""))		
+				message(paste("Removing ", length(test$marker_missing_lots), " markers with more than ", marker_missing_thresh, "% missing data.\n", sep = ""))		
 				data_obj <- remove_markers(data_obj, markers_to_remove = test$marker_missing_lots)
 			}else{
-				cat(paste("Removing ", length(test$ind_missing_lots), " individual(s) with more than ", ind_missing_thresh, "% missing data.\n", sep = ""))
+				message(paste("Removing ", length(test$ind_missing_lots), " individual(s) with more than ", ind_missing_thresh, "% missing data.\n", sep = ""))
 				data_obj <- remove_ind(data_obj, ind_to_remove = test$ind_missing_lots)
 			}
 		}

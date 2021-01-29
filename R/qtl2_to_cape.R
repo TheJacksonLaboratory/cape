@@ -21,6 +21,8 @@
 #' If it is missing, the genetic map is used. A provided map will be used 
 #' preferentially over a map included in the cross object.
 #' @param covar Optional matrix of any covariates to be included in the analysis.
+#' @param verbose A logical value indicating whether to print progress to the screen.
+#' Defaults to TRUE.
 #'
 #' @return This function returns a list of two elements. The first element is a cape data
 #' object. The second element is a cape genotype object.
@@ -30,13 +32,13 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' data_obj <- qtl2_to_cape(cross_obj, genoprobs, map, covar)
+#' data_obj <- qtl2_to_cape(cross_obj, genoprobs, map, covar, verbose = TRUE)
 #' }
 #' 
 #'
 #' @export
 
-qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL){
+qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL, verbose = TRUE){
 
 	phenotype_matrix = as.matrix(cross$pheno)
 	
@@ -77,7 +79,7 @@ qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL){
 				for(i in 1:ncol(covar)){
 					as_num <- suppressWarnings(as.numeric(covar[,i]))
 					if(all(is.na(as_num))){
-						cat("Converting", colnames(covar)[i], "to numeric.\n")
+						if(verbose){cat("Converting", colnames(covar)[i], "to numeric.\n")}
 						new_covar <- as.numeric(as.factor(covar[,i])) - 1
 						num_covar[,i] <- new_covar
 					}
@@ -93,7 +95,7 @@ qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL){
 	
     chr_to_add <- setdiff(names(genoprobs), c("1", "X", "Y", "M"))
 
-    cat("Converting genoprobs to array...\n")
+    if(verbose){cat("Converting genoprobs to array...\n")}
     n_dim_geno <- length(dim(genoprobs[[1]]))
     if(n_dim_geno == 2){
     	    geno <- abind(genoprobs[[1]], 1-genoprobs[[1]], along = 3)

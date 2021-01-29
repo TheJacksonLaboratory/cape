@@ -20,10 +20,4 @@ x, divide by n-1, and return the quantiles of the normal
 distribution using qnorm. This transformation is also 
 called an inverse normal transformation.
 }
-\examples{
-rndUnif <- runif(10000)
-hist(rndUnif, main = "Random Uniform Distribution")
-normUnif <- rz_transform(rndUnif)
-hist(normUnif, main = "After Conversion to Normal Distribution")
-
-}
+\keyword{internal}

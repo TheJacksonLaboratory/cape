@@ -20,3 +20,4 @@ Given a vector of marker names or numbers, this
 function returns the indices in the genotype 
 matrix for each marker.
 }
+\keyword{internal}

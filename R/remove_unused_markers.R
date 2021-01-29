@@ -25,7 +25,7 @@ remove_unused_markers <- function(data_obj, geno_obj, verbose = FALSE){
   #take these out here.
   x_locale <- grep("X", data_obj$chromosome, ignore.case = TRUE)
   if(length(x_locale) > 0){
-    cat("Removing markers on the X chromosome\n")
+    message("Removing markers on the X chromosome\n")
     data_obj$chromosome <- data_obj$chromosome[-x_locale]
     data_obj$marker_location <- data_obj$marker_location[-x_locale]
     data_obj$geno_names[[3]] <- data_obj$geno_names[[3]][-x_locale]
@@ -34,7 +34,7 @@ remove_unused_markers <- function(data_obj, geno_obj, verbose = FALSE){
   
   y_locale <- grep("Y", data_obj$chromosome, ignore.case = TRUE)
   if(length(y_locale) > 0){
-    cat("Removing markers on the Y chromosome\n")
+    message("Removing markers on the Y chromosome\n")
     data_obj$chromosome <- data_obj$chromosome[-y_locale]
     data_obj$marker_location <- data_obj$marker_location[-y_locale]
     data_obj$marker_num <- data_obj$marker_num[-y_locale]	
@@ -43,7 +43,7 @@ remove_unused_markers <- function(data_obj, geno_obj, verbose = FALSE){
   
   m_locale <- grep("M", data_obj$chromosome, ignore.case = TRUE)
   if(length(m_locale) > 0){
-    cat("Removing markers on the Mitochondrial chromosome\n")
+    message("Removing markers on the Mitochondrial chromosome\n")
     data_obj$chromosome <- data_obj$chromosome[-m_locale]
     data_obj$marker_location <- data_obj$marker_location[-m_locale]
     data_obj$marker_num <- data_obj$marker_num[-m_locale]	
@@ -65,8 +65,8 @@ remove_unused_markers <- function(data_obj, geno_obj, verbose = FALSE){
   num_allele <- apply(gene, 3, allelic_variation)
   mono_allele <- which(num_allele == 0)
   if(length(mono_allele) > 0){
-    cat(paste("\nRemoving", length(mono_allele), "invariant markers:\n"))
-    cat(data_obj$geno_names[[3]][mono_allele], sep = ", ")
+    message(paste("\nRemoving", length(mono_allele), "invariant markers:\n"))
+    if(verbose){cat(data_obj$geno_names[[3]][mono_allele], sep = ", ")}
     data_obj$chromosome <- data_obj$chromosome[-mono_allele]
     data_obj$marker_location <- data_obj$marker_location[-mono_allele]
     data_obj$marker_num <- data_obj$marker_num[-mono_allele]

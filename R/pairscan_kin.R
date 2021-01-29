@@ -27,6 +27,7 @@
 #' @import parallel
 #' @import foreach
 #' @importFrom doParallel registerDoParallel
+#' @keywords internal
 #' 
 #' 
 pairscan_kin <- function(data_obj, geno_obj, scan_what, marker_pairs, 

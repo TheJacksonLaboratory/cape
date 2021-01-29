@@ -19,3 +19,4 @@ indicating the number of each chromosome.
 Given a vector of marker names or numbers, this 
 function returns the numeric index of each marker.
 }
+\keyword{internal}

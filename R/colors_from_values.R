@@ -62,6 +62,7 @@
 #' @import pheatmap
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices col2rgb colorRampPalette rgb
+#' @keywords internal
 
 colors_from_values <- function(vals, split_at_vals = FALSE, split_points = 0, 
 col_scale = c("green", "purple", "orange", "blue", "brown", "gray"), light_dark = "f", 

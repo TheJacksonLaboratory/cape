@@ -48,3 +48,4 @@ used. After testing LTCO, we do not recommend using this method. We instead reco
 always using the overall kinship correction. In this case, both chr1 and chr2 should
 be NULL, their default values.
 }
+\keyword{internal}

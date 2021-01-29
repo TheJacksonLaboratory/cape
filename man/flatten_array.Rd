@@ -27,25 +27,4 @@ representing all corresponding entries in the 3rd dimension. This
 number is determined by the function specified by the user. It could be min,
 max, mean, etc.
 }
-\examples{
-rand_array <- array(1:12, dim = c(3,4,5))
-
-#flatten by preserving the first and third dimensions
-#final matrix has dim[3] rows and dim[1] columns
-#take the mean across the second dimension
-flat_mat1 <- flatten_array(rand_array, 1, 3, "mean")
-print(flat_mat1)
-
-#flatten by preserving the first and third dimensions
-#final matrix has dim[1] rows and dim[3] columns
-#take the median across the second dimension
-flat_mat2 <- flatten_array(rand_array, 3, 1, "median")
-print(flat_mat2)
-
-#flatten by preserving the first and second dimensions
-#final matrix has dim[2] rows and dim[1] columns
-#take the maximum across the second dimension
-flat_mat3 <- flatten_array(rand_array, 1, 2, "max")
-print(flat_mat3)
-
-}
+\keyword{internal}

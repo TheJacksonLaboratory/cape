@@ -22,6 +22,7 @@
 #' 
 #' @return This function calls \code{\link{one_pairscan_parallel}} and
 #' returns results for each trait as an element in a list.
+#' @keywords internal
 #' 
 pairscan_noKin <- function(data_obj, pheno_mat, geno_mat, covar_table, 
                            marker_pairs, n_perm, verbose = FALSE, run_parallel = FALSE, 

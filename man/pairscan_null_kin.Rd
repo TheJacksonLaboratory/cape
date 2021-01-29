@@ -16,7 +16,7 @@ pairscan_null_kin(
   marker_selection_method = c("top_effects", "uniform", "effects_dist", "by_gene"),
   run_parallel = FALSE,
   n_cores = 4,
-  verbose = verbose
+  verbose = FALSE
 )
 }
 \arguments{
@@ -69,3 +69,4 @@ for the pairscan. For each permutation,
 it runs a single scan and selects markers
 in the same manner as for the true test.
 }
+\keyword{internal}

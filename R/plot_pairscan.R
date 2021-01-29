@@ -96,8 +96,7 @@ plot_pairscan <- function(data_obj, pairscan_obj, phenotype = NULL, standardized
   
   if(length(pheno_num) < length(phenotype)){
     not_found <- which(!(phenotype %in% names(pairscan_result)))
-    cat("I couldn't find the following phenotypes:")
-    cat(phenotype[not_found], sep = "\n")
+    warning("I couldn't find the following phenotypes: ", paste(phenotype[not_found], collapse = ", "))
     stop()
   }
   

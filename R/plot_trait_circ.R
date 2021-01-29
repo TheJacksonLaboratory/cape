@@ -11,6 +11,7 @@
 #' @param main_lwd The line thickness for the circles
 #'
 #' @return None
+#' @keywords internal
 
 plot_trait_circ <- function(trait_circ, label_gap, plot_dim, main_lwd){
   

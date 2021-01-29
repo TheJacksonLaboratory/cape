@@ -15,3 +15,4 @@ marker names. Beause cape uses underscores
 to separate marker from allele names, we
 cannot have any in the marker names
 }
+\keyword{internal}

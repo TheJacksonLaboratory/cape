@@ -15,6 +15,7 @@
 #' will be excluded.
 #' 
 #' @return A two-column matrix containing pairs of entries in elements.
+#' @keywords internal
 #'
 pair_matrix <- function(elements, ordered = FALSE, self_pairs = FALSE){
   

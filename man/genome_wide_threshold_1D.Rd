@@ -14,7 +14,7 @@ genome_wide_threshold_1D(
   model_family,
   run_parallel = FALSE,
   n_cores = 4,
-  verbose = verbose
+  verbose = FALSE
 )
 }
 \arguments{
@@ -66,3 +66,4 @@ are retested with the permuted phenotype. The regression coefficients are
 collected from each permutation and the extreme value distribution is used to 
 determine thresholds for the user-defined alpha values.
 }
+\keyword{internal}

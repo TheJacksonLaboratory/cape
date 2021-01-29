@@ -50,8 +50,7 @@ select_pheno <- function(data_obj, pheno_which, min_entries = 5, scale_pheno = F
   
   if(length(bad_pheno) > 0){
     final_pheno <- new_pheno[,-bad_pheno]
-    cat("The following phenotypes had fewer than ", min_entries, " entries and were removed.\n")
-    cat(paste("\t", colnames(new_pheno)[bad_pheno], "\n"))
+    message("The following phenotypes had fewer than ", min_entries, " entries and were removed:\n", paste(colnames(new_pheno)[bad_pheno], collapse = ", "))
   }else{
     final_pheno <- new_pheno
   }

@@ -28,6 +28,7 @@
 #' If return_order is TRUE, this function returns a two-column matrix indicating the order in which
 #' to put tableX to sort it by sort_cols. To sort a table to match the order, order first by the
 #' first column and then by the second column.
+#' @keywords internal
 #' 
 sort_by_then_by <- function(tableX, sort_cols = c(1,2), col_type = c("c", "n"), decreasing = FALSE, return_order = FALSE){
   

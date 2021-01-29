@@ -14,6 +14,7 @@
 #' linearly independent. 
 #' rejected_markers: A vector indicating which markers were
 #' removed for violating linear independence.
+#' @keywords internal
 #' 
 
 get_linearly_independent <- function(data_obj){

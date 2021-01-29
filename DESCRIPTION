@@ -9,23 +9,24 @@ Authors@R: c(
     person("Georgi", "Kolishovski", role = c("aut")),
     person("Vivek", "Philip", role = c("aut")),
     person("Gregory", "Carter", role = c("aut")))
-Description: 
-    Combined Analysis of Pleiotropy and Epistasis infers predictive networks between genetic variants and between
-    genetic variants and phenotypes. It is specifically designed for use with the
-    multi-allele mouse population known as the Diversity Outbred (DO) mice. It
-    uses complementary information of pleiotropic gene variants across different
-    phenotypes to resolve models of epistatic interactions between alleles. To
-    do this, cape reparameterizes main effect and interaction coefficients from
-    a pairwise variant regressions into directed influence parameters. These
-    parameters describe how alleles each other, in terms of suppression and
-    enhancement, as well as how gene variants influence phenotypes. In this
-    framework, alleles originating from individual founders are selected for
-    pairwise regressions based on their main effects on individual phenotypes.
-    These alleles are then treated as independent genetic markers in the pairwise
-    scans. The result is different founder alleles from the same locus may
-    interact with each other in the form of intra-locus epistasis, or dominance.
-    All of the final interactions are reported in terms of founder alleles at a
-    given genomic location.
+Description: Combined Analysis of Pleiotropy and Epistasis infers predictive 
+    networks between genetic variants and phenotypes. It can be used with 
+    standard two-parent populations as well as multi-parent populations, such 
+    as the Diversity Outbred (DO) mice, Collaborative Cross (CC) mice, or the 
+    multi-parent advanced generation intercross (MAGIC) population of Arabidopsis
+    thaliana. It uses complementary information of pleiotropic gene variants across
+    different phenotypes to resolve models of epistatic interactions between alleles. 
+    To do this, cape reparameterizes main effect and interaction coefficients from
+    pairwise variant regressions into directed influence parameters. These
+    parameters describe how alleles influence each other, in terms of suppression 
+    and enhancement, as well as how gene variants influence phenotypes. All of the 
+    final interactions are reported as directed interactions between pairs of 
+    parental alleles. For detailed descriptions of the methods used in this package 
+    please see the following references:
+    Carter, G. W., Hays, M., Sherman, A. & Galitski, T. (2012) 
+    <doi:10.1371/journal.pgen.1003010>
+    Tyler, A. L., Lu, W., Hendrick, J. J., Philip, V. M. & Carter, G. W. (2013) 
+    <doi:10.1371/journal.pcbi.1003270>
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

@@ -66,3 +66,4 @@ It is used both to do the actual pairscan
 as well as to do the permutations of the pairscan
 \code{\link{pairscan_null}}).
 }
+\keyword{internal}

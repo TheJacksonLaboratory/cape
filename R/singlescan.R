@@ -143,7 +143,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
     non_zero <- intersect(which(pheno_means > 0+tol), which(pheno_means < 0-tol))
     if(length(non_zero) > 0){
       warning("Phenotypes must be mean-centered before performing kinship corrections.")
-      cat("Mean-centering phenotypes using norm_pheno()")
+      message("Mean-centering phenotypes using norm_pheno()")
       data_obj <- norm_pheno(data_obj)
     }
     
@@ -279,7 +279,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
     results_by_chr <- vector(mode = "list", length = length(cor_data))							
     
     for(ch in 1:length(cor_data)){
-      if(use_kinship){cat(" Chr", ch, "... ", sep = "")}
+      if(use_kinship && verbose){cat(" Chr", ch, "... ", sep = "")}
       if(length(cor_data) == 1){chr_locale <- 1:dim(gene)[3]}
       if(length(cor_data) > 1){chr_locale <- which(data_obj$chromosome == names(cor_data)[ch])}
       c_geno <- cor_data[[ch]]$corrected_geno[,,chr_locale,drop=FALSE]

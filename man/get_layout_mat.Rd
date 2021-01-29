@@ -22,3 +22,4 @@ This function is for automatically deciding how to lay out multiple
 images per page. It takes as an argument the number of images the user
 wants on a single page and returns the most square matrix possible.
 }
+\keyword{internal}

@@ -79,6 +79,7 @@
 #' @import pheatmap
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom graphics rasterImage
+#' @keywords internal
 
 image_with_text <- function(mat, xlab = "", ylab = "", main = NULL, main_shift = 0.12, 
 	col_names = colnames(mat), row_names = rownames(mat), row_text_adj = 1, row_text_shift = 0, 

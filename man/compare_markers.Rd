@@ -18,9 +18,4 @@ not present in geno_obj are removed from data_obj$geno_names
 \description{
 Removes markers from data_obj that are not present in the geno_obj
 }
-\examples{
-\dontrun{
-data_obj <- compare_markers(data_obj, geno_obj)
-}
-
-}
+\keyword{internal}

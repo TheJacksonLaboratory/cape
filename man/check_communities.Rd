@@ -14,3 +14,4 @@ This function checks community assignments
 and makes sure that communities are not 
 split up along the chromosome
 }
+\keyword{internal}

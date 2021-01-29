@@ -68,3 +68,4 @@ The effects can centered on the reference
 allele to better show relative effects of 
 each allele and allele combination.
 }
+\keyword{internal}

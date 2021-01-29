@@ -8,17 +8,12 @@
 #' @param data_obj a \code{\link{Cape}} object
 #' @param geno_obj a genotype object
 #' 
-#' @return lists containing data_obj and geno_obj
-#' with underscores removed from data_obj$geno_names
-#' and dimnames(geno_obj). These two elements must be
-#' entered separately into \code{link{run_cape}}.
-#'
-#' @examples 
-#' \dontrun{
-#' data_obj <- delete_underscore(data_obj, geno_obj)
-#' }
+#' @return lists containing \code{data_obj} and \code{geno_obj}
+#' with underscores removed from \code{data_obj$geno_names}
+#' and \code{dimnames(geno_obj)}. These two elements must be
+#' entered separately into \code{\link{run_cape}}.
 #' 
-#' @export
+#' @keywords internal
 
 delete_underscore <- function(data_obj, geno_obj = NULL){
   
@@ -33,7 +28,7 @@ delete_underscore <- function(data_obj, geno_obj = NULL){
     
     data_obj$geno_names[[3]][under_locale] <- new_names
     dimnames(geno)[[3]][under_locale] <- new_names
-    cat("Removing underscores from marker names\n")
+    message("Removing underscores from marker names\n")
   }	
   
   results <- list(data_obj, geno)

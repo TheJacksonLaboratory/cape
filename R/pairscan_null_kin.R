@@ -30,17 +30,18 @@
 #' @param marker_selection_method options are "top_effects", "uniform", "effects_dist", "by_gene"
 #' @param run_parallel Whether to run the analysis on multiple CPUs.
 #' @param n_cores The number of CPUs to use if run_parallel is TRUE.
-#' @param verbose Whether to print progress to the screen.
+#' @param verbose Whether to print progress to the screen. Defaults to FALSE.
 #' 
 #' @return This function returns a list with two elements, one containing
 #' the results of the permutations, and the other containing the markers
 #' that were tested in the individual permutations.
+#' @keywords internal
 #' 
 pairscan_null_kin <- function(data_obj, geno_obj = NULL, kin_obj = NULL, 
   scan_what = c("eigentraits", "raw_traits"), pairscan_null_size = NULL, 
   max_pair_cor = NULL, min_per_geno = NULL, model_family = "gaussian", 
   marker_selection_method = c("top_effects", "uniform", "effects_dist", "by_gene"), 
-  run_parallel = FALSE, n_cores = 4, verbose = verbose){
+  run_parallel = FALSE, n_cores = 4, verbose = FALSE){
   
   marker_selection_method <- data_obj$marker_selection_method
   

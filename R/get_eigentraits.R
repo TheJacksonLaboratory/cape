@@ -44,7 +44,7 @@ get_eigentraits <- function(data_obj, scale_pheno = TRUE, normalize_pheno = TRUE
   #sure the phenotypes are numeric
   ind_missing_pheno <- which(is.na(data_obj$pheno), arr.ind = TRUE)
   if(nrow(ind_missing_pheno) > 0){
-    cat("Removing", length(unique(ind_missing_pheno[,1])), "individuals with missing phenotypes.\n")
+    message("Removing ", length(unique(ind_missing_pheno[,1])), " individuals with missing phenotypes.\n")
   }
   data_obj <- remove_ind(data_obj, ind_to_remove = unique(ind_missing_pheno[,1]))
   
@@ -54,8 +54,7 @@ get_eigentraits <- function(data_obj, scale_pheno = TRUE, normalize_pheno = TRUE
     var_check <- apply(data_obj$p_covar_table, 2, function(x) var(x, na.rm = TRUE))
     if(any(var_check == 0)){
       zero_locale <- which(var_check == 0)
-      cat("Some covariates now have zero variance. Removing:\n")
-      cat(data_obj$p_covar[zero_locale], sep = "\n")
+      message("Some covariates now have zero variance.\nRemoving: ", paste(data_obj$p_covar[zero_locale], collapse = ", "))
       data_obj$p_covar_table <- as.array(data_obj$p_covar_table[,which(var_check > 0)])
       data_obj$p_covar <- as.array(data_obj$p_covar[which(var_check > 0)])
     }

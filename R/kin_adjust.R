@@ -25,6 +25,7 @@
 #' and \code{\link{pairscan_kin}}.
 #'
 #' @importFrom regress regress
+#' @keywords internal
 
 kin_adjust <- function(kin_obj, geno, chr1 = NULL, chr2 = NULL, phenoV = NULL, 
 covarV = NULL, verbose = FALSE){
@@ -43,11 +44,11 @@ covarV = NULL, verbose = FALSE){
     
     if(class(kin_obj)[1] == "matrix"){
       full_kin <- kin_obj
-      cat("\tUsing overall matrix\n")
+      if(verbose){cat("\tUsing overall matrix\n")}
     }else{
       kin_mat_locale <- which(names(kin_obj) == pair_name)
       full_kin <- kin_obj[[kin_mat_locale]]
-      cat("\tUsing", pair_name, "kinship matrix\n")
+      if(verbose){cat("\tUsing", pair_name, "kinship matrix\n")}
     }
     
     #remove individuals with NAs
@@ -117,7 +118,7 @@ covarV = NULL, verbose = FALSE){
     return(results)
   }
   
-  cat("Chromosomes", chr1, chr2, "\n")
+  if(verbose){cat("Chromosomes", chr1, chr2, "\n")}
 
   chr_pair <- c(chr1, chr2)
   result <- get_g(pair = chr_pair, phenotype = phenoV, covarV = covarV)

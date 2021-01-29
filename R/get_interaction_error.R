@@ -17,6 +17,7 @@
 #' of the x and trace variables. The second element, called "se"
 #' or "sd" depending on error_type contains the errors for the 
 #' same combinations.
+#' @keywords internal
 
 get_interaction_error <- function(x, y, trace, error_type = c("sd", "se")){
 	

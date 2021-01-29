@@ -9,6 +9,7 @@
 #'
 #' @return Returns a vector of three named elements identifying
 #' which dimension the individual (mouse), allele, and loci are in.
+#' @keywords internal
 #'
 
 get_geno_dim <- function(){

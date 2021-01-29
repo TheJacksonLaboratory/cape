@@ -18,3 +18,4 @@ object. It is a relic from when DOQTL put loci in the
 second dimension and alleles in the third, while R/qtl2
 put loci in the third dimension and alleles in the second.
 }
+\keyword{internal}

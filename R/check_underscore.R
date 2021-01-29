@@ -6,6 +6,7 @@
 #' cannot have any in the marker names
 #'
 #' @param data_obj a \code{\link{Cape}} object
+#' @keywords internal
 
 check_underscore <- function(data_obj){
   

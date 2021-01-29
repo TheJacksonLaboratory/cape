@@ -141,13 +141,13 @@ pairscan <- function(data_obj, geno_obj = NULL,
   }
   
   if(!is.null(num_pairs_limit) && num_pairs > num_pairs_limit){
-    cat("\nThe number of pairs (",num_pairs,") exceeds ", num_pairs_limit, ".\n", sep = "")
+    warning("\nThe number of pairs (",num_pairs,") exceeds ", num_pairs_limit, ".\n", sep = "")
     go_on <- readline(prompt = "Do you want to continue (y/n)?\n")
     if(length(grep("n", go_on))){
-      cat("Stopping pairwise scan...\n")
+      message("Stopping pairwise scan...\n")
       return(pairscan_obj)
     }else{
-      cat("Continuing pairwise scan...\n")
+      message("Continuing pairwise scan...\n")
     }
   }
   

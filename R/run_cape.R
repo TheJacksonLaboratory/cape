@@ -109,7 +109,7 @@ run_cape <- function(pheno_obj, geno_obj,
       missing_vals <- which(is.na(geno))
 
       if (length(missing_vals) > 0) { #if there are missing values, impute them
-        cat("There are missing values in geno_obj. Running impute_missing_geno...\n")
+        message("There are missing values in geno_obj. Running impute_missing_geno...\n")
         geno_imp <- impute_missing_geno(data_obj, geno_obj = geno_obj, k = 10, 
         	ind_missing_thresh = 0, marker_missing_thresh = 0, prioritize = "fewer",
         	max_region_size = NULL, min_region_size = NULL, run_parallel = run_parallel,

@@ -8,6 +8,7 @@
 #' 
 #' @return A vector the same length as the input markers vector
 #' indicating the number of each chromosome.
+#' @keywords internal
 #'
 
 get_marker_num <- function(data_obj, markers){

@@ -29,3 +29,4 @@ generates points on the circumference of the circle.
 This function is used by plot_network to plot cape
 results in a circular layout.
 }
+\keyword{internal}

@@ -23,3 +23,4 @@ exponential curve.
 This function maps colors onto an exponential
 function for use in colors_from_values.
 }
+\keyword{internal}

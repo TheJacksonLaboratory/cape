@@ -48,3 +48,4 @@ table, sort first by the order in the first column of the order
 matrix and then by the offer in the second colum of the order
 matrix.
 }
+\keyword{internal}

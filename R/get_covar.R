@@ -64,8 +64,7 @@ get_covar <- function(data_obj){
 		if(length(covar_loc) < length(covar)){
 			not_found <- setdiff(covar, covar_names)
 			if(length(not_found) > 0){
-				cat("I could not find the following covariates:\n")
-				cat(not_found, sep = "\n")
+				warning("I could not find the following covariates: ", paste(not_found, collapse = ", "))
 				stop()
 				}
 			}

@@ -155,3 +155,4 @@ None
 \description{
 Plot a heatmap
 }
+\keyword{internal}

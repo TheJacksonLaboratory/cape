@@ -24,3 +24,4 @@ None
 This internal function is called by \code{\link{plot_network}}
 It plots one circle for each trait in the data object.
 }
+\keyword{internal}

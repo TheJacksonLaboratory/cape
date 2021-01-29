@@ -25,3 +25,4 @@ It is useful for binning continuously valued genotypes.
 Each value in the matrix gets shifted to the nearest
 provided in the argument bins.
 }
+\keyword{internal}

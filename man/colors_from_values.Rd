@@ -95,3 +95,4 @@ col_scale argument.
 Raivo Kolde (2019). pheatmap: Pretty Heatmaps. 
 R package version 1.0.12. https://CRAN.R-project.org/package=pheatmap
 }
+\keyword{internal}

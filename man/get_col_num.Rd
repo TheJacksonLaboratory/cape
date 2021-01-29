@@ -25,3 +25,4 @@ This is an internal function to find the
 column numbers of phenotypes when names
 are put in instead of column numbers.
 }
+\keyword{internal}
