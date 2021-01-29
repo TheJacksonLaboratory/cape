@@ -56,7 +56,7 @@ either "gaussian" or "binomial".}
 
 \item{n_cores}{The number of CPUs to use if run_parallel is TRUE.}
 
-\item{verbose}{Whether to print progress to the screen.}
+\item{verbose}{Whether to print progress to the screen. Defaults to FALSE.}
 }
 \value{
 This function returns a list with two elements, one containing

@@ -50,8 +50,8 @@ This uses the function probs_doqtl_to_qtl2
 from qtl2convert:
 Karl W Broman (2019). qtl2convert: Convert Data 
 among R/qtl2, R/qtl, and DOQTL. 
-\url{http://kbroman.org/qtl2},
-\url{https://github.com/rqtl/qtl2convert}.
+\url{http://kbroman.org/qtl2/},
+\url{https://github.com/rqtl/qtl2convert/}.
 And genoprob_to_alleleprob from qtl2.
 }
 \examples{

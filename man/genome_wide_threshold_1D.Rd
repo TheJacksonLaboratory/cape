@@ -49,7 +49,8 @@ be run in parallel. Defaults to FALSE.}
 
 \item{n_cores}{integer number of cores to use if running in parallel}
 
-\item{verbose}{A logical value indicating whether to print progress to the screen}
+\item{verbose}{A logical value indicating whether to print progress to the screen.
+Defaults to FALSE.}
 }
 \value{
 Returns a vector the same length as alpha indicating the
