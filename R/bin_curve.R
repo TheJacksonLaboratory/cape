@@ -50,7 +50,7 @@ bin_curve <- function(the_curve, plot_peaks = FALSE, window_size = NULL, amp_min
     if(length(peak_locale) == 0 || length(trough_locale) == 0){
       trimmed_vectors <- list("peak_locale" = peak_locale, "trough_locale" = trough_locale)
       return(trimmed_vectors)
-      }
+    }
     bigv <- c(peak_locale, trough_locale)
     bigc <- c(rep(1, length(peak_locale)), rep(2, length(trough_locale)))
     bigi <- c(1:length(peak_locale), 1:length(trough_locale))
