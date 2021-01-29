@@ -32,7 +32,8 @@
 #' @param run_parallel A logical value indicating whether the process should
 #' be run in parallel. Defaults to FALSE.
 #' @param n_cores integer number of cores to use if running in parallel
-#' @param verbose A logical value indicating whether to print progress to the screen
+#' @param verbose A logical value indicating whether to print progress to the screen.
+#' Defaults to FALSE.
 #' 
 #' @return Returns a vector the same length as alpha indicating the
 #' thresholds for each value of alpha.
