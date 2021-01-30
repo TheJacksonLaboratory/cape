@@ -129,5 +129,5 @@ plot_full_network(data_obj)
 }
 \references{
 Csardi G, Nepusz T: The igraph software package for complex network 
-research, InterJournal, Complex Systems 1695. 2006. \url{http://igraph.org/}
+research, InterJournal, Complex Systems 1695. 2006. \url{https://igraph.org/}
 }
