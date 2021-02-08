@@ -51,7 +51,7 @@ Convert plink2 files to cape format
 }
 \details{
 For further information about PLINK and its file formats,
-see \url{http://zzz.bwh.harvard.edu/plink/}
+see \url{https://zzz.bwh.harvard.edu/plink/}
 }
 \examples{
 \dontrun{

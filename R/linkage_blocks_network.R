@@ -8,7 +8,7 @@
 #' 
 #' Csardi G, Nepusz T: The igraph software package for 
 #' complex network research, InterJournal, Complex Systems
-#' 1695. 2006. http://igraph.org
+#' 1695. 2006. https://igraph.org
 #' 
 #' The correlation network can be optionally soft thresholded
 #' to increase or decrease resolution. 

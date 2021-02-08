@@ -36,6 +36,16 @@
 plot_int_heat <- function(phenoV, marker1_vals, marker2_vals, pheno_name = NULL, 
                         marker1_label = NULL, marker2_label = NULL, bins1 = 50, bins2 = 50){
 
+	has_dash1 <- grep("-", marker1_label)
+	if(length(has_dash1) > 0){
+		marker1_label <- gsub("-", "_", marker1_label)
+	}
+	has_dash2 <- grep("-", marker2_label)
+	if(length(has_dash2) > 0){
+		marker2_label <- gsub("-", "_", marker2_label)
+	}
+	
+
     if(length(bins1) == 1){
 	    min_marker1 <- min(signif(marker1_vals, 2), na.rm = TRUE)
 		max_marker1 <- max(signif(marker1_vals, 2), na.rm = TRUE)

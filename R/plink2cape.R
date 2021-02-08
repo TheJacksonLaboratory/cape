@@ -13,7 +13,7 @@
 #' @param overwrite boolean, default is FALSE, will only remove the existing file if this is set to TRUE
 #'
 #' @details For further information about PLINK and its file formats,
-#' see \url{http://zzz.bwh.harvard.edu/plink/}
+#' see \url{https://zzz.bwh.harvard.edu/plink/}
 #' 
 #' @return A list with two elements: data_obj and geno_obj
 #' These objects are formatted for use in cape and must then
