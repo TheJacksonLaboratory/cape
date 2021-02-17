@@ -164,8 +164,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		    if(length(all_genotypes) == 3){
 				baseGeno <- all_genotypes[all_genotypes != "H"][1]
 				notBaseGeno <- all_genotypes[all_genotypes != "H"][2]
-				if(verbose){cat("The genotypes are encoded as ", baseGeno, ", H, ", 
-				notBaseGeno, "\nConverting to 0, 0.5, 1.\n", sep = "")}
+				if(verbose){cat("The genotypes are encoded as ", baseGeno, ", H, ", notBaseGeno, "\nConverting to 0, 0.5, 1.\n", sep = "")}
 			}else{
 				# baseGeno <- all_genotypes[all_genotypes != "H"][1]
 				# notBaseGeno <- "H"
