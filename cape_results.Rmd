@@ -1,0 +1,359 @@
+---
+title: "CAPE results"
+# author: Anna L Tyler
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    code_folding: show
+    collapsed: no
+    toc: yes
+    toc_float: yes
+---
+
+
+Set the working directory below and run this workflow to see figures of results
+with explanations.
+
+```{r results_dir}
+library(here)
+results_dir <- here("tests/testthat/results")
+library(cape);library(knitr)
+```
+
+## Introduction
+
+Here are the results of your CAPE analysis. This package implements a method, 
+originally described in [Carter et al. (2012)](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1003010) and [Tyler et al. (2013)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003270), that infers directed interaction networks 
+between genetic variants for predicting the influence of genetic perturbations 
+on quantitative traits. This method takes advantage of complementary information 
+in partially pleiotropic genetic variants to resolve directional influences 
+between variants that interact epistatically.
+
+## Trait Decomposition
+
+The first step in CAPE is often to perform a singular value decomposition (SVD) 
+on the trait matrix. This step decomposes the traits into decorrelated, composite 
+traits called eigentraits. The reasoning behind this step is that correlated 
+components of related traits will be concentrated into individual eigentraits
+thereby making these components easier to map. 
+
+We plot this decomposition to show how each trait contributes to each eigentrait,
+as well as the variance explained by each eigentrait. 
+
+In the following plot, traits are shown along the $y$-axis and eigentraits
+are shown along the $x$-axis. Each cell of the heat map indicates how much 
+each trait contributes to each eigentrait. Positive contributions are shown 
+in brown and negative contributions are shown in blue. Darker colors indicate 
+stronger contributions. This heat map allows us to see which traits are compared 
+or contrasted in the individual eigentraits. 
+
+The gray bars along the top of the heat map indicate how much overall trait 
+variance is explained by each eigentrait. They are always listed in order of 
+the amount of variance explained. 
+
+```{r svd, results = "asis", echo = FALSE}
+fig.file <- file.path(results_dir, "svd.jpg")
+fig.line <- paste0("![Eigentraits](", fig.file, "){width=70%}\n")
+cat(fig.line)
+```
+
+## Single Locus Effects {.tabset .tabset-fade .tabset-pills}
+
+Before performing the pairwise marker scans, we assess the association between
+each individual marker and each trait or eigentrait using marker regression. 
+These results are shown in the plots below.
+
+The singlescan plots show how strongly each marker is associated with each 
+trait. The strength of these main effects can be uses as a marker-selection
+criterion for performing the pair-wise marker scans. When 
+*marker_selection_method* is set to *top_effects*, the markers with the 
+largest main effects are selected for the pair-wise marker scan regardless of 
+significance. 
+
+The single-locus effects are displayed in two different types of plots. 
+One plot shows the overall locus effect, as well as the individual allele 
+effects. For a two-parent cross, these are identical. However, for a multi-parent
+cross, such as the Diversity Outbred (DO) or Collaborative Cross (CC) mice,
+the allele effects will show how each parental haplotype affects the trait. 
+
+In CAPE we use one parental haplotype as the reference. Thus all haplotype 
+effects shown are relative to that reference. The reference in a DO/CC population
+is typically the B6 (B) allele. 
+
+The effects in the plots below are shown as lines, but this, and many other 
+plotting parameters can be changed in *plot_singlescan()*.
+
+
+```{r singlescan_effects, results = "asis", echo = FALSE}
+fig.files <- list.files(path = results_dir, pattern = "Effects.jpg")
+fig.names <- gsub(".jpg", "", fig.files)
+for(i in 1:length(fig.files)){
+    cat("###", fig.names[i], "\n")
+    fig.line <- paste0("![", fig.names[i], "](", file.path(results_dir, fig.files[i]), ")\n\n")
+    cat(fig.line)
+}
+```
+
+
+## Standardized Single Locus Effects {.tabset .tabset-fade .tabset-pills}
+
+
+The other way we display the single-locus effects is as standardized effects, 
+which shows how significant each effect is, rather than the size and the 
+direction of the effects. These standardized effects are shown below.
+
+```{r singlescan_std, results = "asis", echo = FALSE}
+fig.files <- list.files(path = results_dir, pattern = "Standardized.jpg")
+fig.names <- gsub(".jpg", "", fig.files)
+for(i in 1:length(fig.files)){
+    cat("###", fig.names[i], "\n")
+    fig.line <- paste0("![", fig.names[i], "](", file.path(results_dir, fig.files[i]), ")\n\n")
+    cat(fig.line)
+}
+```
+
+
+## Variant Influences 
+
+The Combined Analysis of Pleiotropy and Epistasis results in a network
+of directed genetic interactions. These results are plotted in multiple
+different ways. 
+
+### Variant influences as a matrix
+
+One way to show the directed influences is in a matrix. In the following
+plot, genetic markers are listed both on the $x$-axis and the $y$-axis.
+The $x$-axis shows the markers as sources. Genetic interactions are 
+directed from these source markers to the target markers on the $y$-axis. 
+They are shown as either positive (brown) and negative (blue). Main effects
+are shown along the right-hand side of the plot in extra columns.
+These main effects line up with the source markers. The main effects
+are also shown as positive (brown), or negative (blue). Main effects
+are shown in terms of the original traits if *transform_to_phenospace*
+is set to TRUE, or the eigentraits if *transform_to_phenospace* is set
+to FALSE.
+
+By default, cape does not test marker pairs that are correlated with a
+Pearson $R >= 0.5$. Entries for pairs that are not tested are shown in 
+gray. Gray blocks indicate areas of highly correlated markers. This 
+matrix type of plot is good for seeing overall patterns of interactions
+for dense matrices, or small numbers of markers. It is not very good for
+visualizing sparse matrices derived from large numbers of markers.
+
+```{r variant_influences, results = "asis", echo = FALSE}
+fig.file <- file.path(results_dir, "variant_influences.jpg")
+fig.line <- paste0("![variant influences](", fig.file, "){width=110%}\n")
+cat(fig.line)
+```
+
+
+### Circular network plot
+
+Genetic interactions can also be visualized in a circular plot. In these plots,
+the chromosomes are plotted in a circle. The sizes are not representative of 
+the true chromosome sizes. Main effects are shown in concentric circles around
+the chromosomes, one trait per circle. Main effects are depicted as colored 
+points or bars in this plot. For example, a brown bar at chromosome 7 for 
+trait 1 means that there is a locus on chromosome 7 with a positive main 
+effect on trait 1.
+
+Genetic interactions in this plot are shown as colored arrows between 
+genetic locations. Arrows show the direction of the influence, and the 
+color indicates whether the source variant enhances (brown) or suppresses
+(blue) the effects of the target marker. 
+
+Main effects and interaction effects are also shown for covariates, which
+are plotted in the circle before chromosome 1. 
+
+This type of plot is good for seeing patterns in the physical location of 
+genetic interactions in sparse networks. It is not good for visualizing 
+networks with many interactions.
+
+```{r circular_network, results = "asis", echo = FALSE}
+fig.file <- file.path(results_dir, "Network_Circular.jpg")
+fig.line <- paste0("![Circular Network](", fig.file, ")\n")
+cat(fig.line)
+```
+
+
+### Network view
+
+Finally, the cape interaction network is shown in a more classic network view. 
+In this view, each genetic marker is depicted as a circle. Its main effects
+are shown in slices of the pie as either positive (brown) or negative (blue).
+
+Interactions are shown as arrows between linkage blocks. We cluster markers
+into linkage blocks based on pairwise correlation. Network nodes are labeled
+by chromosome followed by a number indicating the linkage block. Linkage blocks
+can contain one or more markers. Covariates are also included in these network 
+views, and have bold outlines. 
+
+This type of plot is good for seeing patterns in network connectivity, such as 
+clusters of enhancing or suppressing interactions, or nodes that serve
+as network hubs. Genomic position information is lost in this view and thus 
+this type of network is not good for visualizing the physical location of 
+interacting markers. 
+
+```{r network_layout, results = "asis", echo = FALSE}
+fig.file <- file.path(results_dir, "Network_View.jpg")
+fig.line <- paste0("![Network Layour](", fig.file, ")\n")
+cat(fig.line)
+```
+
+## Variant influences tables {.tabset .tabset-fade .tabset-pills}
+
+Another useful output of cape is the variant influences table. This table
+contains all the specific information about interactions up to an adjusted
+$p$ value of 0.2. The run_cape() pipeline writes two tables: 
+Variant_Influences.csv and Variant_Influences_Interactions.csv.
+
+The first table, Variant_Influences.csv, contains both genetic interactions
+and main effects. Interactions are listed by their source marker and target 
+marker. If the effect listed is a main effect, the target listed is a trait
+rather than a marker. Because all effects are assessed from pairwise models,
+even the main effects are listed with a conditioning marker. The main effect
+of a marker is the largest effect that marker had conditioned on another 
+marker. The conditioning marker and its positional information are listed 
+in the case of main effects. Covariates can also have interactions and 
+main effects. In this case, they are listed as the target our source marker.
+
+These tables can be used to identify and plot specific interactions.
+They are sorted by standardized effect size. Interactions and main effects 
+can be plotted using the function plot_effects().
+
+The following is the top of your variant influences table including both 
+main effects and interaction effects. 
+
+### All Influences
+
+```{r var_inf_table, echo = FALSE}
+var.inf.table <- read.csv(file.path(results_dir, "Variant_Influences.csv"))
+var.inf.table[,1] <- gsub("X", "Chr", var.inf.table[,1])
+var.inf.table[,4] <- gsub("X", "Chr", var.inf.table[,4])
+kable(head(var.inf.table))
+```
+
+### Just Interactions
+
+The following is the top of your variant influeces table including only 
+the interaction effects. 
+
+
+```{r var_int_table, echo = FALSE}
+var.int.table <- read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"))
+var.int.table[,1] <- gsub("X", "Chr", var.int.table[,1])
+var.int.table[,4] <- gsub("X", "Chr", var.int.table[,4])
+kable(head(var.int.table))
+```
+
+
+## Plotting individual interactions {.tabset .tabset-fade .tabset-pills}
+
+The following plots show the trait effects of the top interaction in 
+your cape analysis. Different plots show the same data using bars,
+lines, and points. 
+
+If you are using continuously valued "genotypes," for example if you 
+are using transcript levels as exlanatory variables instead of genotypes,
+you can use plot_type = "h" to show heatmaps of predicted trait values
+as the explanatory variables vary continuously.
+
+
+```{r read_effects}
+data_obj <- readRDS(file.path(results_dir, "cross.RData"))
+geno_obj <- readRDS(file.path(results_dir, "cross_geno.RData"))
+var.inf <- read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"))
+```
+
+### Point Plots
+Point plots show all data points divided up into groups based on the 
+pairwise genotypes. Horizontal line segments show the median
+value for each group.
+
+```{r point_plot}
+#plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
+#plot_type = "p", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+```
+
+
+### Bar Plots
+
+Bar plots show summary statistics for each group defined by pairwise 
+genotype. Each bar shows the median trait value for the group. Error 
+bars, if specified with the error_bars argument, can show the 
+standard deviation ("sd") or the standard error ("se"). Numbers
+over the bars indicate how many individuals are in each group.
+
+```{r bar_plot}
+#plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
+#plot_type = "b", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+```
+
+### Line Plots
+
+Line plots are a standard way to show genetic interactions. Like the bar plots
+they show the median and error for individuals in each genotype group.
+Each bar shows the median trait value for the group. One marker is plotted
+along the $x$-axis, and the other is plotted with different line styles.
+
+```{r line_plot}
+#plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"], 
+#plot_type = "l", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+```
+
+## Modifying effect plots {.tabset .tabset-fade .tabset-pills}
+
+For each of these plots, you can specify which markers you want to 
+see the effects of. You can also specify whether you would like to 
+see their effects on eigentraits, normalized phenotypes, or raw 
+traits, by changing the argument *pheno_type*. Normalized traits 
+are plotted by default.
+
+The genotype coding ("gen_coding" can also be specified to show 
+additive effects ("Additive"), dominant effects ("Dominant"),
+or recessive effects ("Recessive"). 
+
+### Additive Model
+
+In the **additive model**, genotypes are coded as shown in the following table.
+In this model, the effect of the alternate allele is related to dosage. Having two
+copies has a greater effect than one copy.
+
+The plots below might not look very good depending on how many traits you 
+are plotting. We encourage you to modify the plotting code to plot other 
+interactions, other trait types, and to change the plot dimensions.
+
+```{r, add_table, echo = FALSE}
+add_table <- data.frame(cbind(c(0, 0.5, 1), 
+c("Homozygous Reference", "Heterozygous", "Homozogous Alternate"), c(0, 1, 2)))
+colnames(add_table)  <- c("Genotype Value","Genotype", "# Copies of Alternate Allele")
+kable(add_table)
+```
+
+### Dominant Model
+
+In the **dominant model**, genotypes are coded as shown in the following
+table. To have an effect the alternate allele can be present in either one
+or two copies.
+
+```{r, dom_table, echo = FALSE}
+dom_table <- data.frame(cbind(c(0, 1), c("Homozygous Reference", "Heterozygous and Homozygous Alternate"), c(0, "1 or 2")))
+colnames(dom_table)  <- c("Genotype_Value", "Genotype", "# Copies of Alternate Allele")
+kable(dom_table)
+```
+
+### Recessive Model
+
+In the **recessive model**, genotypes are coded as follows. To have an effect, the 
+alternate allele must be present in two copies. 
+
+```{r, rec_table, echo = FALSE}
+rec_table <- data.frame(cbind(c(0, 1), c("Homozygous Reference and Heterozygous", "Homozygous Alternate"), c("0 or 1", 2)))
+colnames(rec_table)  <- c("Genotype_Value", "Genotype", "# Copies of Alternate Allele")
+kable(rec_table)
+```
+
+## Getting help
+
+Here we describe each output generically. For help interpreting specific 
+results, or generating specific plots, please email <anna.tyler@jax.org>.

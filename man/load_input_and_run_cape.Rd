@@ -13,7 +13,8 @@ load_input_and_run_cape(
   p_or_q = 0.05,
   n_cores = 4,
   initialize_only = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  create_report = FALSE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ load_input_and_run_cape(
 \item{initialize_only}{boolean, default: FALSE}
 
 \item{verbose}{boolean, output goes to stdout}
+
+\item{create_report}{boolean, if true we create the corresponding HTML report page}
 }
 \description{
 This function loads the input file path and runs cape
