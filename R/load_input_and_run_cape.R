@@ -64,18 +64,21 @@ load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, resul
                           n_cores = n_cores, initialize_only = initialize_only, verbose = verbose, run_parallel = run_parallel,
                           yaml_params = yaml_params, results_path = results_path)
   
+  if(create_report) {
+    cat("Rendering result page...\n")
+    # copy result page rmd to result folder. The file in in the resource folder of the project running this method.
+    cape_result_path <- file.path(here("resource"), "cape_results.Rmd")
+    file.copy(cape_result_path, results_path, overwrite = TRUE)
+    # render result page
+    rmarkdown::render(file.path(results_path, "cape_results.Rmd"), params = list(results_dir = results_path))
+    cat("Result page rendered.\n")
+  }
+  
+  cat("The CAPE analysis has been successfully completed.")
   ## reset message sink and close the file connection
   sink(type="message")
   sink()
   close(cape_log)
-  
-  if(create_report) {
-    # copy result page rmd to result folder
-    cape_result_path <- file.path(here("cape"), "cape_results.Rmd")
-    file.copy(cape_result_path, results_path)
-    # render result page
-    rmarkdown::render(file.path(results_path, "cape_results.Rmd"))
-  }
   
   return(final_cross)
 }
