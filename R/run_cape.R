@@ -10,8 +10,8 @@
 #'
 #' @param pheno_obj the cape object holding the phenotype data returned by 
 #' @param geno_obj the genotype object
-#' @param results_file the name of the saved data_obj RData file. The base 
-#' name is used as the base name for all saved RData files.
+#' @param results_file the name of the saved data_obj RDS file. The base 
+#' name is used as the base name for all saved RDS files.
 #' @param p_or_q A threshold indicating the maximum adjusted p value 
 #' considered significant. Or, if FDR p value correction is used, the
 #' the maximum q value considered significant.
@@ -39,7 +39,7 @@
 #' 
 #' @export
 run_cape <- function(pheno_obj, geno_obj, 
-  results_file = "cross.RData", p_or_q = 0.05, n_cores = 4, 
+  results_file = "cross.RDS", p_or_q = 0.05, n_cores = 4, 
   initialize_only = FALSE, verbose = TRUE, run_parallel = FALSE, 
   param_file = NULL, yaml_params = NULL, results_path = NULL){
   
@@ -56,7 +56,7 @@ run_cape <- function(pheno_obj, geno_obj,
   		geno = geno_obj
   )
   
-  results_base_name <- gsub(".RData", "", results_file)
+  results_base_name <- gsub(".RDS", "", results_file)
     
   # since this is the main data_obj, we can't allow it to return FALSE, 
   #check for the file first
@@ -79,7 +79,7 @@ run_cape <- function(pheno_obj, geno_obj,
   #===============================================================
   #if we want to use a kinship correction
   if(as.logical(data_obj$use_kinship)){
-    kin_file_name <- paste0(results_base_name, "_kinship.RData")
+    kin_file_name <- paste0(results_base_name, "_kinship.RDS")
     kin_obj <- data_obj$read_rds(kin_file_name)
     
     if (isFALSE(kin_obj)){
@@ -98,8 +98,8 @@ run_cape <- function(pheno_obj, geno_obj,
     # exists.
     #===============================================================
     #we need to impute the missing values
-    imp_data_file <- paste0(results_base_name, "_data_imputed.RData")
-    imp_geno_file <- paste0(results_base_name, "_geno_imputed.RData")
+    imp_data_file <- paste0(results_base_name, "_data_imputed.RDS")
+    imp_geno_file <- paste0(results_base_name, "_geno_imputed.RDS")
 
     # check if there is already a saved genotype object
     geno <- data_obj$read_rds(imp_geno_file)
@@ -145,7 +145,7 @@ run_cape <- function(pheno_obj, geno_obj,
   
   #because the genotype object can be changed by the above step, 
   #save the final version. (or change the above step so it doesn't 
-  final_geno_file <- paste0(results_base_name, "_geno.RData")
+  final_geno_file <- paste0(results_base_name, "_geno.RDS")
   data_obj$save_rds(geno_obj, final_geno_file)
 
   #str(data_obj$geno_names)
@@ -185,7 +185,7 @@ run_cape <- function(pheno_obj, geno_obj,
   #===============================================================
   # run singlescan
   #===============================================================
-  singlescan_results_file <- paste0(results_base_name, "_singlescan.RData")
+  singlescan_results_file <- paste0(results_base_name, "_singlescan.RDS")
   
   singlescan_obj <- data_obj$read_rds(singlescan_results_file)
   
@@ -226,7 +226,7 @@ run_cape <- function(pheno_obj, geno_obj,
   #===============================================================
   # run pairscan
   #===============================================================
-  pairscan_file <- paste0(results_base_name, "_pairscan.RData")
+  pairscan_file <- paste0(results_base_name, "_pairscan.RDS")
   
   pairscan_obj <- data_obj$read_rds(pairscan_file)
   

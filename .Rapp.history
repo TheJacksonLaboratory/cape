@@ -1,0 +1,348 @@
+?interactions
+??interactions
+??msigdb
+library(fgsea)
+?fgsea::fgseaMultilevel
+2675.71 + 2675.72
+174.10+190.04
+library(igraph)
+?layout_with_kk
+?par
+?legend
+?upset
+??upset
+library(UpSetR)
+?upset
+?hist
+?par
+?arrt
+?attr
+library(qtl2)
+??CCcoef
+library(gprofiler2)
+?gost
+library(easyPubmed)
+library(easyPubMed)
+?easyPubMed
+choose(20, 2)
+q()
+choose(20, 3)
+pairscan <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/AIL/LMM-ltco/cross_pairscan1.RData")
+str(pairscan)
+names(pairscan)
+pairscan.effects <- pairscan$pairscan_results
+pairscan.perm <- pairscan$pairscan_perm
+fun <- list.files("~/Documents/git_repositories/useful_r_code", full.names = TRUE)
+for(i in 1:length(fun)){source(fun[i])}
+str(pairscan.perm)
+head(pairscan.perm[[1]][[1]])
+str(pairscan.effects)
+head(pairscan.effects[[1]][[1]])
+head(pairscan.effects[[1]][[2]])
+pair.vals <- lapply(pairscan.effects, function(x) as.numeric(x[[1]][,5])/as.numeric(x[[2]][,5]))
+str(pair.vals)
+perm.vals <- lapply(pairscan.perm, function(x) as.numeric(x[[1]][,5])/as.numeric(x[[2]][,5]))
+hist(perm.vals[[1]])
+boxplot(list(pair.vals[[1]], perm.vals[[1]]))
+pair.p <- lapply(1:length(pair.vals), function(x) calc.emp.p(pair.vals[[x]], perm.vals[[x]]))
+hist(pair.p[[1]])
+qqunif.plot(pair.p[[1]])
+qqunif.plot(pair.p[[2]])
+qqunif.plot(unlist(pair.p))
+fun <- list.files("~/Documents/git_repositories/useful_r_code/", pattern = ".R", full.names = TRUE)
+for(i in 1:length(fun)){source(fun[i])}
+library(cape)
+cross <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/F2/LMM-ltco/final_cross1.RData")
+single <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/F2/LMM-ltco/cross_singlescan1.RData")
+plot_singlescan(cross, single)
+plot_singlescan(cross, single, traits = "ET1")
+cross.none <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/F2/none/final_cross1.RData")
+single.none <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/F2/none/cross_singlescan1.RData")
+quartz();plot_singlescan(cross.none, single.none, traits = "ET1")
+quartz(width = 10, height = 5);plot_singlescan(cross.none, single.none, traits = "ET1")
+cross.ltco <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/F2/LMM-ltco/final_cross1.RData")
+single.ltco <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/F2/LMM-ltco/cross_singlescan1.RData")
+quartz(width = 10, height = 5);plot_singlescan(cross.ltco, single.ltco, traits = "ET1")
+pdf("~/Desktop/kin.pdf", width = 10, height = 5)#
+plot_singlescan(cross.ltco, single.ltco, traits = "ET1")#
+plot_singlescan(cross.none, single.none, traits = "ET1")#
+dev.off()
+names(single.ltco)
+str(single.ltco$singlescan_effects)
+plot(single.none$singlescan_effects[,2,], single.ltco$singlescan_effects[,2,])
+plot(single.none$singlescan_effects[,1,], single.ltco$singlescan_effects[,1,])
+plot(single.none$singlescan_effects[,1,], single.ltco$singlescan_effects[,1,]);abline(h = 0, v = 0)
+pdf("~/Desktop/kinET1.pdf", width = 10, height = 5)#
+plot_singlescan(cross.ltco, single.ltco, traits = "ET1")#
+plot_singlescan(cross.ltco, single.overall, traits = "ET1")#
+plot_singlescan(cross.none, single.none, traits = "ET1")#
+dev.off()
+cross.overall <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/F2/LMM-overall/final_cross1.RData")
+single.overall <- readRDS("~/Documents/Projects/Kinship_Manuscript/Results/all_stats/F2/LMM-overall/cross_singlescan1.RData")
+pdf("~/Desktop/kinET1.pdf", width = 10, height = 5)#
+plot_singlescan(cross.ltco, single.ltco, traits = "ET1")#
+plot_singlescan(cross.ltco, single.overall, traits = "ET1")#
+plot_singlescan(cross.none, single.none, traits = "ET1")#
+dev.off()
+funn <- list.files("~/Desktop/draw_chromosome/", pattern = ".R", full.names = TRUE)
+fun <- list.files("~/Desktop/draw_chromosome/", pattern = ".R", full.names = TRUE)
+fun
+fun <- list.files("~/Desktop/draw_chr/", pattern = ".R", full.names = TRUE)
+fun
+for(i in 1:length(fun)){source(fun[i])}
+pdf("~/Desktop/chromosomes.pdf")#
+for(i in 1:10){#
+	draw_chromosome(2, allele.colors = c("darkgray", "white"), border.col = NA)	#
+}#
+dev.off()
+pdf("~/Desktop/chromosomes.pdf")#
+for(i in 1:10){#
+	draw_chromosome(3, allele.colors = c("darkgray", "white"), border.col = NA)	#
+}#
+dev.off()
+x <- rnorm(100, -1)
+y <- rnorm(100, 1)
+boxplot(list(x, y))
+boxplot(list(x, y), names = c("Strain1", "Strain2"))
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("white", "gray"))
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("white", "gray"), axes = FALSE)
+axis(1)
+axis(2)
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("white", "gray"), axes = FALSE)
+axis(2)
+axis(2, at = seq(-4, 4, 2))
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("white", "gray"), axes = FALSE)
+axis(2, at = seq(-4, 4, 2))
+axis(2, at = seq(-4, 5, 2))
+axis(2, at = seq(-4, 6, 2))
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("white", "gray"), axes = FALSE)
+axis(2, at = seq(-4, 6, 2))
+axis(2, at = seq(-3, 3, 2))
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("white", "gray"), axes = FALSE)
+axis(2, at = seq(-3, 3, 2))
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("gray", "white"), axes = FALSE)
+axis(2, at = seq(-3, 3, 2))
+axis(2, at = seq(-3, 3, 2), cex = 2)
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("gray", "white"), axes = FALSE)
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+pdf("~/Desktop/chromosomes.pdf")#
+for(i in 1:10){#
+	draw_chromosome(3, allele.colors = c("darkgray", "white"), border.col = NA)	#
+}#
+dev.off()
+dev.off()
+pdf("~/Desktop/chromosomes.pdf")#
+for(i in 1:10){#
+	draw_chromosome(3, allele.colors = c("darkgray", "white"), border.col = NA)	#
+}#
+dev.off()
+x <- rnorm(100, 0)
+y <- rnorm(100, 0)
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("gray", "white"), axes = FALSE)
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("lightgray", "lightgray"), axes = FALSE)
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+x <- rnorm(100, 0)#
+y <- rnorm(100, 0)#
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = c("lightgray", "lightgray"), axes = FALSE)#
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+x <- rnorm(100, 0)
+x <- rnorm(100, 0)#
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = "lightgray", axes = FALSE)#
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+x <- rnorm(100, 0)#
+boxplot(list(x, y), names = c("Strain1", "Strain2"), col = "lightgray", axes = FALSE, ylim = c(-3, 3))#
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+x <- rnorm(100, 0)#
+boxplot(x, names = c("Strain1", "Strain2"), col = "lightgray", axes = FALSE, ylim = c(-3, 3))#
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+x <- rnorm(100, 0)#
+boxplot(x, names = "F1", col = "lightgray", axes = FALSE, ylim = c(-3, 3))#
+axis(2, at = seq(-3, 3, 2), cex.axis = 2)
+library(CoExpNets)
+rpkms = read.table(paste0(gdp.rosmap(),"/ROSMAP_RNAseq_FPKM_gene.tsv"),#
+                       header=T,row.names=1)
+rticles::journals()
+?pdf
+choose(12, 12)
+?factorial
+factorial(12)
+12*11*10*9*8*7*6*5*4*3*2*1
+library(cape)
+?qtl2_to_cape
+?run_cape
+library(cape)
+page(direct_influences)
+page(direct_influence)
+test <- readRDS("~/Documents/R/shiny/capeDO_interactions/data/just_TnSeq.RData)
+test <- readRDS("~/Documents/R/shiny/capeDO_interactions/data/just_TnSeq.RData")
+names(test)
+library(interactions)
+interactions
+?interactions
+??interactions
+??makeCluster
+library(parallel)
+?detectCores
+??registerDoParallel
+test <- readRDS("~/Documents/Projects/TB/CCF2/Results/four_traits_2ET_kin/cross_geno.RData"))
+test <- readRDS("~/Documents/Projects/TB/CCF2/Results/four_traits_2ET_kin/cross_geno.RData")
+str(test)
+test <- readRDS("~/Documents/Projects/TB/CCF2/Results/four_traits_2ET_kin/cross_geno.RData")
+str(test)
+-log10(0.2)
+-log10(0.1)
+-log10(0.05)
+q()
+??padjust
+?p.adjust
+?new.device
+??new.device
+?quartz
+?dev.new
+library(plot3D)
+?surf3D
+library(rgl)
+?rgl
+?predict
+library(RColorBrewer)
+display.brewer.all()
+library(plotly)
+library(reshape2)
+sleep <- read.table("http://www.statsci.org/data/general/sleep.txt", header=T)
+sleep
+sleep <- na.omit(sleep)
+sleep <- mutate(sleep, logTotalSleep = log(TotalSleep))
+sleep
+sleep_mod <- lm(logTotalSleep ~ Gestation + Danger, data=sleep)
+log(TotalSleep)
+sleep <- read.table("http://www.statsci.org/data/general/sleep.txt", header=T, fill = TRUE)
+sleep <- read.table("http://www.statsci.org/data/general/sleep.txt", header=F, fill = TRUE)
+sleep
+sleep <- read.table("http://www.statsci.org/data/general/sleep.txt", header=T)
+sleep
+graph_reso
+?acast
+list(c(0, 1), c("tan", "blue"))
+?add_trace
+fig <- plot_ly(
+type = 'scatter',#
+  mode='markers',#
+  y=rep(5, 40),#
+  marker=list(#
+    size=seq(0, 39),#
+    color=seq(0, 39),#
+    colorbar=list(#
+      title='Colorbar'#
+    ),#
+    colorscale='Viridis',#
+    reversescale =T#
+  )#
+  )
+fig <- fig %>% layout(#
+    xaxis = list(#
+      showgrid = F,#
+      zeroline = F#
+    ),#
+    yaxis = list(#
+      showgrid = F,#
+      zeroline = F#
+    )#
+  )
+fig
+z <- c(#
+  c(8.83,8.89,8.81,8.87,8.9,8.87),#
+  c(8.89,8.94,8.85,8.94,8.96,8.92),#
+  c(8.84,8.9,8.82,8.92,8.93,8.91),#
+  c(8.79,8.85,8.79,8.9,8.94,8.92),#
+  c(8.79,8.88,8.81,8.9,8.95,8.92),#
+  c(8.8,8.82,8.78,8.91,8.94,8.92),#
+  c(8.75,8.78,8.77,8.91,8.95,8.92),#
+  c(8.8,8.8,8.77,8.91,8.95,8.94),#
+  c(8.74,8.81,8.76,8.93,8.98,8.99),#
+  c(8.89,8.99,8.92,9.1,9.13,9.11),#
+  c(8.97,8.97,8.91,9.09,9.11,9.11),#
+  c(9.04,9.08,9.05,9.25,9.28,9.27),#
+  c(9,9.01,9,9.2,9.23,9.2),#
+  c(8.99,8.99,8.98,9.18,9.2,9.19),#
+  c(8.93,8.97,8.97,9.18,9.2,9.18)#
+)#
+dim(z) <- c(15,6)
+z1 <- z - 1#
+z2 <- z + 1
+cols1 <- c(rgb(255/255,112/255,183/255,1),rgb(128/255,0/255,64/255,1))#
+cols2 <- c(rgb(107/255,184/255,214/255,1),rgb(0/255,90/255,124/255,1))
+cols1
+cols2
+p1 <- plot_ly(showscale = TRUE) %>%#
+  add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), color = ~z1, colors = cols1) %>%#
+  layout(scene = list(zaxis = list(range = c(min(z1),max(z2)))))
+p1
+p2 <- plot_ly(showscale = TRUE) %>%#
+  add_surface(z = ~z2, cmin = min(z1), cmax = max(z2), color = ~z2, colors = cols2) %>%#
+  layout(scene = list(zaxis = list(range = c(min(z1),max(z2)))))
+p2
+p3 <- plot_ly(showscale = TRUE) %>%#
+  add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), color = ~z1, colors = cols1) %>%#
+  add_surface(z = ~z2, cmin = min(z1), cmax = max(z2), color = ~z2, colors = cols2) %>%#
+  layout(scene = list(zaxis = list(range = c(min(z1),max(z2)))))
+p3
+p4 <- plot_ly(showscale = TRUE) %>%#
+  add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), color = ~z1, reversescale=T) %>%#
+  add_surface(z = ~z2, cmin = min(z1), cmax = max(z2), color = ~z2, colorscale = list(c(min(z1),"rgb(107,184,214)"),c(max(z2),"rgb(0,90,124)"))) %>%#
+  layout(scene = list(zaxis = list(range = c(min(z1),max(z2)))))
+p4
+p4 <- plot_ly(showscale = TRUE)
+p4 <- add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), color = ~z1, reversescale=T)
+p4 <- p4 %<% add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), color = ~z1, reversescale=T)
+p4 <- p4 %>% add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), color = ~z1, reversescale=T)
+p4
+p4 <- p4 %>% add_surface(z = ~z2, cmin = min(z1), cmax = max(z2), color = ~z2, colorscale = list(c(min(z1),"rgb(107,184,214)"),c(max(z2),"rgb(0,90,124)")))
+p4
+p4 <- plot_ly(showscale = TRUE)
+p4 <- p4 %>% add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), color = ~z1, reversescale=T)
+p4
+p4 <- p4 %>% add_surface(z = ~z2, cmin = min(z1), cmax = max(z2), color = ~z2, colorscale = list(c(min(z1),"rgb(107,184,214)"),c(max(z2),"rgb(0,90,124)")))
+p4
+?add_surface
+layout(scene = list(zaxis = list(range = c(min(z1),max(z2)))))
+p4 <- plot_ly(showscale = TRUE)
+p4 <- p4 %>% add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), color = ~z1, reversescale=T)
+p4 <- p4 %>% add_surface(z = ~z2, cmin = min(z1), cmax = max(z2), color = ~z2, colorscale = list(c(min(z1),"rgb(107,184,214)"),c(max(z2),"rgb(0,90,124)")))
+p4
+list(c(0,1),c("rgb(107,184,214)","rgb(0,90,124)"))
+p6 <- plot_ly(showscale = TRUE) %>%
+add_surface(z = ~z1, cmin = min(z1), cmax = max(z2), colorscale = list(c(0,1),c("rgb(255,112,184)","rgb(128,0,64)"))) %>%
+p6 <- plot_ly(showscale = TRUE)
+p6 <- add_surface(p6, z = ~z1, cmin = min(z1), cmax = max(z2), colorscale = list(c(0,1),c("rgb(255,112,184)","rgb(128,0,64)")))
+p6 <- add_surface(p6, z = ~z2, cmin = min(z1), cmax = max(z2), colorscale = list(c(0,1),c("rgb(107,184,214)","rgb(0,90,124)")))
+p6
+p6 <- plot_ly(showscale = TRUE)#
+p6 <- add_surface(p6, z = ~z1, cmin = min(z1), cmax = max(z2), colorscale = list(c(0,1),c("rgb(255,112,184)","rgb(128,0,64)")))#
+p6 <- add_surface(p6, z = ~z2, cmin = min(z1), cmax = max(z2), colorscale = list(c(0,1),c("rgb(107,184,214)","rgb(0,90,124)")))#
+layout(title="SURFACE 1 + SURFACE 2\n(Distinct colorscales as defined)", scene = list(zaxis = list(range = c(min(z1),max(z2)))))
+?add_surface
+q()
+setwd("~/Documents/git_repositories/cape")
+set.seed(1234)
+library(cape)
+results_path <- here::here("demo", "demo_qtl")
+results_path
+data_path <- here::here("tests", "testthat", "testdata", "demo_qtl_data")
+data_file <- file.path(data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
+param_file <- file.path(results_path, "NON_NZO.parameters.yml")
+file.exists(param_file)
+cross <- read_population(data_file)
+cross_obj <- cape2mpp(cross)
+data_obj <- cross_obj$data_obj
+geno_obj <- cross_obj$geno_obj$geno
+final_cross <- run_cape(data_obj, geno_obj, results_file = "NON_NZO.RDS", #
+                        p_or_q = 0.05, verbose = TRUE, param_file = param_file, #
+                        results_path = results_path)
+final_cross <- run_cape(data_obj, geno_obj, results_file = "NON_NZO.RDS", #
+                        p_or_q = 0.05, verbose = TRUE, param_file = param_file, #
+                        results_path = results_path)
+final_cross <- run_cape(data_obj, geno_obj, results_file = "cross.RData", #
+                        p_or_q = 0.05, verbose = TRUE, param_file = param_file, #
+                        results_path = results_path)

@@ -8,6 +8,8 @@ output:
     collapsed: no
     toc: yes
     toc_float: yes
+params:
+    results_dir: here("tests/testthat/results")
 ---
 
 
@@ -15,9 +17,7 @@ Set the working directory below and run this workflow to see figures of results
 with explanations.
 
 ```{r results_dir}
-library(here)
-results_dir <- here("tests/testthat/results")
-library(cape);library(knitr)
+library(here);library(cape);library(knitr)
 ```
 
 ## Introduction
@@ -227,7 +227,7 @@ main effects and interaction effects.
 ### All Influences
 
 ```{r var_inf_table, echo = FALSE}
-var.inf.table <- read.csv(file.path(results_dir, "Variant_Influences.csv"))
+var.inf.table <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences.csv"), stringsAsFactors = FALSE))
 var.inf.table[,1] <- gsub("X", "Chr", var.inf.table[,1])
 var.inf.table[,4] <- gsub("X", "Chr", var.inf.table[,4])
 kable(head(var.inf.table))
@@ -240,7 +240,7 @@ the interaction effects.
 
 
 ```{r var_int_table, echo = FALSE}
-var.int.table <- read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"))
+var.int.table <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"), stringsAsFactors = FALSE))
 var.int.table[,1] <- gsub("X", "Chr", var.int.table[,1])
 var.int.table[,4] <- gsub("X", "Chr", var.int.table[,4])
 kable(head(var.int.table))
@@ -260,9 +260,9 @@ as the explanatory variables vary continuously.
 
 
 ```{r read_effects}
-data_obj <- readRDS(file.path(results_dir, "cross.RData"))
-geno_obj <- readRDS(file.path(results_dir, "cross_geno.RData"))
-var.inf <- read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"))
+data_obj <- readRDS(file.path(results_dir, "cross.RDS"))
+geno_obj <- readRDS(file.path(results_dir, "cross_geno.RDS"))
+var.inf <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"), stringsAsFactors = FALSE))
 ```
 
 ### Point Plots
