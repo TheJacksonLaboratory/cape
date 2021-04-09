@@ -7,7 +7,7 @@
 run_cape(
   pheno_obj,
   geno_obj,
-  results_file = "cross.RData",
+  results_file = "cross.RDS",
   p_or_q = 0.05,
   n_cores = 4,
   initialize_only = FALSE,
@@ -23,8 +23,8 @@ run_cape(
 
 \item{geno_obj}{the genotype object}
 
-\item{results_file}{the name of the saved data_obj RData file. The base 
-name is used as the base name for all saved RData files.}
+\item{results_file}{the name of the saved data_obj RDS file. The base 
+name is used as the base name for all saved RDS files.}
 
 \item{p_or_q}{A threshold indicating the maximum adjusted p value 
 considered significant. Or, if FDR p value correction is used, the
