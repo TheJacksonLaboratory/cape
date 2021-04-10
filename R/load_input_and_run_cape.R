@@ -28,7 +28,7 @@
 #' 
 #' @export
 load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
-                                    run_parallel = FALSE, results_file = "cross.RData", p_or_q = 0.05, 
+                                    run_parallel = FALSE, results_file = "cross.RDS", p_or_q = 0.05, 
                                     n_cores = 4, initialize_only = FALSE, verbose = TRUE, create_report = FALSE){
 
   if (endsWith(input_file, ".yaml") || endsWith(input_file, ".json") || endsWith(input_file, ".yml")) {
@@ -67,8 +67,8 @@ load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, resul
   if(create_report) {
     cat("Rendering result page...\n")
     # copy result page rmd to result folder. The file in in the resource folder of the project running this method.
-    cape_result_path <- file.path(here("resource"), "cape_results.Rmd")
-    file.copy(cape_result_path, results_path, overwrite = TRUE)
+    # we hardcoded the place where the markdown file is located on the production VM
+    file.copy("/opt/cape/cape/cape_results.Rmd", results_path, overwrite = TRUE)
     # render result page
     rmarkdown::render(file.path(results_path, "cape_results.Rmd"), params = list(results_dir = results_path))
     cat("Result page rendered.\n")
