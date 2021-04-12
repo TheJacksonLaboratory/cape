@@ -84,7 +84,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
     
     map$pos <- as.numeric(sapply(temp,"[",2)) #pulls second column and makes it a list
     
-    #data_obj$save_rds(map,"map.RData")
+    #data_obj$save_rds(map,"map.RDS")
     
     genoprobs <- probs_doqtl_to_qtl2(geno_obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
@@ -110,7 +110,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
     
     map$pos <- as.list(data_obj$marker_location)
     
-    #data_obj$save_rds(map,"map.RData")
+    #data_obj$save_rds(map,"map.RDS")
     
     genoprobs <- probs_doqtl_to_qtl2(geno_obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
@@ -174,7 +174,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
 
       map <- map_df_to_list(map,pos_column = "pos")
       
-      #data_obj$save_rds(map,"map.RData")
+      #data_obj$save_rds(map,"map.RDS")
       
       K <- calc_kinship(probs=genoprobs,type=type, cores=n_cores)
     }

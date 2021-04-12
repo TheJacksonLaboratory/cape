@@ -815,9 +815,9 @@ Cape <- R6Class(
     #' @description
     #' Save to RDS file
     #' @param object data to be saved.
-    #' @param filename filename of result RData file.
+    #' @param filename filename of result RDS file.
     save_rds = function(object, filename) {
-      # only save the results RData file if save_results is TRUE
+      # only save the results RDS file if save_results is TRUE
       if (self$save_results) {
         full_path <- file.path(self$results_path, filename)
         saveRDS(object, full_path)
@@ -825,10 +825,10 @@ Cape <- R6Class(
     },
     #' @description
     #' Read RDS file
-    #' @param filename RData filename to be read.
+    #' @param filename RDS filename to be read.
     read_rds = function(filename) {
       full_path <- file.path(self$results_path, filename)
-      # only return the results RData file if use_saved_results is TRUE
+      # only return the results RDS file if use_saved_results is TRUE
       if ((self$use_saved_results) & (file.exists(full_path))) {
         return(readRDS(full_path))
       } else {

@@ -7,7 +7,7 @@
 #' @param yaml_params a parameter set up in the form of a YAML string
 #' @param results_path path to the results
 #' @param run_parallel boolean, if TRUE runs certain parts of the code as parallel blocks
-#' @param results_file the name of the saved data_obj RData file. The base name is used as the base name for all saved RData files.
+#' @param results_file the name of the saved data_obj RDS file. The base name is used as the base name for all saved RDS files.
 #' @param p_or_q A threshold indicating the maximum adjusted p value considered 
 #' @param n_cores integer, default is 4
 #' @param initialize_only boolean, default: FALSE
