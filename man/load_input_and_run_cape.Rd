@@ -9,7 +9,7 @@ load_input_and_run_cape(
   yaml_params = NULL,
   results_path = NULL,
   run_parallel = FALSE,
-  results_file = "cross.RData",
+  results_file = "cross.RDS",
   p_or_q = 0.05,
   n_cores = 4,
   initialize_only = FALSE,
@@ -26,7 +26,7 @@ load_input_and_run_cape(
 
 \item{run_parallel}{boolean, if TRUE runs certain parts of the code as parallel blocks}
 
-\item{results_file}{the name of the saved data_obj RData file. The base name is used as the base name for all saved RData files.}
+\item{results_file}{the name of the saved data_obj RDS file. The base name is used as the base name for all saved RDS files.}
 
 \item{p_or_q}{A threshold indicating the maximum adjusted p value considered}
 

@@ -40,11 +40,12 @@ get_marker_covar <- function(data_obj, geno_obj, marker_covar_names){
 	common_ind <- intersect(rownames(data_obj$pheno), rownames(geno_obj))
 	geno_ind_locale <- match(common_ind, rownames(geno_obj))
 
+	marker_vals <- sapply(1:length(just_markers), function(x) geno_obj[geno_ind_locale,allele_locale[x], marker_locale[x]])
+
 	#================================================
 	# get genotype values for all genetic markers
 	#================================================
 	if(all(!is.na(marker_locale))){
-		marker_vals <- sapply(1:length(just_markers), function(x) geno_obj[geno_ind_locale,allele_locale[x], marker_locale[x]])
 		return(marker_vals)
 	}else{ 
 

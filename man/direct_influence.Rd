@@ -38,7 +38,7 @@ false discovery rate or local false discovery rate respectively.}
 
 \item{save_permutations}{A logical value indicating whether the data from permutations should be 
 saved. Saving the permutations requires more memory but can be helpful in diagnostics. If 
-save_permutations is TRUE all permutation data are saved in an object called "permutation.data.RData".}
+save_permutations is TRUE all permutation data are saved in an object called "permutation.data.RDS".}
 
 \item{n_cores}{The number of cores to use if using parallel computing}
 
