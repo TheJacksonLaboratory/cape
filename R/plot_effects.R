@@ -45,8 +45,9 @@
 #' @param ref_centered A logical value indicating whether 
 #' to center the values on the reference allele. Defaults 
 #' to TRUE.
-#' @param gen_model One of "Additive", "Dominant", or "Recessive"
-#' indicating how the genotypes should be coded. If Additive,
+#' @param gen_model1 One of "Additive", "Dominant", or "Recessive"
+#' indicating how the genotype should be coded for the first 
+#' marker. If Additive,
 #' genotypes are coded as 0 for homozygous reference allele,
 #' 1 for homozygous alternate allele, and 0.5 for heterozygous.
 #' If Dominant, any allele probability greater than 0.5 is 
@@ -59,6 +60,8 @@
 #' homozygous reference genotypes: (0, 0.5) vs. 1. This shows
 #' the effect of having two copies of the alternate allele 
 #' vs. having fewer than two copies.
+#' @param gen_model2 The same as gen_model1, but for the second 
+#' marker.
 #' @param bins_marker1 Only used for heatmap plotting. The 
 #' number of bins for marker1 if it is a continuously valued 
 #' marker or covariate. The bins are used to fit a linear 
@@ -88,8 +91,8 @@ plot_effects <- function(data_obj, geno_obj, marker1, marker2 = NULL,
 	pheno_type = "normalized", plot_type = c("l", "p", "b", "h"),
 	error_bars = "none", ymin = NULL, ymax = NULL, covar = NULL, 
 	marker1_label = NULL, marker2_label = NULL, bin_continuous_genotypes = TRUE, 
-	ref_centered = TRUE, gen_model = "Additive", bins_marker1 = 50, 
-	bins_marker2 = 50){
+	ref_centered = TRUE, gen_model1 = "Additive", gen_model2 = "Additive",
+	bins_marker1 = 50, bins_marker2 = 50){
 
 	plot_type = plot_type[1]
 		
@@ -144,14 +147,24 @@ plot_effects <- function(data_obj, geno_obj, marker1, marker2 = NULL,
 	# Recode if specified
 	#============================================================
 		
-	if(gen_model == "Dominant"){
-		geno_to_plot[which(geno_to_plot >= 0.5)] <- 1
-		geno_to_plot[which(geno_to_plot < 0.5)] <- 0
+	if(gen_model1 == "Dominant"){
+		geno_to_plot[which(geno_to_plot[,1] >= 0.5),1] <- 1
+		geno_to_plot[which(geno_to_plot[,1] < 0.5),1] <- 0
 	}
-	if(gen_model == "Recessive"){
-		geno_to_plot[which(geno_to_plot <= 0.5)] <- 0			
+	if(gen_model1 == "Recessive"){
+		geno_to_plot[which(geno_to_plot[,1] <= 0.5),1] <- 0			
 	}
+
+	if(gen_model2 == "Dominant"){
+		geno_to_plot[which(geno_to_plot[,2] >= 0.5),2] <- 1
+		geno_to_plot[which(geno_to_plot[,2] < 0.5),2] <- 0
+	}
+	if(gen_model2 == "Recessive"){
+		geno_to_plot[which(geno_to_plot[,2] <= 0.5),2] <- 0			
+	}
+
 	#============================================================		
+
 
 
 	#============================================================
