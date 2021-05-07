@@ -19,7 +19,8 @@ plot_effects(
   marker2_label = NULL,
   bin_continuous_genotypes = TRUE,
   ref_centered = TRUE,
-  gen_model = "Additive",
+  gen_model1 = "Additive",
+  gen_model2 = "Additive",
   bins_marker1 = 50,
   bins_marker2 = 50
 )
@@ -77,8 +78,9 @@ desirable when using the heatmap.}
 to center the values on the reference allele. Defaults 
 to TRUE.}
 
-\item{gen_model}{One of "Additive", "Dominant", or "Recessive"
-indicating how the genotypes should be coded. If Additive,
+\item{gen_model1}{One of "Additive", "Dominant", or "Recessive"
+indicating how the genotype should be coded for the first 
+marker. If Additive,
 genotypes are coded as 0 for homozygous reference allele,
 1 for homozygous alternate allele, and 0.5 for heterozygous.
 If Dominant, any allele probability greater than 0.5 is 
@@ -91,6 +93,9 @@ a recessive coding, heterozygotes are grouped with the
 homozygous reference genotypes: (0, 0.5) vs. 1. This shows
 the effect of having two copies of the alternate allele 
 vs. having fewer than two copies.}
+
+\item{gen_model2}{The same as gen_model1, but for the second 
+marker.}
 
 \item{bins_marker1}{Only used for heatmap plotting. The 
 number of bins for marker1 if it is a continuously valued 
