@@ -45,7 +45,8 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 			filename <- file.choose()
 		}
 			
-		cross_data <- read.table(filename, na.strings = na_strings, stringsAsFactors = FALSE, sep = delim, header = TRUE)
+		cross_data <- read.table(filename, na.strings = na_strings, stringsAsFactors = FALSE, 
+		sep = delim, header = TRUE)
 
 		if(!is.null(id_col)){
 			ind_names <- cross_data[3:nrow(cross_data),id_col]
@@ -151,7 +152,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 				rownames(geno_array) <- ind_names
 				colnames(geno_array) <- sort(all_genotypes)
 				dimnames(geno_array)[[3]] <- colnames(geno)
-				geno_list <- lapply(1:ncol(geno), function(x) fill_array(x))
+				geno_list <- lapply(1:dim(geno)[3], function(x) fill_array(x))
 				for(m in 1:ncol(geno_array)){
 					geno_array[,,m] <- geno_list[[m]]
 					}
