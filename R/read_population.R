@@ -139,6 +139,7 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
  			if(length(all_genotypes) > 3){
 				found_genotype_mode <- 1
 				is_multiparent <- 1
+				
 				fill_array <- function(genotypes){
 					geno_mat <- matrix(0, nrow = nrow(geno), ncol = length(all_genotypes))
 					for(al in 1:ncol(geno_mat)){
@@ -148,7 +149,10 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 					}
 
 				if(verbose){message("I have detected a multi-parent cross\nConverting to array...\n")}
-				geno_list <- lapply(1:dim(geno)[2], function(x) fill_array(x))
+				geno_list <- lapply(1:dim(geno)[2], function(x) fill_array(geno[,x]))
+
+				#fun <- function(x,y) abind(x,y, along = 3)
+				#geno_array <- Reduce(fun, geno_list)
 
 				geno_array <- array(NA, dim = c(nrow(geno), length(all_genotypes), ncol(geno)))
 				rownames(geno_array) <- ind_names
