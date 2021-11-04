@@ -26,19 +26,23 @@ cape2mpp <- function(data_obj, geno_obj = NULL){
 		geno <- geno_obj$geno	
 		}
 	
-	geno_array <- array(NA, dim = c(nrow(geno),2,ncol(geno)))
-	geno_array[,1,] <- 1-geno
-	geno_array[,2,] <- geno	
+	if(length(dim(geno)) == 2){
+		geno_array <- array(NA, dim = c(nrow(geno),2,ncol(geno)))
+		geno_array[,1,] <- 1-geno
+		geno_array[,2,] <- geno
 	
-	dimnames(geno_array) <- list(rownames(geno), c("A", "B"), colnames(geno))
-	names(dimnames(geno_array)) <- c("mouse", "allele" ,"locus")
-	
+		dimnames(geno_array) <- list(rownames(geno), c("A", "B"), colnames(geno))
+		names(dimnames(geno_array)) <- c("mouse", "allele" ,"locus")
+	}else{
+		geno_array <- geno
+	}
+
 	geno_obj$geno <- geno_array
-	
+
 	data_obj$geno <- NULL
 	data_obj$marker_names <- NULL
 
-	geno_names <- list(rownames(data_obj$pheno), c("A", "B"), colnames(geno))
+	geno_names <- list(rownames(data_obj$pheno), colnames(geno_array), dimnames(geno_array)[[3]])
 	names(geno_names) <- c("mouse", "allele", "locus")
 	data_obj$geno_names <- geno_names
 
