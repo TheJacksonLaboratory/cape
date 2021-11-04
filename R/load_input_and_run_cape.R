@@ -29,7 +29,8 @@
 #' @export
 load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
                                     run_parallel = FALSE, results_file = "cross.RDS", p_or_q = 0.05, 
-                                    n_cores = 4, initialize_only = FALSE, verbose = TRUE, create_report = FALSE){
+                                    n_cores = 4, initialize_only = FALSE, verbose = TRUE, 
+                                    create_report = FALSE, qtl_id_col = NULL, qtl_na_strings){
 
   if (endsWith(input_file, ".yaml") || endsWith(input_file, ".json") || endsWith(input_file, ".yml")) {
     # QTL2 file type (with json/yml control file in a folder)
@@ -40,7 +41,8 @@ load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, resul
     geno_obj <- cape_object$geno_obj 
   } else if (endsWith(input_file, ".csv")){
     # QTL file type as a single CSV file
-    cross <- read_population(input_file)
+    cross <- read_population(input_file, id_col = qtl_id_col, 
+	    na_strings = qtl_na_strings, verbose = verbose)
     cross_obj <- cape2mpp(cross)
     data_obj <- cross_obj$data_obj
     geno_obj <- cross_obj$geno_obj$geno
