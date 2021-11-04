@@ -82,7 +82,7 @@ run_cape <- function(pheno_obj, geno_obj,
     kin_file_name <- paste0(results_base_name, "_kinship.RDS")
     kin_obj <- data_obj$read_rds(kin_file_name)
     
-    if (isFALSE(kin_obj)){
+    if(isFALSE(kin_obj)){
       #if there isn't a kinship object already, we need to make one
       kin_obj <- kinship(data_obj, geno_obj, type = "overall", 
       pop = data_obj$pop)

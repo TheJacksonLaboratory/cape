@@ -56,10 +56,11 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #        Determine if locus is numerical or character        #
   #                                                            #
   ##############################################################
-  num <- "1"
-  snp <- data_obj$geno_names$locus[[1]]
-  
-  if(grepl(num,snp)==TRUE) {
+  #num <- "1"
+  #snp <- data_obj$geno_names$locus[[1]]
+  num_locus <- is.numeric(data_obj$geno_names$locus[[1]])  
+
+  if(num_locus) {
     locus<-"num"
   } else {
     locus<-"char"
