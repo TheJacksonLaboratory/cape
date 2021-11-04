@@ -148,12 +148,13 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 					}
 
 				if(verbose){message("I have detected a multi-parent cross\nConverting to array...\n")}
+				geno_list <- lapply(1:dim(geno)[2], function(x) fill_array(x))
+
 				geno_array <- array(NA, dim = c(nrow(geno), length(all_genotypes), ncol(geno)))
 				rownames(geno_array) <- ind_names
 				colnames(geno_array) <- sort(all_genotypes)
 				dimnames(geno_array)[[3]] <- colnames(geno)
-				geno_list <- lapply(1:dim(geno)[3], function(x) fill_array(x))
-				for(m in 1:ncol(geno_array)){
+				for(m in 1:length(geno_list)){
 					geno_array[,,m] <- geno_list[[m]]
 					}
 		   	}
