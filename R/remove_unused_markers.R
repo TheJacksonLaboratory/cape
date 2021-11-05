@@ -62,6 +62,7 @@ remove_unused_markers <- function(data_obj, geno_obj, verbose = FALSE){
   		return(1)
   	}
   }
+
   num_allele <- apply(gene, 3, allelic_variation)
   mono_allele <- which(num_allele == 0)
   if(length(mono_allele) > 0){

@@ -140,6 +140,7 @@ run_cape <- function(pheno_obj, geno_obj,
   combined_data_obj <- delete_underscore(data_obj, geno_obj)
   data_obj <- combined_data_obj$data_obj
   geno_obj <- combined_data_obj$geno_obj
+  
   data_obj <- remove_unused_markers(data_obj, geno_obj, verbose = verbose)
   
   #because the genotype object can be changed by the above step, 

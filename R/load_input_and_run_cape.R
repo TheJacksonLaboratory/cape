@@ -12,7 +12,10 @@
 #' @param n_cores integer, default is 4
 #' @param initialize_only boolean, default: FALSE
 #' @param verbose boolean, output goes to stdout
+#' @param param_file path to yml parameter file for running cape
 #' @param create_report boolean, if true we create the corresponding HTML report page
+#' @param qtl_id_col argument for read_population, an optional column number for individual IDs
+#' @param qtl_na_strings argument for read_population, an optional string for missing values
 #' 
 #' @import here
 #' @importFrom qtl2 read_cross2
@@ -29,7 +32,7 @@
 #' @export
 load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
                                     run_parallel = FALSE, results_file = "cross.RDS", p_or_q = 0.05, 
-                                    n_cores = 4, initialize_only = FALSE, verbose = TRUE, 
+                                    n_cores = 4, initialize_only = FALSE, verbose = TRUE, param_file = NULL,
                                     create_report = FALSE, qtl_id_col = NULL, qtl_na_strings = "NA"){
 
   if (endsWith(input_file, ".yaml") || endsWith(input_file, ".json") || endsWith(input_file, ".yml")) {
@@ -63,7 +66,8 @@ load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, resul
   sink(cape_log, type="message")
   
   final_cross <- run_cape(data_obj, geno_obj, results_file = results_file, p_or_q = p_or_q, 
-                          n_cores = n_cores, initialize_only = initialize_only, verbose = verbose, run_parallel = run_parallel,
+                          n_cores = n_cores, initialize_only = initialize_only, verbose = verbose, 
+                          run_parallel = run_parallel, param_file = param_file,
                           yaml_params = yaml_params, results_path = results_path)
   
   if(create_report) {
