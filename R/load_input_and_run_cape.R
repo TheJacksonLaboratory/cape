@@ -33,7 +33,7 @@
 load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
                                     run_parallel = FALSE, results_file = "cross.RDS", p_or_q = 0.05, 
                                     n_cores = 4, initialize_only = FALSE, verbose = TRUE, param_file = NULL,
-                                    create_report = FALSE, qtl_id_col = NULL, qtl_na_strings = "NA"){
+                                    create_report = FALSE, qtl_id_col = NULL, qtl_na_strings = "-"){
 
   if (endsWith(input_file, ".yaml") || endsWith(input_file, ".json") || endsWith(input_file, ".yml")) {
     # QTL2 file type (with json/yml control file in a folder)
