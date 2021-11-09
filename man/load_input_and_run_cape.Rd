@@ -14,7 +14,10 @@ load_input_and_run_cape(
   n_cores = 4,
   initialize_only = FALSE,
   verbose = TRUE,
-  create_report = FALSE
+  param_file = NULL,
+  create_report = FALSE,
+  qtl_id_col = NULL,
+  qtl_na_strings = "-"
 )
 }
 \arguments{
