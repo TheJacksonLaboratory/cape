@@ -14,7 +14,10 @@ load_input_and_run_cape(
   n_cores = 4,
   initialize_only = FALSE,
   verbose = TRUE,
-  create_report = FALSE
+  param_file = NULL,
+  create_report = FALSE,
+  qtl_id_col = NULL,
+  qtl_na_strings = "-"
 )
 }
 \arguments{
@@ -36,7 +39,13 @@ load_input_and_run_cape(
 
 \item{verbose}{boolean, output goes to stdout}
 
+\item{param_file}{path to yml parameter file for running cape}
+
 \item{create_report}{boolean, if true we create the corresponding HTML report page}
+
+\item{qtl_id_col}{argument for read_population, an optional column number for individual IDs}
+
+\item{qtl_na_strings}{argument for read_population, an optional string for missing values}
 }
 \description{
 This function loads the input file path and runs cape
