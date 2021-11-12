@@ -1,0 +1,64 @@
+#================================================
+# General Parameters 
+#================================================
+traits:
+ - Lung.IFNg.pg.ml
+ - Lung.CXCL5.pg.ml
+ - Lung.CXCL2.pg.ml
+ - Lung.CXCL1.pg.ml
+ - Lung.Mtb.burden
+ - Lung.S100A8.pg.mL
+ - Lung.granuloma.biomarker...pyknotic.necrosis.to.non.necrosis
+scan_what:
+ - eigentraits 
+traits_scaled:
+ - true
+traits_normalized:
+ - true
+eig_which:
+ - 1
+ - 2 
+ - 3
+pval_correction:
+ - fdr 
+use_kinship:
+ - false
+kinship_type:
+ - overall
+pop:
+ - MPP
+locus:
+ - char
+save_results:
+ - true
+use_saved_results:
+ - true
+
+#================================================
+# Single Scan Parameters 
+#================================================
+ref_allele:
+ - B
+singlescan_perm:
+ - 0
+
+#================================================
+# Marker Selection Parameters 
+#================================================
+marker_selection_method:
+ - top_effects
+peak_density:
+ - 0.5
+tolerance:
+ - 5 
+num_alleles_in_pairscan:
+ - 100
+#================================================
+# Pairscan Parameters 
+#================================================
+max_pair_cor:
+ - 0.5
+pairscan_null_size:
+ - 10000
+transform_to_phenospace:
+ - true
