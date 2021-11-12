@@ -73,7 +73,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #################################################################
 
   ##check to see if genoprobs have been calculated, if not calculate genotype probablities
-  if(!("calc_genoprob" %in% class(geno_obj)) & locus=="num" & pop=="MPP"){
+  if(!("calc_genoprob" %in% class(geno_obj)) && locus=="num" && pop=="MPP"){
     
     ### create map and genoprobs using geno file
     
@@ -99,7 +99,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #                                                               #
   #################################################################
   
-  if(!("calc_genoprob" %in% class(geno_obj)) & locus=="char" & pop=="MPP"){
+  if(!("calc_genoprob" %in% class(geno_obj)) && locus=="char" && pop=="MPP"){
     
     ### create map and genoprobs using geno file
     map <- data.frame(marker = data_obj$geno_names[[3]],chr = data_obj$geno_names[[3]], 
@@ -128,7 +128,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #          Create probability and map file if RIL            #
   #                                                            #
   ##############################################################
-  if(!("calc_genoprob" %in% class(geno_obj)) & pop=="RIL"){
+  if(!("calc_genoprob" %in% class(geno_obj)) && pop=="RIL"){
     write_population(data_obj, geno_obj, filename = file.path(qtl_path, qtl_file), na = "")
     cross <- read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
     unlink(file.path(qtl_path, qtl_file)) #delete the file
@@ -145,7 +145,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #           Create probability and map file if 2PP           #
   #                                                            #
   ##############################################################
-  if(!("calc_genoprob" %in% class(geno_obj)) & pop=="2PP"){
+  if(!("calc_genoprob" %in% class(geno_obj)) && pop=="2PP"){
     write_population(data_obj, geno_obj, filename = file.path(qtl_path, qtl_file), 
     na = "")
     cross <- read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
