@@ -5,13 +5,13 @@ library(cape)
 results_path <- here::here("demo", "demo_rds")
 data_path <- here::here("tests", "testthat", "testdata", "demo_rds_data")
 
-data_file <- file.path(data_path, "cape_data_QTL.map.lung.traits..y.n._=_y.RDS")
-geno_file <- file.path(data_path, "cape_geno_QTL.map.lung.traits..y.n._=_y.RDS")
+data_file <- file.path(data_path, "cape_pheno.RDS")
+geno_file <- file.path(data_path, "cape_geno.RDS")
 
 cape_obj <- readRDS(data_file)
 cape_geno <- readRDS(geno_file)
 
-param_file <- file.path(results_path, "cape.parameters.yml")
+param_file <- file.path(results_path, "NON_NZO.parameters.yml")
 
 # genotype coding
 het_val <- 0.3 #could be 0.5, but I think we can go as low as 0.3
