@@ -5,7 +5,7 @@ library(cape)
 results_path <- here::here("demo", "demo_rds")
 data_path <- here::here("tests", "testthat", "testdata", "demo_rds_data")
 
-data_file <- file.path(data_path, "cape_pheno.RDS")
+data_file <- file.path(data_path, "cape_data.RDS")
 geno_file <- file.path(data_path, "cape_geno.RDS")
 
 cape_obj <- readRDS(data_file)
