@@ -9,12 +9,15 @@ load_input_and_run_cape(
   yaml_params = NULL,
   results_path = NULL,
   run_parallel = FALSE,
-  results_file = "cross.RData",
+  results_file = "cross.RDS",
   p_or_q = 0.05,
   n_cores = 4,
   initialize_only = FALSE,
   verbose = TRUE,
-  create_report = FALSE
+  param_file = NULL,
+  create_report = FALSE,
+  qtl_id_col = NULL,
+  qtl_na_strings = "-"
 )
 }
 \arguments{
@@ -26,7 +29,7 @@ load_input_and_run_cape(
 
 \item{run_parallel}{boolean, if TRUE runs certain parts of the code as parallel blocks}
 
-\item{results_file}{the name of the saved data_obj RData file. The base name is used as the base name for all saved RData files.}
+\item{results_file}{the name of the saved data_obj RDS file. The base name is used as the base name for all saved RDS files.}
 
 \item{p_or_q}{A threshold indicating the maximum adjusted p value considered}
 
@@ -36,7 +39,13 @@ load_input_and_run_cape(
 
 \item{verbose}{boolean, output goes to stdout}
 
+\item{param_file}{path to yml parameter file for running cape}
+
 \item{create_report}{boolean, if true we create the corresponding HTML report page}
+
+\item{qtl_id_col}{argument for read_population, an optional column number for individual IDs}
+
+\item{qtl_na_strings}{argument for read_population, an optional string for missing values}
 }
 \description{
 This function loads the input file path and runs cape

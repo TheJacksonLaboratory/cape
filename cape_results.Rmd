@@ -1,6 +1,5 @@
 ---
 title: "CAPE results"
-# author: Anna L Tyler
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output: 
   html_document:
@@ -8,16 +7,16 @@ output:
     collapsed: no
     toc: yes
     toc_float: yes
+params:
+    results_dir: here("tests", "testthat", "results")
 ---
-
 
 Set the working directory below and run this workflow to see figures of results
 with explanations.
 
 ```{r results_dir}
-library(here)
-results_dir <- here("tests/testthat/results")
-library(cape);library(knitr)
+library(here);library(cape);library(knitr);library(DT)
+results_dir <- params$results_dir
 ```
 
 ## Introduction
@@ -221,29 +220,25 @@ These tables can be used to identify and plot specific interactions.
 They are sorted by standardized effect size. Interactions and main effects 
 can be plotted using the function plot_effects().
 
-The following is the top of your variant influences table including both 
-main effects and interaction effects. 
+The following tables show the variant influences both with and without
+main effects. 
 
 ### All Influences
 
 ```{r var_inf_table, echo = FALSE}
-var.inf.table <- read.csv(file.path(results_dir, "Variant_Influences.csv"))
+var.inf.table <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences.csv"), stringsAsFactors = FALSE))
 var.inf.table[,1] <- gsub("X", "Chr", var.inf.table[,1])
 var.inf.table[,4] <- gsub("X", "Chr", var.inf.table[,4])
-kable(head(var.inf.table))
+datatable(var.inf.table)
 ```
 
 ### Just Interactions
 
-The following is the top of your variant influeces table including only 
-the interaction effects. 
-
-
 ```{r var_int_table, echo = FALSE}
-var.int.table <- read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"))
+var.int.table <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"), stringsAsFactors = FALSE))
 var.int.table[,1] <- gsub("X", "Chr", var.int.table[,1])
 var.int.table[,4] <- gsub("X", "Chr", var.int.table[,4])
-kable(head(var.int.table))
+datatable(var.int.table)
 ```
 
 
@@ -260,46 +255,45 @@ as the explanatory variables vary continuously.
 
 
 ```{r read_effects}
-data_obj <- readRDS(file.path(results_dir, "cross.RData"))
-geno_obj <- readRDS(file.path(results_dir, "cross_geno.RData"))
-var.inf <- read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"))
-```
-
-### Point Plots
-Point plots show all data points divided up into groups based on the 
-pairwise genotypes. Horizontal line segments show the median
-value for each group.
-
-```{r point_plot}
-#plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
-#plot_type = "p", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
-```
-
-
-### Bar Plots
-
-Bar plots show summary statistics for each group defined by pairwise 
-genotype. Each bar shows the median trait value for the group. Error 
-bars, if specified with the error_bars argument, can show the 
-standard deviation ("sd") or the standard error ("se"). Numbers
-over the bars indicate how many individuals are in each group.
-
-```{r bar_plot}
-#plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
-#plot_type = "b", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+data_obj <- readRDS(file.path(results_dir, "cross.RDS"))
+geno_obj <- readRDS(file.path(results_dir, "cross_geno.RDS"))
+var.inf <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"), stringsAsFactors = FALSE))
 ```
 
 ### Line Plots
 
-Line plots are a standard way to show genetic interactions. Like the bar plots
-they show the median and error for individuals in each genotype group.
-Each bar shows the median trait value for the group. One marker is plotted
+Line plots are a standard way to show genetic interactions. They show the 
+median and error for individuals in each genotype group. One marker is plotted
 along the $x$-axis, and the other is plotted with different line styles.
 
 ```{r line_plot}
-#plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"], 
-#plot_type = "l", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"], 
+plot_type = "l", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
 ```
+
+### Bar Plots
+
+Bar plots also show summary statistics for each group defined by 
+pairwise genotype. Each bar shows the median trait value for the 
+group. Error bars, if specified with the error_bars argument, can 
+show the standard deviation ("sd") or the standard error ("se"). 
+Numbers over the bars indicate how many individuals are in each group.
+
+```{r bar_plot}
+plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
+plot_type = "b", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+```
+
+### Point Plots
+Point plots show all data points divided up into groups based on the 
+pairwise genotypes. Horizontal line segments show the median value for 
+each group.
+
+```{r point_plot}
+plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
+plot_type = "p", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+```
+
 
 ## Modifying effect plots {.tabset .tabset-fade .tabset-pills}
 

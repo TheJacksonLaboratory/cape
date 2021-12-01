@@ -45,7 +45,8 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 			filename <- file.choose()
 		}
 			
-		cross_data <- read.table(filename, na.strings = na_strings, stringsAsFactors = FALSE, sep = delim, header = TRUE)
+		cross_data <- read.table(filename, na.strings = na_strings, stringsAsFactors = FALSE, 
+		sep = delim, header = TRUE)
 
 		if(!is.null(id_col)){
 			ind_names <- cross_data[3:nrow(cross_data),id_col]
@@ -130,22 +131,42 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		#letters, we need to convert them to probabilities
 	    
 	    found_genotype_mode <- 0 #create a flag to determine whether we have figured out how the genotypes are encoded
-	    
+		is_multiparent <- 0 #create a flag to identify a multi-parent cross	    
+
 	    genotype_class <- class(cross_data[,beginGeno])
 	    if(genotype_class != "character"){
 		    all_genotypes <- sort(unique(na.omit(as.numeric(as.matrix(geno))))) #get a vector of all genotypes used
+ 			if(length(all_genotypes) > 3){
+				found_genotype_mode <- 1
+				is_multiparent <- 1
+				
+				fill_array <- function(genotypes){
+					geno_mat <- matrix(0, nrow = nrow(geno), ncol = length(all_genotypes))
+					for(al in 1:ncol(geno_mat)){
+						geno_mat[which(genotypes == all_genotypes[al]),al] <- 1
+						}
+					return(geno_mat)
+					}
+
+				if(verbose){message("I have detected a multi-parent cross\nConverting to array...\n")}
+				geno_list <- lapply(1:dim(geno)[2], function(x) fill_array(geno[,x]))
+
+				#fun <- function(x,y) abind(x,y, along = 3)
+				#geno_array <- Reduce(fun, geno_list)
+
+				geno_array <- array(NA, dim = c(nrow(geno), length(all_genotypes), ncol(geno)))
+				rownames(geno_array) <- ind_names
+				colnames(geno_array) <- sort(all_genotypes)
+				dimnames(geno_array)[[3]] <- colnames(geno)
+				for(m in 1:length(geno_list)){
+					geno_array[,,m] <- geno_list[[m]]
+					}
+		   	}
 		}else{
 		    all_genotypes <- sort(unique(na.omit(as.vector(as.matrix(geno)))))
-		    if(length(all_genotypes) > 3){
-		    	#look for empty genotypes
-		    	if(verbose){cat("I have detected", length(all_genotypes), "genotypes:\n")}
-		    	print(all_genotypes)
-				stop("Please check for missing genotype values or other errors in the genotype data.")
-		   	}
 		}
 		
 		#check to see if the genotypes are encoded as letters
-	
 	  	if(genotype_class == "character"){
 	  		het_present <- grep("H", all_genotypes)
 	  		if(length(all_genotypes) > 2 && length(het_present) == 0){
@@ -190,28 +211,29 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		 	geno <- apply(geno, 2, convert_geno_letter) 
 	  	}
 	    
+		if(!as.logical(is_multiparent)){		
+	 		#check to see if the genotypes are encoded as (0, 1, 2)
+	 		numeric_test <- which(all_genotypes == 2) #check for 2, since 2 is unique to this encoding
+	 		if(length(numeric_test) > 0){
+	 			outside_upper_bound <- which(all_genotypes > 2)
+	 			outside_lower_bound <- which(all_genotypes < 0)
+	 			if(length(outside_upper_bound) > 0 || length(outside_lower_bound) > 0){
+	 				stop("Assuming (0,1,2) coding, but I detected genotypes greater than 2 or less than 0.")
+	 			}
+				if(verbose){cat("The genotypes are encoded as 0, 1, 2.\nConverting to 0, 0.5, 1.\n")}
+				found_genotype_mode <- 1 #set the flag indicating we've figured out the encoding
+				#turn 0, 1, 2 into 0, 0.5 and 1 respectively
+				convert_geno_number <- function(genotypes){
+					genotypes[which(as.numeric(genotypes) == 1)] <- 0.5
+					genotypes[which(as.numeric(genotypes) == 2)] <- 1
+					return(as.numeric(genotypes))
+				}
+			
+				geno <- apply(geno, 2, convert_geno_number) 
 		
-	 	#check to see if the genotypes are encoded as (0, 1, 2)
-	 	numeric_test <- which(all_genotypes == 2) #check for 2, since 2 is unique to this encoding
-	 	if(length(numeric_test) > 0){
-	 		outside_upper_bound <- which(all_genotypes > 2)
-	 		outside_lower_bound <- which(all_genotypes < 0)
-	 		if(length(outside_upper_bound) > 0 || length(outside_lower_bound) > 0){
-	 			stop("Assuming (0,1,2) coding, but I detected genotypes greater than 2 or less than 0.")
-	 		}
-	 		if(verbose){cat("The genotypes are encoded as 0, 1, 2.\nConverting to 0, 0.5, 1.\n")}
-	 		found_genotype_mode <- 1 #set the flag indicating we've figured out the encoding
-	 		#turn 0, 1, 2 into 0, 0.5 and 1 respectively
-			convert_geno_number <- function(genotypes){
-		        genotypes[which(as.numeric(genotypes) == 1)] <- 0.5
-		        genotypes[which(as.numeric(genotypes) == 2)] <- 1
-		        return(as.numeric(genotypes))
-			}
-		
-		 	geno <- apply(geno, 2, convert_geno_number) 
-	
+			}	
 		}
-	 	
+
 	 	#if we still haven't found the genotype mode yet
 	 	#check to see if the genotypes are encoded as probabilities
 	 	if(found_genotype_mode == 0){
@@ -237,20 +259,27 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 	 	}
 	
 	
-	
 		#take out the sex chromosomes and invariant markers
 		x_locale <- grep("X", chr, ignore.case = TRUE)
 		if(length(x_locale) > 0){
 			if(verbose){cat("\nRemoving markers on the X chromosome")}
-			geno <- geno[,-x_locale]
-			chr <- chr[-x_locale]
-			marker_loc <- marker_loc[-x_locale]
+			if(is_multiparent){
+				geno_array <- geno_array[,,-x_locale]
+			}else{
+				geno <- geno[,-x_locale]
+			}
+		chr <- chr[-x_locale]
+		marker_loc <- marker_loc[-x_locale]
 		}
 			
 		y_locale <- grep("Y", chr, ignore.case = TRUE)
 		if(length(y_locale) > 0){
 			if(verbose){cat("\nRemoving markers on the Y chromosome")}
-			geno <- geno[,-y_locale]
+			if(is_multiparent){
+				geno_array <- geno_array[,,-y_locale]
+			}else{
+				geno <- geno[,-y_locale]
+			}
 			chr <- chr[-y_locale]
 			marker_loc <- marker_loc[-y_locale]
 		}
@@ -258,19 +287,25 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 		m_locale <- grep("M", chr, ignore.case = TRUE)
 		if(length(m_locale) > 0){
 			if(verbose){cat("\nRemoving markers on the mitochondrial chromosome")}
-			geno <- geno[,-m_locale]
+			if(is_multiparent){
+				geno_array <- geno_array[,,-m_locale]
+			}else{
+				geno <- geno[,-m_locale]
+			}
 			chr <- chr[-m_locale]
 			marker_loc <- marker_loc[-m_locale]
 		}
 
 		#take out markers with only 1 allele
-		num_allele <- apply(geno, 2, function(x) length(unique(x)))
-		mono_allele <- which(num_allele == 1)
-		if(length(mono_allele) > 0){
-			if(verbose){cat("\nRemoving invariant markers.\n")}
-			geno <- geno[,-mono_allele]
-			chr <- chr[-mono_allele]
-			marker_loc <- marker_loc[-mono_allele]
+		if(!is_multiparent){
+			num_allele <- apply(geno, 2, function(x) length(unique(x)))
+			mono_allele <- which(num_allele == 1)
+			if(length(mono_allele) > 0){
+				if(verbose){cat("\nRemoving invariant markers.\n")}
+				geno <- geno[,-mono_allele]
+				chr <- chr[-mono_allele]
+				marker_loc <- marker_loc[-mono_allele]
+			}
 		}
 	
 		na_locale <- which(is.na(geno))
@@ -278,18 +313,23 @@ read_population <- function(filename = NULL, pheno_col = NULL, geno_col = NULL, 
 			message("Missing values detected in the genotype matrix.\n\tIf you are planning to use the kinship correction, please use impute.geno() to impute the genotype data.\n")
 		}
 	
-		#put in code here to distribute the genotypes between -1 and 1 so we get symmetric m12/m21 null distributions
-		#construct the data object
 		marker_names <- colnames(geno)
 		# colnames(geno) <- 1:dim(geno)[2]
 		rownames(geno) <- rownames(pheno)
 	
-		#scale the genotypes to lie between 0 and 1
-		#even if it's a backcross
-		geno <- geno/max(geno, na.rm = TRUE)
+		if(!is_multiparent){
+			#scale the genotypes to lie between 0 and 1
+			#even if it's a backcross
+			geno <- geno/max(geno, na.rm = TRUE)
+		}
+		
 		marker_num <- 1:dim(geno)[2]
 	
-		final_data <- list(pheno, geno, chr, marker_names, marker_num, marker_loc)
+		if(is_multiparent){
+			final_data <- list(pheno, geno_array, chr, marker_names, marker_num, marker_loc)
+		}else{
+			final_data <- list(pheno, geno, chr, marker_names, marker_num, marker_loc)
+		}
 		names(final_data) <- c("pheno", "geno", "chromosome", "marker_names", "marker_num", "marker_location")
 
 		if(verbose){     

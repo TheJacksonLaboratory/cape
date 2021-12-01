@@ -15,7 +15,7 @@ iron.cape <- qtl2_to_cape(cross = iron.qtl2)
 data_obj <- iron.cape$data_obj
 geno_obj <- iron.cape$geno_obj 
 
-final_cross <- run_cape(pheno_obj = data_obj, geno_obj, results_file = "iron.RData", 
+final_cross <- run_cape(pheno_obj = data_obj, geno_obj, 
 	p_or_q = 0.05, verbose = TRUE, param_file = param_file, 
 	results_path = demo.path)
 

@@ -1,3 +1,4 @@
 demo_plink    CAPE analysis running with PLINK data
 demo_qtl      CAPE analysis running with QTL data (One CSV file containing phenotypes and genotypes data)
 demo_qtl2     CAPE analysis running with R/QTL2 data (One control file, yaml or json, and a list of CSV files)
+demo_rds      CAPE analysis running with RDS data (one file for phenotypes and another one for genotype)

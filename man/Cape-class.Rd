@@ -973,7 +973,7 @@ Save to RDS file
 \describe{
 \item{\code{object}}{data to be saved.}
 
-\item{\code{filename}}{filename of result RData file.}
+\item{\code{filename}}{filename of result RDS file.}
 }
 \if{html}{\out{</div>}}
 }
@@ -990,7 +990,7 @@ Read RDS file
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{filename}}{RData filename to be read.}
+\item{\code{filename}}{RDS filename to be read.}
 }
 \if{html}{\out{</div>}}
 }

@@ -16,7 +16,7 @@ cross_obj <- plink2cape(ped, map, pheno, out, overwrite = TRUE)
 data_obj <- cross_obj$data_obj
 geno_obj <- cross_obj$geno_obj$geno
 
-final_cross <- run_cape(pheno_obj = data_obj, geno_obj, results_file = "plink.RData", 
+final_cross <- run_cape(pheno_obj = data_obj, geno_obj, 
 	p_or_q = 0.05, verbose = TRUE, param_file = param_file, 
 	results_path = results_path)
 

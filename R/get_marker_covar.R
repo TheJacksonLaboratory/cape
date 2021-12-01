@@ -34,49 +34,44 @@ get_marker_covar <- function(data_obj, geno_obj, marker_covar_names){
     allele_locale <- match(just_alleles, geno_names[[2]])
 
 	#================================================
-	# align individuals from genotype and covariate
+	# align individuals from genotype and phenotype
 	# matrices
 	#================================================
-	covar_info <- get_covar(data_obj)
-	common_ind <- intersect(rownames(covar_info$covar_table), rownames(geno_obj))
-	covar_ind_locale <- match(common_ind, rownames(covar_info$covar_table))
+	common_ind <- intersect(rownames(data_obj$pheno), rownames(geno_obj))
 	geno_ind_locale <- match(common_ind, rownames(geno_obj))
+
+	marker_vals <- sapply(1:length(just_markers), function(x) geno_obj[geno_ind_locale,allele_locale[x], marker_locale[x]])
 
 	#================================================
 	# get genotype values for all genetic markers
 	#================================================
-    marker_vals <- sapply(1:length(just_markers), function(x) geno_obj[geno_ind_locale,allele_locale[x], marker_locale[x]])
+	if(all(!is.na(marker_locale))){
+		return(marker_vals)
+	}else{ 
 
+		#================================================
+		# if some values are NAs, these are probably 
+		# covariates
+		#================================================
 
-	#================================================
-	#check for any markers without alleles specified
-	#================================================
-	na_markers <- which(is.na(marker_locale))
-	na_alleles <- which(is.na(allele_locale))
-	marker_no_allele <- setdiff(na_alleles, na_markers)
-	#if there are markers without alleles set,
-	#set allele locale to 2 with a message
-	if(length(marker_no_allele) > 0){ 
-		message('Setting missing alleles to', geno_names[[2]][2], "\n")
-		allele_locale[marker_no_allele] <- 2
+		na_markers <- which(is.na(marker_locale))
+	    
+		#================================================
+		# for any markers whose position couldn't be 
+		# found look among the covariates.
+		#================================================
+		covar_info <- get_covar(data_obj)
+		covar_ind_locale <- match(common_ind, rownames(covar_info$covar_table))
+		for(i in na_markers){
+				covar_locale <- which(covar_info$covar_names == just_markers[i])
+				if(is.na(covar_locale)){
+					warning("Cannot find", marker_covar_names[i], "\n")
+				}else{
+					marker_vals[,i] <- covar_info$covar_table[covar_ind_locale,covar_locale]
+				}
+			}
+		colnames(marker_vals) <- marker_covar_names
+		rownames(marker_vals) <- common_ind
+		return(marker_vals)
 	}
-
-    
-	#================================================
-	# for any markers whose position couldn't be 
-	# found look among the covariates.
-	#================================================
-	
-    for(i in na_markers){
-	  	covar_locale <- which(covar_info$covar_names == just_markers[i])
-	  	if(is.na(covar_locale)){
-		  	warning("Cannot find", marker_covar_names[i], "\n")
-		}else{
-		  	marker_vals[,i] <- covar_info$covar_table[covar_ind_locale,covar_locale]
-		}
-	}
-    
-	colnames(marker_vals) <- marker_covar_names
-	rownames(marker_vals) <- common_ind
-	return(marker_vals)
 }
