@@ -122,8 +122,11 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
   #========================================================================================
   
   
-  if(plot_blocks){pdf(paste("Recomb.Images.Genotype.Net.Thresh.", threshold_power, ".pdf", 
-  sep = ""), width = 10, height = 5)}
+  if(plot_blocks){
+    cat("Plotting linkage_blocks_network")
+    if (data_obj$plot_pdf) { pdf(paste("Recomb.Images.Genotype.Net.Thresh.", threshold_power, ".pdf", sep = ""), width = 10, height = 5) }
+    jpeg(paste("Recomb.Images.Genotype.Net.Thresh.", threshold_power, ".jpg", sep = ""), res = 400, width = 10, height = 5, units = "in")
+  }
   #go through each chromosome separately and find the linkage blocks on each chromosome
   link_blocks <- vector(mode = "list", length = 1)
   num_blocks <- 1

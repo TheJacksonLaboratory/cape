@@ -26,6 +26,7 @@
 #' colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
 #' "other" uses an unrelated color palette for multiple alleles.
 #' @param pdf_label Label for the resulting file. Defaults to "Pairscan.Regression.pdf"
+#' if plotting to pdf, "Pairscan.Regression.jpg" otherwise.
 #'
 #' @return Plots to a pdf
 #' 
@@ -40,7 +41,15 @@
 plot_pairscan <- function(data_obj, pairscan_obj, phenotype = NULL, standardized = FALSE,
 	show_marker_labels = FALSE, show_chr = TRUE, label_chr = TRUE, show_alleles = TRUE,
 	allele_labels = NULL, pos_col = "brown", neg_col = "blue", 
-	color_scheme = c("DO/CC", "other"), pdf_label = "Pairscan.Regression.pdf") {
+	color_scheme = c("DO/CC", "other"), pdf_label = "") {
+
+  if (pdf_label == "") {
+    if (data_obj$plot_pdf) {
+       pdf_label <- "Pairscan.Regression.pdf"
+    } else {
+       pdf_label <- "Pairscan.Regression.jpg"
+    }
+  }
   
   pairscan_results <- pairscan_obj$pairscan_results
   
