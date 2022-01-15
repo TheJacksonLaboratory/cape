@@ -41,15 +41,7 @@
 plot_pairscan <- function(data_obj, pairscan_obj, phenotype = NULL, standardized = FALSE,
 	show_marker_labels = FALSE, show_chr = TRUE, label_chr = TRUE, show_alleles = TRUE,
 	allele_labels = NULL, pos_col = "brown", neg_col = "blue", 
-	color_scheme = c("DO/CC", "other"), pdf_label = "") {
-
-  if (pdf_label == "") {
-    if (data_obj$plot_pdf) {
-       pdf_label <- "Pairscan.Regression.pdf"
-    } else {
-       pdf_label <- "Pairscan.Regression.jpg"
-    }
-  }
+	color_scheme = c("DO/CC", "other"), pdf_label = "Pairscan.Regression.pdf") {
   
   pairscan_results <- pairscan_obj$pairscan_results
   
