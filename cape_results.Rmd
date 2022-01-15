@@ -268,7 +268,7 @@ along the $x$-axis, and the other is plotted with different line styles.
 
 ```{r line_plot}
 plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"], 
-plot_type = "l", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+plot_type = "l", error_bars = "se", pheno_type = "eig", gen_model1 = "Recessive")
 ```
 
 ### Bar Plots
@@ -281,7 +281,7 @@ Numbers over the bars indicate how many individuals are in each group.
 
 ```{r bar_plot}
 plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
-plot_type = "b", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+plot_type = "b", error_bars = "se", pheno_type = "eig", gen_model1 = "Recessive")
 ```
 
 ### Point Plots
@@ -291,7 +291,7 @@ each group.
 
 ```{r point_plot}
 plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
-plot_type = "p", error_bars = "se", pheno_type = "eig", gen_model = "Recessive")
+plot_type = "p", error_bars = "se", pheno_type = "eig", gen_model1 = "Recessive")
 ```
 
 
