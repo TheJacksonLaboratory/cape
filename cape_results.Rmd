@@ -14,7 +14,7 @@ params:
 Set the working directory below and run this workflow to see figures of results
 with explanations.
 
-```{r results_dir}
+```{r results_dir, error=TRUE}
 library(here);library(cape);library(knitr);library(DT)
 results_dir <- params$results_dir
 ```
@@ -50,7 +50,7 @@ The gray bars along the top of the heat map indicate how much overall trait
 variance is explained by each eigentrait. They are always listed in order of 
 the amount of variance explained. 
 
-```{r svd, results = "asis", echo = FALSE}
+```{r svd, results = "asis", echo = FALSE, error=TRUE}
 fig.file <- file.path(results_dir, "svd.jpg")
 fig.line <- paste0("![Eigentraits](", fig.file, "){width=70%}\n")
 cat(fig.line)
@@ -83,7 +83,7 @@ The effects in the plots below are shown as lines, but this, and many other
 plotting parameters can be changed in *plot_singlescan()*.
 
 
-```{r singlescan_effects, results = "asis", echo = FALSE}
+```{r singlescan_effects, results = "asis", echo = FALSE, error=TRUE}
 fig.files <- list.files(path = results_dir, pattern = "Effects.jpg")
 fig.names <- gsub(".jpg", "", fig.files)
 for(i in 1:length(fig.files)){
@@ -101,7 +101,7 @@ The other way we display the single-locus effects is as standardized effects,
 which shows how significant each effect is, rather than the size and the 
 direction of the effects. These standardized effects are shown below.
 
-```{r singlescan_std, results = "asis", echo = FALSE}
+```{r singlescan_std, results = "asis", echo = FALSE, error=TRUE}
 fig.files <- list.files(path = results_dir, pattern = "Standardized.jpg")
 fig.names <- gsub(".jpg", "", fig.files)
 for(i in 1:length(fig.files)){
@@ -139,7 +139,7 @@ matrix type of plot is good for seeing overall patterns of interactions
 for dense matrices, or small numbers of markers. It is not very good for
 visualizing sparse matrices derived from large numbers of markers.
 
-```{r variant_influences, results = "asis", echo = FALSE}
+```{r variant_influences, results = "asis", echo = FALSE, error=TRUE}
 fig.file <- file.path(results_dir, "variant_influences.jpg")
 fig.line <- paste0("![variant influences](", fig.file, "){width=110%}\n")
 cat(fig.line)
@@ -168,7 +168,7 @@ This type of plot is good for seeing patterns in the physical location of
 genetic interactions in sparse networks. It is not good for visualizing 
 networks with many interactions.
 
-```{r circular_network, results = "asis", echo = FALSE}
+```{r circular_network, results = "asis", echo = FALSE, error=TRUE}
 fig.file <- file.path(results_dir, "Network_Circular.jpg")
 fig.line <- paste0("![Circular Network](", fig.file, ")\n")
 cat(fig.line)
@@ -193,9 +193,9 @@ as network hubs. Genomic position information is lost in this view and thus
 this type of network is not good for visualizing the physical location of 
 interacting markers. 
 
-```{r network_layout, results = "asis", echo = FALSE}
+```{r network_layout, results = "asis", echo = FALSE, error=TRUE}
 fig.file <- file.path(results_dir, "Network_View.jpg")
-fig.line <- paste0("![Network Layour](", fig.file, ")\n")
+fig.line <- paste0("![Network Layout](", fig.file, ")\n")
 cat(fig.line)
 ```
 
@@ -225,7 +225,7 @@ main effects.
 
 ### All Influences
 
-```{r var_inf_table, echo = FALSE}
+```{r var_inf_table, echo = FALSE, error=TRUE}
 var.inf.table <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences.csv"), stringsAsFactors = FALSE))
 var.inf.table[,1] <- gsub("X", "Chr", var.inf.table[,1])
 var.inf.table[,4] <- gsub("X", "Chr", var.inf.table[,4])
@@ -234,7 +234,7 @@ datatable(var.inf.table)
 
 ### Just Interactions
 
-```{r var_int_table, echo = FALSE}
+```{r var_int_table, echo = FALSE, error=TRUE}
 var.int.table <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"), stringsAsFactors = FALSE))
 var.int.table[,1] <- gsub("X", "Chr", var.int.table[,1])
 var.int.table[,4] <- gsub("X", "Chr", var.int.table[,4])
@@ -254,7 +254,7 @@ you can use plot_type = "h" to show heatmaps of predicted trait values
 as the explanatory variables vary continuously.
 
 
-```{r read_effects}
+```{r read_effects, error=TRUE}
 data_obj <- readRDS(file.path(results_dir, "cross.RDS"))
 geno_obj <- readRDS(file.path(results_dir, "cross_geno.RDS"))
 var.inf <- as.matrix(read.csv(file.path(results_dir, "Variant_Influences_Interactions.csv"), stringsAsFactors = FALSE))
@@ -266,7 +266,7 @@ Line plots are a standard way to show genetic interactions. They show the
 median and error for individuals in each genotype group. One marker is plotted
 along the $x$-axis, and the other is plotted with different line styles.
 
-```{r line_plot}
+```{r line_plot, error=TRUE}
 plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"], 
 plot_type = "l", error_bars = "se", pheno_type = "eig", gen_model1 = "Recessive")
 ```
@@ -279,7 +279,7 @@ group. Error bars, if specified with the error_bars argument, can
 show the standard deviation ("sd") or the standard error ("se"). 
 Numbers over the bars indicate how many individuals are in each group.
 
-```{r bar_plot}
+```{r bar_plot, error=TRUE}
 plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
 plot_type = "b", error_bars = "se", pheno_type = "eig", gen_model1 = "Recessive")
 ```
@@ -289,7 +289,7 @@ Point plots show all data points divided up into groups based on the
 pairwise genotypes. Horizontal line segments show the median value for 
 each group.
 
-```{r point_plot}
+```{r point_plot, error=TRUE}
 plot_effects(data_obj, geno_obj, var.inf[1,"Source"], var.inf[1,"Target"],
 plot_type = "p", error_bars = "se", pheno_type = "eig", gen_model1 = "Recessive")
 ```
@@ -317,7 +317,7 @@ The plots below might not look very good depending on how many traits you
 are plotting. We encourage you to modify the plotting code to plot other 
 interactions, other trait types, and to change the plot dimensions.
 
-```{r, add_table, echo = FALSE}
+```{r, add_table, echo = FALSE, error=TRUE}
 add_table <- data.frame(cbind(c(0, 0.5, 1), 
 c("Homozygous Reference", "Heterozygous", "Homozogous Alternate"), c(0, 1, 2)))
 colnames(add_table)  <- c("Genotype Value","Genotype", "# Copies of Alternate Allele")
@@ -330,7 +330,7 @@ In the **dominant model**, genotypes are coded as shown in the following
 table. To have an effect the alternate allele can be present in either one
 or two copies.
 
-```{r, dom_table, echo = FALSE}
+```{r, dom_table, echo = FALSE, error=TRUE}
 dom_table <- data.frame(cbind(c(0, 1), c("Homozygous Reference", "Heterozygous and Homozygous Alternate"), c(0, "1 or 2")))
 colnames(dom_table)  <- c("Genotype_Value", "Genotype", "# Copies of Alternate Allele")
 kable(dom_table)
@@ -341,7 +341,7 @@ kable(dom_table)
 In the **recessive model**, genotypes are coded as follows. To have an effect, the 
 alternate allele must be present in two copies. 
 
-```{r, rec_table, echo = FALSE}
+```{r, rec_table, echo = FALSE, error=TRUE}
 rec_table <- data.frame(cbind(c(0, 1), c("Homozygous Reference and Heterozygous", "Homozygous Alternate"), c("0 or 1", 2)))
 colnames(rec_table)  <- c("Genotype_Value", "Genotype", "# Copies of Alternate Allele")
 kable(rec_table)
