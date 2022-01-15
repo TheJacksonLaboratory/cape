@@ -34,21 +34,69 @@ load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, resul
                                     run_parallel = FALSE, results_file = "cross.RDS", p_or_q = 0.05, 
                                     n_cores = 4, initialize_only = FALSE, verbose = TRUE, param_file = NULL,
                                     create_report = FALSE, qtl_id_col = NULL, qtl_na_strings = "-"){
-
+  # create log file
+  cape_log <- file(file.path(results_path, "cape.log"), open="wt")
+  sink(cape_log)
+  sink(cape_log, type="message")
+  
   if (endsWith(input_file, ".yaml") || endsWith(input_file, ".json") || endsWith(input_file, ".yml")) {
     # QTL2 file type (with json/yml control file in a folder)
+    cat("Read_cross2: Read file into a qtl2 object\n")
     qtl2 <- read_cross2(input_file)
-
+    cat("Transform QTL2 object to Cape object\n")
     cape_object <- qtl2_to_cape(qtl2)
     data_obj <- cape_object$data_obj
     geno_obj <- cape_object$geno_obj 
   } else if (endsWith(input_file, ".csv")){
     # QTL file type as a single CSV file
+    cat("Read population into cross object\n")
     cross <- read_population(input_file, id_col = qtl_id_col, 
 	    na_strings = qtl_na_strings, verbose = verbose)
+    cat("Convert from Cape1 object to Cape2 object\n")
     cross_obj <- cape2mpp(cross)
     data_obj <- cross_obj$data_obj
     geno_obj <- cross_obj$geno_obj$geno
+  } else if (endsWith(input_file, ".RDS") || endsWith(input_file, ".rds") 
+             || endsWith(input_file, ".RDATA") || endsWith(input_file, ".rdata")) {
+    datafile <- list.files(input_file, pattern="data", full.names=TRUE)
+    if(datafile == "") {
+      datafile <- list.files(input_file, pattern="pheno")
+    }
+    cat(paste("Data file is: ", datafile, "\n"))
+
+    genofile <- list.files(input_file, pattern="geno", full.names=TRUE)
+    if (genofile == "") {
+      stop("No Geno file (file with a \'geno\' in its name) was found.")
+    }
+    cat(paste("Geno file is: ", genofile, "\n"))
+    
+    cat("Reading data file...\n")
+    cape_obj <- readRDS(datafile)
+    cat("Reading Geno file...\n")
+    geno_obj <- readRDS(genofile)
+    
+    # genotype coding
+    het_val <- 0.3 #could be 0.5, but I think we can go as low as 0.3
+    dom_geno <- geno_obj
+    for(i in 1:dim(dom_geno)[3]){
+      dom_mat <- dom_geno[,,i]
+      dom_mat[which(dom_mat >= het_val)] <- 1
+      dom_mat[which(dom_mat < het_val)] <- 0
+      dom_geno[,,i] <- dom_mat
+    }
+    cat("Creating CAPE object\n")
+    data_obj <- Cape$new(
+      parameter_file = param_file,
+      yaml_parameters = yaml_params,
+      results_path = results_path,
+      pheno = cape_obj$pheno,
+      chromosome = cape_obj$chromosome,
+      marker_num = cape_obj$marker_num,
+      marker_location = cape_obj$marker_location,
+      geno_names = cape_obj$geno_names,
+      geno = dom_geno
+    )
+    
   } else if (endsWith(input_file, ".ped")) {
     # file is PLINK data type and we load the corresponding ped, map and pheno files
     # ped = input_file
@@ -59,16 +107,11 @@ load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, resul
     # geno_obj <- cross_obj$geno_obj$geno
     stop("PLINK data is not yet supported")
   }
-
-  # create log file
-  cape_log <- file(file.path(results_path, "cape.log"), open="wt")
-  sink(cape_log)
-  sink(cape_log, type="message")
   
   final_cross <- run_cape(data_obj, geno_obj, results_file = results_file, p_or_q = p_or_q, 
                           n_cores = n_cores, initialize_only = initialize_only, verbose = verbose, 
                           run_parallel = run_parallel, param_file = param_file,
-                          yaml_params = yaml_params, results_path = results_path)
+                          yaml_params = yaml_params, results_path = results_path, plot_pdf = FALSE)
   
   if(create_report) {
     cat("Rendering result page...\n")
