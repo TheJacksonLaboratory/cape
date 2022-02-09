@@ -26,6 +26,7 @@
 #' colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
 #' "other" uses an unrelated color palette for multiple alleles.
 #' @param pdf_label Label for the resulting file. Defaults to "Pairscan.Regression.pdf"
+#' if plotting to pdf, "Pairscan.Regression.jpg" otherwise.
 #'
 #' @return Plots to a pdf
 #' 

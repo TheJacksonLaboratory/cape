@@ -85,9 +85,16 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   specific_markers = NULL, num_alleles = 50, peak_density = 0.5, window_size = NULL, 
   tolerance = 5, plot_peaks = FALSE, verbose = FALSE, pdf_filename = "Peak.Plots.pdf"){
   
+  # These two lines need to be commented out on the VM, as of now, the pdf device is not supported
   oldPar <- par(no.readonly = TRUE)
   on.exit(oldPar)
-
+  
+  # If plot_pdf is FALSE we change the extension to .jpg
+  if (endsWith(pdf_filename, '.pdf')) {
+    if (!data_obj$plot_pdf) {
+      pdf_filename <- str_replace(pdf_filename, ".pdf", ".jpg")
+    }
+  }
   chr <- unique(data_obj$chromosome)
   
   geno <- get_geno(data_obj, geno_obj)
@@ -257,8 +264,14 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
     if(verbose){cat("\nBinning markers for", colnames(filtered_results)[ph], "\n")}
     pheno_results <- results_no_covar[,ph,,drop=FALSE]
     
-    if(plot_peaks){				
-      pdf(pdf_filename, width = nrow(results_no_covar)*0.5, height = 15)
+    if(plot_peaks){
+      if (data_obj$plot_pdf) {
+        cat(paste("Plotting results_no_covar: ", pdf_filename))
+        pdf(pdf_filename, width = nrow(results_no_covar)*0.5, height = 15) 
+      }
+      cat(paste("Plotting results_no_covar: ", pdf_filename))
+      jpeg(pdf_filename, res = 400, width = nrow(results_no_covar)*0.5, height = 15, units = "in")
+      
       layout_mat <- get_layout_mat(ncol(pheno_results), "upright")
       # quartz(width = 15, height = 15)
       layout(layout_mat)

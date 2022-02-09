@@ -486,6 +486,7 @@ Cape <- R6Class(
     #' @param use_kinship Whether to use a kinship correction in the analysis.
     #' @param kinship_type Which type of kinship matrix to use. Either "overall" or "ltco."
     #' @param transform_to_phenospace whether to transform to phenospace or not.
+    #' @param plot_pdf logical. If TRUE, results are generated as pdf
     initialize = function(
       parameter_file = NULL,
       yaml_parameters = NULL,
@@ -528,7 +529,8 @@ Cape <- R6Class(
       full_net = NULL,
       use_kinship = NULL,
       kinship_type = NULL,
-      transform_to_phenospace = NULL
+      transform_to_phenospace = NULL,
+      plot_pdf = NULL
     ) {
       self$parameter_file <- parameter_file
       self$yaml_parameters <- yaml_parameters
@@ -590,6 +592,7 @@ Cape <- R6Class(
       self$use_kinship <- use_kinship
       self$kinship_type <- kinship_type
       self$transform_to_phenospace <- transform_to_phenospace
+      self$plot_pdf <- plot_pdf
       # assign parameters from the parameter_file
       self$assign_parameters()
       self$check_inputs()

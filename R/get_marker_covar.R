@@ -64,9 +64,11 @@ get_marker_covar <- function(data_obj, geno_obj, marker_covar_names){
 		covar_ind_locale <- match(common_ind, rownames(covar_info$covar_table))
 		for(i in na_markers){
 				covar_locale <- which(covar_info$covar_names == just_markers[i])
-				if(is.na(covar_locale)){
+				if(is.null(covar_locale)){
 					warning("Cannot find", marker_covar_names[i], "\n")
-				}else{
+				} else if (length(covar_locale) == 0) {
+				  warning("Covar_locale has length 0: ", covar_locale, "\n")
+				} else{
 					marker_vals[,i] <- covar_info$covar_table[covar_ind_locale,covar_locale]
 				}
 			}
