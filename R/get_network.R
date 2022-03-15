@@ -102,8 +102,7 @@ get_network <- function(data_obj, geno_obj, p_or_q = 0.05, min_std_effect = 0, s
       marker_blocks[block_marker_locale] <- names(blocks)[i]
     }
     return(marker_blocks)
-  }
-  
+  }  
 
   if(verbose){cat("Creating adjacency matrix...\n")}
   
@@ -131,54 +130,39 @@ get_network <- function(data_obj, geno_obj, p_or_q = 0.05, min_std_effect = 0, s
   
   #remove multiple edges between blocks, take the edge with the maximum magnitude
   edge_attr_comb = list(weight = function(x) x[which.max(abs(x))], name="ignore")
-  simple_net <- simplify(net, remove.multiple = TRUE, remove.loops = FALSE, edge.attr.comb = edge_attr_comb)
+  simple_net <- simplify(net, remove.multiple = TRUE, remove.loops = FALSE, 
+    edge.attr.comb = edge_attr_comb)
   
   adj_mat <- as.matrix(as_adjacency_matrix(simple_net, type = "both", attr = "weight"))
   
-  #put the adjacency matrix in chromosome order
-  split_labels <- unlist(lapply(strsplit(rownames(adj_mat), "Chr"), function(x) x[2]))
-  split_again <- strsplit(split_labels, "_")
-  chr_num <- unlist(lapply(split_again, function(x) x[1]))
-  block_num <- unlist(lapply(split_again, function(x) x[2]))
-  chr_order <- match(chr_num, unique(data_obj$chromosome))
-  new_order <- sort_by_then_by(tableX = cbind(chr_order, block_num), sort_cols = c(1,2), col_type = c("n", "n"), return_order = TRUE)
-  
-  #put in chromosome order
-  adj_mat <- adj_mat[new_order[,1],]
-  adj_mat <- adj_mat[new_order[,2],]
-  adj_mat <- adj_mat[,new_order[,1]]
-  adj_mat <- adj_mat[,new_order[,2]]
-  
+  #put the adjacency matrix in chromosome order  
+  adj_idx <- sapply(names(blocks), function(x) which(rownames(adj_mat) == x))
+  adj_mat <- adj_mat[adj_idx,adj_idx]
   
   if(verbose){cat("Adding main effects...\n")}
   
-  #Now add the phenotypic effects continuing to use the maximum significant effect from each block
-  pheno_mat <- matrix(0, nrow = length(blocks), ncol = length(phenotypes))
-  colnames(pheno_mat) <- phenotypes
-  rownames(pheno_mat) <- names(blocks)
-  
-  pheno_sig_col <- which(colnames(pheno_tables[[1]]) == "p_adjusted")
+  #Add the phenotypic effects continuing to use the maximum significant effect from each block
   
   get_block_inf <- function(block){
     all_markers <- blocks[[block]]
-    
+    pheno_effects <- rep(0, length(pheno_tables))
+    names(pheno_effects) <- names(pheno_tables)
     for(i in 1:length(pheno_tables)){
       sig_inf <- pheno_tables[[i]][which(as.numeric(pheno_tables[[i]][,pheno_sig_col]) <= p_or_q),,drop = FALSE]
       if(length(sig_inf) > 0){
         block_locale <- which(sig_inf[,1] %in% all_markers)
         if(length(block_locale) > 0){
           all_effects <- as.numeric(sig_inf[block_locale,"coef"])/as.numeric(sig_inf[block_locale,"se"])
-          pheno_mat[block,i] <- all_effects[which(abs(all_effects) == max(abs(all_effects)))][1]
+          pheno_effects[i] <- all_effects[which(abs(all_effects) == max(abs(all_effects)))][1]
         }
       }
     }
-    return(pheno_mat)	
+    return(pheno_effects)	
   }
   
-  for(i in 1:length(blocks)){
-    pheno_mat <- get_block_inf(block = names(blocks)[i])
-  }
-  
+  pheno_sig_col <- which(colnames(pheno_tables[[1]]) == "p_adjusted")
+  pheno_mat <- t(sapply(names(blocks), get_block_inf))
+    
   #some alleles are never tested because they do not have any variance
   #but they still get a slot in the pheno_mat. Remove these before
   #binding the results together
