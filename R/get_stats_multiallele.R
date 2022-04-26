@@ -87,10 +87,10 @@ get_stats_multiallele <- function(phenotype, genotype, covar_table, ph_family, r
     
     if(ph_family == "gaussian"){
       locus_test <- anova(model, test = "F")
-      locus_score <- as.matrix(locus_test)[2,4]
+      locus_score <- as.matrix(locus_test)[2,"F"]
     }else{
       locus_test <- anova(model, test = "Chisq")
-      locus_score <- as.matrix(locus_test)[2,4]
+      locus_score <- as.matrix(locus_test)[2,"Deviance"]
     }
     
   }else{

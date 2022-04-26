@@ -29,7 +29,7 @@ calc_delta_errors <- function(markers,beta_m,se,beta_cov) {
   if(n_rows == n_cols){
     act_delta <- solve(beta_main)%*%beta_inter
   }else{
-    act_delta <- try(pseudoinverse(beta_main) %*% beta_inter, silent = TRUE)
+    act_delta <- try(pracma::pinv(beta_main) %*% beta_inter, silent = TRUE)
     if(class(act_delta)[1] == "try-error"){
       act_delta <- c(NA, NA)
     }
