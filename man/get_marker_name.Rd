@@ -21,7 +21,7 @@ returns the name of each marker.
 }
 \examples{
 \dontrun{
-marker_names <- get_marker_chr(data_obj, 1:10)
+marker_names <- get_marker_name(data_obj, 1:10)
 }
 
 }
