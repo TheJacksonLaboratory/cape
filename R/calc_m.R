@@ -31,7 +31,8 @@ calc_m <- function(markers,beta_m) {
   }else{
     tolerance = max(dim(beta_main))*max(D)*.Machine$double.eps
     act_delta <- try(pseudoinverse(beta_main, tol = tolerance)%*%beta_inter, silent = TRUE)
-    if(class(act_delta) == "try-error"){
+    comp_result <- class(act_delta)
+    if(comp_result == "try-error"){
       act_delta <- c(NA, NA)
     }
   }

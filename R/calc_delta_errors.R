@@ -30,7 +30,8 @@ calc_delta_errors <- function(markers,beta_m,se,beta_cov) {
     act_delta <- solve(beta_main)%*%beta_inter
   }else{
     act_delta <- try(pracma::pinv(beta_main) %*% beta_inter, silent = TRUE)
-    if(class(act_delta)[1] == "try-error"){
+    class_comp <- class(act_delta)[1]
+    if(class_comp == "try-error"){
       act_delta <- c(NA, NA)
     }
   }

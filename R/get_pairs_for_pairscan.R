@@ -83,7 +83,8 @@ get_pairs_for_pairscan <- function(gene, covar_names = NULL, max_pair_cor = NULL
     thresh_param <- max_pair_cor
     check_linkage <- function(m1,m2,thresh_param){
       pair_cor <- try(cor(m1, m2, use = "complete"), silent = TRUE)
-      if(class(pair_cor) == "try-error" || pair_cor > max_pair_cor || is.na(pair_cor)) {
+      class_comp <- class(pair_cor)
+      if(class_comp == "try-error" || pair_cor > max_pair_cor || is.na(pair_cor)) {
         return(FALSE) #pair failed check
       }else{
         return(TRUE) #pair passed check

@@ -42,7 +42,8 @@ covarV = NULL, verbose = FALSE){
     
     if(verbose){cat("Chromosomes:", pair_name, "\n")}
     
-    if(class(kin_obj)[1] == "matrix"){
+    class_kin <- class(kin_obj)[1]
+    if(class_kin == "matrix"){
       full_kin <- kin_obj
       if(verbose){cat("\tUsing overall matrix\n")}
     }else{

@@ -27,7 +27,8 @@
 write_population <- function(data_obj, geno_obj, ref_allele = "A", na = NA, 
   filename = "capeData.csv"){
   
-  if(class(geno_obj)=="array"){
+  class_geno <- class(geno_obj)
+  if(class_geno =="array"){
     geno_obj<-geno_obj}
   else{geno_obj<-geno_obj$geno}
   

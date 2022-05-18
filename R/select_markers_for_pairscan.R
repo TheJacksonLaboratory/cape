@@ -101,7 +101,8 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   alleles <- dimnames(geno)[[2]]
   n_alleles <- length(alleles)
   
-  if(class(singlescan_obj) == "list"){
+  class_singlescan <- class(singlescan_obj)
+  if(class_singlescan == "list"){
     ref_allele <- singlescan_obj$ref_allele
     data_obj$ref_allele <- ref_allele
   }else{
@@ -165,7 +166,8 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
     return(data_obj)
   }
   
-  if(class(singlescan_obj) == "list"){ 
+
+  if(class_singlescan == "list"){ 
     results <- abs(singlescan_obj$singlescan_t_stats) #an actual singlescan object
   }else{
     results <- abs(singlescan_obj) #a singlescan matrix for calculating pairscan null distribution

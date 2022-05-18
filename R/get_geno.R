@@ -28,7 +28,8 @@ get_geno <- function(data_obj, geno_obj){
   if(is.null(geno_obj)){
     geno <- data_obj$geno
   }else{
-    if(class(geno_obj) == "array"){
+    class_geno <- class(geno_obj)
+    if(class_geno == "array"){
       geno <- geno_obj
     }else{
       geno <- geno_obj$geno	

@@ -13,7 +13,8 @@
 #' @export
 remove_kin_ind <- function(data_obj, kin_obj){
   
-  if(class(kin_obj) == "matrix"){
+  class_kin <- class(kin_obj)
+  if(class_kin == "matrix"){
     ind_locale <- intersect(rownames(data_obj$pheno), rownames(kin_obj))
     new_kin_obj <- kin_obj[ind_locale, ind_locale]
   }else{

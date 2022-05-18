@@ -73,7 +73,8 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #################################################################
 
   ##check to see if genoprobs have been calculated, if not calculate genotype probablities
-  if(!("calc_genoprob" %in% class(geno_obj)) && locus=="num" && pop=="MPP"){
+  class_geno <- class(geno_obj)
+  if(!("calc_genoprob" %in% class_geno) && locus=="num" && pop=="MPP"){
     
     ### create map and genoprobs using geno file
     
@@ -99,7 +100,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #                                                               #
   #################################################################
   
-  if(!("calc_genoprob" %in% class(geno_obj)) && locus=="char" && pop=="MPP"){
+  if(!("calc_genoprob" %in% class_geno) && locus=="char" && pop=="MPP"){
     
     ### create map and genoprobs using geno file
     map <- data.frame(marker = data_obj$geno_names[[3]],chr = data_obj$geno_names[[3]], 
@@ -128,7 +129,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #          Create probability and map file if RIL            #
   #                                                            #
   ##############################################################
-  if(!("calc_genoprob" %in% class(geno_obj)) && pop=="RIL"){
+  if(!("calc_genoprob" %in% class_geno) && pop=="RIL"){
     write_population(data_obj, geno_obj, filename = file.path(qtl_path, qtl_file), na = "")
     cross <- read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
     unlink(file.path(qtl_path, qtl_file)) #delete the file
@@ -145,7 +146,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   #           Create probability and map file if 2PP           #
   #                                                            #
   ##############################################################
-  if(!("calc_genoprob" %in% class(geno_obj)) && pop=="2PP"){
+  if(!("calc_genoprob" %in% class_geno) && pop=="2PP"){
     write_population(data_obj, geno_obj, filename = file.path(qtl_path, qtl_file), 
     na = "")
     cross <- read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
@@ -205,7 +206,8 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
     
     # TODO these calls to the class() function don't work; it just returns the object type
     # TODO the class(file) call just returns "function"
-    if ("calc_genoprob" %in% class(file)){
+    file_class <- class(file)
+    if ("calc_genoprob" %in% file_class){
       
       ## Convert to allele probabilities if it isn't a 2PP 
       if(pop=="MPP"){ genoprobs<-genoprob_to_alleleprob(genoprobs)}
