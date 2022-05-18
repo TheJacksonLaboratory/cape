@@ -123,7 +123,7 @@ traits. We therefore need the phenotype file in the pheno.txt format
 as described [here](https://zzz.bwh.harvard.edu/plink/data.shtml#pheno).
 
 To generate the data for the demo included in cape, we downloaded 
-example PLINK [hapmap data](http://zzz.bwh.harvard.edu/plink/hapmap1.zip).
+example PLINK [hapmap data](https://zzz.bwh.harvard.edu/plink/res.shtml#hapmap).
 
 To reduce the size of the data set for demonstration purposes, we sampled 
 1000 the SNPs in the data set using PLINK:

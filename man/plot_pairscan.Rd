@@ -51,10 +51,12 @@ see \code{\link{get_color}}}
 takes the same values as pos_col.}
 
 \item{color_scheme}{either "DO/CC" or "other". "DO/CC" uses the official "DO/CC"
-colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
+colors for the DO/CC alleles  
+\url{http://www.csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
 "other" uses an unrelated color palette for multiple alleles.}
 
-\item{pdf_label}{Label for the resulting file. Defaults to "Pairscan.Regression.pdf"}
+\item{pdf_label}{Label for the resulting file. Defaults to "Pairscan.Regression.pdf"
+if plotting to pdf, "Pairscan.Regression.jpg" otherwise.}
 }
 \value{
 Plots to a pdf

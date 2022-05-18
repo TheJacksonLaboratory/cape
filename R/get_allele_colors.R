@@ -1,7 +1,8 @@
 #' Get DO colors
 #' 
 #' This function returns the official DO allele colors.
-#' as described here \url{https://compgen.unc.edu/wp/?page_id=577}
+#' as described here:
+#' \url{http://www.csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
 #' 
 #' @param color_scheme "DO/CC" or "other" The default is "DO/CC"
 #' If set to "other", colors unrelated to the DO/CC are used. 

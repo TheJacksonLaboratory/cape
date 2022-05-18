@@ -43,7 +43,8 @@ condensed into linkage blocks (TRUE) or each individual marker (FALSE)}
 \item{main}{A title for the plot}
 
 \item{color_scheme}{either "DO/CC" or "other". "DO/CC" uses the official "DO/CC"
-colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
+colors for the DO/CC alleles  
+\url{http://www.csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
 "other" uses an unrelated color palette for multiple alleles.}
 
 \item{pos_col}{The color to use for positive main effects and interactions

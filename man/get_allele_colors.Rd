@@ -20,6 +20,7 @@ strain nicknames, and the assigned color values.
 }
 \description{
 This function returns the official DO allele colors.
-as described here \url{https://compgen.unc.edu/wp/?page_id=577}
+as described here:
+\url{http://www.csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
 }
 \keyword{internal}

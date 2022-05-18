@@ -23,7 +23,8 @@
 #' @param neg_col The color to use for negative main effects and interactions
 #' takes the same values as pos_col.
 #' @param color_scheme either "DO/CC" or "other". "DO/CC" uses the official "DO/CC"
-#' colors for the DO/CC alleles  \url{https://compgen.unc.edu/wp/?page_id=577}
+#' colors for the DO/CC alleles  
+#' \url{http://www.csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
 #' "other" uses an unrelated color palette for multiple alleles.
 #' @param pdf_label Label for the resulting file. Defaults to "Pairscan.Regression.pdf"
 #' if plotting to pdf, "Pairscan.Regression.jpg" otherwise.
