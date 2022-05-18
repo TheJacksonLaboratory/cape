@@ -27,7 +27,7 @@ Description: Combined Analysis of Pleiotropy and Epistasis infers predictive
     Tyler, A. L., Lu, W., Hendrick, J. J., Philip, V. M. & Carter, G. W. (2013) <doi:10.1371/journal.pcbi.1003270>.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Depends:
   R (>= 3.6)
 Suggests: 
