@@ -33,7 +33,8 @@ Depends:
 Suggests: 
   testthat (>= 2.3.2),
   knitr (>= 1.29), 
-  rmarkdown
+  rmarkdown,
+  parallel
 Imports:
   abind,
   caTools,
@@ -44,7 +45,6 @@ Imports:
   here,
   igraph,
   Matrix,
-  parallel,
   pheatmap,
   pracma,
   propagate,
@@ -56,7 +56,6 @@ Imports:
   regress (>= 1.3-21),
   shape (>= 1.4.5),
   stats,
-  stringr (>= 1.4.0),
   tools,
   utils,
   yaml (>= 2.2.1)
