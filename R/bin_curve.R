@@ -129,7 +129,7 @@ bin_curve <- function(the_curve, plot_peaks = FALSE, window_size = NULL, amp_min
   
   cols <- c("grey", "white")
   the_curve <- abs(the_curve)
-  smoothed_curve <- runmean(the_curve, window_size)
+  smoothed_curve <- caTools::runmean(the_curve, window_size)
   curve_bins <- rep(NA, length(the_curve))
   
   # hist(smoothed_curve)	
