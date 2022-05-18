@@ -164,7 +164,7 @@ error_prop <- function (data_obj, pairscan_obj, perm = FALSE, verbose = FALSE,
     cl <- makeCluster(n_cores)
     registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
-    cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
+    cape_dir <- gsub("cape_pkg/cape","cape_pkg", cape_dir_full)
     clusterExport(cl, "cape_dir", envir=environment())
     clusterEvalQ(cl, .libPaths(cape_dir))
     # , .packages = 'cape'

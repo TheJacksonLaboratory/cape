@@ -92,7 +92,7 @@ select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj,
   # If plot_pdf is FALSE we change the extension to .jpg
   if (endsWith(pdf_filename, '.pdf')) {
     if (!data_obj$plot_pdf) {
-      pdf_filename <- str_replace(pdf_filename, ".pdf", ".jpg")
+      pdf_filename <- gsub(".pdf",  ".jpg", pdf_filename)
     }
   }
   chr <- unique(data_obj$chromosome)

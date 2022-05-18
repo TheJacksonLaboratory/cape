@@ -168,7 +168,7 @@ genome_wide_threshold_1D <- function(data_obj, geno_obj, n_perm = 100,
     cl <- makeCluster(n_cores)
     registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
-    cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
+    cape_dir <- gsub("cape_pkg/cape","cape_pkg", cape_dir_full)
     clusterExport(cl, "cape_dir", envir=environment())
     clusterEvalQ(cl, .libPaths(cape_dir))
     max_stat <- foreach(p = 1:n_perm, .combine = "rbind")  %dopar% {

@@ -131,7 +131,7 @@ get_pairs_for_pairscan <- function(gene, covar_names = NULL, max_pair_cor = NULL
     cl <- makeCluster(n_cores)
     registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
-    cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
+    cape_dir <- gsub("cape_pkg/cape","cape_pkg", cape_dir_full)
     clusterExport(cl, "cape_dir", envir=environment())
     clusterEvalQ(cl, .libPaths(cape_dir))
     good_pair_list <- foreach(p = 1:length(pair_list)) %dopar% {

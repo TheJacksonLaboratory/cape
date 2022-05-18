@@ -56,7 +56,7 @@ covar_table = NULL, run_parallel = FALSE, n_cores = 4){
     cl <- makeCluster(n_cores)
     registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
-    cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
+    cape_dir <- gsub("cape_pkg/cape","cape_pkg", cape_dir_full)
     clusterExport(cl, "cape_dir", envir=environment())
     clusterEvalQ(cl, .libPaths(cape_dir))
     results <- foreach(m = 1:dim(gene)[[locus_dim]], .packages = 'cape', .export = c("get_stats_multiallele", "check_geno")) %dopar% {

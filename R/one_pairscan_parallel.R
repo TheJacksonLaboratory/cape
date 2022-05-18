@@ -218,7 +218,7 @@ one_pairscan_parallel <- function(data_obj, phenotype_vector, genotype_matrix,
     cl <- makeCluster(n_cores)
     registerDoParallel(cl)
     cape_dir_full <- find.package("cape")
-    cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
+    cape_dir <- gsub("cape_pkg/cape","cape_pkg", cape_dir_full)
     clusterExport(cl, "cape_dir", envir=environment())
     clusterEvalQ(cl, .libPaths(cape_dir))
     pair_results_list <- foreach(m = 1:length(chunked_pairs), .packages = 'cape', .export = c("phenotype_vector", "rankMatrix")) %dopar% {
@@ -276,7 +276,7 @@ one_pairscan_parallel <- function(data_obj, phenotype_vector, genotype_matrix,
       cl <- makeCluster(n_cores)
       registerDoParallel(cl)
       cape_dir_full <- find.package("cape")
-      cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
+      cape_dir <- gsub("cape_pkg/cape","cape_pkg", cape_dir_full)
       clusterExport(cl, "cape_dir", envir=environment())
       clusterEvalQ(cl, .libPaths(cape_dir))
       perm_results <- foreach(p = 1:n_perm, .packages = 'cape', .export = c("phenotype_vector", "rankMatrix")) %dopar% {

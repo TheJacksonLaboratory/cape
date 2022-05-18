@@ -51,7 +51,6 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom Matrix rankMatrix
 #' @importFrom stats var
-#' @importFrom stringr str_replace
 #' 
 #' @examples 
 #' \dontrun{
@@ -295,7 +294,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
         # TODO remove this hardcoded line, supply a variable to the Cape.obj containing the full path
         #cape_dir <- "/Users/ramamg/Desktop/JAX/Projects/CAPE/cape/cape_pkg"
         cape_dir_full <- find.package("cape")
-        cape_dir <- str_replace(cape_dir_full,"cape_pkg/cape","cape_pkg")
+        cape_dir <- gsub("cape_pkg/cape", "cape_pkg", cape_dir_full)
         clusterExport(cl, "cape_dir", envir=environment())
         clusterEvalQ(cl, .libPaths(cape_dir))
         results_by_chr <- foreach(x = 1:dim(c_geno)[locus_dim], .packages = 'cape') %dopar% {
