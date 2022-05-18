@@ -1,6 +1,6 @@
 Package: cape
 Title: Combined Analysis of Pleiotropy and Epistasis for Diversity Outbred Mice
-Version: 3.1.0
+Version: 3.1.1
 Authors@R: c(
     person("Anna", "Tyler", role = c("aut", "cre"), email = "anna.tyler@jax.org"),
     person("Jake", "Emerson", role = c("aut"), email = "jake.emerson@jax.org"),
