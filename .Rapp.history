@@ -1,37 +1,3 @@
-plot.new()#
-plot.window(xlim = c(0, 0.5), ylim = c(-10, 12))#
-for(i in 1:length(seq_non_recomb)){#
-	l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, seq_non_recomb[i]))#
-	l_theta_ind <- pr_theta(theta_ind, num_recomb, seq_non_recomb[i])#
-	LOD <- log10(l_theta_seq/l_theta_ind)#
-	points(theta_vals, LOD, type = "l", col = i)#
-	likely_theta <- theta_vals[which.max(LOD)]#
-	abline(v = likely_theta, col = i)#
-}#
-axis(1)#
-axis(2)#
-legend("topright", col = 1:length(seq_non_recomb), lty = 1, legend = seq_non_recomb)#
-mtext(side = 2, "LOD", line = 2.5)#
-mtext(side = 1, "Recombination Fraction", line = 2.5)#
-abline(h = 3)
-plot.new()#
-plot.window(xlim = c(0, 0.5), ylim = c(-5, 12))#
-for(i in 1:length(seq_non_recomb)){#
-	l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, seq_non_recomb[i]))#
-	l_theta_ind <- pr_theta(theta_ind, num_recomb, seq_non_recomb[i])#
-	LOD <- log10(l_theta_seq/l_theta_ind)#
-	points(theta_vals, LOD, type = "l", col = i)#
-	likely_theta <- theta_vals[which.max(LOD)]#
-	abline(v = likely_theta, col = i)#
-}#
-axis(1)#
-axis(2)#
-legend("topright", col = 1:length(seq_non_recomb), lty = 1, legend = seq_non_recomb)#
-mtext(side = 2, "LOD", line = 2.5)#
-mtext(side = 1, "Recombination Fraction", line = 2.5)#
-abline(h = 3)
-abline(h = 3, lty = 2)
-test_LOD
 theta_test <- 0.375#
 l_theta_test <- pr_theta(theta_test, num_recomb, num_non_recomb)#
 test_LOD <- log10(l_theta_test/l_theta_ind)#
@@ -416,6 +382,10 @@ library(oposSOM)
 library(cape)
 news(cape)
 news(package = "cape")
-library(devtools)
+?utils
+?head
+setwd("~/Documents/R/cap")
 setwd("~/Documents/git_repositories/cape")
 document()
+devtools::document()
+?gsub

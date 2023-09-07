@@ -22,7 +22,8 @@
 #This function puts covariates into the genotype
 #matrix for easier testing of all pairs
 
-get_geno_with_covar <- function(data_obj, geno_obj = NULL, g_covar = TRUE, p_covar = TRUE, for_pairscan = TRUE){
+get_geno_with_covar <- function(data_obj, geno_obj = NULL, g_covar = TRUE, p_covar = TRUE, 
+for_pairscan = TRUE){
   
   
   covar_info <- get_covar(data_obj)
@@ -37,7 +38,7 @@ get_geno_with_covar <- function(data_obj, geno_obj = NULL, g_covar = TRUE, p_cov
   
   
   if(for_pairscan){
-    geno <- data_obj$geno_for_pairscan			
+    geno <- data_obj$geno_for_pairscan
   }else{
     geno <- get_geno(data_obj, geno_obj)
   }

@@ -47,7 +47,7 @@
 #'
 #' @export
 kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4, 
-  pop=c("MPP","2PP","RIL")){
+  pop=c("MPP","2PP","RIL"), results_path = NULL){
   #file input could be geno_obj or genoprobs
   
   
@@ -103,18 +103,20 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   if(!("calc_genoprob" %in% class_geno) && locus=="char" && pop=="MPP"){
     
     ### create map and genoprobs using geno file
-    map <- data.frame(marker = data_obj$geno_names[[3]],chr = data_obj$geno_names[[3]], 
-    		pos = data_obj$geno_names[[3]], stringsAsFactors = F)
+    non_query_idx <- which(data_obj$geno_names[[3]] != "query")
+
+    map <- data.frame(marker = data_obj$geno_names[[3]][non_query_idx],
+        chr = data_obj$geno_names[[3]][non_query_idx], 
+    		pos = data_obj$geno_names[[3]][non_query_idx], 
+        stringsAsFactors = F)
     
-    map$marker <- as.list(data_obj$geno_names$locus)
-    
-    map$chr <- as.list(data_obj$chromosome)
-    
-    map$pos <- as.list(data_obj$marker_location)
+    map$marker <- as.list(data_obj$geno_names$locus[non_query_idx])    
+    map$chr <- as.list(data_obj$chromosome[non_query_idx])
+    map$pos <- as.list(data_obj$marker_location[non_query_idx])
     
     #data_obj$save_rds(map,"map.RDS")
     
-    genoprobs <- probs_doqtl_to_qtl2(geno_obj,map=map,pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
+    genoprobs <- probs_doqtl_to_qtl2(geno_obj, map = map, pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
     genoprobs <- genoprob_to_alleleprob(genoprobs)
     
@@ -122,8 +124,16 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   
   # The QTL format file is a temporary object for transferring population data to R.qtl
   qtl_file <- "QTL_format.csv"
-  qtl_path <- data_obj$results_path
-  
+  qtl_path <- results_path
+
+  if(is.null(results_path)){
+    qtl_path <- data_obj$results_path
+  }
+
+  if(is.null(qtl_path)){
+    stop("Please provide a path for saving the output file.")
+  }
+
   ##############################################################
   #                                                            #
   #          Create probability and map file if RIL            #
@@ -131,14 +141,14 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
   ##############################################################
   if(!("calc_genoprob" %in% class_geno) && pop=="RIL"){
     write_population(data_obj, geno_obj, filename = file.path(qtl_path, qtl_file), na = "")
-    cross <- read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,.5,1))
+    cross <- read.cross(format="csv", dir = qtl_path, qtl_file, genotypes=c(0,0.5,1))
     unlink(file.path(qtl_path, qtl_file)) #delete the file
+    map <- lapply(cross$geno, function(x) x$map)
+    map <- map[which(names(map) != 0)]
     cross <- convert2risib(cross)
     cross <- jittermap(cross)
-    qtlprobs <- calc_genoprob(cross)
-    probs <- probs_qtl_to_qtl2(qtlprobs)
-    genoprobs <- probs$probs
-    map <- probs$map
+    cross2 <- convert2cross2(cross)
+    genoprobs <- calc_genoprob(cross2)
   }
   
   ##############################################################

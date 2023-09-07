@@ -87,6 +87,7 @@ singlescan <- function(data_obj, geno_obj, kin_obj = NULL, n_perm = 0,
   pheno <- get_pheno(data_obj, scan_what)	
   n_phe = dim(pheno)[2]
   chr_which <- unique(data_obj$chromosome)
+  chr_which <- chr_which[which(chr_which != 0)]
   
   #get the covariates and assign the variables
   #to the local environment

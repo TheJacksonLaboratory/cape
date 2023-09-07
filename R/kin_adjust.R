@@ -32,7 +32,7 @@ covarV = NULL, verbose = FALSE){
   
   get_g=function(pair = NULL, phenotype, covarV){
 
-    if(is.null(pair) || unique(pair) == "overall"){pair = NULL}
+    if(is.null(pair) || pair[1] == "overall"){pair = NULL}
     
     if(is.null(pair)){
       pair_name <- "overall"
