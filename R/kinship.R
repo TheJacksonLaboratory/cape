@@ -116,7 +116,7 @@ kinship <- function(data_obj, geno_obj, type=c("overall"), n_cores=4,
     
     #data_obj$save_rds(map,"map.RDS")
     
-    genoprobs <- probs_doqtl_to_qtl2(geno_obj, map = map, pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
+    genoprobs <- probs_doqtl_to_qtl2(geno_obj[,,non_query_idx], map = map, pos_column = "pos") #creates genotype probabilities from DOqtl...can only be used for DO genotype file
     
     genoprobs <- genoprob_to_alleleprob(genoprobs)
     
