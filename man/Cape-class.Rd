@@ -361,27 +361,27 @@ by \code{\link{direct_influence}}.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-assign_parameters}{\code{Cape$assign_parameters()}}
-\item \href{#method-check_inputs}{\code{Cape$check_inputs()}}
-\item \href{#method-check_geno_names}{\code{Cape$check_geno_names()}}
-\item \href{#method-new}{\code{Cape$new()}}
-\item \href{#method-plotSVD}{\code{Cape$plotSVD()}}
-\item \href{#method-plotSinglescan}{\code{Cape$plotSinglescan()}}
-\item \href{#method-plotPairscan}{\code{Cape$plotPairscan()}}
-\item \href{#method-plotVariantInfluences}{\code{Cape$plotVariantInfluences()}}
-\item \href{#method-plotNetwork}{\code{Cape$plotNetwork()}}
-\item \href{#method-plotFullNetwork}{\code{Cape$plotFullNetwork()}}
-\item \href{#method-writeVariantInfluences}{\code{Cape$writeVariantInfluences()}}
-\item \href{#method-set_pheno}{\code{Cape$set_pheno()}}
-\item \href{#method-set_geno}{\code{Cape$set_geno()}}
-\item \href{#method-create_covar_table}{\code{Cape$create_covar_table()}}
-\item \href{#method-save_rds}{\code{Cape$save_rds()}}
-\item \href{#method-read_rds}{\code{Cape$read_rds()}}
+\item \href{#method-Cape-assign_parameters}{\code{Cape$assign_parameters()}}
+\item \href{#method-Cape-check_inputs}{\code{Cape$check_inputs()}}
+\item \href{#method-Cape-check_geno_names}{\code{Cape$check_geno_names()}}
+\item \href{#method-Cape-new}{\code{Cape$new()}}
+\item \href{#method-Cape-plotSVD}{\code{Cape$plotSVD()}}
+\item \href{#method-Cape-plotSinglescan}{\code{Cape$plotSinglescan()}}
+\item \href{#method-Cape-plotPairscan}{\code{Cape$plotPairscan()}}
+\item \href{#method-Cape-plotVariantInfluences}{\code{Cape$plotVariantInfluences()}}
+\item \href{#method-Cape-plotNetwork}{\code{Cape$plotNetwork()}}
+\item \href{#method-Cape-plotFullNetwork}{\code{Cape$plotFullNetwork()}}
+\item \href{#method-Cape-writeVariantInfluences}{\code{Cape$writeVariantInfluences()}}
+\item \href{#method-Cape-set_pheno}{\code{Cape$set_pheno()}}
+\item \href{#method-Cape-set_geno}{\code{Cape$set_geno()}}
+\item \href{#method-Cape-create_covar_table}{\code{Cape$create_covar_table()}}
+\item \href{#method-Cape-save_rds}{\code{Cape$save_rds()}}
+\item \href{#method-Cape-read_rds}{\code{Cape$read_rds()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-assign_parameters"></a>}}
-\if{latex}{\out{\hypertarget{method-assign_parameters}{}}}
+\if{html}{\out{<a id="method-Cape-assign_parameters"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-assign_parameters}{}}}
 \subsection{Method \code{assign_parameters()}}{
 Assigns variables from the parameter file to attributes in the Cape object.
 \subsection{Usage}{
@@ -390,8 +390,8 @@ Assigns variables from the parameter file to attributes in the Cape object.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-check_inputs"></a>}}
-\if{latex}{\out{\hypertarget{method-check_inputs}{}}}
+\if{html}{\out{<a id="method-Cape-check_inputs"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-check_inputs}{}}}
 \subsection{Method \code{check_inputs()}}{
 Checks the dimensionality of inputs and its consistency.
 \subsection{Usage}{
@@ -400,8 +400,8 @@ Checks the dimensionality of inputs and its consistency.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-check_geno_names"></a>}}
-\if{latex}{\out{\hypertarget{method-check_geno_names}{}}}
+\if{html}{\out{<a id="method-Cape-check_geno_names"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-check_geno_names}{}}}
 \subsection{Method \code{check_geno_names()}}{
 Checks genotype names.
 \subsection{Usage}{
@@ -410,8 +410,8 @@ Checks genotype names.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Cape-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-new}{}}}
 \subsection{Method \code{new()}}{
 Initialization method.
 \subsection{Usage}{
@@ -631,8 +631,8 @@ individual markers. See \code{\link{plot_network}} and \code{\link{get_network}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plotSVD"></a>}}
-\if{latex}{\out{\hypertarget{method-plotSVD}{}}}
+\if{html}{\out{<a id="method-Cape-plotSVD"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-plotSVD}{}}}
 \subsection{Method \code{plotSVD()}}{
 Plot Eigentraits
 \subsection{Usage}{
@@ -648,8 +648,8 @@ Plot Eigentraits
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plotSinglescan"></a>}}
-\if{latex}{\out{\hypertarget{method-plotSinglescan}{}}}
+\if{html}{\out{<a id="method-Cape-plotSinglescan"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-plotSinglescan}{}}}
 \subsection{Method \code{plotSinglescan()}}{
 Plot results of single-locus scans
 \subsection{Usage}{
@@ -712,8 +712,8 @@ specified in \code{\link{singlescan}} can be plotted.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plotPairscan"></a>}}
-\if{latex}{\out{\hypertarget{method-plotPairscan}{}}}
+\if{html}{\out{<a id="method-Cape-plotPairscan"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-plotPairscan}{}}}
 \subsection{Method \code{plotPairscan()}}{
 Plot the result of the pairwise scan
 \subsection{Usage}{
@@ -743,8 +743,8 @@ Plot the result of the pairwise scan
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plotVariantInfluences"></a>}}
-\if{latex}{\out{\hypertarget{method-plotVariantInfluences}{}}}
+\if{html}{\out{<a id="method-Cape-plotVariantInfluences"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-plotVariantInfluences}{}}}
 \subsection{Method \code{plotVariantInfluences()}}{
 Plot cape coefficients
 \subsection{Usage}{
@@ -789,8 +789,8 @@ than individual markers.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plotNetwork"></a>}}
-\if{latex}{\out{\hypertarget{method-plotNetwork}{}}}
+\if{html}{\out{<a id="method-Cape-plotNetwork"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-plotNetwork}{}}}
 \subsection{Method \code{plotNetwork()}}{
 Plots cape results as a circular network
 \subsection{Usage}{
@@ -818,8 +818,8 @@ default is 10.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-plotFullNetwork"></a>}}
-\if{latex}{\out{\hypertarget{method-plotFullNetwork}{}}}
+\if{html}{\out{<a id="method-Cape-plotFullNetwork"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-plotFullNetwork}{}}}
 \subsection{Method \code{plotFullNetwork()}}{
 Plot the final epistatic network in a traditional network view.
 \subsection{Usage}{
@@ -884,8 +884,8 @@ default is -1.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-writeVariantInfluences"></a>}}
-\if{latex}{\out{\hypertarget{method-writeVariantInfluences}{}}}
+\if{html}{\out{<a id="method-Cape-writeVariantInfluences"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-writeVariantInfluences}{}}}
 \subsection{Method \code{writeVariantInfluences()}}{
 Write significant cape interactions to a csv file.
 \subsection{Usage}{
@@ -912,8 +912,8 @@ interaction effects (FALSE) in the output table, default is TRUE.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_pheno"></a>}}
-\if{latex}{\out{\hypertarget{method-set_pheno}{}}}
+\if{html}{\out{<a id="method-Cape-set_pheno"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-set_pheno}{}}}
 \subsection{Method \code{set_pheno()}}{
 Set phenotype
 \subsection{Usage}{
@@ -929,8 +929,8 @@ Set phenotype
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_geno"></a>}}
-\if{latex}{\out{\hypertarget{method-set_geno}{}}}
+\if{html}{\out{<a id="method-Cape-set_geno"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-set_geno}{}}}
 \subsection{Method \code{set_geno()}}{
 Set genotype
 \subsection{Usage}{
@@ -946,8 +946,8 @@ Set genotype
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-create_covar_table"></a>}}
-\if{latex}{\out{\hypertarget{method-create_covar_table}{}}}
+\if{html}{\out{<a id="method-Cape-create_covar_table"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-create_covar_table}{}}}
 \subsection{Method \code{create_covar_table()}}{
 Create covariate table
 \subsection{Usage}{
@@ -963,8 +963,8 @@ Create covariate table
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-save_rds"></a>}}
-\if{latex}{\out{\hypertarget{method-save_rds}{}}}
+\if{html}{\out{<a id="method-Cape-save_rds"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-save_rds}{}}}
 \subsection{Method \code{save_rds()}}{
 Save to RDS file
 \subsection{Usage}{
@@ -982,8 +982,8 @@ Save to RDS file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_rds"></a>}}
-\if{latex}{\out{\hypertarget{method-read_rds}{}}}
+\if{html}{\out{<a id="method-Cape-read_rds"></a>}}
+\if{latex}{\out{\hypertarget{method-Cape-read_rds}{}}}
 \subsection{Method \code{read_rds()}}{
 Read RDS file
 \subsection{Usage}{

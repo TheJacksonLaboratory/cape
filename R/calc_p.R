@@ -11,10 +11,6 @@
 #' 
 #' @importFrom stats p.adjust
 #' 
-#' @examples 
-#' \dontrun{
-#' data_obj <- calc_p(data_obj, "fdr")
-#' }
 #' @export
 calc_p <- function(data_obj, pval_correction = 
                      c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY","fdr", "none")) {

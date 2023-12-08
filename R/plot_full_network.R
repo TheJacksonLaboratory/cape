@@ -70,10 +70,6 @@
 #' @importFrom graphics arrows
 #' @importFrom stats dist na.omit
 #' 
-#' @examples 
-#' \dontrun{
-#' plot_full_network(data_obj)
-#' }
 #' 
 #' @export
  

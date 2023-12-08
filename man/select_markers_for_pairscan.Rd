@@ -98,13 +98,6 @@ been selected (plus or minus the number set in \code{tolerance}).
 If the number of target alleles exceeds the number of markers
 genotyped, all alleles will be selected automatically.
 }
-\examples{
-\dontrun{
-#select 100 alleles to run through pairscan
-data_obj <- select_markers_for_pairscan(data_obj, singlescan_obj, geno_obj, num_alleles = 100)
-}
-
-}
 \seealso{
 \code{\link{bin_curve}}, \code{\link{singlescan}}
 }

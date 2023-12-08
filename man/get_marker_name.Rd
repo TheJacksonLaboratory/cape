@@ -19,9 +19,3 @@ markers vector indicating the name of each marker
 Given a vector of marker numbers, this function 
 returns the name of each marker.
 }
-\examples{
-\dontrun{
-marker_names <- get_marker_name(data_obj, 1:10)
-}
-
-}

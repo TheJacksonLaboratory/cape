@@ -124,11 +124,3 @@ fits linear models to each trait and both markers specified.
 It uses those models to predict phenotype values along continuously
 valued genotype bins and plots the predicted values as a heatmap.
 }
-\examples{
-\dontrun{
-marker1 <- dimnames(geno_obj)[[3]][1]
-marker2 <- dimnames(geno_obj)[[3]][2]
-plot_effects(data_obj, geno_obj, plot_type = "l", error_bars = "se")
-}
-
-}

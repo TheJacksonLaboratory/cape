@@ -46,15 +46,6 @@
 #' 
 #' @importFrom graphics barplot image
 #' 
-#' @examples 
-#' \dontrun{
-#' #plot all eigentraits
-#' plot_svd(data_obj)
-#' 
-#' #plot only eigentraits being run in cape
-#' plot_svd(data_obj, just_selected_et = TRUE)
-#' }
-#' 
 #' @export
 plot_svd <- function(data_obj, orientation = c("vertical", "horizontal"), neg_col = "blue", 
                     pos_col =  "brown", light_dark = "f", pheno_labels = NULL, cex_barplot_axis = 1.7, 

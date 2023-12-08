@@ -9,7 +9,8 @@ kinship(
   geno_obj,
   type = c("overall"),
   n_cores = 4,
-  pop = c("MPP", "2PP", "RIL")
+  pop = c("MPP", "2PP", "RIL"),
+  results_path = NULL
 )
 }
 \arguments{
@@ -23,6 +24,9 @@ kinship(
 
 \item{pop}{population type, "MPP" (multi-parental population), 
 "2PP" (2 parents), "RIL" (recombinant inbred line)}
+
+\item{results_path}{Optional path to where temporary files will be saved. 
+If NULL, the path is taken from data_obj$results_path.}
 }
 \value{
 This function returns an n by n matrix, where 
@@ -53,10 +57,4 @@ among R/qtl2, R/qtl, and DOQTL.
 \url{https://kbroman.org/qtl2/},
 \url{https://github.com/rqtl/qtl2convert/}.
 And genoprob_to_alleleprob from qtl2.
-}
-\examples{
-\dontrun{
-K <- kinship(data_obj, geno_obj)
-}
-
 }

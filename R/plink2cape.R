@@ -24,11 +24,6 @@
 #' PLINK: a toolset for whole-genome association and population-based 
 #' linkage analysis. American Journal of Human Genetics, 81.
 #' 
-#' @examples 
-#' \dontrun{
-#' #convert files with default names to a data_obj
-#' data_obj <- plink2cape()
-#' }
 #' @export
 plink2cape <- function(ped = "test.ped", map = "test.map", pheno = "test.pheno", 
                        out = "out.csv", missing_genotype = "0", no_fid = FALSE,

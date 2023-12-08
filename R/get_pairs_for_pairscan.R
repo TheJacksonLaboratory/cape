@@ -39,12 +39,6 @@
 #' @import foreach
 #' @importFrom doParallel registerDoParallel
 #' 
-#' @examples 
-#' \dontrun{
-#' gene <- data_obj$geno_for_pairscan
-#' data_obj <- get_pairs_for_pairscan(gene)
-#' }
-#' 
 #' @export
 get_pairs_for_pairscan <- function(gene, covar_names = NULL, max_pair_cor = NULL, 
 	min_per_genotype = NULL, run_parallel = FALSE, n_cores = 4, verbose = FALSE){

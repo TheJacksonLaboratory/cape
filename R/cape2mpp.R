@@ -12,10 +12,6 @@
 #' These two objects must be separated again to run through 
 #' cape.
 #'
-#' @examples 
-#' \dontrun{
-#' new_data_obj <- cape2mpp(old_data_obj)
-#' }
 #' @export
 cape2mpp <- function(data_obj, geno_obj = NULL){
 	

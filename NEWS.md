@@ -1,5 +1,15 @@
 ## New in version 3.1.1
 
+## New in version 3.1.2
+
+### Bug Fixes
+
+* Edited vignette to better explain how to set up the code
+    and directories so that the demo code runs.
+
+* We removed examples from function documentation that do not 
+    work outside of run_cape
+
 ### New Features
 
 * `pracma::pinv()` replaced `pseudoinverse()`.

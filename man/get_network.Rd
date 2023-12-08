@@ -65,9 +65,3 @@ This function converts the significant cape
 interactions to an adjacency matrix, which 
 is then used by \code{\link{plot_network}}
 }
-\examples{
-\dontrun{
-data_obj <- get_network(data_obj, geno_obj)
-}
-
-}

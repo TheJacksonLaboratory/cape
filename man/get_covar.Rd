@@ -21,9 +21,3 @@ covar_table: A matrix holding the individual values for each covariate.
 This function returns information about the covariates
 specified for the cape run.
 }
-\examples{
-\dontrun{
-covar_info <- get_covar(data_obj)
-}
-
-}

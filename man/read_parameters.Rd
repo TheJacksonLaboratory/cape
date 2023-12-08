@@ -21,9 +21,3 @@ be included. This may not matter for the given
 run, but it's handy to be able to check for 
 any and all potential variables.
 }
-\examples{
-\dontrun{
-param_table <- read_parameters()
-}
-
-}

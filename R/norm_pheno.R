@@ -14,11 +14,6 @@
 #' the data object will have normalized and/or mean-centered
 #' traits. The function also preserves the original trait matrix
 #' in a slot called raw_pheno.
-#' 
-#' @examples 
-#' \dontrun{
-#' data_obj <- norm_pheno(data_obj)
-#' }
 #'
 #'@export
 norm_pheno <- function(data_obj, mean_center = TRUE){

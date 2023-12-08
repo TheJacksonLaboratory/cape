@@ -11,12 +11,6 @@
 #' @return A vector the same length as the input markers vector
 #' indicating the genomic coordinate of each marker.
 #'
-#' @examples 
-#' \dontrun{
-#' marker_names <- dimnames(geno_obj)[[3]]
-#' marker_loc <- get_marker_location(data_obj, marker_names)
-#' }
-#'
 #' @export
 
 get_marker_location <- function(data_obj, markers){

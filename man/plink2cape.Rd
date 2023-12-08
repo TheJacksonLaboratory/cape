@@ -53,12 +53,6 @@ Convert plink2 files to cape format
 For further information about PLINK and its file formats,
 see \url{https://zzz.bwh.harvard.edu/plink/}
 }
-\examples{
-\dontrun{
-#convert files with default names to a data_obj
-data_obj <- plink2cape()
-}
-}
 \references{
 Purcell S, Neale B, Todd-Brown K, Thomas L, Ferreira MAR, 
 Bender D, Maller J, Sklar P, de Bakker PIW, Daly MJ & Sham PC (2007) 

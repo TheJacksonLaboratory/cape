@@ -36,8 +36,3 @@ Because we use SVD in this step, there can be
 no missing values in the phenotype matrix. Any individuals
 with missing values are removed with a message.
 }
-\examples{
-\dontrun{
-data_obj <- get_eigentraits(data_obj)
-}
-}

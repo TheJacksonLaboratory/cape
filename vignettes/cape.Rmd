@@ -47,6 +47,37 @@ library(cape)
 The current version of cape recognizes data in multiple formats: R/qtl, 
 R/qtl2, and PLINK.
 
+Data for the demonstrations below can be found in the demo folder 
+CAPE github site: https://github.com/TheJacksonLaboratory/cape
+
+Use the green "Code" button in the upper right of the page to
+download the repository and put it where you keep code or 
+projects or other things of this nature. The top level of the
+folder has a .here file in it from the 
+[here package](https://CRAN.R-project.org/package=here).
+This will anchor any R session opened in this folder to the top 
+level and path names can be constructed using just folder names. For
+example, to create a path that points to the parameter file in the 
+demo_PLINK folder, use the following command:
+
+`param_file_path <- here("demo", "demo_PLINK", "0_plink.parameters_0.yml")`
+
+Open R and set the working directory to cape_master after downloading
+the code linked above. This will allow the relative paths constructed
+with `here()` in the demo code to find the data and parameter files it
+needs.
+
+Also make sure the package here is installed and loaded.
+
+```{r here, eval = FALSE}
+install.packages("here")
+library("here")
+```
+
+```{r load_here, echo = FALSE, message = FALSE, error = FALSE, warning = FALSE}
+library("here")
+```
+
 ### Loading data formatted for qtl
 In addition to supporting the newer R/qtl2 (@broman2019r) format, we also support 
 the R/qtl (@rqtl) csv format for cape. You can learn more about this format
@@ -59,13 +90,16 @@ with cape for an example. Also see `?read_population` for more details.
 To read in data with this format, we use `read_population`, followed
 by `cape2mpp`, which updates the object to the newer cape format.
 
-The following code is from the demo_qtl example.
+The two final objects, `obesity_cross` and `obesity_geno` hold all
+the data that `cape` needs to run. `obesity_cross` holds phenotype
+and metadata, and `obesity_geno` holds genotype data. These can be
+use in the `pheno_obj` and `geno_obj` arguments in the `run_cape()` 
+function, which we will use later on.
+
 
 ```{r read_csv_format}
-results_path <- here::here("demo", "demo_qtl")
-data_path <- here::here("tests", "testthat", "testdata", "demo_qtl_data")
-data_file <- file.path(data_path, "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
-param_file <- file.path(results_path, "NON_NZO.parameters.yml")
+data_file <- here("demo", "demo_qtl", "data", "NON_NZO_Reifsnyder_pgm_CAPE_num.csv")
+param_file <- here("demo", "demo_qtl", "0_NON_NZO.parameters_0.yml")
 
 cross <- read_population(data_file)
 cross_obj <- cape2mpp(cross)
@@ -75,9 +109,9 @@ obesity_geno <- cross_obj$geno_obj$geno
 
 ### Loading data formatted for qtl2
 Many researchers are now using the updated [R/qtl2](https://kbroman.org/qtl2/)
-(@broman2019r), and we also provide ways to handle data in this format. If you are 
-not familiar with qtl2, we highly recommend reading about it and testing it out. 
-R/qtl2 is the definitive genetic mapping package, and the outstanding 
+(@broman2019r), and we also provide ways to handle data in this format. If you 
+are not familiar with qtl2, we highly recommend reading about it and testing it 
+out. R/qtl2 is the definitive genetic mapping package, and the outstanding 
 documentation can answer many basic questions about genetic mapping.  
 
 The following code shows how to access remote example data provided by Karl Broman
@@ -125,12 +159,12 @@ The following code shows how to read in PLINK data, use the function
 This code is also included in demo_PLINK.R, which is included with cape.
 
 ```{r read_plink, eval = FALSE}
-data_path <- here::here("tests", "testthat", "testdata")
+data_path <- here("demo", "demo_PLINK", "data")
 ped <- file.path(data_path, "test.ped")
 map <- file.path(data_path, "test.map")
 pheno <- file.path(data_path, "test.pheno")
 out <- file.path(data_path, "test.csv")
-param_file <- file.path(results_path, "plink.parameters.yml")
+param_file <- here("demo", "demo_PLINK", "0_plink.parameters_0.yml")
 
 cross_obj <- plink2cape(ped, map, pheno, out = "out.csv")
 
@@ -159,7 +193,8 @@ all measured at age 24 weeks. In addition, there is a variable
 called ``pgm'' indicating whether the mother of each mouse was normal 
 weight (0) or obese (1). 
 
-These data can be accessed through the demo_qtl demonstration code.
+These data can be accessed through the demo_qtl demonstration code,
+which was loaded above.
 
 ## Data visualization
 Before proceeding with an analysis we recommend exploring the data visually.
@@ -469,30 +504,43 @@ of the influence of LD in your population.
 ## Running cape
 Unlike previous versions of cape, which required the user to perform many 
 individual steps, this version of cape can be run with a single command 
-`run_cape`. Now that we've done the hard work of reading in our data
-and specifying our parameters, we can sit back and let the computer take 
-care of the rest. The line below runs the complete cape pipeline for the 
+`run_cape`. The line below runs the complete cape pipeline for the 
 demo NON/NZO mouse backcross. If you run this line interactively, set verbose
 to TRUE to see the progress printed to your screen. When verbose is set
 to FALSE, important messages are still printed, but printing of progress 
 is suppressed.
 
+*Note on results:* To have the results files saved so that you can
+visualize them without further commands, open up the parameter file
+0_NON_NZO.parameters_0.yml, and set `save_results` to `true`. This
+will tell cape to save results files to the results directory. Otherwise,
+only the `final_cross` object is returned, and plots must be generated
+using further commands.
+
+To use the saved results, set `use_saved_results` to `true`. This 
+will enable you to read in and use previously saved results in case
+the cape run halts before finishing.
+
 ```{r run_cape}
-final_cross <- run_cape(obesity_cross, obesity_geno, results_file = "NON_NZO.RData", 
+param_file <- here("demo", "demo_qtl", "0_NON_NZO.parameters_0.yml")
+results_path <- here("demo", "demo_qtl")
+
+final_cross <- run_cape(obesity_cross, obesity_geno, results_file = "NON_NZO", 
 p_or_q = 0.05, verbose = FALSE, param_file = param_file, results_path = results_path)
 ```
 
 The benefit to this new function is obvious: cape is now much easier to run. 
-However, it comes with a sizeable reduction in flexibility. For most users the 
-benefit of the increased ease of use will far outweigh the decrease in 
+However, it comes with a sizeable reduction in flexibility. For most users 
+the benefit of the increased ease of use will far outweigh the decrease in 
 flexibility.
 
 If you do need of more flexibility, all functions in the function 
 `run_cape` are exported, so the entire analysis can be run step-by-step 
 as it was in earlier versions. All plotting functions are also exported 
 to allow greater flexibility in plotting. Although `run_cape` does some 
-plotting automatically, you may wish to re-run some plotting functions 
-with your own settings. 
+plotting automatically, as long as `save_results` is set to true in the
+parameter file, you may wish to re-run some plotting functions with your 
+own settings. 
 
 However you choose to run cape, the cape team is very happy to answer 
 any questions and to help with running or interpreting any cape analysis.
@@ -563,7 +611,7 @@ results file and using `plot_singlescan` with parameters different from
 those in `run_cape.`
 
 ```{r single_plot, eval = FALSE}
-singlescan_obj <- readRDS(here::here("demo", "demo_qtl", "NON_NZO_singlescan.RData"))
+singlescan_obj <- readRDS(here("demo", "demo_qtl", "results", "NON_NZO_singlescan.RDS"))
 plot_singlescan(final_cross, singlescan_obj, line_type = "h", lwd = 2, 
 covar_label_size = 1)
 ```

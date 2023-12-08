@@ -23,9 +23,3 @@ used in cape. This includes markers on the sex
 chromosomes, mitochondrial markers, and any 
 invariant markers.
 }
-\examples{
-\dontrun{
-data_obj <- remove_unused_markers(data_obj, geno_obj)
-}
-
-}

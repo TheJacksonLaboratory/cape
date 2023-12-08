@@ -11,11 +11,6 @@
 #' to the screen. Default is FALSE
 #' 
 #' @return an updated \code{\link{Cape}} object (data_obj)
-#' 
-#' @examples 
-#' \dontrun{
-#' data_obj <- remove_unused_markers(data_obj, geno_obj)
-#' }
 #'
 #' @export
 

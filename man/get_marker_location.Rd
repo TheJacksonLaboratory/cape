@@ -21,10 +21,3 @@ function returns the genomic coordinates for
 each marker, not including the chromosome number,
 which is retrieved using \code{\link{get_marker_chr}}.
 }
-\examples{
-\dontrun{
-marker_names <- dimnames(geno_obj)[[3]]
-marker_loc <- get_marker_location(data_obj, marker_names)
-}
-
-}

@@ -100,9 +100,3 @@ to marker2.
 Similarly, if marker1 has a main effect on any traits, these
 will be shown in the row for marker1 and the trait columns.
 }
-\examples{
-\dontrun{
-plot_variant_influences(data_obj)
-}
-
-}

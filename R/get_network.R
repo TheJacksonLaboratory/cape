@@ -38,11 +38,6 @@
 #' if collapse_linked_markers is set to FALSE. \code{\link{run_cape}} automatically
 #' requests both networks be generated.
 #' 
-#' @examples 
-#' \dontrun{
-#' data_obj <- get_network(data_obj, geno_obj)
-#' }
-#' 
 #' @import igraph
 #' 
 #' @export

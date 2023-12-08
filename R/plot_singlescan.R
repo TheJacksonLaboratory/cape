@@ -26,11 +26,6 @@
 #' 
 #' @importFrom graphics lines
 #' 
-#' @examples 
-#' \dontrun{
-#' plot_singlescan(data_obj, singlescan_obj)
-#' }
-#' 
 #' @export
 
 plot_singlescan <- function(data_obj, singlescan_obj, chr = NULL, traits = NULL, 

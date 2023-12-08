@@ -53,11 +53,6 @@
 #' @return This function invisibly returns the variant influences matrix.
 #' shown in the heat map.
 #' 
-#' @examples 
-#' \dontrun{
-#' plot_variant_influences(data_obj)
-#' }
-#' 
 #' @export
 plot_variant_influences <- function(data_obj, p_or_q = 0.05, min_std_effect = 0, 
   plot_all_vals = FALSE, standardize = FALSE, 

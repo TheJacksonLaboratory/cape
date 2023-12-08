@@ -20,15 +20,6 @@
 #' @import here
 #' @importFrom qtl2 read_cross2
 #' 
-#' @examples 
-#' \dontrun{
-#' #load input in qtl2 zip format
-#' load_input_and_run_cape("cross_file.zip")
-#' 
-#' #load input in qtl csv format
-#' load_input_and_run_cape("cross_file.csv")
-#' }
-#' 
 #' @export
 load_input_and_run_cape <- function(input_file = NULL, yaml_params = NULL, results_path = NULL,
                                     run_parallel = FALSE, results_file = "cross.RDS", p_or_q = 0.05, 

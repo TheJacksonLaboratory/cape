@@ -22,9 +22,3 @@ This function takes a variable from the phenotype matrix
 for example, diet treatment or sex and converts it to
 a covariate.
 }
-\examples{
-\dontrun{
-#convert weight to a covariate
-data_obj <- pheno2covar(data_obj, "weight")
-}
-}

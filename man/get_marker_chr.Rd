@@ -23,11 +23,4 @@ Given a vector of marker names or numbers, this
 function returns the chromosome on which each 
 marker lives.Covariates are assigned to chromosome 0.
 }
-\examples{
-\dontrun{
-marker_names <- dimnames(geno_obj)[[3]]
-marker_chr <- get_marker_chr(data_obj, marker_names)
-}
-
-}
 \keyword{internal}

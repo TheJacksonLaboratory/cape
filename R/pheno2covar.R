@@ -12,11 +12,6 @@
 #' as covariates. Information about assigned covariates can be retrieved
 #' with \code{\link{get_covar}}.
 #'
-#' @examples 
-#' \dontrun{
-#' #convert weight to a covariate
-#' data_obj <- pheno2covar(data_obj, "weight")
-#' }
 #' @export
 
 pheno2covar <- function(data_obj, pheno_which){

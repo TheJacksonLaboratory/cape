@@ -66,9 +66,3 @@ This function plots the results of the pairwise scan.
 It plots a matrix of the the interactions between all 
 pairs of markers.
 }
-\examples{
-\dontrun{
-plot_pairscan(data_obj, pairscan_obj)
-}
-
-}

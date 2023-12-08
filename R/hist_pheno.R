@@ -9,11 +9,6 @@
 #' @param pheno_labels A vector of strings providing alternate
 #' names for the traits in the plot if the names in the data object
 #' are not good for plotting
-#' 
-#' @examples 
-#' \dontrun{
-#' hist_pheno(data_obj)
-#' }
 #'
 #' @export
 

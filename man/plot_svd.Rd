@@ -108,13 +108,3 @@ Below the bars is a heatmap indicating how each trait
 contributes to each eigentrait. Colors can be adjusted
 to suit preferences.
 }
-\examples{
-\dontrun{
-#plot all eigentraits
-plot_svd(data_obj)
-
-#plot only eigentraits being run in cape
-plot_svd(data_obj, just_selected_et = TRUE)
-}
-
-}

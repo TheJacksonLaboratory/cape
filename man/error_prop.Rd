@@ -44,11 +44,3 @@ This function uses error propagation formulas for
 quantities computed from regression coefficients to 
 estimate the error for all regression coefficients.
 }
-\examples{
-\dontrun{
-#run error propagateion on test statistics and 
-#permuted test statistics
-data_obj <- error_prop(data_obj, pairscan_obj, perm = TRUE)
-data_obj <- error_prop(data_obj, pairscan_obj, perm = FALSE)
-}
-}

@@ -74,12 +74,6 @@
 #' @importFrom graphics layout
 #' @importFrom stats runif
 #' 
-#' @examples 
-#' \dontrun{
-#' #select 100 alleles to run through pairscan
-#' data_obj <- select_markers_for_pairscan(data_obj, singlescan_obj, geno_obj, num_alleles = 100)
-#' }
-#' 
 #' @export
 select_markers_for_pairscan <- function(data_obj, singlescan_obj, geno_obj, 
   specific_markers = NULL, num_alleles = 50, peak_density = 0.5, window_size = NULL, 

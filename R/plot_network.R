@@ -42,10 +42,6 @@
 #' @importFrom shape Arrowhead
 #' @importFrom graphics xspline
 #' 
-#' @examples 
-#' \dontrun{
-#' plot_network(data_obj)
-#' }
 #' @export
 
 plot_network <- function(data_obj, marker_pairs = NULL, collapsed_net = TRUE, 

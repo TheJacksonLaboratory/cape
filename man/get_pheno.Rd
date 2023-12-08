@@ -32,19 +32,3 @@ The values correspond to the argument settings described above.
 This function can return a number of different trait matrices
 depending on the arguments.
 }
-\examples{
-\dontrun{
-#get eigentrait matrix
-eigenT <- get_pheno(data_obj, "eigentraits")
-
-#get normalized trait matrix
-pheno <- get_pheno(data_obj, "normalized_traits")
-
-#get normalized traits adjusted for sex
-pheno <- get_pheno(data_obj, "normalized_traits", covar = "sex")
-
-#get raw trait matrix
-pheno <- get_pheno(data_obj, "raw_traits")
-}
-
-}

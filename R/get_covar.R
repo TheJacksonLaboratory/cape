@@ -12,11 +12,6 @@
 #' covar_loc: A numeric vector indicating the locations of each covariate
 #' covar_table: A matrix holding the individual values for each covariate.
 #' 
-#' @examples 
-#' \dontrun{
-#' covar_info <- get_covar(data_obj)
-#' }
-#' 
 #' @export
 
 get_covar <- function(data_obj){

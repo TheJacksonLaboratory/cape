@@ -21,9 +21,3 @@ This is an internal function returns the
 genotype matrix for scanning as defined by 
 the markers and individuals specified in
 }
-\examples{
-\dontrun{
-geno <- get_geno(data_obj, geno_obj)
-}
-
-}

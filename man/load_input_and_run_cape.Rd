@@ -51,13 +51,3 @@ load_input_and_run_cape(
 This function loads the input file path and runs cape
 It is used to run CAPE from a non R script (python)
 }
-\examples{
-\dontrun{
-#load input in qtl2 zip format
-load_input_and_run_cape("cross_file.zip")
-
-#load input in qtl csv format
-load_input_and_run_cape("cross_file.csv")
-}
-
-}

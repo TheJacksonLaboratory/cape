@@ -70,9 +70,3 @@ scan (\code{\link{pairscan}}) to calculate an empirical p value for the influenc
 marker pair on each phenotype. The empirical p values are then adjusted for multiple 
 testing using Holm's step-down procedure.
 }
-\examples{
-\dontrun{
-data_obj <- direct_influence(data_obj, pairscan_obj)
-}
-
-}

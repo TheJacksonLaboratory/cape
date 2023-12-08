@@ -122,12 +122,6 @@ in the arguments. The function \code{\link{get_network}} must be run before plot
 For most networks, the default options will be fine, but there is a lot of room
 for modification if changes are desired
 }
-\examples{
-\dontrun{
-plot_full_network(data_obj)
-}
-
-}
 \references{
 Csardi G, Nepusz T: The igraph software package for complex network 
 research, InterJournal, Complex Systems 1695. 2006. \url{https://igraph.org/}

@@ -44,18 +44,6 @@ other markers. It can be helpful to condition on markers
 in the HLA region to find genetic modifiers of these 
 markers.
 }
-\examples{
-\dontrun{
-#convert markers with effect sizes greater than 6 to covariates.
-#this requires a singlescan_obj
-data_obj <- marker2covar(data_obj, geno_obj, singlescan_obj, covar_thresh = 6)
-
-#convert the first marker to a covariate
-#this does not require a singlescan_obj
-marker_name <- dimnames(geno_obj)[[3]][1]
-data_obj <- marker2covar(data_obj, geno_obj, markers = marker_name)
-}
-}
 \seealso{
 \code{\link{get_covar}}
 }

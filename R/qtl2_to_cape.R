@@ -30,12 +30,6 @@
 #' @import qtl2convert
 #' @importFrom qtl2 genoprob_to_alleleprob calc_genoprob
 #' 
-#' @examples 
-#' \dontrun{
-#' data_obj <- qtl2_to_cape(cross_obj, genoprobs, map, covar, verbose = TRUE)
-#' }
-#' 
-#'
 #' @export
 
 qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL, verbose = TRUE){

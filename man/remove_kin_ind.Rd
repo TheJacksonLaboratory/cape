@@ -17,9 +17,3 @@ updated kinship object
 \description{
 Removes individuals from the kinship object to match the cape.obj
 }
-\examples{
-\dontrun{
-kin_obj <- remove_kin_id(data_obj, kin_obj)
-}
-
-}

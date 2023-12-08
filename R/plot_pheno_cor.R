@@ -15,11 +15,6 @@
 #' @importFrom graphics hist legend pairs rect
 #' @importFrom stats cor
 #' 
-#' @examples 
-#' \dontrun{
-#' plot_pheno_cor(data_obj, color_by = "sex", group_labels = c("Female", "Male"))
-#' }
-#' 
 #' @export
 
 plot_pheno_cor <- function(data_obj, pheno_which = NULL, color_by = NULL, group_labels = NULL,
@@ -116,7 +111,7 @@ plot_pheno_cor <- function(data_obj, pheno_which = NULL, color_by = NULL, group_
 	}
 		
 	panel_hist <- function(x, ...){
-   		usr <- par("usr"); on.exit(par(usr))
+   		usr <- par("usr"); on.exit(par("usr" = usr))
     	par(usr = c(usr[1:2], 0, 1.5) )
 	   	h <- hist(x, plot = FALSE)
     	breaks <- h$breaks; nB <- length(breaks)

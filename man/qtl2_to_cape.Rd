@@ -31,13 +31,6 @@ This function converts a data object constructed by qtl2 using the read_cross()
 function to cape format. It returns a list in which the first element is the
 cape data object, and the second element is the cape genotype object.
 }
-\examples{
-\dontrun{
-data_obj <- qtl2_to_cape(cross_obj, genoprobs, map, covar, verbose = TRUE)
-}
-
-
-}
 \references{
 Carter, G. W., Hays, M., Sherman, A., & Galitski, T. (2012). Use
   of pleiotropy to model genetic interactions in a population. PLoS genetics,

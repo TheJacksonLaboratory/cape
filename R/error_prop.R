@@ -25,13 +25,6 @@
 #' @import foreach
 #' @importFrom doParallel registerDoParallel 
 #' 
-#' @examples 
-#' \dontrun{
-#' #run error propagateion on test statistics and 
-#' #permuted test statistics
-#' data_obj <- error_prop(data_obj, pairscan_obj, perm = TRUE)
-#' data_obj <- error_prop(data_obj, pairscan_obj, perm = FALSE)
-#' }
 #' @export
 error_prop <- function (data_obj, pairscan_obj, perm = FALSE, verbose = FALSE,
                         run_parallel = FALSE, n_cores = 4, just_m = FALSE) {

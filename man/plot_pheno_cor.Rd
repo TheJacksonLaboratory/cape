@@ -34,9 +34,3 @@ It must be one of the covariates. See \code{\link{pheno2covar}}.}
 This function plots pairs of traits against each other
 to visualize the correlations between traits.
 }
-\examples{
-\dontrun{
-plot_pheno_cor(data_obj, color_by = "sex", group_labels = c("Female", "Male"))
-}
-
-}

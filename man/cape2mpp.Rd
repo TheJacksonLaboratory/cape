@@ -22,8 +22,3 @@ cape.
 This function converts an object formatted for cape 1.0
 to an object formatted for cape 2.0
 }
-\examples{
-\dontrun{
-new_data_obj <- cape2mpp(old_data_obj)
-}
-}

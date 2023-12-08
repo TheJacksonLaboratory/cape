@@ -12,12 +12,6 @@
 #' @return A vector the same length as the input markers vector
 #' indicating which chromosome each marker in markers lives on.
 #'
-#' @examples 
-#' \dontrun{
-#' marker_names <- dimnames(geno_obj)[[3]]
-#' marker_chr <- get_marker_chr(data_obj, marker_names)
-#' }
-#' 
 #' @keywords internal 
 #' 
 get_marker_chr <- function(data_obj, markers, character_names = TRUE){
