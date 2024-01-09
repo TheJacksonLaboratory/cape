@@ -28,6 +28,8 @@ Description: Combined Analysis of Pleiotropy and Epistasis infers predictive
 License: GPL-3
 Encoding: UTF-8
 LazyData: false
+URL: https://github.com/TheJacksonLaboratory/cape
+BugReports: https://github.com/TheJacksonLaboratory/cape/issues
 Depends:
   R (>= 3.6)
 Suggests: 
