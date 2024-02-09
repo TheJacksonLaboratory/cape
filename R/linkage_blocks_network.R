@@ -112,7 +112,8 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
   get_chr_cor <- function(ordered_names, ordered_alleles){		
     marker_pos <- match(ordered_names, dimnames(geno_obj)[[3]])
     allele_pos <- match(ordered_alleles, dimnames(geno_obj)[[2]])
-    chr_geno <- sapply(1:length(marker_pos), function(x) geno_obj[,allele_pos[x], marker_pos[x]])
+    no.na <- intersect(which(!is.na(marker_pos)), which(!is.na(allele_pos)))
+    chr_geno <- sapply(no.na, function(x) geno_obj[,allele_pos[x], marker_pos[x]])
     chr_cor <- cor(chr_geno, use = "complete.obs")
     return(chr_cor)
   }
@@ -149,14 +150,16 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
       #otherwise get positions from the data object
     block.bp <- get_marker_location(data_obj, chr_markers)
     # }
-    
     if(!collapse_linked_markers || length(chr_markers) == 1 || ch == 0){
+      print(paste("covariate: Chr", ch))
       link_blocks <- add_ind_markers(link_blocks, ch, chr_markers)
       # num_blocks <- num_blocks + length(link_blocks)
       num_blocks <- num_blocks + 1
     }else{
+      print(paste("non-covariate: Chr", ch))
       marker_order <- order(block.bp)
-      all_cor <- get_chr_cor(chr_marker_names[marker_order], chr_alleles[marker_order])
+      all_cor <- get_chr_cor(ordered_names = chr_marker_names[marker_order], 
+        ordered_alleles = chr_alleles[marker_order])
       diag(all_cor) <- 0
       thresh_mat <- abs(all_cor^threshold_power)
       net <- graph.adjacency(thresh_mat, mode = "undirected", weighted = TRUE)
@@ -232,34 +235,33 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
       chr_names <- sapply(strsplit(block_names, "Chr"), function(x) x[2])
       final_block_locale <- which(chr_names == ch)
       start_block = 0.5
-      #outline each block
-      for(b in 1:length(final_block_locale)){
-        end_block <- start_block + length(link_blocks[[final_block_locale[b]]])
-        segments(x0 = start_block, y0 = start_block, x1 = start_block, y1 = end_block, lwd = 3)
-        segments(x0 = start_block, y0 = start_block, x1 = end_block, y1 = start_block, lwd = 3)
-        segments(x0 = end_block, y0 = start_block, x1 = end_block, y1 = end_block, lwd = 3)
-        segments(x0 = start_block, y0 = end_block, x1 = end_block, y1 = end_block, lwd = 3)
-        start_block <- end_block
-      } #end outlining blocks
+      if(length(final_block_locale) > 0){
+        #outline each block
+        for(b in 1:length(final_block_locale)){
+          end_block <- start_block + length(link_blocks[[final_block_locale[b]]])
+          segments(x0 = start_block, y0 = start_block, x1 = start_block, y1 = end_block, lwd = 3)
+          segments(x0 = start_block, y0 = start_block, x1 = end_block, y1 = start_block, lwd = 3)
+          segments(x0 = end_block, y0 = start_block, x1 = end_block, y1 = end_block, lwd = 3)
+          segments(x0 = start_block, y0 = end_block, x1 = end_block, y1 = end_block, lwd = 3)
+          start_block <- end_block
+        } #end outlining blocks
       
-      image(1:dim(thresh_mat)[1], 1:dim(thresh_mat)[2], thresh_mat, main = "Thresholded Correlations", xlim = c(0,(dim(thresh_mat)[1]+1)), ylim = c(0,(dim(thresh_mat)[1]+1)), col = my_palette(50), axes = FALSE, ylab = "", xlab = "")
-      block_names <- sapply(strsplit(names(link_blocks), "_"), function(x) x[1])
-      chr_names <- sapply(strsplit(block_names, "Chr"), function(x) x[2])
-      final_block_locale <- which(chr_names == ch)
-      start_block = 0.5
-      #outline each block
-      for(b in 1:length(final_block_locale)){
-        end_block <- start_block + length(link_blocks[[final_block_locale[b]]])
-        segments(x0 = start_block, y0 = start_block, x1 = start_block, y1 = end_block, lwd = 3)
-        segments(x0 = start_block, y0 = start_block, x1 = end_block, y1 = start_block, lwd = 3)
-        segments(x0 = end_block, y0 = start_block, x1 = end_block, y1 = end_block, lwd = 3)
-        segments(x0 = start_block, y0 = end_block, x1 = end_block, y1 = end_block, lwd = 3)
-        start_block <- end_block
-      } #end outlining blocks		
-      
-    } #end plotting
-    
-    
+        image(1:dim(thresh_mat)[1], 1:dim(thresh_mat)[2], thresh_mat, main = "Thresholded Correlations", xlim = c(0,(dim(thresh_mat)[1]+1)), ylim = c(0,(dim(thresh_mat)[1]+1)), col = my_palette(50), axes = FALSE, ylab = "", xlab = "")
+        block_names <- sapply(strsplit(names(link_blocks), "_"), function(x) x[1])
+        chr_names <- sapply(strsplit(block_names, "Chr"), function(x) x[2])
+        final_block_locale <- which(chr_names == ch)
+        start_block = 0.5
+        #outline each block
+        for(b in 1:length(final_block_locale)){
+          end_block <- start_block + length(link_blocks[[final_block_locale[b]]])
+          segments(x0 = start_block, y0 = start_block, x1 = start_block, y1 = end_block, lwd = 3)
+          segments(x0 = start_block, y0 = start_block, x1 = end_block, y1 = start_block, lwd = 3)
+          segments(x0 = end_block, y0 = start_block, x1 = end_block, y1 = end_block, lwd = 3)
+          segments(x0 = start_block, y0 = end_block, x1 = end_block, y1 = end_block, lwd = 3)
+          start_block <- end_block
+        } #end outlining blocks		
+      } #end case for whether the chromosome is represented  
+    } #end plotting    
   } #end looping through chromosomes	
   
   if(plot_blocks){dev.off()}
