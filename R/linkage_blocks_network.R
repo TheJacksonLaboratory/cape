@@ -169,7 +169,7 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
       
       diag(all_cor) <- 0
       thresh_mat <- abs(all_cor^threshold_power)
-      net <- graph.adjacency(thresh_mat, mode = "undirected", weighted = TRUE)
+      net <- graph_from_adjacency_matrix(thresh_mat, mode = "undirected", weighted = TRUE)
       comm <- cluster_fast_greedy(net)$membership
       
       #In populations like the BXD, there is long-range LD that
