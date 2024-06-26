@@ -116,7 +116,7 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
     chr_geno <- sapply(no.na, function(x) geno_obj[,allele_pos[x], marker_pos[x]])
     chr_cor <- cor(chr_geno, use = "complete.obs")
     result <- list("chr_cor" = chr_cor, "markers" = ordered_names[no.na], alleles = ordered_alleles[no.na])
-    return(return(result))
+    return(result)
   }
   
   #========================================================================================
@@ -152,12 +152,12 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
     block.bp <- get_marker_location(data_obj, chr_markers)
     # }
     if(!collapse_linked_markers || length(chr_markers) == 1 || ch == 0){
-      print(paste("covariate: Chr", ch))
+      #print(paste("covariate: Chr", ch))
       link_blocks <- add_ind_markers(link_blocks, ch, chr_markers)
       # num_blocks <- num_blocks + length(link_blocks)
       num_blocks <- num_blocks + 1
     }else{
-      print(paste("non-covariate: Chr", ch))
+      #print(paste("non-covariate: Chr", ch))
       marker_order <- order(block.bp)
       ordered_markers <- chr_marker_names[marker_order]
       ordered_alleles <- chr_alleles[marker_order]
@@ -213,7 +213,7 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
       cm_changes <- which(!apply(adj_comm, 1, function(x) x[1] == x[2])) #find everywhere the community number changes      
       
       if(length(cm_changes) == 0){ #if there are no changes, put the whole chromosome into the block
-        link_blocks[[num_blocks]] <- ordered_markers
+        link_blocks[[num_blocks]] <- paste(ordered_markers, ordered_alleles, sep = "_")
         names(link_blocks)[num_blocks] <- paste("Chr", ch, "_", chr_blocks, sep = "")
         num_blocks <- num_blocks + 1
       }else{ #otherwise, step through the communities and add each one as a block
@@ -222,7 +222,7 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
         #for each block on the chromosome
         for(cm in 1:(length(cm_changes)+1)){
           cm_locale <- which(comm == cm)
-          marker_names <- ordered_markers[cm_locale]
+          marker_names <- paste(ordered_markers[cm_locale], ordered_alleles[cm_locale], sep = "_")
           
           link_blocks[[num_blocks]] <- marker_names
           names(link_blocks)[num_blocks] <- paste("Chr", ch, "_", chr_blocks, sep = "")
