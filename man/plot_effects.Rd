@@ -19,8 +19,8 @@ plot_effects(
   marker2_label = NULL,
   bin_continuous_genotypes = TRUE,
   ref_centered = TRUE,
-  gen_model1 = "Additive",
-  gen_model2 = "Additive",
+  gen_model1 = c("Additive", "Dominant", "Recessive"),
+  gen_model2 = c("Additive", "Dominant", "Recessive"),
   bins_marker1 = 50,
   bins_marker2 = 50
 )
