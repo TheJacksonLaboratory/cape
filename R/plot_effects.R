@@ -84,11 +84,16 @@ plot_effects <- function(data_obj, geno_obj, marker1, marker2 = NULL,
 	pheno_type = "normalized", plot_type = c("l", "p", "b", "h"),
 	error_bars = "none", ymin = NULL, ymax = NULL, covar = NULL, 
 	marker1_label = NULL, marker2_label = NULL, bin_continuous_genotypes = TRUE, 
-	ref_centered = TRUE, gen_model1 = "Additive", gen_model2 = "Additive",
+	ref_centered = TRUE, gen_model1 = c("Additive", "Dominant", "Recessive"), 
+	gen_model2 = c("Additive", "Dominant", "Recessive"),
 	bins_marker1 = 50, bins_marker2 = 50){
 
 	plot_type = plot_type[1]
-		
+	gen_model1 = gen_model1[1]
+	gen_model2 = gen_model2[1]
+
+	if(is.null(marker2)){gen_model2 == "Additive"}
+
 	#==========================================
 	# get traits for plotting
 	#==========================================
@@ -139,7 +144,7 @@ plot_effects <- function(data_obj, geno_obj, marker1, marker2 = NULL,
 	#============================================================
 	# Recode if specified
 	#============================================================
-		
+
 	if(gen_model1 == "Dominant"){
 		geno_to_plot[which(geno_to_plot[,1] >= 0.5),1] <- 1
 		geno_to_plot[which(geno_to_plot[,1] < 0.5),1] <- 0

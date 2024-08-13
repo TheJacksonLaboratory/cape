@@ -90,7 +90,7 @@ plot_full_network <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, ma
   
   plot_net_edges <- function(net, net_layout, lwd = 1, edge_col = "gray", arrow_offset = 1){
     
-    edge_list <- get.edgelist(net, names = FALSE)
+    edge_list <- as_edgelist(net, names = FALSE)
     
     if(length(col) == 1){
       edge_col = rep(edge_col, dim(edge_list)[1])
@@ -237,7 +237,7 @@ plot_full_network <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, ma
     
     edgelist <- matrix(c(as.vector(interactions[,1]), as.vector(interactions[,2])), ncol = 2, byrow = FALSE)
         
-    net <- graph.edgelist(edgelist)
+    net <- graph_from_edgelist(edgelist)
     vertex_names <- V(net)$name
     
     if(!label_nodes){vertex_names <- NULL}
@@ -258,7 +258,7 @@ plot_full_network <- function(data_obj, p_or_q = 0.05,  collapsed_net = TRUE, ma
       }			
     }else{ #otherwise layout_matrix is null or a matrix
       if(length(layout_matrix) == 0){
-        coord_matrix <- layout.auto(net)
+        coord_matrix <- layout_nicely(net)
       }else{
         coord_matrix <- layout_matrix	
       }

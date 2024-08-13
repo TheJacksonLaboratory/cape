@@ -112,9 +112,11 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
   get_chr_cor <- function(ordered_names, ordered_alleles){		
     marker_pos <- match(ordered_names, dimnames(geno_obj)[[3]])
     allele_pos <- match(ordered_alleles, dimnames(geno_obj)[[2]])
-    chr_geno <- sapply(1:length(marker_pos), function(x) geno_obj[,allele_pos[x], marker_pos[x]])
+    no.na <- intersect(which(!is.na(marker_pos)), which(!is.na(allele_pos)))
+    chr_geno <- sapply(no.na, function(x) geno_obj[,allele_pos[x], marker_pos[x]])
     chr_cor <- cor(chr_geno, use = "complete.obs")
-    return(chr_cor)
+    result <- list("chr_cor" = chr_cor, "markers" = ordered_names[no.na], alleles = ordered_alleles[no.na])
+    return(result)
   }
   
   #========================================================================================
@@ -149,18 +151,26 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
       #otherwise get positions from the data object
     block.bp <- get_marker_location(data_obj, chr_markers)
     # }
-    
     if(!collapse_linked_markers || length(chr_markers) == 1 || ch == 0){
+      #print(paste("covariate: Chr", ch))
       link_blocks <- add_ind_markers(link_blocks, ch, chr_markers)
       # num_blocks <- num_blocks + length(link_blocks)
       num_blocks <- num_blocks + 1
     }else{
+      #print(paste("non-covariate: Chr", ch))
       marker_order <- order(block.bp)
-      all_cor <- get_chr_cor(chr_marker_names[marker_order], chr_alleles[marker_order])
+      ordered_markers <- chr_marker_names[marker_order]
+      ordered_alleles <- chr_alleles[marker_order]
+      cor_results <- get_chr_cor(ordered_names = ordered_markers, 
+        ordered_alleles = ordered_alleles)
+      all_cor <- cor_results$chr_cor
+      ordered_markers <- cor_results$markers
+      ordered_alleles <- cor_results$alleles
+      
       diag(all_cor) <- 0
       thresh_mat <- abs(all_cor^threshold_power)
-      net <- graph.adjacency(thresh_mat, mode = "undirected", weighted = TRUE)
-      comm <- fastgreedy.community(net)$membership
+      net <- graph_from_adjacency_matrix(thresh_mat, mode = "undirected", weighted = TRUE)
+      comm <- cluster_fast_greedy(net)$membership
       
       #In populations like the BXD, there is long-range LD that
       #complicates this blocking process. For now I will only 
@@ -170,7 +180,8 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
       #community 1 needs to have a new name.
       comm <- check_communities(comm)
       
-      allele_table <- cbind(chr_markers, comm, chr_alleles)
+      allele_table <- cbind(ordered_markers, comm, ordered_alleles)
+
       #sort by community and alleles so we don't break blocks
       #when alleles alternate back and forth. If we pick multiple
       #alleles for each marker, the markers will be in order, but
@@ -199,11 +210,10 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
       
       #recalculate the community changes
       adj_comm <- consec_pairs(comm)
-      cm_changes <- which(!apply(adj_comm, 1, function(x) x[1] == x[2])) #find everywhere the community number changes
-      
+      cm_changes <- which(!apply(adj_comm, 1, function(x) x[1] == x[2])) #find everywhere the community number changes      
       
       if(length(cm_changes) == 0){ #if there are no changes, put the whole chromosome into the block
-        link_blocks[[num_blocks]] <- chr_markers
+        link_blocks[[num_blocks]] <- paste(ordered_markers, ordered_alleles, sep = "_")
         names(link_blocks)[num_blocks] <- paste("Chr", ch, "_", chr_blocks, sep = "")
         num_blocks <- num_blocks + 1
       }else{ #otherwise, step through the communities and add each one as a block
@@ -212,7 +222,7 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
         #for each block on the chromosome
         for(cm in 1:(length(cm_changes)+1)){
           cm_locale <- which(comm == cm)
-          marker_names <- chr_markers[cm_locale]
+          marker_names <- paste(ordered_markers[cm_locale], ordered_alleles[cm_locale], sep = "_")
           
           link_blocks[[num_blocks]] <- marker_names
           names(link_blocks)[num_blocks] <- paste("Chr", ch, "_", chr_blocks, sep = "")
@@ -232,34 +242,33 @@ linkage_blocks_network <- function(data_obj, geno_obj, collapse_linked_markers =
       chr_names <- sapply(strsplit(block_names, "Chr"), function(x) x[2])
       final_block_locale <- which(chr_names == ch)
       start_block = 0.5
-      #outline each block
-      for(b in 1:length(final_block_locale)){
-        end_block <- start_block + length(link_blocks[[final_block_locale[b]]])
-        segments(x0 = start_block, y0 = start_block, x1 = start_block, y1 = end_block, lwd = 3)
-        segments(x0 = start_block, y0 = start_block, x1 = end_block, y1 = start_block, lwd = 3)
-        segments(x0 = end_block, y0 = start_block, x1 = end_block, y1 = end_block, lwd = 3)
-        segments(x0 = start_block, y0 = end_block, x1 = end_block, y1 = end_block, lwd = 3)
-        start_block <- end_block
-      } #end outlining blocks
+      if(length(final_block_locale) > 0){
+        #outline each block
+        for(b in 1:length(final_block_locale)){
+          end_block <- start_block + length(link_blocks[[final_block_locale[b]]])
+          segments(x0 = start_block, y0 = start_block, x1 = start_block, y1 = end_block, lwd = 3)
+          segments(x0 = start_block, y0 = start_block, x1 = end_block, y1 = start_block, lwd = 3)
+          segments(x0 = end_block, y0 = start_block, x1 = end_block, y1 = end_block, lwd = 3)
+          segments(x0 = start_block, y0 = end_block, x1 = end_block, y1 = end_block, lwd = 3)
+          start_block <- end_block
+        } #end outlining blocks
       
-      image(1:dim(thresh_mat)[1], 1:dim(thresh_mat)[2], thresh_mat, main = "Thresholded Correlations", xlim = c(0,(dim(thresh_mat)[1]+1)), ylim = c(0,(dim(thresh_mat)[1]+1)), col = my_palette(50), axes = FALSE, ylab = "", xlab = "")
-      block_names <- sapply(strsplit(names(link_blocks), "_"), function(x) x[1])
-      chr_names <- sapply(strsplit(block_names, "Chr"), function(x) x[2])
-      final_block_locale <- which(chr_names == ch)
-      start_block = 0.5
-      #outline each block
-      for(b in 1:length(final_block_locale)){
-        end_block <- start_block + length(link_blocks[[final_block_locale[b]]])
-        segments(x0 = start_block, y0 = start_block, x1 = start_block, y1 = end_block, lwd = 3)
-        segments(x0 = start_block, y0 = start_block, x1 = end_block, y1 = start_block, lwd = 3)
-        segments(x0 = end_block, y0 = start_block, x1 = end_block, y1 = end_block, lwd = 3)
-        segments(x0 = start_block, y0 = end_block, x1 = end_block, y1 = end_block, lwd = 3)
-        start_block <- end_block
-      } #end outlining blocks		
-      
-    } #end plotting
-    
-    
+        image(1:dim(thresh_mat)[1], 1:dim(thresh_mat)[2], thresh_mat, main = "Thresholded Correlations", xlim = c(0,(dim(thresh_mat)[1]+1)), ylim = c(0,(dim(thresh_mat)[1]+1)), col = my_palette(50), axes = FALSE, ylab = "", xlab = "")
+        block_names <- sapply(strsplit(names(link_blocks), "_"), function(x) x[1])
+        chr_names <- sapply(strsplit(block_names, "Chr"), function(x) x[2])
+        final_block_locale <- which(chr_names == ch)
+        start_block = 0.5
+        #outline each block
+        for(b in 1:length(final_block_locale)){
+          end_block <- start_block + length(link_blocks[[final_block_locale[b]]])
+          segments(x0 = start_block, y0 = start_block, x1 = start_block, y1 = end_block, lwd = 3)
+          segments(x0 = start_block, y0 = start_block, x1 = end_block, y1 = start_block, lwd = 3)
+          segments(x0 = end_block, y0 = start_block, x1 = end_block, y1 = end_block, lwd = 3)
+          segments(x0 = start_block, y0 = end_block, x1 = end_block, y1 = end_block, lwd = 3)
+          start_block <- end_block
+        } #end outlining blocks		
+      } #end case for whether the chromosome is represented  
+    } #end plotting    
   } #end looping through chromosomes	
   
   if(plot_blocks){dev.off()}

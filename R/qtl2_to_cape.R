@@ -117,7 +117,7 @@ qtl2_to_cape <- function(cross, genoprobs = NULL, map = NULL, covar = NULL, verb
 			return(biallele_mat)
 		}
 		geno_temp <- apply(geno, 3, to_biallelic)
-		geno <- array(geno_temp, dim = c(nrow(phenotype_matrix), 2, dim(geno)[3]))
+		geno <- array(geno_temp, dim = c(nrow(geno), 2, dim(geno)[3]))
 		rownames(geno) <- geno_ind
 	}
 
