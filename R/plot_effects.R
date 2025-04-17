@@ -84,8 +84,8 @@ plot_effects <- function(data_obj, geno_obj, marker1, marker2 = NULL,
 	pheno_type = "normalized", plot_type = c("l", "p", "b", "h"),
 	error_bars = "none", ymin = NULL, ymax = NULL, covar = NULL, 
 	marker1_label = NULL, marker2_label = NULL, bin_continuous_genotypes = TRUE, 
-	ref_centered = TRUE, gen_model1 = c("Additive", "Dominant", "Recessive"), 
-	gen_model2 = c("Additive", "Dominant", "Recessive"),
+	ref_centered = TRUE, gen_model1 = c("Additive", "Dominant", "Recessive", "Heterosis"), 
+	gen_model2 = c("Additive", "Dominant", "Recessive", "Heterosis"),
 	bins_marker1 = 50, bins_marker2 = 50){
 
 	plot_type = plot_type[1]
@@ -152,6 +152,14 @@ plot_effects <- function(data_obj, geno_obj, marker1, marker2 = NULL,
 	if(gen_model1 == "Recessive"){
 		geno_to_plot[which(geno_to_plot[,1] <= 0.5),1] <- 0			
 	}
+	if(gen_model1 == "Heterosis"){
+		new_geno <- geno_to_plot
+		near_het <- intersect(which(geno_to_plot[,1] >= 0.3), which(geno_to_plot[,1] <= 0.7))
+		not_het <- setdiff(1:nrow(new_geno), near_het)
+		new_geno[near_het,1] <- 0
+		new_geno[not_het,1] <- 1
+	}
+
 
 	if(gen_model2 == "Dominant"){
 		geno_to_plot[which(geno_to_plot[,2] >= 0.5),2] <- 1
@@ -159,6 +167,13 @@ plot_effects <- function(data_obj, geno_obj, marker1, marker2 = NULL,
 	}
 	if(gen_model2 == "Recessive"){
 		geno_to_plot[which(geno_to_plot[,2] <= 0.5),2] <- 0			
+	}
+	if(gen_model2 == "Heterosis"){
+		new_geno <- geno_to_plot
+		near_het <- intersect(which(geno_to_plot[,2] >= 0.3), which(geno_to_plot[,2] <= 0.7))
+		not_het <- setdiff(1:nrow(new_geno), near_het)
+		new_geno[near_het,2] <- 0
+		new_geno[not_het,2] <- 1
 	}
 
 	#============================================================		

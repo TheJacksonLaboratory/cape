@@ -1,391 +1,317 @@
-theta_test <- 0.375#
-l_theta_test <- pr_theta(theta_test, num_recomb, num_non_recomb)#
-test_LOD <- log10(l_theta_test/l_theta_ind)#
-#
-plot(theta_vals, LOD)#
-#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta)#
-#
-seq_non_recomb <- seq(5, 50, 5)#
-#
-plot.new()#
-plot.window(xlim = c(0, 0.5), ylim = c(-5, 12))#
-for(i in 1:length(seq_non_recomb)){#
-	l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, seq_non_recomb[i]))#
-	l_theta_ind <- pr_theta(theta_ind, num_recomb, seq_non_recomb[i])#
-	LOD <- log10(l_theta_seq/l_theta_ind)#
-	points(theta_vals, LOD, type = "l", col = i)#
-	likely_theta <- theta_vals[which.max(LOD)]#
-	abline(v = likely_theta, col = i)#
-}#
-axis(1)#
-axis(2)#
-legend("topright", col = 1:length(seq_non_recomb), lty = 1, legend = seq_non_recomb)#
-mtext(side = 2, "LOD", line = 2.5)#
-mtext(side = 1, "Recombination Fraction", line = 2.5)#
-abline(h = 3, lty = 2)
-plot(theta_vals, LOD)
-theta_vals <- seq(0, 0.5, 0.01)#
-theta_ind <- 0.5#
-num_recomb <- 3#
-num_non_recomb <- 5
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-plot(theta_vals, LOD)
-likely_theta <- theta_vals[which.max(LOD)]
-abline(v = likely_theta, col = i)
-plot(theta_vals, LOD, xlab = expression("theta"))
-plot(theta_vals, LOD, xlab = expression(theta))
-likely_theta <- theta_vals[which.max(LOD)]
-abline(v = likely_theta, col = i)
-plot(theta_vals, LOD, xlab = expression(theta), cex.axis = 2)
-plot(theta_vals, LOD, xlab = expression(theta), cex.labels = 2)
-?plot
-plot(theta_vals, LOD, xlab = expression(theta), cex.lab = 2)
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)
-mtext("LOD", side = 2, cex = 2, line = 2.5)
-quartz(width = 4, height = 4)
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)
-theta_vals <- seq(0, 0.5, 0.01)#
-theta_ind <- 0.5#
-num_recomb <- 3#
-num_non_recomb <- 500
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)
-num_recomb <- 300
-num_non_recomb <- 500
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)
-likely_theta
-max(LOD)
-LOD
-num_recomb <- 3#
-num_non_recomb <- 5#
-#
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)
-max(LOD)
-num_recomb <- 2#
-num_non_recomb <- 6#
-#
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)
-num_recomb <- 5#
-num_non_recomb <- 3#
-#
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)
-theta_test <- 5/8
-l_theta_test <- pr_theta(theta_test, num_recomb, num_non_recomb)
-test_LOD <- log10(l_theta_test/l_theta_ind)
-test_LOD
-likely_theta
-num_recomb <- 2#
-num_non_recomb <- 6#
-#
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)#
-print(likely_theta)#
-print(max(LOD))
-num_recomb <- 5#
-num_non_recomb <- 3#
-#
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)#
-print(likely_theta)#
-print(max(LOD))
-theta_vals <- seq(0, 0.5, 0.01)#
-theta_ind <- 0.5#
-num_recomb <- 2#
-num_non_recomb <- 6#
-#
-l_theta_seq <- sapply(theta_vals, function(x) pr_theta(x, num_recomb, num_non_recomb))#
-l_theta_ind <- pr_theta(theta_ind, num_recomb, num_non_recomb)#
-LOD <- log10(l_theta_seq/l_theta_ind)#
-quartz(width = 5, height = 5)#
-plot(theta_vals, LOD, xlab = "", ylab = "", cex.axis = 1.5)#
-mtext(expression(theta), side = 1, cex = 2, line = 2.5)#
-mtext("LOD", side = 2, cex = 2, line = 2.5)#
-likely_theta <- theta_vals[which.max(LOD)]#
-abline(v = likely_theta, col = i)#
-print(likely_theta)#
-print(max(LOD))
-library(qtl)
+sample_link <- paste0(haplo.base, gsub(".html", "", sample_links[i]), "-snp-report.txt")
+sample_link
+for(i in 1:length(sample_links)){
+sample_page <- paste0(haplo.base, sample_links[i])#
+	sample_link <- paste0(haplo.base, gsub(".html", "", sample_links[i]), "-snp-report.txt")#
+	split_sample  <- strsplit(sample.table[i,2], "\n")[[1]]#
+	sample_name <- head(split_sample, 1)#
+	sample_id <- gsub(")", "", gsub("(", "", str_trim(tail(split_sample, 1)), fixed = TRUE), fixed = TRUE)#
+	dest_file <- paste0("~/Desktop/", sample_name, "_", sample_id, ".txt")#
+	download.file(sample_link, sample_page)#
+}
+warnings()
+i = 1
+sample_page <- paste0(haplo.base, sample_links[i])
+sample_page
+sample_link <- paste0(haplo.base, gsub(".html", "", sample_links[i]), "-snp-report.txt")
+sample_link
+"https://haploqa.jax.org/sample/654a749e183b6a244dd2d921-snp-report.txt"
+sample_link
+split_sample  <- strsplit(sample.table[i,2], "\n")[[1]]
+split_sample
+sample_name <- head(split_sample, 1)
+sample_id <- gsub(")", "", gsub("(", "", str_trim(tail(split_sample, 1)), fixed = TRUE), fixed = TRUE)
+dest_file <- paste0("~/Desktop/", sample_name, "_", sample_id, ".txt")
+dest_file
+download.file(sample_link, sample_page)
+test <- download.file("https://haploqa.jax.org/sample/654a749e183b6a244dd2d921-snp-report.txt","~/Desktop/test.txt")
+"https://haploqa.jax.org/sample/654a749e183b6a244dd2d921-snp-report.txt"
+sample_link
+sample_page
+download.file(sample_link, dest_file)
+for(i in 1:length(sample_links)){
+sample_page <- paste0(haplo.base, sample_links[i])#
+	sample_link <- paste0(haplo.base, gsub(".html", "", sample_links[i]), "-snp-report.txt")#
+	split_sample  <- strsplit(sample.table[i,2], "\n")[[1]]#
+	sample_name <- head(split_sample, 1)#
+	sample_id <- gsub(")", "", gsub("(", "", str_trim(tail(split_sample, 1)), fixed = TRUE), fixed = TRUE)#
+	dest_file <- paste0("~/Desktop/", sample_name, "_", sample_id, ".txt")#
+	download.file(sample_link, dest_file)#
+}
+??readHTMLTable
 library(qtl2)
+page(calc_kinship)
+page(calc_genoprobs)
+page(calc_genoprob)
+library(qtl2)#
 grav2 <- read_cross2("~/my_data/grav2.yaml")
 grav2 <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
+str(grav2)
 iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2") )
 map <- insert_pseudomarkers(iron$gmap, step=1)
-plot(map)
+?system.file()
 pr <- calc_genoprob(iron, map, error_prob=0.002)
-pr <- calc_genoprob(iron, map, error_prob=0.002, cores=4)
+str(pr)
+str(pr[[1]])
+head(pr[[1]][,,1])
+str(iron)
+str(iron$geno)
+str(iron$geno[[1]])
+head(iron$geno[[1]])
 apr <- genoprob_to_alleleprob(pr)
-grid <- calc_grid(iron$gmap, step=1)
-pr_grid <- probs_to_grid(pr, grid)
-plot(pr_gris)
-plot(pr_grid)
-plot(pr_grid, map = map)
-plotMapp(map)
-plotMap(map)
-plotMap(iron$gmap)
-plotMap(iron$pmap)
-map <- insert_pseudomarkers(iron$gmap)
-plotMap(map)
-library(qtl2)
-citation(qtl2)
-citation("qtl2")
-library(qtl2)
-?est_herit
-?kinship
-??kinship
-?calc_kinship
-?est_herit
-library(qtl2)
-?est_herit
-page(est_herit)
-? calc_hsq_clean
-?? calc_hsq_clean
-page(calc_hsq_clean)
-page(qtl2::calc_hsq_clean)
-page(qtl2:::calc_hsq_clean)
-page(qtl2:::decomp_kinship)
-test <- read.delim("~/Downloads/MGIalleleQuery_20220304_100354.txt")
-str(test)
-test <- read.delim("~/Downloads/MGIalleleQuery_20220304_100354.txt", stringsAsFactors = FALSE)
-unique(test[,"Allele Type"])
-unique(test[,"Allele.Type"])
-allele.types <- unique(test[,"Allele.Type"])
-allele.list <- lapply(allele.types, function(x) test[which(test[,"Allele.Type"] == x),"Allele.Symbol"])
-allele.list
-names(allele.list) <- allele.type
-names(allele.list) <- allele.types
-allele.list
-allele.types
-sapply(allele.list, length)
-lapply(allele.list, head)
-allele.types
-allele.types <- allele.types[which(allele.types != "QTL")]
-allele.types <- unique(test[,"Allele.Type"])
-allele.types <- allele.types[which(allele.types != "QTL")] #filter out QTL (not genes)
-allele.list <- lapply(allele.types, function(x) test[which(test[,"Allele.Type"] == x),"Allele.Symbol"])
-sapply(allele.list, length)
-names(allele.list) <- allele.types
-sapply(allele.list, length)
-allele.genes <- lapply(allele.list, function(x) strsplit(x, "<", fixed = TRUE))
-lapply(allele.genes, head)
-allele.genes <- lapply(allele.list, function(x) sapply(strsplit(x, "<", fixed = TRUE), function(y) y[1]))
-allele.genes
-allele.genes <- lapply(allele.list, function(x) unique(sapply(strsplit(x, "<", fixed = TRUE), function(y) y[1])))
-allele.genes
-sapply(allele.genes, length)
-cat(allele.genes$Targeted, sep = "\n")
-?aperm
-?attr
-library(qtl2)
-?calc_genoprob
-library(qtl2)
-?calc_kinship
-?plot.scan1
-?scan1
-library(qtl2)
-?plot.scan1
-?arrows
-x <- 1:10
-y = 1:10
-plot(x,y)
-test <- text(x,y, 1:10, offset = 1)
-test <- text(x,y, 1:10, pos = 3, offset = 2)
+str(apr)
+str(pr)
+system.file("extdata", "grav2.zip", package="qtl2")
+?fisher.test
+test <- read.csv("~/Desktop/ingredients_2023-12-30 20 11 23.csv")
 test
-?text
-x <- 1:10; y = seq(10, 100, 10)
-x
-y
-plot(x,y)
-total.x.len <- max(x, na.rm = TRUE) - min(x, na.rm = TRUE)
-total.x.len
-total.y.len <- max(y, na.rm = TRUE) - min(y, na.rm = TRUE)
-total.y.len
-x.offset <- 	total.x.len*(offset/100)
-offset = 1
-x.offset <- 	total.x.len*(offset/100)
-x.offset
-y.offset <- 	total.y.len*(offset/100)
-y.offset
-?predict
-?smooth.spline
+test[which(test == ".")] <- 9
+test <- as.matrix(read.csv("~/Desktop/ingredients_2023-12-30 20 11 23.csv"))
+test[which(test == ".")] <- 0
+test[which(test == "X")] <- 1
+library(pheatmap)
+as.numeric(test)
+test
+test <- as.matrix(read.csv("~/Desktop/ingredients_2023-12-30 20 11 23.csv", row.names = 1))
+test
+test <- as.matrix(read.csv("~/Desktop/ingredients_2023-12-30 20 11 23.csv", row.names = 1))
+test[which(test == "X")] <- 1
+test[which(test == ".")] <- 0
+test
+num.test <- apply(test, 2, as.numeric)
+library(pheatmap)
+pheatmap(num.test)
+source('~/Documents/git_repositories/useful_r_code/plot.decomp.R', chdir = TRUE)
+plot.decomp(num.test, label.points = TRUE)
+num.test
+plot.decomp(t(num.test), label.points = TRUE)
+rownames(num.test) <- rownames(test)
+plot.decomp(num.test, label.points = TRUE)
+plot.decomp(t(num.test), label.points = TRUE)
+plot.decomp(num.test, label.points = TRUE)
+log10(1000)
+test <- readRDS("~/Documents/Projects/Alzheimers/human/cape_AD/Data/CAPE_Geno.RDS")
+str(test)
+dimnames(test)[[3]]
+dimnames(test[[1]])[[3]]
+on19 <- grep("X19", dimnames(test[[1]][[3]]))
+on19
+on19 <- grep("X19", dimnames(test[[1]])[[3]]
+on19 <- grep("X19", dimnames(test[[1]])[[3]])
+on19
+marker.names <- dimnames(test[[1]])[[3]]
+marker.names[on19]
+library(qtl2)
+page(est_herit)
+page(get_common_ids)
+library(qtl2)
+?scan1perm
+?summary
+>scan1perm.summary
+?scan1perm.summary
+?summary.scan1perm
+useful.fun <- list.files("~/Documents/git_repositories/useful_r_code", full.names = TRUE)
+useful.fun
+for(i in 1:length(useful.fun)){source(useful.fun[i])}
+a <- seq(-100, 100, 1)
+acol <- colors.from.values(a, use.pheatmap.colors = TRUE)
+barplot(a, col = acol)
+barplot(a, col = acol, border = NA)
+abline(h = 0)
+a <- rnorm(100)
+acol <- colors.from.values(a, use.pheatmap.colors = TRUE)
+hist(a)
+a <- rnorm(1000)
+hist(a)
+ahist <- hist(a)
+ahist <- hist(a, plot = FALSE)
+ahist
+acol  <- colors.from.values(ahist$mids)
+barplot(ahist$counts, col = acol)
+acol  <- colors.from.values(ahist$mids, use.pheatmap.values = TRUE)
+acol  <- colors.from.values(ahist$mids, use.pheatmap.colors = TRUE)
+barplot(ahist$counts, col = acol)
+barplot(ahist$counts, col = acol, breaks = 100)
+ahist <- hist(a, plot = FALSE, breaks = 100)
+acol  <- colors.from.values(ahist$mids, use.pheatmap.colors = TRUE)
+barplot(ahist$counts, col = acol)
+barplot(ahist$counts, col = acol, border = NA)
+ahist <- hist(a, plot = FALSE, breaks = 25)
+acol  <- colors.from.values(ahist$mids, use.pheatmap.colors = TRUE)
+barplot(ahist$counts, col = acol)
+library(qtl2()
+library(qtl2)
+?read_cross2
+test <- readRDS("~/Documents/Projects/EAE/Data/map.RDS")
+str(test)
+library(stringr)
+?stringr
+?flatten
+library(stringr)
+?trim
+?par
+test <- readRDS("~/Documents/Projects/Islets/Islet_HDM/Data/DO/Clinical_Phenotypes_V11.RDS")
+str(test)
+annot <- test$annot_samples
+annot
+.
+annot <- test$annot.samples
+annot
+head(annot)
+annote[,"DeathDate"] - annot[,"Birthdate"]
+annot[,"DeathDate"] - annot[,"Birthdate"]
+annot[,"DeathDate"] - annot[,"BirthDate"]
+annot[,"DeathDate"] - annot[,"BirthDate"]/7
+days.old <- annot[,"DeathDate"] - annot[,"BirthDate"]
+days.old
+as.numeric(days.old)/7
+hist(as.numeric(days.old)/7)
+?model.matrix
+cross <- readRDS("~/Documents/Projects/LPS/LPS_cape/Results/cape_2ET/cross.RDS")
+names(cross)
+sort(names(cross))
+cross$results_path
+cross$results_path <- "~/Documents/Projects/LPS/LPS_cape/Results/cape_2ET"
+saveRDS(cross, "~/Documents/Projects/LPS/LPS_cape/Results/cape_2ET/cross.RDS")
+?par
+?table
+a <- 2/3
+b <- 1.5
+a/b
+b/a
 ?legend
-library(RColorBrewer)
-??brewer_pal
-??display_brewer_pal
-??display_brewer_all
-?RColorBrewer
+library(pheatmap)
+?pheatmap
+?glmnet
+library(glmnet)
+?glmnet
+?glmnet.predict
+?predict.glmnet
+test <- readRDS("~/Documents/Projects/Islets/Islet_HDM/Results/DO/Transcriptomes/Transcript_Heritability.RDS")
+str(test)
+head(test[[1]])
+str(test[[1]])
+test <- readRDS("~/Documents/Projects/Islets/Islet_HDM/Results/DO/Imputed_Transcriptomes/Distal_Heritability_Adipose.RDS")
+str(test)
+head(~/Documents/Projects/Islets/Islet_HDM/Results/DO/Imputed_Transcriptomes/Distal_Heritability_Adipose.RDS)
+head(test)
+test <- readRDS("~/Documents/Projects/Islets/Islet_HDM/Results/DO/Imputed_Transcriptomes/eQTL_Coef_Adipose.RDS")
+str(Test)
+str(test)
+head(test)
 ?barplot
 library(qtl2)
-?plot_genes
-?page(plot_genes)
-page(plot_genes)
-?boxplot
-library(sva)
-citation("sva")
-?save
-citation("e1071")
--log10(0.05)
-1.3^-10
-1.30103^-10
--log10(0.07196592)
--log10(2)
--log10(0.01)
-citation("PMA")
-library(PMA)
-?CCA.permute
-?pheatmap
-library(pheatmap)
-?pheatmap
-lodthresh
-ann_colors = list(#
-    Time = c("white", "firebrick"),#
-    CellType = c(CT1 = "#1B9E77", CT2 = "#D95F02"),#
-    GeneClass = c(Path1 = "#7570B3", Path2 = "#E7298A", Path3 = "#66A61E")#
-)
-ann_colors[2]
-?library(PMA)
-a <- list("a", "b", "c")
-a
-a <- list("a" = 1, "b" = 2, "c" = 3)
-a
-test <- readRDS("~/Documents/Projects/Yeast/Results/all_singlescan/cross.RDS")
-names(test)
-grep("scan", names(test))
-names(test)[grep("scan", names(test))]
-test$scan_what
-(22*2.54)/10
-?anova
-??kable
-??data.table
-library(data.table)
-?data.tab.e
-?data.table
-?aov
-library(igraph)
-?plot.igraph
-?set_edge_attr
-make_full_graph(5) %>%#
-  set_edge_attr("curved", value=0) %>%#
-  set_edge_attr("curved", E(.)[4%--%5,3%--%1], .2) %>%#
-  plot
-E(.)[4%--%5,3%--%1], .2)
-E(.)[4%--%5,3%--%1],
-E(.)[4%--%5,3%--%1]
-4%--%5
-library(PMA)
-?CCA
-library(qtl2)
-?scan1
-library(PMA)
-?CCA
-?stripchart
-load('~/Documents/Data/DO/eQTL_viewer/Svenson_DO850_for_eQTL_viewer_v9.RData')
-ls
-ls()
-str(dataset.phenotype)
-names(dataset.phenotype)
-dataset.phenotype$annot.phenotype
-names(dataset.phenotype)
-str(dataset.phenotype$data)
-head(dataset.phenotype$data)
-apply(dataset.phenotype$data, 2, function(x) length(which(!is.na(x))))
-barplot(apply(dataset.phenotype$data, 2, function(x) length(which(!is.na(x)))))
-barplot(sort(apply(dataset.phenotype$data, 2, function(x) length(which(!is.na(x))))), las = 2)
-pdf("~/Desktop/trait_count.pdf", width = 15, height = 5);barplot(sort(apply(dataset.phenotype$data, 2, function(x) length(which(!is.na(x))))), las = 2);dev.off()
-dev.off()
-pdf("~/Desktop/trait_count.pdf", width = 15, height = 5);barplot(sort(apply(dataset.phenotype$data, 2, function(x) length(which(!is.na(x))))), las = 2);dev.off()
-pdf("~/Desktop/trait_count.pdf", width = 20, height = 5);barplot(sort(apply(dataset.phenotype$data, 2, function(x) length(which(!is.na(x))))), las = 2);dev.off()
-counts <- apply(dataset.phenotype$data, 2, function(x) length(which(!(is.na(x)))))
-counts
-which(count > 800)
-which(counts > 800)
-sub.trait <- dataset.phenotype$data[,which(counts > 800)]
-length(which(!is.na(rowSums(sub.trait))))
-load("/Users/atyler/Documents/Projects/Yeast/yeast_cape/Results/all_singlescan/cross_geno.RDS")
-library(opossom)
-library(oposSOM)
-pate(opossom.run)
-page(opossom.run)
-library(pheatmap)
-?pheatmap
-?mget
-library(oposSOM)
-?interaction.plot
-?segments
-library(cape)
-news(cape)
-news(package = "cape")
-?utils
-?head
-setwd("~/Documents/R/cap")
+?genoprobpos
+??genoprobpos
+?legend
+?text
+library(biomaRt)
+??filters
+?listEnsembl
+?useEnsembl
+library(easyPubMet)
+library(easyPubMed)
+?get_pubmed_ids
+test <- readRDS("~/Documents/Projects/Islets/Islet_HDM/Results/DO/Transcriptomes/TWAS_imputed_expr_trait_cor.RDS")
+str(test)
+str(test[[1]])
+head(test[[1]])
+dim(test[[1]])
+plot(sort(test[[1]][1,]))
+#pasted from containerit output#
+#
+cran.packages <- c("abind", "BiocManager", "bit", "bitops", "bnstruct", "cluster", "corpcor", "DT", "easyPubMed", "ff", "gmm", "gprofiler2", "here", #
+	"hexbin", "igraph", "knitr", "Matrix", "minpack.lm", "mvtnorm", "pdftools", "pheatmap", "propagate", "qtl2", "RColorBrewer", "Rcpp", "regress", #
+	"RGCCA", "sandwich", "sm", "stringr", "tmvtnorm", "vioplot", "wordcloud", "wordcloud2", "zoo")#
+#
+bioc.packages <- c("Biobase", "BiocGenerics", "GEOquery", "limma")#
+#
+cran.line1 <- "R --slave -e 'install.packages("#
+cran.line2 <- ',repos="https://cran.rstudio.com/")'#
+#
+cran.install.lines <- rep(NA, length(cran.packages))#
+for(i in 1:length(cran.packages)){#
+	cran.install.lines[i] <- paste0(cran.line1,  '"', cran.packages[i], '"', cran.line2, "'")#
+}#
+#
+write.table(cran.install.lines, "~/Desktop/cran_lines.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)#
+#
+bioc.line1 <- "R --slave -e 'BiocManager:install("#
+bioc.line2 <- ")'"#
+#
+bioc.install.lines <- rep(NA, length(bioc.packages))#
+for(i in 1:length(bioc.packages)){#
+	bioc.install.lines[i] <- paste0(bioc.line1, '"', bioc.packages[i], '"', bioc.line2)#
+}#
+#
+write.table(bioc.install.lines, "~/Desktop/bioc_lines.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)
+#pasted from containerit output#
+#
+cran.packages <- c("abind", "BiocManager", "bit", "bitops", "bnstruct", "cluster", "corpcor", "DT", "easyPubMed", "ff", "gmm", "gprofiler2", "here", #
+	"hexbin", "igraph", "knitr", "Matrix", "minpack.lm", "mvtnorm", "pdftools", "pheatmap", "propagate", "qtl2", "RColorBrewer", "Rcpp", "regress", #
+	"RGCCA", "sandwich", "sm", "stringr", "tmvtnorm", "vioplot", "wordcloud", "wordcloud2", "zoo")#
+#
+bioc.packages <- c("Biobase", "BiocGenerics", "GEOquery", "limma")#
+#
+cran.line1 <- "R --slave -e 'install.packages("#
+cran.line2 <- ',repos="https://cran.rstudio.com/")'#
+#
+cran.install.lines <- rep(NA, length(cran.packages))#
+for(i in 1:length(cran.packages)){#
+	cran.install.lines[i] <- paste0(cran.line1,  '"', cran.packages[i], '"', cran.line2, "'")#
+}#
+#
+write.table(cran.install.lines, "~/Desktop/cran_lines.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)#
+#
+bioc.line1 <- "R --slave -e 'BiocManager::install("#
+bioc.line2 <- ")'"#
+#
+bioc.install.lines <- rep(NA, length(bioc.packages))#
+for(i in 1:length(bioc.packages)){#
+	bioc.install.lines[i] <- paste0(bioc.line1, '"', bioc.packages[i], '"', bioc.line2)#
+}#
+#
+write.table(bioc.install.lines, "~/Desktop/bioc_lines.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)
+test <- read.delim("~/Downloads/mgi.gaf", comment.char = "!")
+str(test)
+head(test)
+test <- read.delim("~/Downloads/mgi.gaf", comment.char = "!", header = FALSE)
+head(test)
+length(unique(test[,5]))
+length(unique(test[,13]))
+tail(test)
+test[1:100,]
+??download_KEGG
+.libPaths(c("/Users/atyler/Library/R/arm64/4.3/library", .libPaths()))
+??download_KEGG
+library("pRoloc")
+??goIdToTerm
+?pRoloc
+??pRoloc
+??goterm
+q()
+library(clusterProfiler)
+library(clusterprofiler)
+library(cluster_profiler)
+library(cluster)
+??cluster
+library(RGCCA)
+citation(RGCCA)
+citation("RGCCA")
+citation("qtl2")
+citation("RGCCA")
+citation("fgsea")
+citation("easyPubMed")
+citation("cluster")
+library(cluster)
+?pam
+?silouhette
+?silhouette
+citation("gProfiler2")
+citation("gprofiler2")
+library(shiny)
+?textOutput
 setwd("~/Documents/git_repositories/cape")
-document()
 devtools::document()
-?gsub
+install.packages("devtools")
+devtools::document()
